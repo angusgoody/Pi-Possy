@@ -8,7 +8,7 @@ __author__ = 'Angus'
 #Imports-------
 from tkinter import *
 import datetime
-
+from tkinter import colorchooser
 
 
 #Sets up window---------
@@ -64,8 +64,10 @@ viewSportName.grid(row=0,column=1)
 
 #Change Theme canvas
 changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0,scrollregion=(0,0,500,500))
+
 #colourArray=["lightgreen","lightblue","maroon1","orange","lawn green","cyan","orchid","yellow green","gold","dodger blue","green3"]
 
+#The new colour array
 colourArray = [
 'midnight blue', 'navy', 'cornflower blue', 'dark slate blue',
 'slate blue', 'medium slate blue', 'light slate blue', 'medium blue', 'royal blue',  'blue',
@@ -152,10 +154,7 @@ for name in colourArray:
         try:
             colourListBox.insert(END,name)
             colourListBox.itemconfig(END, bg=name)
-            """
-            b = Radiobutton(changeThemeCanvas, text=name.capitalize(),
-                variable=colourPicked,value=name,bg=name,justify=LEFT)
-              """
+
         except:
             print("Found error in colour array 1")
         else:
@@ -307,18 +306,16 @@ def checkOverwrite(event):
 def changeTheme():
     loadCanvas(changeThemeCanvas, "Theme")
 
-def submitTheme():
-    index = colourListBox.curselection()
-    colourPick=colourListBox.get(index)    
-    if colourPicked.get() in colourArray:
+def submitTheme(colour):
+
         
-        temp="defaultColour: "
-        temp=temp+colourPick
+    temp="defaultColour: "
+    temp=temp+colour
         
-        #Writing to username file to store colour
-        updateTheme(colourPick)  
-        saveLineToFile("username.txt",temp,"defaultColour:")
-        print("Theme changed to",colourPick)
+    #Writing to username file to store colour
+    updateTheme(colour)  
+    saveLineToFile("username.txt",temp,"defaultColour:")
+    print("Theme changed to",colour)
                 
 
             
@@ -492,6 +489,15 @@ def checkColour(colour):
 def updateWelcomeScreen(name):
     setOpenUser(name)
 
+def updateThemeStep():
+    index = colourListBox.curselection()
+    colourPick=colourListBox.get(index)
+    submitTheme(colourPick)   
+    
+def colourPicker():
+    colour= colorchooser.askcolor()[1]
+    submitTheme(colour)
+    
 # End of Functions===========================================================
 
 
@@ -512,9 +518,11 @@ fileMenu.add_separator()
 
 #Buttons
 
-choseThemeButton=Button(changeThemeCanvas,text="Change",command=submitTheme,relief=GROOVE)
-choseThemeButton.pack(side=RIGHT,fill=X)
+choseThemeButton=Button(changeThemeCanvas,text="Change",command=updateThemeStep,relief=GROOVE)
+choseThemeButton.pack(side=BOTTOM,fill=X)
 
+colourPickerButton=Button(changeThemeCanvas,text="Colour Picker",command=colourPicker,relief=GROOVE)
+colourPickerButton.pack(side=BOTTOM)
 
 overwriteUserNameButton=Button(changeUserNameCanvas,text="Overwrite",command=overwriteUserName,state=DISABLED,relief=GROOVE)
 overwriteUserNameButton.grid(row=1,column=1,pady=8)

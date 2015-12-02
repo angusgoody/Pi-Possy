@@ -1,2 +1,2 @@
-defaultColour: dark turquoise
+defaultColour: #49ff42
 userName123: Luigi
