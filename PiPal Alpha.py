@@ -3,10 +3,13 @@ __author__ = 'Angus'
 #Angus Goody
 #8/10/15
 
-#Pi Pal
+#Pi Pal version 3.1
 
 #Imports-------
 from tkinter import *
+import datetime
+
+
 
 #Sets up window---------
 window=Tk()
@@ -259,22 +262,26 @@ def updateTheme(colour):
 def getThemeFromFile():
     targetLine=getFromFile("username.txt","defaultColour:")
     found=False
-    segments=targetLine.split()                         
-    if len(targetLine) > 1:
-        try:
-            colour=segments[1]
-            if len(segments) > 2:
-                colour=colour+segments[2]
-        except:
-            print("Indexing error")
-        else:
-            found=True
-            return colour
-        
-    if found == False:
-        print("Colour retival has failed using default colour")
-        return "lightblue"
-   
+    if targetLine != "" and targetLine != None:
+        segments=targetLine.split()                         
+        if len(targetLine) > 1:
+            try:
+                colour=segments[1]
+                if len(segments) > 2:
+                    colour=colour+segments[2]
+            except:
+                print("Indexing error")
+            else:
+                found=True
+                return colour
+            
+        if found == False:
+            print("Colour retival has failed using default colour")
+            return "lightblue"
+            
+    print("Error when getting info from file function using defaults")
+    return "lightblue"
+    
 #Initialises the theme setup process   
 def initTheme():
     colour=getThemeFromFile()
@@ -282,6 +289,7 @@ def initTheme():
         print("Testing theme colour...")
         result=checkColour(colour)
         if result != None and result != "":
+            print("Testing sucess")
             updateTheme(colour)
         else:
             print("Testing of",colour,"failure using default")
@@ -308,44 +316,70 @@ def saveLineToFile(file,lineToAdd,target):
     print("Line to overwrite with is",lineToAdd)
     print("Target to replace is",target)
     contentArray=[]
-    for line in content:
-        words=line.split()
-        if target in words:
-            print("Found target")
-        else:
-            contentArray.append(line)
-            
-    try:
-        fileToWrite=open(file,"w")
-    except:
-        print("Error opening",file,"to read info")
-    else:
-        fileToWrite.write(lineToAdd)
-        fileToWrite.write("\n")
-        for item in contentArray:
-            fileToWrite.write(item)
-            
-        fileToWrite.close()
+    
+    #If there is a problem with the file a new one is created
+    if content == "" or content == None:
+        print("An error occoured opening",file,"creating new one")
+        file=open(file,"w")
         try:
-            messagebox.showinfo("Sucess","Changed infomation")
+            now = datetime.datetime.now()
+            now=str(now)
         except:
-            print("Changed info")
-        print()
+            print("Error getting current date")
+        else:
+            print("Time stamp created")
+            temp="Recovery File created on "
+            temp=temp+now
+            temp=temp+"\n"
+            file.write(temp)
+            file.write(lineToAdd)
+        file.close()
+    else:
+        
+        for line in content:
+            words=line.split()
+            if target in words:
+                print("Found target")
+            else:
+                contentArray.append(line)
+                
+        try:
+            fileToWrite=open(file,"w")
+        except:
+            print("Error opening",file,"to read info")
+        else:
+            fileToWrite.write(lineToAdd)
+            fileToWrite.write("\n")
+            for item in contentArray:
+                fileToWrite.write(item)
+                
+            fileToWrite.close()
+            try:
+                messagebox.showinfo("Sucess","Changed infomation")
+            except:
+                print("Changed info")
+            print()
         
 
 def getFromFile(fileToSearch,target):
     print()
-    print("Initialising retrival from file of",target,"from",fileToSearch)
+    print("Initialising retrival -------------------")
+    print("The retrival target is",target)
+    print("The File that is been searched is",fileToSearch)
     content=getReadLines(fileToSearch)
-    found=False
-    for line in content:
-        words=line.split()
-        if target in words:
-            found=True
-            print("Target has been found")
-            print("Returning",line)
-            return line
-            break
+    if content != None and content != "":
+        found=False
+        for line in content:
+            words=line.split()
+            if target in words:
+                found=True
+                print("Target has been found")
+                print("Returning",line)
+                print()
+                return line
+                break
+    else:
+        return ""              
 
 
 def checkColour(colour):
