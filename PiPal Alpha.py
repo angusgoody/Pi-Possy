@@ -84,25 +84,10 @@ for name in colourArray:
             duplicateTestingArray.append(name)
             b.pack(fill=X)
 
-#Change button theme canvas
-changeButtonThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
-buttonColourPicked=StringVar()
-buttonColourPicked.set("lightgreen")
-
-for name in duplicateTestingArray:
-    try:
-        b = Radiobutton(changeButtonThemeCanvas, text=name,
-            variable=buttonColourPicked,value=name,bg=name,justify=LEFT)
-    except:
-        print("Found error in colour array 2")
-    else:
-        b.pack(fill=X)
-
-    
 #Arrays
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
-canvasArray=[openCanvas,newSportCanvas,changeUserNameCanvas,viewSportCanvas,changeThemeCanvas,changeButtonThemeCanvas]
+canvasArray=[openCanvas,newSportCanvas,changeUserNameCanvas,viewSportCanvas,changeThemeCanvas]
 themeEntry=Entry(window)
 
 #Entry Arrays that contains all visable entrys on screen
@@ -378,28 +363,8 @@ def hoverIn(event,button,colour):
 def hoverOut(event,button):
     button.config(bg=window.cget("bg"))
     
-def changeButtonTheme():
-    loadCanvas(changeButtonThemeCanvas,"Change button theme")
 
-def submitButtonTheme():
-    global mainButtonColour
-    chosenColour=buttonColourPicked.get()
-    if chosenColour not in colourArray:
-        print("Chosen colour not supported")
-    else:
-        mainButtonColour=chosenColour
-        try:
-            initHover()
-        except:
-            print("Error occoured")
-        else:
-            print("Successfull changed button theme to", chosenColour)
 
-            temp="defaultButtonColour: "
-            temp=temp+chosenColour
-            #Add saving to file function here
-            
-            saveLineToFile("username.txt",temp,"defaultButtonColour:")
             
 
 def saveLineToFile(file,lineToAdd,target):
@@ -449,27 +414,6 @@ def getFromFile(fileToSearch,target):
             return line
             break
 
-def getButtonTheme():
-    global mainButtonColour
-    content=getFromFile("username.txt","defaultButtonColour:")
-
-    #Extracts button colour from line
-    words=content.split()
-    temp=""
-    if len(words) > 1:
-        if len(words) > 1:
-            temp=words[1]
-        if len(words) > 2:
-            temp=temp+words[2]
-        print()
-        print("Cheking",temp,"as button colour")
-        print("Testing colour now....")
-        result=checkColour(temp)
-        if result != None and result != "":
-            print("Testing Sucess")
-            mainButtonColour=result            
-    else:
-        print("Only 1 item found on line")
 
 def checkColour(colour):
     tempEntry=Entry(window)
@@ -502,7 +446,6 @@ setOpenUser(getUserName())
 getSports()
 addSportCommands()
 initTheme()
-getButtonTheme()
 
 #Add cascades and commands
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -514,7 +457,6 @@ fileMenu.add_separator()
 fileMenu.add_command(label="New Sport",command=loadCreateSport)
 fileMenu.add_command(label="Change Info",command=changeUserName)
 fileMenu.add_command(label="Change Theme",command=changeTheme)
-fileMenu.add_command(label="Change Button colour",command=changeButtonTheme)
 
 fileMenu.add_separator()
 
@@ -532,20 +474,9 @@ choseThemeButton.pack(pady=10)
 overwriteUserNameButton=Button(changeUserNameCanvas,text="Overwrite",command=overwriteUserName,state=DISABLED,relief=GROOVE)
 overwriteUserNameButton.grid(row=1,column=1,pady=8)
 
-choseButtonThemeButton=Button(changeButtonThemeCanvas,text="Change",command=submitButtonTheme,relief=GROOVE)
-choseButtonThemeButton.pack(pady=10)
 
 #Bindings
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 
-#Add button hover over functions
-
-hoverButtonArray=[overwriteUserNameButton,choseThemeButton,createSportButton,choseButtonThemeButton] #Array for all buttons needing a hover funcction
-def initHover():
-    for button in hoverButtonArray:
-        button.bind("<Enter>",lambda pas="a",button=button,colour=mainButtonColour: hoverIn(pas,button,colour)) #pas is event infomation with is useless but necesary to run
-        button.bind("<Leave>",lambda pas="a",button=button: hoverOut(pas,button))
-        
-initHover()
 window.mainloop()
 
