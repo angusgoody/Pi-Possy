@@ -63,34 +63,42 @@ viewSportName=Label(viewSportCanvas)
 viewSportName.grid(row=0,column=1)
 
 #Change Theme canvas
-changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
-colourArray=["lightgreen","lightblue","magenta","orange","lawn green","cyan","orchid","orchid","gold"]
+changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0,scrollregion=(0,0,500,500))
+colourArray=["lightgreen","lightblue","maroon1","orange","lawn green","cyan","orchid","yellow green","gold","dodger blue","green3"]
 
-    
-    
+
+
 colourPicked=StringVar()
 colourPicked.set("lightblue")
+
+colourListBox=Listbox(changeThemeCanvas)
+colourListBox.pack(side=LEFT)
+
+#Slider for listbox
+colourSlider=Scrollbar(changeThemeCanvas)
+colourSlider.pack(side=RIGHT,fill=Y)
+
+colourSlider.config(command=colourListBox.yview)
+colourListBox.config(yscrollcommand=colourSlider.set)
+
 
 duplicateTestingArray=[]
 for name in colourArray:
     if name not in duplicateTestingArray:
         try:
+            colourListBox.insert(END,name)
+            colourListBox.itemconfig(END, bg=name)
+            """
             b = Radiobutton(changeThemeCanvas, text=name.capitalize(),
                 variable=colourPicked,value=name,bg=name,justify=LEFT)
+              """
         except:
             print("Found error in colour array 1")
         else:
             duplicateTestingArray.append(name)
-            b.pack(fill=X)
+            #b.pack(fill=X)
 
-#Adjusts the size of the window to view colours
-if len(duplicateTestingArray) > 8:
-    colourSpaceDiffrence=len(duplicateTestingArray) - 8
-    colourSpaceDiffrence=colourSpaceDiffrence*80
-    colourSpaceDiffrence=str(colourSpaceDiffrence)
-    temp="420x"
-    temp=temp+colourSpaceDiffrence
-    window.geometry(temp)
+
     
     
 #Arrays
@@ -236,16 +244,17 @@ def changeTheme():
     loadCanvas(changeThemeCanvas, "Theme")
 
 def submitTheme():
-    global colourPicked
+    index = colourListBox.curselection()
+    colourPick=colourListBox.get(index)    
     if colourPicked.get() in colourArray:
-        updateTheme(colourPicked.get())  
+        
         temp="defaultColour: "
-        temp=temp+colourPicked.get()
-        print("Temp is:",temp)
+        temp=temp+colourPick
         
         #Writing to username file to store colour
+        updateTheme(colourPick)  
         saveLineToFile("username.txt",temp,"defaultColour:")
-        print("Theme changed to",colourPicked.get())
+        print("Theme changed to",colourPick)
                 
 
             
@@ -440,7 +449,8 @@ fileMenu.add_separator()
 #Buttons
 
 choseThemeButton=Button(changeThemeCanvas,text="Change",command=submitTheme,relief=GROOVE)
-choseThemeButton.pack(pady=10)
+choseThemeButton.pack(side=RIGHT,fill=X)
+
 
 overwriteUserNameButton=Button(changeUserNameCanvas,text="Overwrite",command=overwriteUserName,state=DISABLED,relief=GROOVE)
 overwriteUserNameButton.grid(row=1,column=1,pady=8)
