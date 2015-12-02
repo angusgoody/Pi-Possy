@@ -491,12 +491,17 @@ def updateWelcomeScreen(name):
 
 def updateThemeStep():
     index = colourListBox.curselection()
-    colourPick=colourListBox.get(index)
-    submitTheme(colourPick)   
+    try:
+        colourPick=colourListBox.get(index)
+    except:
+        pass
+    else:
+        submitTheme(colourPick)   
     
 def colourPicker():
     colour= colorchooser.askcolor()[1]
-    submitTheme(colour)
+    if colour != None and colour != "":
+        submitTheme(colour)
     
 # End of Functions===========================================================
 
