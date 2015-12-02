@@ -35,6 +35,8 @@ sportsMenu=Menu(mainMenu)
 
 #Canvas'-------------------------
 
+
+
 #Open canvas
 openCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 openCanvas.pack(expand=True)
@@ -62,7 +64,10 @@ viewSportName.grid(row=0,column=1)
 
 #Change Theme canvas
 changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
-colourArray=["lightgreen","lightblue","magenta","orange","lawn green","cyan","orchid","orchid","red"]
+colourArray=["lightgreen","lightblue","magenta","orange","lawn green","cyan","orchid","orchid","gold"]
+
+    
+    
 colourPicked=StringVar()
 colourPicked.set("lightblue")
 
@@ -70,7 +75,7 @@ duplicateTestingArray=[]
 for name in colourArray:
     if name not in duplicateTestingArray:
         try:
-            b = Radiobutton(changeThemeCanvas, text=name,
+            b = Radiobutton(changeThemeCanvas, text=name.capitalize(),
                 variable=colourPicked,value=name,bg=name,justify=LEFT)
         except:
             print("Found error in colour array 1")
@@ -78,6 +83,16 @@ for name in colourArray:
             duplicateTestingArray.append(name)
             b.pack(fill=X)
 
+#Adjusts the size of the window to view colours
+if len(duplicateTestingArray) > 8:
+    colourSpaceDiffrence=len(duplicateTestingArray) - 8
+    colourSpaceDiffrence=colourSpaceDiffrence*80
+    colourSpaceDiffrence=str(colourSpaceDiffrence)
+    temp="420x"
+    temp=temp+colourSpaceDiffrence
+    window.geometry(temp)
+    
+    
 #Arrays
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
@@ -404,7 +419,6 @@ def checkColour(colour):
 def updateWelcomeScreen(name):
     setOpenUser(name)
 
-            
 # End of Functions===========================================================
 
 

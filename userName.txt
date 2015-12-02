@@ -1,2 +1,2 @@
-defaultColour: orange
+defaultColour: gold
 userName123: Angus
