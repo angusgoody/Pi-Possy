@@ -519,10 +519,10 @@ fileMenu.add_separator()
 #Buttons
 
 choseThemeButton=Button(changeThemeCanvas,text="Change",command=updateThemeStep,relief=GROOVE)
-choseThemeButton.pack(side=BOTTOM,fill=X)
+choseThemeButton.pack(side=BOTTOM,fill=X,padx=8,pady=5)
 
 colourPickerButton=Button(changeThemeCanvas,text="Colour Picker",command=colourPicker,relief=GROOVE)
-colourPickerButton.pack(side=BOTTOM)
+colourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
 overwriteUserNameButton=Button(changeUserNameCanvas,text="Overwrite",command=overwriteUserName,state=DISABLED,relief=GROOVE)
 overwriteUserNameButton.grid(row=1,column=1,pady=8)
