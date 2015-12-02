@@ -1,12 +1,2 @@
-defaultColour: lightgreen
-yellow green
-green3
-yellow green
-lawn green
-lawn green
-cyan
-yellow green
-yellow green
-cyan
-cyan
+defaultColour: dark turquoise
 userName123: Luigi
