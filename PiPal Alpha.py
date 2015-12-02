@@ -36,19 +36,10 @@ sportsMenu=Menu(mainMenu)
 openCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 openCanvas.pack(expand=True)
 statusVar.set("Home")
-
-
 userVar=StringVar()
+
 openLabel=Label(openCanvas,textvariable=userVar,font= "Helvetica 16 bold")
 openLabel.grid(row=0,column=1)
-
-#New Sport canvas
-newSportCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
-
-Label(newSportCanvas,text="Sport name").grid(row=0,column=0)
-
-newSportEntry=Entry(newSportCanvas)
-newSportEntry.grid(row=0,column=1)
 
 #Change user canvas
 changeUserNameCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
@@ -68,7 +59,7 @@ viewSportName.grid(row=0,column=1)
 
 #Change Theme canvas
 changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
-colourArray=["lightgreen","lightblue","magenta","orange","lawn green","cyan","orchid","orchid","red","blue","yellow"]
+colourArray=["lightgreen","lightblue","magenta","orange","lawn green","cyan","orchid","orchid","red"]
 colourPicked=StringVar()
 colourPicked.set("lightblue")
 
@@ -87,11 +78,11 @@ for name in colourArray:
 #Arrays
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
-canvasArray=[openCanvas,newSportCanvas,changeUserNameCanvas,viewSportCanvas,changeThemeCanvas]
+canvasArray=[openCanvas,changeUserNameCanvas,viewSportCanvas,changeThemeCanvas]
 themeEntry=Entry(window)
 
 #Entry Arrays that contains all visable entrys on screen
-mainEntryArray=[changeUserNameEntry,newSportEntry]
+mainEntryArray=[changeUserNameEntry]
 
 
 
@@ -178,85 +169,38 @@ def getUserName():
 
     else:
         return "User"
+    
         
-
+#The function that takes the name from the text file and displays it on the home screen
 def setOpenUser(name):
     if name != "" and name != None:
-        temp=""
-        temp=temp+"Welcome "
+        temp="Welcome "
         temp=temp+name
+        statusVar.set("Home")
         userVar.set(temp)
 
-
-def getSports():
-    global sportArray
-    content=getReadLines("sportFile.txt")
-    if content != "" and content != None:
-        counter=0
-        for line in content:
-            words=line.split()
-            if len(words) > 0:
-                line=line.rstrip()
-                line=line.capitalize()
-                line=str(line)
-                if line not in sportArray:
-                    sportArray.append(line)
-                    counter=counter+1
-                    
-
-        print("Added",counter,"items to sports array")
-
-    else:
-        messagebox.showerror("Error","No sportsfile located")
-
-def loadCreateSport():
-    loadCanvas(newSportCanvas,"New Sport")
-
-def submitNewSport():
-    sport=newSportEntry.get()
-    if sport != "":
-        sport=sport.capitalize()
-        if sport in sportArray:
-            messagebox.showinfo("Exists","This sport allready exists")
-        else:
-            try:
-                file=open("sportFile.txt","a")
-            except:
-                print("Function error")
-            else:
-                sport=sport.strip()
-                file.write("\n")
-                file.write(sport)
-                file.close()
-                sportArray.append(sport)
-                
-                sportsMenu.add_command(label=sport,command=lambda name=sport: sportClicked(name)) 
-                messagebox.showinfo("Complete","Sport Created")
-    
-def addSportCommands():
-    global sportArray
-    for item in sportArray:
-        sportsMenu.add_command(label=item,command=lambda name=item: sportClicked(name)) 
-        
-        
+#The Function that is launched when the change username function loads from file menu
 def changeUserName():
     loadCanvas(changeUserNameCanvas,"Change Info")
     global userName
     insertEntry(changeUserNameEntry,userName)
     overwriteUserNameButton.config(state=DISABLED)
-    
+   
+#Function that saves a new username when the user changes it
 def overwriteUserName():
     global userName
     userName1=changeUserNameEntry.get()
     temp="userName123: "
     temp=temp+userName1
     saveLineToFile("username.txt",temp,"userName123:")
-    
     insertEntry(changeUserNameEntry,userName1)
     updateWelcomeScreen(userName1)
     userName=userName1
     overwriteUserNameButton.config(state=DISABLED)
     
+#The function that is launched every letter the user types when changing the username
+#It compares the new username they type to the original one and if the new one is the same
+#As the old one the overwrite button becomes disabled
 
 def checkOverwrite(event):
     global userName
@@ -269,17 +213,6 @@ def checkOverwrite(event):
     else:
         overwriteUserNameButton.config(state=NORMAL)
 
-#Function that loads when a sport is clicked
-
-def sportClicked(sportName):
-    print("Ready to load",sportName)
-    #Add all stuff to send to canvas here
-    insertViewSport(sportName)
-
-def insertViewSport(sportName):
-    global viewSportCanvas
-    loadCanvas(viewSportCanvas,sportName)
-    viewSportName.config(text=sportName)
    
 def changeTheme():
     loadCanvas(changeThemeCanvas, "Theme")
@@ -443,30 +376,20 @@ def updateWelcomeScreen(name):
 
 #Return functions
 setOpenUser(getUserName())
-getSports()
-addSportCommands()
 initTheme()
 
 #Add cascades and commands
 mainMenu.add_cascade(label="File",menu=fileMenu)
-mainMenu.add_cascade(label="Sports",menu=sportsMenu)
 
 
 fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
-fileMenu.add_command(label="New Sport",command=loadCreateSport)
 fileMenu.add_command(label="Change Info",command=changeUserName)
 fileMenu.add_command(label="Change Theme",command=changeTheme)
 
 fileMenu.add_separator()
 
-#Add all sports to file menu
-
-
-
 #Buttons
-createSportButton=Button(newSportCanvas,text="Create",command=submitNewSport,relief=GROOVE)
-createSportButton.grid(row=1,column=1,pady=8)
 
 choseThemeButton=Button(changeThemeCanvas,text="Change",command=submitTheme,relief=GROOVE)
 choseThemeButton.pack(pady=10)
