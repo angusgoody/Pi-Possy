@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 userName123: Angus
 defaultColour: #45ff9d
+=======
+defaultColour: #53c4ee
+userName123: Luigi
+>>>>>>> origin/master

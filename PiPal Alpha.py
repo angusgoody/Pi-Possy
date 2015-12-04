@@ -492,15 +492,25 @@ def updateWelcomeScreen(name):
 
 def updateThemeStep():
     index = colourListBox.curselection()
-    colourPick=colourListBox.get(index)
-    submitTheme(colourPick)   
+    try:
+        colourPick=colourListBox.get(index)
+    except:
+        pass
+    else:
+        submitTheme(colourPick)   
     
 def colourPicker():
     colour= colorchooser.askcolor()[1]
+<<<<<<< HEAD
     submitTheme(colour)
  
 def encOrDec(line,key,option):
     print("Ready to encrypt line")
+=======
+    if colour != None and colour != "":
+        submitTheme(colour)
+    
+>>>>>>> origin/master
 # End of Functions===========================================================
 
 
@@ -523,10 +533,10 @@ fileMenu.add_separator()
 #Buttons
 
 choseThemeButton=Button(changeThemeCanvas,text="Change",command=updateThemeStep,relief=GROOVE)
-choseThemeButton.pack(side=BOTTOM,fill=X)
+choseThemeButton.pack(side=BOTTOM,fill=X,padx=8,pady=5)
 
 colourPickerButton=Button(changeThemeCanvas,text="Colour Picker",command=colourPicker,relief=GROOVE)
-colourPickerButton.pack(side=BOTTOM)
+colourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
 overwriteUserNameButton=Button(changeUserNameCanvas,text="Overwrite",command=overwriteUserName,state=DISABLED,relief=GROOVE)
 overwriteUserNameButton.grid(row=1,column=1,pady=8)
