@@ -165,6 +165,7 @@ for name in colourArray:
     
     
 #Arrays
+letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\n', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '\r', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
 canvasArray=[openCanvas,changeUserNameCanvas,viewSportCanvas,changeThemeCanvas]
@@ -497,7 +498,9 @@ def updateThemeStep():
 def colourPicker():
     colour= colorchooser.askcolor()[1]
     submitTheme(colour)
-    
+ 
+def encOrDec(line,key,option):
+    print("Ready to encrypt line")
 # End of Functions===========================================================
 
 
@@ -513,6 +516,7 @@ fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
 fileMenu.add_command(label="Change Info",command=changeUserName)
 fileMenu.add_command(label="Change Theme",command=changeTheme)
+
 
 fileMenu.add_separator()
 
