@@ -501,16 +501,40 @@ def updateThemeStep():
     
 def colourPicker():
     colour= colorchooser.askcolor()[1]
-<<<<<<< HEAD
     submitTheme(colour)
  
 def encOrDec(line,key,option):
-    print("Ready to encrypt line")
-=======
-    if colour != None and colour != "":
-        submitTheme(colour)
-    
->>>>>>> origin/master
+    finArray=[]
+    for letter in line:
+        if letter not in letterArray:
+            finArray.append(letter)
+            print(letter,"is not supported")
+        else:
+            letterLeng=len(letterArray)
+            position=letterArray.index(letter)
+            if option == "dec":
+                newPos=position-key
+            else:
+                newPos=position+key
+            while newPos > letterLeng:
+                newPos=newPos-letterLeng
+            try:
+                newLetter=letterArray[newPos]
+            except:
+                print("Error indexing in encryption")
+            else:
+                finArray.append(newLetter)
+                
+    temp=""             
+    for item in finArray:
+        temp=temp+item
+       
+    print(temp)   
+            
+
+step1=encOrDec("angus",5,"enc")
+
+print(step1)
 # End of Functions===========================================================
 
 
