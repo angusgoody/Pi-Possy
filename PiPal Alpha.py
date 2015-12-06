@@ -24,6 +24,7 @@ status.pack(side=BOTTOM,fill=X)
  #Main variables
 mainButtonColour="light green"
 userName=""
+encryptionKey=8
 
 #Toolbars-------------
 mainMenu=Menu(window)
@@ -165,7 +166,7 @@ for name in colourArray:
     
     
 #Arrays
-letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\n', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '\r', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
+letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
 canvasArray=[openCanvas,changeUserNameCanvas,viewSportCanvas,changeThemeCanvas]
@@ -502,10 +503,13 @@ def updateThemeStep():
 def colourPicker():
     colour= colorchooser.askcolor()[1]
     submitTheme(colour)
- 
+
+#Function that can encrypt or decrypt a string using a key 
 def encOrDec(line,key,option):
     finArray=[]
+    trackCounter=0
     for letter in line:
+        trackCounter+=1
         if letter not in letterArray:
             finArray.append(letter)
             print(letter,"is not supported")
@@ -513,11 +517,13 @@ def encOrDec(line,key,option):
             letterLeng=len(letterArray)
             position=letterArray.index(letter)
             if option == "dec":
-                newPos=position-key
+                newPos=position-key-trackCounter
             else:
-                newPos=position+key
+                newPos=position+key+trackCounter
             while newPos > letterLeng:
                 newPos=newPos-letterLeng
+            if newPos == letterLeng:
+                newPos=0
             try:
                 newLetter=letterArray[newPos]
             except:
@@ -529,12 +535,10 @@ def encOrDec(line,key,option):
     for item in finArray:
         temp=temp+item
        
-    print(temp)   
+    return temp   
             
+ 
 
-step1=encOrDec("angus",5,"enc")
-
-print(step1)
 # End of Functions===========================================================
 
 
