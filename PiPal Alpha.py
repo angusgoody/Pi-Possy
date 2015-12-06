@@ -617,7 +617,7 @@ def updateBackgroundColours(colour):
     for item in canvasArray:
         item.config(bg=colour)
         for widget in item.winfo_children():
-            if widget.winfo_class() != "Entry":
+            if widget.winfo_class() != "Entry" and widget.winfo_class() != "Button" :
                 widget.config(bg=colour)
             widget.config(highlightbackground=colour)
 
