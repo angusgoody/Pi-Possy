@@ -279,7 +279,7 @@ def overwriteUserName():
     userName1=changeUserNameEntry.get()
     temp="userName123: "
     temp=temp+userName1
-    saveLineToFile("username.txt",temp,"userName123:")
+    saveLineToFile("userName.txt",temp,"userName123:")
     insertEntry(changeUserNameEntry,userName1)
     updateWelcomeScreen(userName1)
     userName=userName1
@@ -312,7 +312,7 @@ def submitTheme(colour):
         
     #Writing to username file to store colour
     updateTheme(colour)  
-    saveLineToFile("username.txt",temp,"defaultColour:")
+    saveLineToFile("userName.txt",temp,"defaultColour:")
     print("Theme changed to",colour)
                 
 
@@ -343,7 +343,7 @@ def updateTheme(colour):
            
 
 def getThemeFromFile():
-    targetLine=getFromFile("username.txt","defaultColour:")
+    targetLine=getFromFile("userName.txt","defaultColour:")
     found=False
     if targetLine != "" and targetLine != None:
         segments=targetLine.split()                         
@@ -374,6 +374,7 @@ def initTheme():
         if result != None and result != "":
             print("Testing sucess")
             updateTheme(colour)
+            updateButtonBackground(colour)
         else:
             print("Testing of",colour,"failure using default")
             updateTheme("lightblue")
@@ -494,7 +495,10 @@ def updateThemeStep():
     except:
         pass
     else:
-        submitTheme(colourPick)   
+        updateButtonBackground(colourPick)
+        submitTheme(colourPick)
+        
+
     
 def colourPicker():
     colour= colorchooser.askcolor()[1]
@@ -550,7 +554,7 @@ def submitBackgroundTheme(colour):
     temp="defaultBackground: "
     temp=temp+colour
     temp=temp+"\n"
-    saveLineToFile("username.txt", temp, "defaultBackground:")
+    saveLineToFile("userName.txt", temp, "defaultBackground:")
     print("Saved background theme to file")
 
     
@@ -565,7 +569,7 @@ def updateBackgroundStep():
 
 def getBackgroundFromFile():
     testEntry=Entry(window)
-    targetLine=getFromFile("username.txt", "defaultBackground:")
+    targetLine=getFromFile("userName.txt", "defaultBackground:")
     if targetLine != None and targetLine != "":
         words=targetLine.split()
         if len(words) > 1:
@@ -616,13 +620,18 @@ def updateBackgroundColours(colour):
             if widget.winfo_class() != "Entry":
                 widget.config(bg=colour)
             widget.config(highlightbackground=colour)
-                 
+
+def updateButtonBackground(colour):
+    for item in canvasArray:
+                for widget in item.winfo_children():
+                    if widget.winfo_class() == "Button":
+                        widget.config(bg=colour)
 # End of Functions===========================================================
 
 
 #Return functions===================
 setOpenUser(getUserName())
-initTheme()
+
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -664,5 +673,6 @@ backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 
 initBackground() #This function needs to be here because it changes colours of buttons that would otherwise be under it
+initTheme()
 window.mainloop()
 

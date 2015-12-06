@@ -1,6 +1,7 @@
-defaultBackground: #ffa351
+defaultColour: violet red
+defaultBackground: #4bd96c
 
-defaultColour: #25ff63
+
 
 
 
