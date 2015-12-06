@@ -1,10 +1,14 @@
-defaultBackground: SlateBlue1
+defaultBackground: #ffa351
+
+defaultColour: #25ff63
 
 
 
 
 
-defaultColour: aquamarine
+
+
+
 
 
 

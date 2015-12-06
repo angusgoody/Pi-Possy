@@ -70,12 +70,7 @@ colourArray = [
 'pale violet red', 'maroon', 'medium violet red', 'violet red',
 'medium orchid', 'dark orchid', 'dark violet', 'blue violet', 'purple', 'medium purple',
 'thistle', 'snow2', 'snow3',
-'snow4', 'seashell2', 'seashell3', 'seashell4', 'AntiqueWhite1', 'AntiqueWhite2',
-'AntiqueWhite3', 'AntiqueWhite4', 'bisque2', 'bisque3', 'bisque4', 'PeachPuff2',
-'PeachPuff3', 'PeachPuff4', 'NavajoWhite2', 'NavajoWhite3', 'NavajoWhite4',
-'LemonChiffon2', 'LemonChiffon3', 'LemonChiffon4', 'cornsilk2', 'cornsilk3',
-'cornsilk4', 'ivory2', 'ivory3', 'ivory4', 'honeydew2', 'honeydew3', 'honeydew4',
-'LavenderBlush2', 'LavenderBlush3', 'LavenderBlush4', 'MistyRose2', 'MistyRose3',
+'snow4', 'LavenderBlush2', 'LavenderBlush3', 'LavenderBlush4', 'MistyRose2', 'MistyRose3',
 'MistyRose4', 'azure2', 'azure3', 'azure4', 'SlateBlue1', 'SlateBlue2', 'SlateBlue3',
 'SlateBlue4', 'RoyalBlue1', 'RoyalBlue2', 'RoyalBlue3', 'RoyalBlue4', 'blue2', 'blue4',
 'DodgerBlue2', 'DodgerBlue3', 'DodgerBlue4', 'SteelBlue1', 'SteelBlue2',
@@ -114,11 +109,7 @@ colourArray = [
 'magenta2', 'magenta3', 'magenta4', 'orchid1', 'orchid2', 'orchid3', 'orchid4', 'plum1',
 'plum2', 'plum3', 'plum4', 'MediumOrchid1', 'MediumOrchid2', 'MediumOrchid3',
 'MediumOrchid4', 'DarkOrchid1', 'DarkOrchid2', 'DarkOrchid3', 'DarkOrchid4',
-'purple1', 'purple2', 'purple3', 'purple4', 'MediumPurple1', 'MediumPurple2',
-'MediumPurple3', 'MediumPurple4', 'thistle1', 'thistle2', 'thistle3', 'thistle4','snow', 'ghost white', 'white smoke', 'gainsboro', 'floral white', 'old lace',
-'linen', 'antique white', 'papaya whip', 'blanched almond', 'bisque', 'peach puff',
-'navajo white', 'lemon chiffon', 'mint cream', 'azure', 'alice blue', 'lavender',
-'lavender blush', 'misty rose', 'dark slate gray', 'dim gray', 'slate gray','light slate gray', 'gray', 'light grey']
+'purple1', 'purple2', 'purple3', 'purple4']
 
 #Change Theme canvas
 changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
@@ -622,7 +613,8 @@ def updateBackgroundColours(colour):
     for item in canvasArray:
         item.config(bg=colour)
         for widget in item.winfo_children():
-            widget.config(bg=colour)
+            if widget.winfo_class() != "Entry":
+                widget.config(bg=colour)
             widget.config(highlightbackground=colour)
                  
 # End of Functions===========================================================
@@ -631,7 +623,7 @@ def updateBackgroundColours(colour):
 #Return functions===================
 setOpenUser(getUserName())
 initTheme()
-initBackground()
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 
@@ -671,5 +663,6 @@ backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 #Bindings
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 
+initBackground() #This function needs to be here because it changes colours of buttons that would otherwise be under it
 window.mainloop()
 
