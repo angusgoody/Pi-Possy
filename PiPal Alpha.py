@@ -507,7 +507,8 @@ def updateThemeStep():
     
 def colourPicker():
     colour= colorchooser.askcolor()[1]
-    submitTheme(colour)
+    if colour != None and colour != "":
+        submitTheme(colour)
 
 #Function that can encrypt or decrypt a string using a key 
 def encOrDec(line,key,option):
@@ -552,13 +553,14 @@ def backgroundColourPicker():
         submitBackgroundTheme(colour)
     
 def submitBackgroundTheme(colour):
-    window.config(bg=colour)
     
-    for item in canvasArray:
-        item.config(bg=colour)
-        for widget in item.winfo_children():
-            widget.config(bg=colour)
-            widget.config(highlightbackground=colour)
+    updateBackgroundColours(colour)
+            
+    temp="defaultBackground: "
+    temp=temp+colour
+    temp=temp+"\n"
+    saveLineToFile("username.txt", temp, "defaultBackground:")
+    print("Saved background theme to file")
 
     
 def updateBackgroundStep():
@@ -569,14 +571,67 @@ def updateBackgroundStep():
         pass
     else:
         submitBackgroundTheme(colourPick)
-    
+
+def getBackgroundFromFile():
+    testEntry=Entry(window)
+    targetLine=getFromFile("username.txt", "defaultBackground:")
+    if targetLine != None and targetLine != "":
+        words=targetLine.split()
+        if len(words) > 1:
+            try:
+                colour=words[1]
+            except:
+                print("Indexing background error")
+            else:
+                
+                try:
+                    testEntry.config(bg=colour)
+                except:
+                    print("Background test failed trying other options")
+                    try:
+                        temp=colour
+                        temp=temp+" "
+                        temp=temp+words[2]
+                    except:
+                        colour=window.cget("bg")
+                    else:
+                        colour=temp
+                        try:
+                            testEntry.config(bg=colour)
+                        except:
+                            print("Second background test failed")
+                            colour=window.cget("bg")
+                        else:
+                            print("Second background test sucess")
+                            colour=temp
+        else:
+            colour=window.cget("bg")
+        
+        return colour                
+            
+ 
+def initBackground():
+    col=getBackgroundFromFile()
+    print("Using",col,"as colour")
+    if col != None and col != "":
+        updateBackgroundColours(col)          
+        
+   
+def updateBackgroundColours(colour):
+    window.config(bg=colour)
+    for item in canvasArray:
+        item.config(bg=colour)
+        for widget in item.winfo_children():
+            widget.config(bg=colour)
+            widget.config(highlightbackground=colour)
+                 
 # End of Functions===========================================================
 
 
 #Return functions===================
 setOpenUser(getUserName())
 initTheme()
-
+initBackground()
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 
