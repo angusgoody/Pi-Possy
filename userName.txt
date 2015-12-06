@@ -1,6 +1,5 @@
-defaultColour: #ebff92
-<<<<<<< HEAD
+defaultColour: SeaGreen3
 userName123: Angus
+<<<<<<< HEAD
 =======
-userName123: Luigi
 >>>>>>> origin/master

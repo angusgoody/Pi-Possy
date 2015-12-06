@@ -21,21 +21,20 @@ statusVar=StringVar()
 status=Label(window,text="Status",bg="lightblue",textvariable = statusVar)
 status.pack(side=BOTTOM,fill=X)
 
- #Main variables
+ #Main variables=================
 mainButtonColour="light green"
 userName=""
 encryptionKey=8
 
-#Toolbars-------------
+#Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
 
-#Sub menus
+#Sub menus==================
 fileMenu=Menu(mainMenu)
 sportsMenu=Menu(mainMenu)
 
-#Canvas'-------------------------
-
+#Canvas'=====================
 
 
 #Open canvas
@@ -55,20 +54,6 @@ Label(changeUserNameCanvas,text="Username:").grid(row=0,column=0)
 changeUserNameEntry=Entry(changeUserNameCanvas,font = "Helvetica 12 bold", justify="center")
 changeUserNameEntry.grid(row=0,column=1)
 
-#Canvas to view sport file 
-viewSportCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
-
-Label(viewSportCanvas,text="Sport:").grid(row=0,column=0)
-
-viewSportName=Label(viewSportCanvas)
-viewSportName.grid(row=0,column=1)
-
-#Change Theme canvas
-changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0,scrollregion=(0,0,500,500))
-
-#colourArray=["lightgreen","lightblue","maroon1","orange","lawn green","cyan","orchid","yellow green","gold","dodger blue","green3"]
-
-#The new colour array
 colourArray = [
 'midnight blue', 'navy', 'cornflower blue', 'dark slate blue',
 'slate blue', 'medium slate blue', 'light slate blue', 'medium blue', 'royal blue',  'blue',
@@ -135,6 +120,10 @@ colourArray = [
 'navajo white', 'lemon chiffon', 'mint cream', 'azure', 'alice blue', 'lavender',
 'lavender blush', 'misty rose', 'dark slate gray', 'dim gray', 'slate gray','light slate gray', 'gray', 'light grey']
 
+#Change Theme canvas
+changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
+
+
 colourPicked=StringVar()
 colourPicked.set("lightblue")
 
@@ -160,23 +149,39 @@ for name in colourArray:
             print("Found error in colour array 1")
         else:
             duplicateTestingArray.append(name)
-            #b.pack(fill=X)
 
+#Change Background canvas
+changeBackgroundCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
+backgroundListBox=Listbox(changeBackgroundCanvas)
+backgroundListBox.pack(side=LEFT)
+
+#Slider for listbox
+backgroundSlider=Scrollbar(changeBackgroundCanvas)
+backgroundSlider.pack(side=RIGHT,fill=Y)
+
+backgroundSlider.config(command=backgroundListBox.yview)
+backgroundListBox.config(yscrollcommand=backgroundSlider.set)
+
+for colour in duplicateTestingArray:
+    try:
+        backgroundListBox.insert(END,colour)
+        backgroundListBox.itemconfig(END,bg=colour)    
+    except:
+        print("Error in colour array")
     
     
 #Arrays
 letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
-canvasArray=[openCanvas,changeUserNameCanvas,viewSportCanvas,changeThemeCanvas]
+canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas]
 themeEntry=Entry(window)
 
 #Entry Arrays that contains all visable entrys on screen
 mainEntryArray=[changeUserNameEntry]
 
-
-
+# Start of Functions===========================================================
 
 
 #Function to insert text into entry
@@ -537,16 +542,42 @@ def encOrDec(line,key,option):
        
     return temp   
             
- 
 
+def changeBackground():
+    loadCanvas(changeBackgroundCanvas, "Change Background")
+
+def backgroundColourPicker():
+    colour= colorchooser.askcolor()[1]
+    if colour != "" and colour != None:
+        submitBackgroundTheme(colour)
+    
+def submitBackgroundTheme(colour):
+    window.config(bg=colour)
+    
+    for item in canvasArray:
+        item.config(bg=colour)
+        for widget in item.winfo_children():
+            widget.config(bg=colour)
+            widget.config(highlightbackground=colour)
+
+    
+def updateBackgroundStep():
+    index = backgroundListBox.curselection()
+    try:
+        colourPick=backgroundListBox.get(index)
+    except:
+        pass
+    else:
+        submitBackgroundTheme(colourPick)
+    
 # End of Functions===========================================================
 
 
-#Return functions
+#Return functions===================
 setOpenUser(getUserName())
 initTheme()
 
-#Add cascades and commands
+#Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 
 
@@ -554,20 +585,32 @@ fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
 fileMenu.add_command(label="Change Info",command=changeUserName)
 fileMenu.add_command(label="Change Theme",command=changeTheme)
+fileMenu.add_command(label="Change Background",command=changeBackground)
 
 
 fileMenu.add_separator()
 
-#Buttons
+#Buttons================
 
+#Buttons for theme change
 choseThemeButton=Button(changeThemeCanvas,text="Change",command=updateThemeStep,relief=GROOVE)
 choseThemeButton.pack(side=BOTTOM,fill=X,padx=8,pady=5)
 
 colourPickerButton=Button(changeThemeCanvas,text="Colour Picker",command=colourPicker,relief=GROOVE)
 colourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
+#Overwrite username button
 overwriteUserNameButton=Button(changeUserNameCanvas,text="Overwrite",command=overwriteUserName,state=DISABLED,relief=GROOVE)
 overwriteUserNameButton.grid(row=1,column=1,pady=8)
+
+#Button for change background
+
+choseThemeButton=Button(changeBackgroundCanvas,text="Change",command=updateBackgroundStep,relief=GROOVE)
+choseThemeButton.pack(side=BOTTOM,fill=X,padx=8,pady=5)
+
+backgroundColourPickerButton=Button(changeBackgroundCanvas,text="Colour Picker",command=backgroundColourPicker,relief=GROOVE)
+backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
+
 
 
 #Bindings
