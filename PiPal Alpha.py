@@ -25,7 +25,8 @@ status.pack(side=BOTTOM,fill=X)
 mainButtonColour="light green"
 userName=""
 encryptionKey=8
-
+mainEntryTextColour="black"    
+mainLabelTextColour="black"
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -625,20 +626,30 @@ def updateButtonBackground(colour):
                 for widget in item.winfo_children():
                     if widget.winfo_class() == "Button":
                         widget.config(bg=colour)
-                        
-mainColour="black"                        
-def toggleTextColour():
-    global mainColour
-    if mainColour == "black":
-        mainColour="white"
-    elif mainColour == "white":
-        mainColour="black"
-    
+
+#The Function that toggles the text for a certain widget saving the need for one on every widget
+def toggleText(variable,widgetChoice):
+    if variable == "black":
+        variable="white"
+    elif variable == "white":
+        variable="black"
+        
     for item in canvasArray:
         for widget in item.winfo_children():
-            if widget.winfo_class() == "Entry":
-                widget.config(fg=mainColour)
+            if widget.winfo_class() == widgetChoice:
+                widget.config(fg=variable)
+    return variable
+                            
+               
+def toggleEntryTextColour():
+    global mainEntryTextColour
+    mainEntryTextColour=toggleText(mainEntryTextColour,"Entry")
+    
 
+
+def toggleLabelTextColour():
+    global mainLabelTextColour
+    mainLabelTextColour=toggleText(mainLabelTextColour,"Label")
         
 # End of Functions===========================================================
 
@@ -660,7 +671,8 @@ fileMenu.add_command(label="Change Background",command=changeBackground)
 fileMenu.add_separator()
 
 #View Menu
-viewMenu.add_command(label="Toggle Text Colour",command=toggleTextColour)
+viewMenu.add_command(label="Toggle Entry Text Colour",command=toggleEntryTextColour)
+viewMenu.add_command(label="Toggle Label Text Colour",command=toggleLabelTextColour)
 
 
 #Buttons================
