@@ -3,7 +3,7 @@ __author__ = 'Angus'
 #Angus Goody
 #8/10/15
 
-#Pi Pal version 3.1
+#Pi Pal version 4.2
 
 #Imports-------
 from tkinter import *
@@ -32,8 +32,7 @@ window.config(menu=mainMenu)
 
 #Sub menus==================
 fileMenu=Menu(mainMenu)
-sportsMenu=Menu(mainMenu)
-
+viewMenu=Menu(mainMenu)
 #Canvas'=====================
 
 
@@ -324,7 +323,7 @@ def showOpenCanvas():
 
 def updateTheme(colour):
     if colour not in colourArray:
-        print("Unrecognised colour, trying colour anyway")
+        print("Colour not in colour array")
     else:
         colourPicked.set(colour)
     for item in mainEntryArray:
@@ -626,6 +625,21 @@ def updateButtonBackground(colour):
                 for widget in item.winfo_children():
                     if widget.winfo_class() == "Button":
                         widget.config(bg=colour)
+                        
+mainColour="black"                        
+def toggleTextColour():
+    global mainColour
+    if mainColour == "black":
+        mainColour="white"
+    elif mainColour == "white":
+        mainColour="black"
+    
+    for item in canvasArray:
+        for widget in item.winfo_children():
+            if widget.winfo_class() == "Entry":
+                widget.config(fg=mainColour)
+
+        
 # End of Functions===========================================================
 
 
@@ -635,16 +649,19 @@ setOpenUser(getUserName())
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
+mainMenu.add_cascade(label="View",menu=viewMenu)
 
-
+#File Menu
 fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
 fileMenu.add_command(label="Change Info",command=changeUserName)
 fileMenu.add_command(label="Change Theme",command=changeTheme)
 fileMenu.add_command(label="Change Background",command=changeBackground)
-
-
 fileMenu.add_separator()
+
+#View Menu
+viewMenu.add_command(label="Toggle Text Colour",command=toggleTextColour)
+
 
 #Buttons================
 
