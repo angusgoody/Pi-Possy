@@ -163,7 +163,7 @@ for colour in duplicateTestingArray:
     
     
 #Arrays
-letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
+letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w',"\n"]
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
 canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas]
@@ -656,6 +656,10 @@ def toggleLabelTextColour():
 
 #Return functions===================
 setOpenUser(getUserName())
+
+        
+            
+        
 
 
 #Add cascades and commands=====================
