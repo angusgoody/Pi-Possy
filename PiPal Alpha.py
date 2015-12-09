@@ -163,7 +163,7 @@ for colour in duplicateTestingArray:
     
     
 #Arrays
-letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w',"\n"]
+letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
 canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas]
@@ -572,9 +572,15 @@ def getBackgroundFromFile():
     targetLine=getFromFile("userName.txt", "defaultBackground:")
     if targetLine != None and targetLine != "":
         words=targetLine.split()
-        if len(words) > 1:
+        if len(words) > 2:
             try:
                 colour=words[1]
+                second=words[2]
+                temp=""
+                temp=temp+colour
+                temp=temp+" "
+                temp=temp+second
+                colour=temp
             except:
                 print("Indexing background error")
             else:
@@ -584,9 +590,7 @@ def getBackgroundFromFile():
                 except:
                     print("Background test failed trying other options")
                     try:
-                        temp=colour
-                        temp=temp+" "
-                        temp=temp+words[2]
+                        temp=words[1]
                     except:
                         colour=window.cget("bg")
                     else:
@@ -594,8 +598,20 @@ def getBackgroundFromFile():
                         try:
                             testEntry.config(bg=colour)
                         except:
-                            print("Second background test failed")
-                            colour=window.cget("bg")
+                            print("Second background test failed trying last option")
+                            try:
+                                colour=words[2]
+                            except:
+                                print("Indexing error in colours")
+                            else:
+                                try:
+                                    testEntry.config(bg=colour)
+                                except:
+                                    print("Last colour failure using defualt")
+                                    colour=window.cget("bg")
+                                else:
+                                    colour=colour
+
                         else:
                             print("Second background test sucess")
                             colour=temp
@@ -657,10 +673,6 @@ def toggleLabelTextColour():
 #Return functions===================
 setOpenUser(getUserName())
 
-        
-            
-        
-
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -708,4 +720,3 @@ changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 initBackground() #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initTheme()
 window.mainloop()
-
