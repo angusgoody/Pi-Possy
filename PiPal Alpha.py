@@ -416,7 +416,6 @@ def saveLineToFile(file,lineToAdd,target):
             temp=temp+now
             temp=temp+"\n"
             file.write(temp)
-            file.write(lineToAdd)
         file.close()
     else:
         
