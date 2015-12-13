@@ -1,3 +1,4 @@
+userName123: Angus Goody Bob
+defaultBackground: snow2
+
 defaultColour: medium orchid
-userName123: Angus
-defaultBackground: yellow green

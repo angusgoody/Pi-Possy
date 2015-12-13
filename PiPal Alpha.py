@@ -216,7 +216,13 @@ def getUserName():
                 if "userName123:" in wordsOnLine:
                     foundValid=True
                     print("Valid userName format")
-                    if len(wordsOnLine) > 1:
+                    if len(wordsOnLine) > 2:
+                        userName=wordsOnLine[1]
+                        userName=userName+" "
+                        secondName=wordsOnLine[2]
+                        secondName=secondName.capitalize()
+                        userName+=secondName
+                    elif len(wordsOnLine) > 1:
                         userName=wordsOnLine[1]
                         if userName != "" and userName != " ":
                             userName=userName
@@ -248,8 +254,19 @@ def getUserName():
         else:
             print("No content found in userName file")
             userName="User"
-
-        userName=userName.capitalize()
+        
+        nameArray=[]
+        wordsInName=userName.split()
+        for word in wordsInName:
+            word=word.capitalize()
+            nameArray.append(word)
+        
+        tempUser=""
+        for name in nameArray:
+            tempUser+=name
+            tempUser+=" "
+        tempUser=tempUser.rstrip()
+        userName=tempUser
         print("Using",userName,"as username")
         return userName
 
