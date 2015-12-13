@@ -1,12 +1,10 @@
 =======================
-Angus
-Goody
-Intermidiate
-A
-Time on Ball
+FirstName: Angus
+SecondName: Goody
+TargetGrade: A
+Target: Time on the ball
 =======================
-Bob
-Marley
-Beginner
-B
-Dribbling
+FirstName: Bob
+SecondName: Marley
+TargetGrade: B
+Target: Dribbling

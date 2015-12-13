@@ -109,7 +109,7 @@ colourArray = [
 'magenta2', 'magenta3', 'magenta4', 'orchid1', 'orchid2', 'orchid3', 'orchid4', 'plum1',
 'plum2', 'plum3', 'plum4', 'MediumOrchid1', 'MediumOrchid2', 'MediumOrchid3',
 'MediumOrchid4', 'DarkOrchid1', 'DarkOrchid2', 'DarkOrchid3', 'DarkOrchid4',
-'purple1', 'purple2', 'purple3', 'purple4']
+'purple1', 'purple2', 'purple3', 'purple4',window.cget("bg")]
 
 #Change Theme canvas
 changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
@@ -168,7 +168,7 @@ letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
 canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas]
 themeEntry=Entry(window)
-
+pupilDataArray=[]
 #Entry Arrays that contains all visable entrys on screen
 mainEntryArray=[changeUserNameEntry]
 
@@ -676,19 +676,30 @@ def toggleText(variable,widgetChoice):
 def toggleEntryTextColour():
     global mainEntryTextColour
     mainEntryTextColour=toggleText(mainEntryTextColour,"Entry")
-    
-
 
 def toggleLabelTextColour():
     global mainLabelTextColour
     mainLabelTextColour=toggleText(mainLabelTextColour,"Label")
-        
+
+def getPupilsFromFile():
+    placeFiller="Unknown?"
+    print("Getting Pupil data---------------")
+    data=getReadLines("pupils.txt")        
+    if data != None and data != "":
+        lineCounter=0
+        for line in data:
+            lineCounter+=1
+            tempUserArray=[]
+            if line == "=======================\n":
+                print("Found")
+            
+                   
 # End of Functions===========================================================
 
 
 #Return functions===================
 setOpenUser(getUserName())
-
+getPupilsFromFile()
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
