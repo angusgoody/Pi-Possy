@@ -693,8 +693,6 @@ def getPupilsFromFile():
             lineCounter+=1
             tempUserArray=[]
             if line == "=======================\n":
-                print("Found")
-                print("Current position in txt file is",lineCounter)
                 targetDataArray=["FirstName:","SecondName:","TargetGrade:","Target:"] #Fields in txt file
                 tempLineCounter=lineCounter-1
                 for x in range(0,len(targetDataArray)):
@@ -704,14 +702,30 @@ def getPupilsFromFile():
                     except:
                         pass
                     else:
-                        newLineData=newLine.split()
-                        for item in newLineData:
-                            if item in targetDataArray:
-                                print("Found data item in file")
-                                tempUserArray.append(newLine)
-                                print(newLine)
-                                break
-  
+                        if newLine == "=======================\n":
+                            tempUserArray.append(placeFiller)
+                        else:
+                            newLineData=newLine.split()
+                            if len(newLineData) < 1:
+                                tempUserArray.append(placeFiller)
+                            else:
+                                for item in newLineData:
+                                    if item in targetDataArray:
+                                        try:
+                                            newLine=str(newLine)
+                                            newLine=newLine.rstrip()
+                                        except:
+                                            print("Error preparing new line for array")
+                                            break
+                                        else:
+                                           
+                                            tempUserArray.append(newLine)
+                                            print(newLine)
+                                            break
+                
+                if tempUserArray in pupilDataArray:
+                    print("Duplicate Pupil found in the txt file")
+
                 pupilDataArray.append(tempUserArray)
                         
                    
