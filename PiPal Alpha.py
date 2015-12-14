@@ -720,9 +720,12 @@ def getPupilsFromFile():
                                         else:
                                            
                                             tempUserArray.append(newLine)
-                                            print(newLine)
                                             break
-                
+                                    else:
+                                        print(item,"is not valid")
+                                        tempUserArray.append(placeFiller)
+                                        break
+                                                       
                 if tempUserArray in pupilDataArray:
                     print("Duplicate Pupil found in the txt file")
 
