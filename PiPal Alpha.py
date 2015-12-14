@@ -27,6 +27,7 @@ userName=""
 encryptionKey=8
 mainEntryTextColour="black"    
 mainLabelTextColour="black"
+numberOfTextItems=4 #The variable for how many items are contained for each pupil in the text file
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -137,6 +138,7 @@ for name in colourArray:
             colourListBox.itemconfig(END, bg=name)
 
         except:
+        
             print("Found error in colour array 1")
         else:
             duplicateTestingArray.append(name)
@@ -692,7 +694,26 @@ def getPupilsFromFile():
             tempUserArray=[]
             if line == "=======================\n":
                 print("Found")
-            
+                print("Current position in txt file is",lineCounter)
+                targetDataArray=["FirstName:","SecondName:","TargetGrade:","Target:"] #Fields in txt file
+                tempLineCounter=lineCounter-1
+                for x in range(0,len(targetDataArray)):
+                    tempLineCounter+=1
+                    try:
+                        newLine=data[tempLineCounter]
+                    except:
+                        pass
+                    else:
+                        newLineData=newLine.split()
+                        for item in newLineData:
+                            if item in targetDataArray:
+                                print("Found data item in file")
+                                tempUserArray.append(newLine)
+                                print(newLine)
+                                break
+  
+                pupilDataArray.append(tempUserArray)
+                        
                    
 # End of Functions===========================================================
 
@@ -746,4 +767,5 @@ changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 
 initBackground() #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initTheme()
+print(pupilDataArray)
 window.mainloop()
