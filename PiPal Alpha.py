@@ -631,6 +631,7 @@ def getBackgroundFromFile():
                     try:
                         temp=words[1]
                     except:
+                        print("Indexing error using default")
                         colour=window.cget("bg")
                     else:
                         colour=temp
@@ -655,8 +656,21 @@ def getBackgroundFromFile():
                             print("Second background test sucess")
                             colour=temp
         else:
-            colour=window.cget("bg")
-        
+            tempEntry=Entry(window)
+            valid=False
+            for item in words:
+                try:
+                    tempEntry.config(bg=item)
+                except:
+                    valid=False
+                else:
+                    valid=True
+                    colour=item
+                    break
+                    
+            if valid == False:
+                colour=window.cget("bg")
+                
         return colour                
             
  

@@ -1,6 +1,12 @@
-defaultBackground: SkyBlue2
+defaultBackground: RoyalBlue1
 
-defaultColour: yellow green
+
+
+
+
+defaultColour: #bb218a
+
+
 
 
 
