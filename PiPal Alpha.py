@@ -189,7 +189,7 @@ showPupilTarget.grid(row=3,column=1)
 letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
-canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas]
+canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas]
 themeEntry=Entry(window)
 pupilDataArray=[]
 #Entry Arrays that contains all visable entrys on screen
@@ -703,56 +703,7 @@ def toggleEntryTextColour():
 def toggleLabelTextColour():
     global mainLabelTextColour
     mainLabelTextColour=toggleText(mainLabelTextColour,"Label")
-"""
-def getPupilsFromFile():
-    placeFiller="Unknown?"
-    print("Getting Pupil data---------------")
-    data=getReadLines("pupils.txt")        
-    if data != None and data != "":
-        lineCounter=0
-        for line in data:
-            lineCounter+=1
-            tempUserArray=[]
-            if line == "=======================\n":
-                targetDataArray=["FirstName:","SecondName:","TargetGrade:","Target:"] #Fields in txt file
-                tempLineCounter=lineCounter-1
-                for x in range(0,len(targetDataArray)):
-                    tempLineCounter+=1
-                    try:
-                        newLine=data[tempLineCounter]
-                    except:
-                        pass
-                    else:
-                        if newLine == "=======================\n":
-                            tempUserArray.append(placeFiller)
-                        else:
-                            newLineData=newLine.split()
-                            if len(newLineData) < 1:
-                                tempUserArray.append(placeFiller)
-                            else:
-                                for item in newLineData:
-                                    if item in targetDataArray:
-                                        try:
-                                            newLine=str(newLine)
-                                            newLine=newLine.rstrip()
-                                        except:
-                                            print("Error preparing new line for array")
-                                            break
-                                        else:
-                                           
-                                            tempUserArray.append(newLine)
-                                            break
-                                    else:
-                                        print(item,"is not valid")
-                                        tempUserArray.append(placeFiller)
-                                        break
-                                                       
-                if tempUserArray in pupilDataArray:
-                    print("Duplicate Pupil found in the txt file")
 
-                pupilDataArray.append(tempUserArray)
-
-"""
     
 def getPupilsFromFile():
     placeFiller="Unknown?"
@@ -810,7 +761,6 @@ def addPupilsMenu():
 
       
 def showPupil(item1,item2,item3,item4):
-    print("Not complete yet")
     loadCanvas(viewPupilCanvas, "Showing Pupil")
     
     insertEntry(showPupilName, item1)       
@@ -820,11 +770,6 @@ def showPupil(item1,item2,item3,item4):
  
 # End of Functions===========================================================
 
-
-#Return functions===================
-setOpenUser(getUserName())
-getPupilsFromFile()
-addPupilsMenu() 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -842,6 +787,15 @@ fileMenu.add_separator()
 viewMenu.add_command(label="Toggle Entry Text Colour",command=toggleEntryTextColour)
 viewMenu.add_command(label="Toggle Label Text Colour",command=toggleLabelTextColour)
 
+#Pupil Menu
+pupilMenu.add_command(label="View All")
+pupilMenu.add_separator()
+
+
+#=======Returns===========
+setOpenUser(getUserName())
+getPupilsFromFile()
+addPupilsMenu() 
 
 #Buttons================
 

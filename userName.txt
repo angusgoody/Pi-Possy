@@ -1,5 +1,7 @@
-defaultColour: hot pink
-defaultBackground: spring green
+defaultBackground: SkyBlue2
+
+defaultColour: yellow green
+
 
 
 
