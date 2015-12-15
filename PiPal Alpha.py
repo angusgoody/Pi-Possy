@@ -36,7 +36,7 @@ window.config(menu=mainMenu)
 fileMenu=Menu(mainMenu)
 viewMenu=Menu(mainMenu)
 pupilMenu=Menu(mainMenu)
-#Canvas'=====================
+#===================================================================CANVAS'=======================
 
 
 #Open canvas
@@ -164,7 +164,27 @@ for colour in duplicateTestingArray:
     except:
         print("Error in colour array")
     
-    
+#Canvas for viewing pupils
+viewPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
+
+Label(viewPupilCanvas,text="First Name:").grid(row=0,column=0)
+Label(viewPupilCanvas,text="Second Name:").grid(row=1,column=0)
+Label(viewPupilCanvas,text="Grade").grid(row=2,column=0)
+Label(viewPupilCanvas,text="Target:").grid(row=3,column=0)
+
+showPupilName=Entry(viewPupilCanvas)
+showPupilName.grid(row=0,column=1)
+
+showPupilSecond=Entry(viewPupilCanvas)
+showPupilSecond.grid(row=1,column=1)
+
+showPupilGrade=Entry(viewPupilCanvas)
+showPupilGrade.grid(row=2,column=1)
+
+showPupilTarget=Entry(viewPupilCanvas)
+showPupilTarget.grid(row=3,column=1)
+
+#===================================================================END OF CANVAS'=======================
 #Arrays
 letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
@@ -744,7 +764,6 @@ def getPupilsFromFile():
             lineCounter+=1
             tempUserArray=[]
             if line == "=======================\n":
-                print("Segment Found")
                 for x in range(0,numberOfTextItems):
                     try:
                         lineData=data[lineCounter+x]
@@ -779,7 +798,6 @@ def addPupilsMenu():
             tup=field2
             temp+=tup[0]
             displayName=temp
-            print("DISPLAY NAME",displayName)
             
             #Menu bit
             
@@ -792,7 +810,13 @@ def addPupilsMenu():
 
       
 def showPupil(item1,item2,item3,item4):
-    print("Not complete yet")        
+    print("Not complete yet")
+    loadCanvas(viewPupilCanvas, "Showing Pupil")
+    
+    insertEntry(showPupilName, item1)       
+    insertEntry(showPupilSecond, item2)
+    insertEntry(showPupilGrade, item3)
+    insertEntry(showPupilTarget, item4)
  
 # End of Functions===========================================================
 
@@ -800,6 +824,7 @@ def showPupil(item1,item2,item3,item4):
 #Return functions===================
 setOpenUser(getUserName())
 getPupilsFromFile()
+addPupilsMenu() 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -846,6 +871,6 @@ changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 
 initBackground() #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initTheme()
-#print(pupilDataArray)
-addPupilsMenu()       
+print(pupilDataArray)
+      
 window.mainloop()
