@@ -35,6 +35,7 @@ window.config(menu=mainMenu)
 #Sub menus==================
 fileMenu=Menu(mainMenu)
 viewMenu=Menu(mainMenu)
+pupilMenu=Menu(mainMenu)
 #Canvas'=====================
 
 
@@ -730,18 +731,19 @@ def getPupilsFromFile():
                     print("Duplicate Pupil found in the txt file")
 
                 pupilDataArray.append(tempUserArray)
-                        
-                   
+
+
+    
 # End of Functions===========================================================
 
 
 #Return functions===================
 setOpenUser(getUserName())
 getPupilsFromFile()
-
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
+mainMenu.add_cascade(label="Pupils",menu=pupilMenu)
 
 #File Menu
 fileMenu.add_command(label="Home",command=showOpenCanvas)
