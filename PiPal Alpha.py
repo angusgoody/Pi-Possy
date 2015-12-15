@@ -683,7 +683,7 @@ def toggleEntryTextColour():
 def toggleLabelTextColour():
     global mainLabelTextColour
     mainLabelTextColour=toggleText(mainLabelTextColour,"Label")
-
+"""
 def getPupilsFromFile():
     placeFiller="Unknown?"
     print("Getting Pupil data---------------")
@@ -732,8 +732,68 @@ def getPupilsFromFile():
 
                 pupilDataArray.append(tempUserArray)
 
-
+"""
     
+def getPupilsFromFile():
+    placeFiller="Unknown?"
+    print("Getting Pupil data---------------")
+    data=getReadLines("pupils.txt")        
+    if data != None and data != "":
+        lineCounter=0
+        for line in data:
+            lineCounter+=1
+            tempUserArray=[]
+            if line == "=======================\n":
+                print("Segment Found")
+                for x in range(0,numberOfTextItems):
+                    try:
+                        lineData=data[lineCounter+x]
+                        lineData=lineData.rstrip()
+                    except:
+                        tempUserArray.append(placeFiller)
+                    else:
+                        tempUserArray.append(lineData)
+                        
+                pupilDataArray.append(tempUserArray)               
+                      
+
+#This function will take all pupil infomation and create a drop down menu with them all. 
+
+def addPupilsMenu():
+    
+    for array in pupilDataArray:
+        tempArray=[]
+        for item in array:
+            tempArray.append(item)
+        try:
+            field1=tempArray[0]
+            field2=tempArray[1]
+            field3=tempArray[2]
+            field4=tempArray[3]
+        except:
+            print("Indexing error")
+        else:
+            temp=""
+            temp+=field1
+            temp+=" "
+            tup=field2
+            temp+=tup[0]
+            displayName=temp
+            print("DISPLAY NAME",displayName)
+            
+            #Menu bit
+            
+            pupilMenu.add_command(
+            label=displayName,command=lambda item1=field1,
+            item2=field2,
+            item3=field3,
+            item4=field4
+            : showPupil(item1,item2,item3,item4))
+
+      
+def showPupil(item1,item2,item3,item4):
+    print("Not complete yet")        
+ 
 # End of Functions===========================================================
 
 
@@ -786,5 +846,6 @@ changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 
 initBackground() #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initTheme()
-print(pupilDataArray)
+#print(pupilDataArray)
+addPupilsMenu()       
 window.mainloop()

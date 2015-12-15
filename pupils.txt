@@ -1,10 +1,10 @@
 =======================
-FirstName: Angus
-SecondName: Goody
-TargetGrade: A
-Target: Time on the ball
+Angus
+Goody
+A
+Time on the ball
 =======================
-FirstName: Bob
-SecondName1: Marley
-TargetGrade: B
-Target: Dribbling
+Bob
+Marley
+B
+Dribbling

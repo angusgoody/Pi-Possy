@@ -1,11 +1,13 @@
-defaultBackground: CadetBlue4
+defaultColour: hot pink
+defaultBackground: spring green
 
 
 
 
 
 
-defaultColour: yellow green
+
+
 
 
 
