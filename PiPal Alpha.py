@@ -186,7 +186,8 @@ showPupilGrade.grid(row=2,column=1,pady=3)
 showPupilTarget=Entry(viewPupilCanvas)
 showPupilTarget.grid(row=3,column=1,pady=3)
 
-showPupilNotes=Text(viewPupilCanvas,width=30,height=24)
+showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "10"),height=3,width=20,wrap=WORD)
+
 showPupilNotes.grid(row=5,column=1,pady=3)
 #===================================================================END OF CANVAS'=======================
 #Arrays
@@ -690,7 +691,7 @@ def updateBackgroundColours(colour):
     for item in canvasArray:
         item.config(bg=colour)
         for widget in item.winfo_children():
-            if widget.winfo_class() != "Entry" and widget.winfo_class() != "Button" :
+            if widget.winfo_class() != "Entry" and widget.winfo_class() != "Button" and widget.winfo_class() != "Text":
                 widget.config(bg=colour)
             widget.config(highlightbackground=colour)
 
