@@ -56,6 +56,7 @@ Label(changeUserNameCanvas,text="Username:").grid(row=0,column=0)
 changeUserNameEntry=Entry(changeUserNameCanvas,font = "Helvetica 12 bold", justify="center")
 changeUserNameEntry.grid(row=0,column=1)
 
+currentViewPupil=[]
 colourArray = [
 'midnight blue', 'navy', 'cornflower blue', 'dark slate blue',
 'slate blue', 'medium slate blue', 'light slate blue', 'medium blue', 'royal blue',  'blue',
@@ -171,24 +172,24 @@ Label(viewPupilCanvas,text="First Name:").grid(row=0,column=0)
 Label(viewPupilCanvas,text="Second Name:").grid(row=1,column=0)
 Label(viewPupilCanvas,text="Grade").grid(row=2,column=0)
 Label(viewPupilCanvas,text="Target:").grid(row=3,column=0)
-Label(viewPupilCanvas,text="Notes:").grid(row=4,column=1)
+Label(viewPupilCanvas,text="Notes:").grid(row=4,column=0)
 
 
 showPupilName=Entry(viewPupilCanvas)
-showPupilName.grid(row=0,column=1,pady=3)
+showPupilName.grid(row=0,column=1,pady=2)
 
 showPupilSecond=Entry(viewPupilCanvas)
-showPupilSecond.grid(row=1,column=1,pady=3)
+showPupilSecond.grid(row=1,column=1,pady=2)
 
 showPupilGrade=Entry(viewPupilCanvas)
-showPupilGrade.grid(row=2,column=1,pady=3)
+showPupilGrade.grid(row=2,column=1,pady=2)
 
 showPupilTarget=Entry(viewPupilCanvas)
-showPupilTarget.grid(row=3,column=1,pady=3)
+showPupilTarget.grid(row=3,column=1,pady=2)
 
-showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "10"),height=3,width=20,wrap=WORD)
+showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
 
-showPupilNotes.grid(row=5,column=1,pady=3)
+showPupilNotes.grid(row=4,column=1,pady=2)
 #===================================================================END OF CANVAS'=======================
 #Arrays
 letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
@@ -756,6 +757,7 @@ def getPupilsFromFile():
 
 def addPupilsMenu(array):
     
+    
     for array in array:
         tempArray=[]
         for item in array:
@@ -788,6 +790,23 @@ def addPupilsMenu(array):
 
       
 def showPupil(item1,item2,item3,item4,item5):
+    global currentViewPupil
+    
+    currentViewPupil=[]
+    currentViewPupil.append(item1)
+    currentViewPupil.append(item2)
+    currentViewPupil.append(item3)
+    currentViewPupil.append(item4)
+    currentViewPupil.append(item5)
+    
+    #Bindings
+    
+    showPupilName.bind("<KeyRelease>",checkIfSame)
+    showPupilSecond.bind("<KeyRelease>",checkIfSame)
+    showPupilGrade.bind("<KeyRelease>",checkIfSame)
+    showPupilTarget.bind("<KeyRelease>",checkIfSame)
+    showPupilNotes.bind("<KeyRelease>",checkIfSame)
+    
     loadCanvas(viewPupilCanvas, "Showing Pupil")
     
     insertEntry(showPupilName, item1)       
@@ -796,7 +815,22 @@ def showPupil(item1,item2,item3,item4,item5):
     insertEntry(showPupilTarget, item4)
     insertEntry(showPupilNotes, item5)
     
- 
+
+def checkIfSame(key):
+    global currentViewPupil
+    print(currentViewPupil)
+    
+    """
+    newFirst=showFirstName.get()
+    newSecond=showSecondName.get()
+    newTown=showTown.get()
+    newNumber=showNumber.get()
+    tempArray=[]
+    tempArray.append(newFirst)
+    tempArray.append(newSecond)
+    tempArray.append(newTown)
+    tempArray.append(newNumber)
+    """
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -847,13 +881,17 @@ choseThemeButton.pack(side=BOTTOM,fill=X,padx=8,pady=5)
 backgroundColourPickerButton=Button(changeBackgroundCanvas,text="Colour Picker",command=backgroundColourPicker,relief=GROOVE)
 backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
-
+#Button for overwriting data
+overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED)
+overwritePupilButton.grid(row=5,column=1,pady=9)
 
 #Bindings
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 
-initBackground() #This function needs to be here because it changes colours of buttons that would otherwise be under it
+#This function needs to be here because it changes colours of buttons that would otherwise be under it
+initBackground() 
 initTheme()
-print(pupilDataArray)
+
+#print(pupilDataArray)
       
 window.mainloop()

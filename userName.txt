@@ -1,11 +1,12 @@
-defaultBackground: yellow green
+defaultColour: green yellow
+defaultBackground: RoyalBlue3
 
 
 
 
 
 
-defaultColour: #bb218a
+
 
 
 
