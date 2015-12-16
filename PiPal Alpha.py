@@ -171,19 +171,23 @@ Label(viewPupilCanvas,text="First Name:").grid(row=0,column=0)
 Label(viewPupilCanvas,text="Second Name:").grid(row=1,column=0)
 Label(viewPupilCanvas,text="Grade").grid(row=2,column=0)
 Label(viewPupilCanvas,text="Target:").grid(row=3,column=0)
+Label(viewPupilCanvas,text="Notes:").grid(row=4,column=1)
+
 
 showPupilName=Entry(viewPupilCanvas)
-showPupilName.grid(row=0,column=1)
+showPupilName.grid(row=0,column=1,pady=3)
 
 showPupilSecond=Entry(viewPupilCanvas)
-showPupilSecond.grid(row=1,column=1)
+showPupilSecond.grid(row=1,column=1,pady=3)
 
 showPupilGrade=Entry(viewPupilCanvas)
-showPupilGrade.grid(row=2,column=1)
+showPupilGrade.grid(row=2,column=1,pady=3)
 
 showPupilTarget=Entry(viewPupilCanvas)
-showPupilTarget.grid(row=3,column=1)
+showPupilTarget.grid(row=3,column=1,pady=3)
 
+showPupilNotes=Text(viewPupilCanvas,width=30,height=24)
+showPupilNotes.grid(row=5,column=1,pady=3)
 #===================================================================END OF CANVAS'=======================
 #Arrays
 letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
@@ -743,9 +747,9 @@ def getPupilsFromFile():
 
 #This function will take all pupil infomation and create a drop down menu with them all. 
 
-def addPupilsMenu():
+def addPupilsMenu(array):
     
-    for array in pupilDataArray:
+    for array in array:
         tempArray=[]
         for item in array:
             tempArray.append(item)
@@ -809,7 +813,7 @@ pupilMenu.add_separator()
 #=======Returns===========
 setOpenUser(getUserName())
 getPupilsFromFile()
-addPupilsMenu() 
+addPupilsMenu(pupilDataArray) 
 
 #Buttons================
 
