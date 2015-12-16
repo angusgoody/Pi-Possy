@@ -56,6 +56,7 @@ Label(changeUserNameCanvas,text="Username:").grid(row=0,column=0)
 changeUserNameEntry=Entry(changeUserNameCanvas,font = "Helvetica 12 bold", justify="center")
 changeUserNameEntry.grid(row=0,column=1)
 
+overwriteArray=[]
 currentViewPupil=[]
 colourArray = [
 'midnight blue', 'navy', 'cornflower blue', 'dark slate blue',
@@ -790,15 +791,15 @@ def addPupilsMenu(array):
 
       
 def showPupil(item1,item2,item3,item4,item5):
-    global currentViewPupil
+    overwritePupilButton.config(state=DISABLED)
     
+    global currentViewPupil
     currentViewPupil=[]
     currentViewPupil.append(item1)
     currentViewPupil.append(item2)
     currentViewPupil.append(item3)
     currentViewPupil.append(item4)
     currentViewPupil.append(item5)
-    
     #Bindings
     
     showPupilName.bind("<KeyRelease>",checkIfSame)
@@ -815,22 +816,78 @@ def showPupil(item1,item2,item3,item4,item5):
     insertEntry(showPupilTarget, item4)
     insertEntry(showPupilNotes, item5)
     
+#The function that runs every time the keyboard is pressed to update overwrite button state
 
 def checkIfSame(key):
     global currentViewPupil
-    print(currentViewPupil)
-    
-    """
-    newFirst=showFirstName.get()
-    newSecond=showSecondName.get()
-    newTown=showTown.get()
-    newNumber=showNumber.get()
+    global overwriteArray
+
+    newFirst=showPupilName.get()
+    newSecond=showPupilSecond.get()
+    newGrade=showPupilGrade.get()
+    newTarget=showPupilTarget.get()
+    newNotes=showPupilNotes.get("1.0",END)
+    newNotes=newNotes.rstrip()
     tempArray=[]
     tempArray.append(newFirst)
     tempArray.append(newSecond)
-    tempArray.append(newTown)
-    tempArray.append(newNumber)
-    """
+    tempArray.append(newGrade)
+    tempArray.append(newTarget)
+    tempArray.append(newNotes)
+    
+    overwriteArray=tempArray
+    if tempArray == currentViewPupil:
+        overwritePupilButton.config(state=DISABLED)
+    else:
+        overwritePupilButton.config(state=NORMAL)
+        
+def overWritePupil():
+    global overwriteArray
+    
+    found=False
+    pCounter=0
+    for item in pupilDataArray:
+        
+        if item == currentViewPupil:
+            pupilDataArray.remove(item)
+            found=True
+            break
+            
+        pCounter+=1
+        
+        
+    if found == True:
+        pupilDataArray.insert(pCounter,overwriteArray)
+        saveNewPupils(pupilDataArray)
+        
+    
+def saveNewPupils(array):
+    valid=False
+    try:
+        if len(array) > 0:
+            valid=True
+    except:
+        print("Not an array passed to function")
+    else:
+        if valid == True:
+            try:
+                file=open("pupils.txt","w")
+            except:
+                print("Error opening file")
+            else:
+                for item in array:
+                    file.write("=======================\n")
+                    for line in item:
+                        file.write(line)
+                        file.write("\n")
+                
+                file.close()
+                print("Overwrite success")
+                overwritePupilButton.config(state=DISABLED)
+                
+
+    
+    
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -882,7 +939,7 @@ backgroundColourPickerButton=Button(changeBackgroundCanvas,text="Colour Picker",
 backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
 #Button for overwriting data
-overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED)
+overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupil)
 overwritePupilButton.grid(row=5,column=1,pady=9)
 
 #Bindings
