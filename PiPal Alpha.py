@@ -633,11 +633,10 @@ def getBackgroundFromFile():
             except:
                 print("Indexing background error")
             else:
-                
                 try:
                     testEntry.config(bg=colour)
                 except:
-                    print("Background test failed trying other options")
+                    print("Background test failed trying other options Colour tested:",colour)
                     try:
                         temp=words[1]
                     except:
@@ -648,7 +647,7 @@ def getBackgroundFromFile():
                         try:
                             testEntry.config(bg=colour)
                         except:
-                            print("Second background test failed trying last option")
+                            print("Second background test failed trying last option Colour tested:",colour)
                             try:
                                 colour=words[2]
                             except:
@@ -672,8 +671,10 @@ def getBackgroundFromFile():
                 try:
                     tempEntry.config(bg=item)
                 except:
+           
                     valid=False
                 else:
+                    print("Colour",item,"worked")
                     valid=True
                     colour=item
                     break
@@ -828,6 +829,7 @@ def checkIfSame(key):
     newTarget=showPupilTarget.get()
     newNotes=showPupilNotes.get("1.0",END)
     newNotes=newNotes.rstrip()
+    
     tempArray=[]
     tempArray.append(newFirst)
     tempArray.append(newSecond)
