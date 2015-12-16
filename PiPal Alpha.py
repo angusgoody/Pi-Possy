@@ -27,7 +27,7 @@ userName=""
 encryptionKey=8
 mainEntryTextColour="black"    
 mainLabelTextColour="black"
-numberOfTextItems=4 #The variable for how many items are contained for each pupil in the text file
+numberOfTextItems=5 #The variable for how many items are contained for each pupil in the text file
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -205,7 +205,10 @@ mainEntryArray=[changeUserNameEntry]
 
 #Function to insert text into entry
 def insertEntry(entry,message):
-    entry.delete(0,END)
+    if entry.winfo_class() == "Text":
+        entry.delete(END)
+    else:
+        entry.delete(0,END)
     entry.insert(END,message)
     
 def loadCanvas(canvas,message):
@@ -741,7 +744,10 @@ def getPupilsFromFile():
                     except:
                         tempUserArray.append(placeFiller)
                     else:
-                        tempUserArray.append(lineData)
+                        if lineData != "=======================":
+                            tempUserArray.append(lineData)
+                        else:
+                            tempUserArray.append(" ")
                         
                 pupilDataArray.append(tempUserArray)               
                       
@@ -759,6 +765,7 @@ def addPupilsMenu(array):
             field2=tempArray[1]
             field3=tempArray[2]
             field4=tempArray[3]
+            field5=tempArray[4]
         except:
             print("Indexing error")
         else:
@@ -775,17 +782,20 @@ def addPupilsMenu(array):
             label=displayName,command=lambda item1=field1,
             item2=field2,
             item3=field3,
-            item4=field4
-            : showPupil(item1,item2,item3,item4))
+            item4=field4,
+            item5=field5
+            : showPupil(item1,item2,item3,item4,item5))
 
       
-def showPupil(item1,item2,item3,item4):
+def showPupil(item1,item2,item3,item4,item5):
     loadCanvas(viewPupilCanvas, "Showing Pupil")
     
     insertEntry(showPupilName, item1)       
     insertEntry(showPupilSecond, item2)
     insertEntry(showPupilGrade, item3)
     insertEntry(showPupilTarget, item4)
+    insertEntry(showPupilNotes, item5)
+    
  
 # End of Functions===========================================================
 
