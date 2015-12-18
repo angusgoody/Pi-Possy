@@ -213,7 +213,7 @@ mainEntryArray=[changeUserNameEntry]
 #Function to insert text into entry
 def insertEntry(entry,message):
     if entry.winfo_class() == "Text":
-        entry.delete(END)
+        entry.delete("1.0",END)
     else:
         entry.delete(0,END)
     entry.insert(END,message)
@@ -848,7 +848,7 @@ def checkIfSame(key):
     else:
         overwritePupilButton.config(state=NORMAL)
         
-def overWritePupil():
+def overWritePupil(deleteOrNot):
     global overwriteArray
     
     found=False
@@ -862,10 +862,13 @@ def overWritePupil():
             
         pCounter+=1
         
-        
-    if found == True:
-        pupilDataArray.insert(pCounter,overwriteArray)
+    deleteOrNot.capitalize()
+    if deleteOrNot == "Delete":
         saveNewPupils(pupilDataArray)
+    else:
+        if found == True:
+            pupilDataArray.insert(pCounter,overwriteArray)
+            saveNewPupils(pupilDataArray)
         
     
 def saveNewPupils(array):
@@ -893,8 +896,11 @@ def saveNewPupils(array):
                 overwritePupilButton.config(state=DISABLED)
                 
 
-    
-    
+def overWritePupilStep():
+    overWritePupil("not")    
+
+def deletePupilStep():
+    overWritePupil("Delete")
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -945,9 +951,12 @@ choseThemeButton.pack(side=BOTTOM,fill=X,padx=8,pady=5)
 backgroundColourPickerButton=Button(changeBackgroundCanvas,text="Colour Picker",command=backgroundColourPicker,relief=GROOVE)
 backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
-#Button for overwriting data
-overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupil,relief=GROOVE)
+#Button for overwriting and deleting data
+overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupilStep,relief=GROOVE)
 overwritePupilButton.grid(row=5,column=1,pady=9)
+
+deletePupilButton=Button(viewPupilCanvas,text="Delete     ",command=deletePupilStep,relief=GROOVE)
+deletePupilButton.grid(row=6,column=1,pady=4)
 
 #Bindings
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
