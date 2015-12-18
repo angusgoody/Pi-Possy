@@ -9,7 +9,9 @@ __author__ = 'Angus'
 from tkinter import *
 import datetime
 from tkinter import colorchooser
+import platform
 
+version=platform.system()
 
 #Sets up window---------
 window=Tk()
@@ -188,7 +190,10 @@ showPupilGrade.grid(row=2,column=1,pady=2)
 showPupilTarget=Entry(viewPupilCanvas)
 showPupilTarget.grid(row=3,column=1,pady=2)
 
-showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
+if version == "Windows":
+    showPupilNotes=Text(viewPupilCanvas,height=5,width=15,wrap=WORD)
+else:
+    showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
 
 showPupilNotes.grid(row=4,column=1,pady=2)
 #===================================================================END OF CANVAS'=======================
@@ -941,7 +946,7 @@ backgroundColourPickerButton=Button(changeBackgroundCanvas,text="Colour Picker",
 backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
 #Button for overwriting data
-overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupil)
+overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupil,relief=GROOVE)
 overwritePupilButton.grid(row=5,column=1,pady=9)
 
 #Bindings

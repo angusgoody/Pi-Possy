@@ -1,4 +1,5 @@
-defaultBackground: DarkOrange1
+defaultBackground: purple1
+
 
 
 defaultColour: green yellow
