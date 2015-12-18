@@ -196,12 +196,19 @@ else:
     showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
 
 showPupilNotes.grid(row=4,column=1,pady=2)
+
+#Canvas for viewing all students
+viewAllCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
+
+viewAllListbox=Listbox(viewAllCanvas)
+viewAllListbox.grid(row=0,column=1)
+
 #===================================================================END OF CANVAS'=======================
 #Arrays
 letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
-canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas]
+canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas]
 themeEntry=Entry(window)
 pupilDataArray=[]
 #Entry Arrays that contains all visable entrys on screen
@@ -901,6 +908,12 @@ def overWritePupilStep():
 
 def deletePupilStep():
     overWritePupil("Delete")
+    
+def showAllPupils():
+    loadCanvas(viewAllCanvas, "Viewing all pupils")
+    
+    for item in pupilDataArray:
+         viewAllListbox.insert(END,item[0])
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -921,7 +934,7 @@ viewMenu.add_command(label="Toggle Entry Text Colour",command=toggleEntryTextCol
 viewMenu.add_command(label="Toggle Label Text Colour",command=toggleLabelTextColour)
 
 #Pupil Menu
-pupilMenu.add_command(label="View All")
+pupilMenu.add_command(label="View All",command=showAllPupils)
 pupilMenu.add_separator()
 
 
@@ -952,10 +965,10 @@ backgroundColourPickerButton=Button(changeBackgroundCanvas,text="Colour Picker",
 backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
 #Button for overwriting and deleting data
-overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupilStep,relief=GROOVE)
+overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupilStep,relief=GROOVE,width=15)
 overwritePupilButton.grid(row=5,column=1,pady=9)
 
-deletePupilButton=Button(viewPupilCanvas,text="Delete     ",command=deletePupilStep,relief=GROOVE)
+deletePupilButton=Button(viewPupilCanvas,text="Delete",command=deletePupilStep,relief=GROOVE,width=15)
 deletePupilButton.grid(row=6,column=1,pady=4)
 
 #Bindings

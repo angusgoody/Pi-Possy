@@ -1,4 +1,7 @@
-defaultBackground: purple1
+defaultBackground: royal blue
+
+
+
 
 
 
