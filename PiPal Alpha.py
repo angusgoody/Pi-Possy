@@ -10,6 +10,7 @@ from tkinter import *
 import datetime
 from tkinter import colorchooser
 import platform
+import tkinter.filedialog
 
 version=platform.system()
 
@@ -709,7 +710,7 @@ def updateBackgroundColours(colour):
     for item in canvasArray:
         item.config(bg=colour)
         for widget in item.winfo_children():
-            if widget.winfo_class() != "Entry" and widget.winfo_class() != "Button" and widget.winfo_class() != "Text":
+            if widget.winfo_class() != "Entry" and widget.winfo_class() != "Button" and widget.winfo_class() != "Text" and widget.winfo_class() != "Listbox":
                 widget.config(bg=colour)
             widget.config(highlightbackground=colour)
 
@@ -907,7 +908,13 @@ def overWritePupilStep():
     overWritePupil("not")    
 
 def deletePupilStep():
-    overWritePupil("Delete")
+    try:
+        option=messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
+    except:
+        print()
+    else:
+        if option == "True":
+            overWritePupil("Delete")
     
 def showAllPupils():
     loadCanvas(viewAllCanvas, "Viewing all pupils")
