@@ -897,27 +897,27 @@ def overWritePupil(deleteOrNot):
         pCounter+=1
 
     #Get menu name
-    try:
-        first=currentViewPupil[0]
-        second=currentViewPupil[1]
-    except:
-        print("ERROR")
-        temp=""
-    else:
-        temp=""
-        temp+=first
-        temp+=" "
-        second=(second)
-        temp+=second[0]
-    try:
-        pupilMenu.delete(temp)
-    except:
-        print("Error deleting pupil from menu")
         
     deleteOrNot.capitalize()
     if deleteOrNot == "Delete":
         saveNewPupils(pupilDataArray)
-        loadCanvas(openCanvas,"Home") 
+        loadCanvas(openCanvas,"Home")
+        try:
+            first=currentViewPupil[0]
+            second=currentViewPupil[1]
+        except:
+            print("ERROR")
+            temp=""
+        else:
+            temp=""
+            temp+=first
+            temp+=" "
+            second=(second)
+            temp+=second[0]
+        try:
+            pupilMenu.delete(temp)
+        except:
+            print("Error deleting pupil from menu")
     else:
         if found == True:
             pupilDataArray.insert(pCounter,overwriteArray)
