@@ -11,6 +11,7 @@ import datetime
 from tkinter import colorchooser
 import platform
 import tkinter.filedialog
+import random
 
 version=platform.system()
 
@@ -963,9 +964,16 @@ def deletePupilStep():
 
 def showAllPupils():
     loadCanvas(viewAllCanvas, "Viewing all pupils")
+    viewAllListbox.delete(0,END)
 
+    counter=1
     for item in pupilDataArray:
-         viewAllListbox.insert(END,item[0])
+        viewAllListbox.insert(END,item[0])
+        cl=random.choice(colourArray)
+        viewAllListbox.itemconfig(END,bg=cl)
+
+            
+        counter+=1
 
 def showCreatePupil():
     loadCanvas(createPupilCanvas,"Create Pupil")
@@ -982,14 +990,15 @@ fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
 fileMenu.add_command(label="New Pupil",command=showCreatePupil)
 fileMenu.add_separator()
-fileMenu.add_command(label="Change Info",command=changeUserName)
-fileMenu.add_command(label="Change Theme",command=changeTheme)
-fileMenu.add_command(label="Change Background",command=changeBackground)
-fileMenu.add_separator()
+
 
 #View Menu
 viewMenu.add_command(label="Toggle Entry Text Colour",command=toggleEntryTextColour)
 viewMenu.add_command(label="Toggle Label Text Colour",command=toggleLabelTextColour)
+viewMenu.add_separator()
+viewMenu.add_command(label="Change Info",command=changeUserName)
+viewMenu.add_command(label="Change Theme",command=changeTheme)
+viewMenu.add_command(label="Change Background",command=changeBackground)
 
 #Pupil Menu
 pupilMenu.add_command(label="View All",command=showAllPupils)
