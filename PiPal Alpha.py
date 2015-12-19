@@ -3,7 +3,7 @@ __author__ = 'Angus'
 #Angus Goody
 #8/10/15
 
-#Pi Pal version 4.2
+#Pi Pal version 4.3
 
 #Imports-------
 from tkinter import *
@@ -28,7 +28,7 @@ status.pack(side=BOTTOM,fill=X)
 mainButtonColour="light green"
 userName=""
 encryptionKey=8
-mainEntryTextColour="black"    
+mainEntryTextColour="black"
 mainLabelTextColour="black"
 numberOfTextItems=5 #The variable for how many items are contained for each pupil in the text file
 #Toolbars====================
@@ -42,7 +42,7 @@ pupilMenu=Menu(mainMenu)
 #===================================================================CANVAS'=======================
 
 
-#Open canvas
+#Open canvas-------------------------------------------
 openCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 openCanvas.pack(expand=True)
 statusVar.set("Home")
@@ -51,7 +51,7 @@ userVar=StringVar()
 openLabel=Label(openCanvas,textvariable=userVar,font= "Helvetica 16 bold")
 openLabel.grid(row=0,column=1)
 
-#Change user canvas
+#Change user canvas----------------------------------------------
 changeUserNameCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
 Label(changeUserNameCanvas,text="Username:").grid(row=0,column=0)
@@ -118,7 +118,7 @@ colourArray = [
 'MediumOrchid4', 'DarkOrchid1', 'DarkOrchid2', 'DarkOrchid3', 'DarkOrchid4',
 'purple1', 'purple2', 'purple3', 'purple4',window.cget("bg")]
 
-#Change Theme canvas
+#Change Theme canvas-----------------------------------------------
 changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
 
@@ -144,12 +144,11 @@ for name in colourArray:
             colourListBox.itemconfig(END, bg=name)
 
         except:
-        
             print("Found error in colour array 1")
         else:
             duplicateTestingArray.append(name)
 
-#Change Background canvas
+#Change Background canvas------------------------------------------
 changeBackgroundCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
 backgroundListBox=Listbox(changeBackgroundCanvas)
@@ -165,11 +164,11 @@ backgroundListBox.config(yscrollcommand=backgroundSlider.set)
 for colour in duplicateTestingArray:
     try:
         backgroundListBox.insert(END,colour)
-        backgroundListBox.itemconfig(END,bg=colour)    
+        backgroundListBox.itemconfig(END,bg=colour)
     except:
         print("Error in colour array")
-    
-#Canvas for viewing pupils
+
+#Canvas for viewing pupils-----------------------------------------------
 viewPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
 Label(viewPupilCanvas,text="First Name:").grid(row=0,column=0)
@@ -198,18 +197,46 @@ else:
 
 showPupilNotes.grid(row=4,column=1,pady=2)
 
-#Canvas for viewing all students
+#Canvas for viewing all students-----------------------------------
 viewAllCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
 viewAllListbox=Listbox(viewAllCanvas)
 viewAllListbox.grid(row=0,column=1)
 
+#Canvas for creating new pupil--------------------------------------
+
+createPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
+
+Label(createPupilCanvas,text="First Name:").grid(row=0,column=0)
+Label(createPupilCanvas,text="Second Name:").grid(row=1,column=0)
+Label(createPupilCanvas,text="Grade").grid(row=2,column=0)
+Label(createPupilCanvas,text="Target:").grid(row=3,column=0)
+Label(createPupilCanvas,text="Notes:").grid(row=4,column=0)
+
+createPupilName=Entry(createPupilCanvas)
+createPupilName.grid(row=0,column=1,pady=2)
+
+createPupilSecond=Entry(createPupilCanvas)
+createPupilSecond.grid(row=1,column=1,pady=2)
+
+createPupilGrade=Entry(createPupilCanvas)
+createPupilGrade.grid(row=2,column=1,pady=2)
+
+createPupilTarget=Entry(createPupilCanvas)
+createPupilTarget.grid(row=3,column=1,pady=2)
+
+if version == "Windows":
+    createPupilNotes=Text(createPupilCanvas,height=5,width=15,wrap=WORD)
+else:
+    createPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
+
+createPupilNotes.grid(row=4,column=1,pady=2)
 #===================================================================END OF CANVAS'=======================
 #Arrays
 letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
-canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas]
+canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas]
 themeEntry=Entry(window)
 pupilDataArray=[]
 #Entry Arrays that contains all visable entrys on screen
@@ -225,7 +252,7 @@ def insertEntry(entry,message):
     else:
         entry.delete(0,END)
     entry.insert(END,message)
-    
+
 def loadCanvas(canvas,message):
     for item in canvasArray:
         if item != canvas:
@@ -258,7 +285,7 @@ def getUserName():
                 wordsOnLine=line.split()
                 for item in wordsOnLine:
                     possibleWords.append(item)
-                    
+
                 if "userName123:" in wordsOnLine:
                     foundValid=True
                     print("Valid userName format")
@@ -272,16 +299,16 @@ def getUserName():
                         userName=wordsOnLine[1]
                         if userName != "" and userName != " ":
                             userName=userName
-                            
+
                         else:
                             print("UserName in file is a space")
                             userName="User"
                     else:
                         print("No name has been used in file")
                         userName="User"
-                    
+
                     break
-      
+
 
             if foundValid == False:
                 print("A valid format has not been found looking for alternitives")
@@ -290,23 +317,23 @@ def getUserName():
                     chosenWord=sortedwords[0]
                     if ":" in chosenWord and len(possibleWords) > 1:
                         chosenWord=possibleWords[1]
-                    
+
                     print("Using",chosenWord,"as name")
                     userName=chosenWord
-                    
+
                 else:
                     userName="User"
-                    
+
         else:
             print("No content found in userName file")
             userName="User"
-        
+
         nameArray=[]
         wordsInName=userName.split()
         for word in wordsInName:
             word=word.capitalize()
             nameArray.append(word)
-        
+
         tempUser=""
         for name in nameArray:
             tempUser+=name
@@ -319,8 +346,8 @@ def getUserName():
 
     else:
         return "User"
-    
-        
+
+
 #The function that takes the name from the text file and displays it on the home screen
 def setOpenUser(name):
     if name != "" and name != None:
@@ -335,7 +362,7 @@ def changeUserName():
     global userName
     insertEntry(changeUserNameEntry,userName)
     overwriteUserNameButton.config(state=DISABLED)
-   
+
 #Function that saves a new username when the user changes it
 def overwriteUserName():
     global userName
@@ -347,7 +374,7 @@ def overwriteUserName():
     updateWelcomeScreen(userName1)
     userName=userName1
     overwriteUserNameButton.config(state=DISABLED)
-    
+
 #The function that is launched every letter the user types when changing the username
 #It compares the new username they type to the original one and if the new one is the same
 #As the old one the overwrite button becomes disabled
@@ -363,24 +390,24 @@ def checkOverwrite(event):
     else:
         overwriteUserNameButton.config(state=NORMAL)
 
-   
+
 def changeTheme():
     loadCanvas(changeThemeCanvas, "Theme")
 
 def submitTheme(colour):
 
-        
+
     temp="defaultColour: "
     temp=temp+colour
-        
+
     #Writing to username file to store colour
-    updateTheme(colour)  
+    updateTheme(colour)
     saveLineToFile("userName.txt",temp,"defaultColour:")
     print("Theme changed to",colour)
-                
 
-            
-        
+
+
+
 
 def showOpenCanvas():
     loadCanvas(openCanvas,"Home")
@@ -403,13 +430,13 @@ def updateTheme(colour):
         print("Error with changing status colour")
         print("Using default colours because of unsupported colours:",colour)
         status.config(bg="lightblue")
-           
+
 
 def getThemeFromFile():
     targetLine=getFromFile("userName.txt","defaultColour:")
     found=False
     if targetLine != "" and targetLine != None:
-        segments=targetLine.split()                         
+        segments=targetLine.split()
         if len(targetLine) > 1:
             try:
                 colour=segments[1]
@@ -420,15 +447,15 @@ def getThemeFromFile():
             else:
                 found=True
                 return colour
-            
+
         if found == False:
             print("Colour retival has failed using default colour")
             return "lightblue"
-            
+
     print("Error when getting info from file function using defaults")
     return "lightblue"
-    
-#Initialises the theme setup process   
+
+#Initialises the theme setup process
 def initTheme():
     colour=getThemeFromFile()
     if colour != "" and colour != None:
@@ -441,7 +468,7 @@ def initTheme():
         else:
             print("Testing of",colour,"failure using default")
             updateTheme("lightblue")
-            
+
 
 def hoverIn(event,button,colour):
     state=button.cget("state")
@@ -450,10 +477,10 @@ def hoverIn(event,button,colour):
 
 def hoverOut(event,button):
     button.config(bg=window.cget("bg"))
-    
 
 
-            
+
+
 
 def saveLineToFile(file,lineToAdd,target):
     content=getReadLines(file)
@@ -463,7 +490,7 @@ def saveLineToFile(file,lineToAdd,target):
     print("Line to overwrite with is",lineToAdd)
     print("Target to replace is",target)
     contentArray=[]
-    
+
     #If there is a problem with the file a new one is created
     if content == "" or content == None:
         print("An error occoured opening",file,"creating new one")
@@ -481,14 +508,14 @@ def saveLineToFile(file,lineToAdd,target):
             file.write(temp)
         file.close()
     else:
-        
+
         for line in content:
             words=line.split()
             if target in words:
                 print("Found target")
             else:
                 contentArray.append(line)
-                
+
         try:
             fileToWrite=open(file,"w")
         except:
@@ -498,14 +525,14 @@ def saveLineToFile(file,lineToAdd,target):
             fileToWrite.write("\n")
             for item in contentArray:
                 fileToWrite.write(item)
-                
+
             fileToWrite.close()
             try:
                 messagebox.showinfo("Sucess","Changed infomation")
             except:
                 print("Changed info")
             print()
-        
+
 
 def getFromFile(fileToSearch,target):
     print()
@@ -525,7 +552,7 @@ def getFromFile(fileToSearch,target):
                 return line
                 break
     else:
-        return ""              
+        return ""
 
 
 def checkColour(colour):
@@ -543,10 +570,10 @@ def checkColour(colour):
                 print("Error changing colour")
             else:
                 return col
-                                
+
     else:
         return colour
-        
+
 def updateWelcomeScreen(name):
     setOpenUser(name)
 
@@ -559,15 +586,15 @@ def updateThemeStep():
     else:
         updateButtonBackground(colourPick)
         submitTheme(colourPick)
-        
 
-    
+
+
 def colourPicker():
     colour= colorchooser.askcolor()[1]
     if colour != None and colour != "":
         submitTheme(colour)
 
-#Function that can encrypt or decrypt a string using a key 
+#Function that can encrypt or decrypt a string using a key
 def encOrDec(line,key,option):
     finArray=[]
     trackCounter=0
@@ -593,13 +620,13 @@ def encOrDec(line,key,option):
                 print("Error indexing in encryption")
             else:
                 finArray.append(newLetter)
-                
-    temp=""             
+
+    temp=""
     for item in finArray:
         temp=temp+item
-       
-    return temp   
-            
+
+    return temp
+
 
 def changeBackground():
     loadCanvas(changeBackgroundCanvas, "Change Background")
@@ -608,18 +635,18 @@ def backgroundColourPicker():
     colour= colorchooser.askcolor()[1]
     if colour != "" and colour != None:
         submitBackgroundTheme(colour)
-    
+
 def submitBackgroundTheme(colour):
-    
+
     updateBackgroundColours(colour)
-            
+
     temp="defaultBackground: "
     temp=temp+colour
     temp=temp+"\n"
     saveLineToFile("userName.txt", temp, "defaultBackground:")
     print("Saved background theme to file")
 
-    
+
 def updateBackgroundStep():
     index = backgroundListBox.curselection()
     try:
@@ -684,27 +711,27 @@ def getBackgroundFromFile():
                 try:
                     tempEntry.config(bg=item)
                 except:
-           
+
                     valid=False
                 else:
                     print("Colour",item,"worked")
                     valid=True
                     colour=item
                     break
-                    
+
             if valid == False:
                 colour=window.cget("bg")
-                
-        return colour                
-            
- 
+
+        return colour
+
+
 def initBackground():
     col=getBackgroundFromFile()
     print("Using",col,"as colour")
     if col != None and col != "":
-        updateBackgroundColours(col)          
-        
-   
+        updateBackgroundColours(col)
+
+
 def updateBackgroundColours(colour):
     window.config(bg=colour)
     for item in canvasArray:
@@ -726,14 +753,14 @@ def toggleText(variable,widgetChoice):
         variable="white"
     elif variable == "white":
         variable="black"
-        
+
     for item in canvasArray:
         for widget in item.winfo_children():
             if widget.winfo_class() == widgetChoice:
                 widget.config(fg=variable)
     return variable
-                            
-               
+
+
 def toggleEntryTextColour():
     global mainEntryTextColour
     mainEntryTextColour=toggleText(mainEntryTextColour,"Entry")
@@ -742,11 +769,11 @@ def toggleLabelTextColour():
     global mainLabelTextColour
     mainLabelTextColour=toggleText(mainLabelTextColour,"Label")
 
-    
+
 def getPupilsFromFile():
     placeFiller="Unknown?"
     print("Getting Pupil data---------------")
-    data=getReadLines("pupils.txt")        
+    data=getReadLines("pupils.txt")
     if data != None and data != "":
         lineCounter=0
         for line in data:
@@ -764,15 +791,15 @@ def getPupilsFromFile():
                             tempUserArray.append(lineData)
                         else:
                             tempUserArray.append(" ")
-                        
-                pupilDataArray.append(tempUserArray)               
-                      
 
-#This function will take all pupil infomation and create a drop down menu with them all. 
+                pupilDataArray.append(tempUserArray)
+
+
+#This function will take all pupil infomation and create a drop down menu with them all.
 
 def addPupilsMenu(array):
-    
-    
+
+
     for array in array:
         tempArray=[]
         for item in array:
@@ -792,9 +819,9 @@ def addPupilsMenu(array):
             tup=field2
             temp+=tup[0]
             displayName=temp
-            
+
             #Menu bit
-            
+
             pupilMenu.add_command(
             label=displayName,command=lambda item1=field1,
             item2=field2,
@@ -803,10 +830,10 @@ def addPupilsMenu(array):
             item5=field5
             : showPupil(item1,item2,item3,item4,item5))
 
-      
+
 def showPupil(item1,item2,item3,item4,item5):
     overwritePupilButton.config(state=DISABLED)
-    
+
     global currentViewPupil
     currentViewPupil=[]
     currentViewPupil.append(item1)
@@ -815,21 +842,21 @@ def showPupil(item1,item2,item3,item4,item5):
     currentViewPupil.append(item4)
     currentViewPupil.append(item5)
     #Bindings
-    
+
     showPupilName.bind("<KeyRelease>",checkIfSame)
     showPupilSecond.bind("<KeyRelease>",checkIfSame)
     showPupilGrade.bind("<KeyRelease>",checkIfSame)
     showPupilTarget.bind("<KeyRelease>",checkIfSame)
     showPupilNotes.bind("<KeyRelease>",checkIfSame)
-    
+
     loadCanvas(viewPupilCanvas, "Showing Pupil")
-    
-    insertEntry(showPupilName, item1)       
+
+    insertEntry(showPupilName, item1)
     insertEntry(showPupilSecond, item2)
     insertEntry(showPupilGrade, item3)
     insertEntry(showPupilTarget, item4)
     insertEntry(showPupilNotes, item5)
-    
+
 #The function that runs every time the keyboard is pressed to update overwrite button state
 
 def checkIfSame(key):
@@ -842,34 +869,34 @@ def checkIfSame(key):
     newTarget=showPupilTarget.get()
     newNotes=showPupilNotes.get("1.0",END)
     newNotes=newNotes.rstrip()
-    
+
     tempArray=[]
     tempArray.append(newFirst)
     tempArray.append(newSecond)
     tempArray.append(newGrade)
     tempArray.append(newTarget)
     tempArray.append(newNotes)
-    
+
     overwriteArray=tempArray
     if tempArray == currentViewPupil:
         overwritePupilButton.config(state=DISABLED)
     else:
         overwritePupilButton.config(state=NORMAL)
-        
+
 def overWritePupil(deleteOrNot):
     global overwriteArray
-    
+
     found=False
     pCounter=0
     for item in pupilDataArray:
-        
+
         if item == currentViewPupil:
             pupilDataArray.remove(item)
             found=True
             break
-            
+
         pCounter+=1
-        
+
     deleteOrNot.capitalize()
     if deleteOrNot == "Delete":
         saveNewPupils(pupilDataArray)
@@ -877,8 +904,8 @@ def overWritePupil(deleteOrNot):
         if found == True:
             pupilDataArray.insert(pCounter,overwriteArray)
             saveNewPupils(pupilDataArray)
-        
-    
+
+
 def saveNewPupils(array):
     valid=False
     try:
@@ -898,14 +925,14 @@ def saveNewPupils(array):
                     for line in item:
                         file.write(line)
                         file.write("\n")
-                
+
                 file.close()
                 print("Overwrite success")
                 overwritePupilButton.config(state=DISABLED)
-                
+
 
 def overWritePupilStep():
-    overWritePupil("not")    
+    overWritePupil("not")
 
 def deletePupilStep():
     try:
@@ -915,12 +942,16 @@ def deletePupilStep():
     else:
         if option == "True":
             overWritePupil("Delete")
-    
+
 def showAllPupils():
     loadCanvas(viewAllCanvas, "Viewing all pupils")
-    
+
     for item in pupilDataArray:
          viewAllListbox.insert(END,item[0])
+
+def showCreatePupil():
+    loadCanvas(createPupilCanvas,"Create Pupil")
+    
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -930,6 +961,8 @@ mainMenu.add_cascade(label="Pupils",menu=pupilMenu)
 
 #File Menu
 fileMenu.add_command(label="Home",command=showOpenCanvas)
+fileMenu.add_separator()
+fileMenu.add_command(label="New Pupil",command=showCreatePupil)
 fileMenu.add_separator()
 fileMenu.add_command(label="Change Info",command=changeUserName)
 fileMenu.add_command(label="Change Theme",command=changeTheme)
@@ -948,7 +981,7 @@ pupilMenu.add_separator()
 #=======Returns===========
 setOpenUser(getUserName())
 getPupilsFromFile()
-addPupilsMenu(pupilDataArray) 
+addPupilsMenu(pupilDataArray)
 
 #Buttons================
 
@@ -982,9 +1015,9 @@ deletePupilButton.grid(row=6,column=1,pady=4)
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 
 #This function needs to be here because it changes colours of buttons that would otherwise be under it
-initBackground() 
+initBackground()
 initTheme()
 
 #print(pupilDataArray)
-      
+
 window.mainloop()

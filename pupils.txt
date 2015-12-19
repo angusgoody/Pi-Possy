@@ -13,6 +13,6 @@ Dribbling
 =======================
 Wayne
 Rooney
-C
+D
 Stamina
 Improve his stamina when running.

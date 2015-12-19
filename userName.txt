@@ -1,4 +1,6 @@
-defaultBackground: royal blue
+defaultBackground: #80c1c1
+
+
 
 
 
