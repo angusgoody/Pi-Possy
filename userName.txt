@@ -1,4 +1,5 @@
-defaultBackground: #80c1c1
+defaultBackground: LavenderBlush3
+
 
 
 

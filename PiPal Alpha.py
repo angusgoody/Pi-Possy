@@ -40,6 +40,7 @@ window.config(menu=mainMenu)
 fileMenu=Menu(mainMenu)
 viewMenu=Menu(mainMenu)
 pupilMenu=Menu(mainMenu)
+filterMenu=Menu(mainMenu)
 #===================================================================CANVAS'=======================
 
 
@@ -232,12 +233,30 @@ else:
     createPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
 
 createPupilNotes.grid(row=4,column=1,pady=2)
+
+#Canvas for filtering pupils-------------------------------------------------------
+filterPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
+
+Label(filterPupilCanvas,text="Field").grid(row=0,column=0)
+Label(filterPupilCanvas,text="Search").grid(row=1,column=0,pady=5)
+
+filterVariable=StringVar()
+
+filterPupilOption=OptionMenu(filterPupilCanvas,filterVariable,"Name","Second","Grade","Target","All")
+filterPupilOption.grid(row=0,column=1)
+filterVariable.set("All")
+
+filterPupilEntry=Entry(filterPupilCanvas)
+filterPupilEntry.grid(row=1,column=1)
+
+
+
 #===================================================================END OF CANVAS'=======================
 #Arrays
 letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
 sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
-canvasArray=[openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas]
+canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas]
 themeEntry=Entry(window)
 pupilDataArray=[]
 #Entry Arrays that contains all visable entrys on screen
@@ -734,11 +753,12 @@ def initBackground():
 
 
 def updateBackgroundColours(colour):
+    widgetArray=["Entry","Button","Text","Listbox","OptionMenu"]
     window.config(bg=colour)
     for item in canvasArray:
         item.config(bg=colour)
         for widget in item.winfo_children():
-            if widget.winfo_class() != "Entry" and widget.winfo_class() != "Button" and widget.winfo_class() != "Text" and widget.winfo_class() != "Listbox":
+            if widget.winfo_class() not in widgetArray:
                 widget.config(bg=colour)
             widget.config(highlightbackground=colour)
 
@@ -977,6 +997,10 @@ def showAllPupils():
 
 def showCreatePupil():
     loadCanvas(createPupilCanvas,"Create Pupil")
+
+def newFilter():
+    loadCanvas(filterPupilCanvas,"Filter Pupils")
+
     
 # End of Functions===========================================================
 
@@ -984,6 +1008,7 @@ def showCreatePupil():
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
 mainMenu.add_cascade(label="Pupils",menu=pupilMenu)
+mainMenu.add_cascade(label="Filter",menu=filterMenu)
 
 #File Menu
 fileMenu.add_command(label="Home",command=showOpenCanvas)
@@ -1004,6 +1029,8 @@ viewMenu.add_command(label="Change Background",command=changeBackground)
 pupilMenu.add_command(label="View All",command=showAllPupils)
 pupilMenu.add_separator()
 
+#Filter Menu
+filterMenu.add_command(label="New Filter",command=newFilter)
 
 #=======Returns===========
 setOpenUser(getUserName())
