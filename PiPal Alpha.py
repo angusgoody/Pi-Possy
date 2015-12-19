@@ -885,7 +885,6 @@ def checkIfSame(key):
 
 def overWritePupil(deleteOrNot):
     global overwriteArray
-
     found=False
     pCounter=0
     for item in pupilDataArray:
@@ -897,9 +896,28 @@ def overWritePupil(deleteOrNot):
 
         pCounter+=1
 
+    #Get menu name
+    try:
+        first=currentViewPupil[0]
+        second=currentViewPupil[1]
+    except:
+        print("ERROR")
+        temp=""
+    else:
+        temp=""
+        temp+=first
+        temp+=" "
+        second=(second)
+        temp+=second[0]
+    try:
+        pupilMenu.entryconfig(temp, state="disabled")
+    except:
+        print("ERROR")
+        
     deleteOrNot.capitalize()
     if deleteOrNot == "Delete":
         saveNewPupils(pupilDataArray)
+        loadCanvas(openCanvas,"Home") 
     else:
         if found == True:
             pupilDataArray.insert(pCounter,overwriteArray)
@@ -940,7 +958,7 @@ def deletePupilStep():
     except:
         print()
     else:
-        if option == "True":
+        if option == True:
             overWritePupil("Delete")
 
 def showAllPupils():
