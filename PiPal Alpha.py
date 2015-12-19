@@ -910,9 +910,9 @@ def overWritePupil(deleteOrNot):
         second=(second)
         temp+=second[0]
     try:
-        pupilMenu.entryconfig(temp, state="disabled")
+        pupilMenu.delete(temp)
     except:
-        print("ERROR")
+        print("Error deleting pupil from menu")
         
     deleteOrNot.capitalize()
     if deleteOrNot == "Delete":
