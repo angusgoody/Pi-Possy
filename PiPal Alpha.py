@@ -59,7 +59,7 @@ changeUserNameCanvas=Canvas(window,width=200,height=200,relief=None,highlightthi
 Label(changeUserNameCanvas,text="Username:").grid(row=0,column=0)
 
 changeUserNameEntry=Entry(changeUserNameCanvas,font = "Helvetica 12 bold", justify="center")
-changeUserNameEntry.grid(row=0,column=1)
+changeUserNameEntry.grid(row=0,column=1,pady=7)
 
 overwriteArray=[]
 currentViewPupil=[]
@@ -439,11 +439,7 @@ def updateTheme(colour):
         print("Colour not in colour array")
     else:
         colourPicked.set(colour)
-    for item in mainEntryArray:
-        try:
-            item.config(bg=colour)
-        except:
-            item.config(bg="lightblue")
+
 
     try:
         status.config(bg=colour)
@@ -762,7 +758,6 @@ def updateBackgroundColours(colour):
             if widget.winfo_class() not in widgetArray:
                 try:
                     widget.config(bg=colour)
-                    widget.config(activebackground=colour)
                 except:
                     print("Error changing widget info")
             widget.config(highlightbackground=colour)
@@ -792,10 +787,6 @@ def toggleText(variable,widgetChoice):
                 widget.config(fg=variable)
     return variable
 
-
-def toggleEntryTextColour():
-    global mainEntryTextColour
-    mainEntryTextColour=toggleText(mainEntryTextColour,"Entry")
 
 def toggleLabelTextColour():
     global mainLabelTextColour
@@ -1013,6 +1004,9 @@ def newFilter():
     loadCanvas(filterPupilCanvas,"Filter Pupils")
     clearFilterResultsButton.config(bg=filterPupilCanvas.cget("bg"))
     clearFilterResultsButton.config(activebackground=filterPupilCanvas.cget("bg"))
+    cl=status.cget("bg")
+    filterPupilOption.config(bg=cl)
+    filterPupilOption.config(activebackground=cl)
 
 def searchPupils():
     resultArray=[]
@@ -1073,7 +1067,8 @@ def searchPupils():
                     filterResults.insert(END,temp)
         
 
-    
+def clearFilterPupils():
+    filterResults.delete(0,END)
         
 # End of Functions===========================================================
 
@@ -1091,8 +1086,7 @@ fileMenu.add_separator()
 
 
 #View Menu
-viewMenu.add_command(label="Toggle Entry Text Colour",command=toggleEntryTextColour)
-viewMenu.add_command(label="Toggle Label Text Colour",command=toggleLabelTextColour)
+viewMenu.add_command(label="Toggle Text Colour",command=toggleLabelTextColour)
 viewMenu.add_separator()
 viewMenu.add_command(label="Change Info",command=changeUserName)
 viewMenu.add_command(label="Change Theme",command=changeTheme)
@@ -1142,7 +1136,7 @@ deletePupilButton.grid(row=6,column=1,pady=4)
 filterPupilButton=Button(filterPupilCanvas,text="Search",relief=GROOVE,width=13,command=searchPupils)
 filterPupilButton.grid(row=2,column=1,pady=9)
 
-clearFilterResultsButton=Button(filterPupilCanvas,text="Clear",relief=FLAT)
+clearFilterResultsButton=Button(filterPupilCanvas,text="Clear",relief=FLAT,command=clearFilterPupils)
 clearFilterResultsButton.grid(row=3,column=2)
 
 #Bindings-------------------------
