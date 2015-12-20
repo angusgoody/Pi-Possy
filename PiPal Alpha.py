@@ -239,6 +239,7 @@ filterPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickn
 
 Label(filterPupilCanvas,text="Field").grid(row=0,column=0)
 Label(filterPupilCanvas,text="Search").grid(row=1,column=0,pady=5)
+Label(filterPupilCanvas,text="Results").grid(row=3,column=0,pady=5)
 
 filterVariable=StringVar()
 
@@ -249,7 +250,8 @@ filterVariable.set("All")
 filterPupilEntry=Entry(filterPupilCanvas)
 filterPupilEntry.grid(row=1,column=1,padx=4)
 
-
+filterResults=Listbox(filterPupilCanvas)
+filterResults.grid(row=3,column=1,pady=4)
 
 #===================================================================END OF CANVAS'=======================
 #Arrays
@@ -1002,53 +1004,64 @@ def newFilter():
     loadCanvas(filterPupilCanvas,"Filter Pupils")
 
 def searchPupils():
+    resultArray=[]
     area=filterVariable.get()
     target=filterPupilEntry.get()
     target=str(target)
-    print("Looking for",target,"in",area)
-    tempSearchArray=["Name","Second","Grade","Target","All"]
-    if area == "All":
-        pos="*"
-    else:
-        try:
-            pos=tempSearchArray.index(area)
-        except:
-            print("Error finding field to search")
-
-    found=False
-    #Searches all fields    
-    if pos == "*":
-        print("Searching All")
-        for pupil in pupilDataArray:
-            for item in pupil:
-                if target in item:
-                    found=True
-                    print("Found Match in",pupil)
-                    break
-
-    #Searches selected fields                
-    else:
-        for pupil in pupilDataArray:
+    if target != "" and target != None:
+        tempSearchArray=["Name","Second","Grade","Target","All"]
+        if area == "All":
+            pos="*"
+        else:
             try:
-                dataItem=pupil[pos]
+                pos=tempSearchArray.index(area)
             except:
-                print("Pupil data item not found")
-            else:
-                if target in dataItem:
-                    found=True
-                    print("Found match in",pupil)
+                print("Error finding field to search")
 
-    if found == False:
-        try:
-            messagebox.showinfo("None","No results were found")
-        except:
-            print("No results Found")
+        found=False
+        #Searches all fields    
+        if pos == "*":
+            for pupil in pupilDataArray:
+                for item in pupil:
+                    if target in item:
+                        found=True
+                        resultArray.append(pupil)
+                        break
 
-    else:
-        try:
-            messagebox.showinfo("Success","Search success")
-        except:
-            print("Search success")
+        #Searches selected fields                
+        else:
+            for pupil in pupilDataArray:
+                try:
+                    dataItem=pupil[pos]
+                except:
+                    print("Pupil data item not found")
+                else:
+                    if target in dataItem:
+                        found=True
+                        resultArray.append(pupil)
+
+        if found == False:
+            try:
+                messagebox.showinfo("None","No results were found")
+            except:
+                print("No results Found")
+
+        else:
+            filterResults.delete(0,END)
+            for name in resultArray:
+                try:
+                    temp=""
+                    first=name[0]
+                    second=name[1]
+                    temp+=first
+                    temp+=" "
+                    temp+=second
+                except:
+                    print("ERROR")
+                else:
+                    filterResults.insert(END,temp)
+        
+
     
         
 # End of Functions===========================================================
