@@ -1015,12 +1015,14 @@ def searchPupils():
         except:
             print("Error finding field to search")
 
-    #Searches all fields     
+    found=False
+    #Searches all fields    
     if pos == "*":
         print("Searching All")
         for pupil in pupilDataArray:
             for item in pupil:
                 if target in item:
+                    found=True
                     print("Found Match in",pupil)
                     break
 
@@ -1033,7 +1035,22 @@ def searchPupils():
                 print("Pupil data item not found")
             else:
                 if target in dataItem:
+                    found=True
                     print("Found match in",pupil)
+
+    if found == False:
+        try:
+            messagebox.showinfo("None","No results were found")
+        except:
+            print("No results Found")
+
+    else:
+        try:
+            messagebox.showinfo("Success","Search success")
+        except:
+            print("Search success")
+    
+        
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
