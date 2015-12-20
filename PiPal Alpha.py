@@ -261,8 +261,7 @@ sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
 canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas]
 themeEntry=Entry(window)
 pupilDataArray=[]
-#Entry Arrays that contains all visable entrys on screen
-mainEntryArray=[changeUserNameEntry]
+filterPupilArray=[]
 
 # Start of Functions===========================================================
 
@@ -1009,6 +1008,7 @@ def newFilter():
     filterPupilOption.config(activebackground=cl)
 
 def searchPupils():
+    global filterPupilArray
     resultArray=[]
     area=filterVariable.get()
     target=filterPupilEntry.get()
@@ -1065,20 +1065,41 @@ def searchPupils():
                     print("ERROR")
                 else:
                     filterResults.insert(END,temp)
+                    filterPupilArray=resultArray
         
 
 def clearFilterPupils():
     filterResults.delete(0,END)
 
 def viewFilterResults(event):
+    global filterPupilArray
     print(" ")
     index = filterResults.curselection()
     try:
         picked=filterResults.get(index)
     except:
-        print("Indexing Error")
+        pass
     else:
-        print(picked)
+        words=picked.split()
+        for pupil in filterPupilArray:
+            valid1=False
+            valid2=False
+            try:
+                if pupil[0] == words[0]:
+                    valid1=True
+                if pupil[1] == words[1]:
+                    valid2=True
+                if valid1 == True and valid2 == True:
+                    break
+            except:
+                print("ERROR")
+
+        try:
+            showPupil(pupil[0],pupil[1],pupil[2],pupil[3],pupil[4])
+        except:
+            print("Error loading pupil")
+        
+        
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
