@@ -243,7 +243,7 @@ Label(filterPupilCanvas,text="Search").grid(row=1,column=0,pady=5)
 filterVariable=StringVar()
 
 filterPupilOption=OptionMenu(filterPupilCanvas,filterVariable,"Name","Second","Grade","Target","All")
-filterPupilOption.grid(row=0,column=1)
+filterPupilOption.grid(row=0,column=1,pady=5)
 filterVariable.set("All")
 
 filterPupilEntry=Entry(filterPupilCanvas)
@@ -1001,7 +1001,10 @@ def showCreatePupil():
 def newFilter():
     loadCanvas(filterPupilCanvas,"Filter Pupils")
 
-    
+def searchPupils():
+    area=filterVariable.get()
+    target=filterPupilEntry.get()
+    print("Looking for",target,"in",area)
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1065,7 +1068,11 @@ overwritePupilButton.grid(row=5,column=1,pady=9)
 deletePupilButton=Button(viewPupilCanvas,text="Delete",command=deletePupilStep,relief=GROOVE,width=15)
 deletePupilButton.grid(row=6,column=1,pady=4)
 
-#Bindings
+#Button for filtering pupils
+filterPupilButton=Button(filterPupilCanvas,text="Search",relief=GROOVE,width=13,command=searchPupils)
+filterPupilButton.grid(row=2,column=1,pady=9)
+
+#Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 
 #This function needs to be here because it changes colours of buttons that would otherwise be under it
