@@ -247,7 +247,7 @@ filterPupilOption.grid(row=0,column=1,pady=5)
 filterVariable.set("All")
 
 filterPupilEntry=Entry(filterPupilCanvas)
-filterPupilEntry.grid(row=1,column=1)
+filterPupilEntry.grid(row=1,column=1,padx=4)
 
 
 
@@ -1004,7 +1004,36 @@ def newFilter():
 def searchPupils():
     area=filterVariable.get()
     target=filterPupilEntry.get()
+    target=str(target)
     print("Looking for",target,"in",area)
+    tempSearchArray=["Name","Second","Grade","Target","All"]
+    if area == "All":
+        pos="*"
+    else:
+        try:
+            pos=tempSearchArray.index(area)
+        except:
+            print("Error finding field to search")
+
+    #Searches all fields     
+    if pos == "*":
+        print("Searching All")
+        for pupil in pupilDataArray:
+            for item in pupil:
+                if target in item:
+                    print("Found Match in",pupil)
+                    break
+
+    #Searches selected fields                
+    else:
+        for pupil in pupilDataArray:
+            try:
+                dataItem=pupil[pos]
+            except:
+                print("Pupil data item not found")
+            else:
+                if target in dataItem:
+                    print("Found match in",pupil)
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
