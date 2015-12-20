@@ -255,7 +255,7 @@ filterVariable.set("All")
 filterPupilEntry=Entry(filterPupilCanvas)
 filterPupilEntry.grid(row=1,column=1,padx=4)
 
-filterResults=Listbox(filterPupilCanvas)
+filterResults=Listbox(filterPupilCanvas,bg="lightgrey")
 filterResults.grid(row=3,column=1,pady=4)
 
 #===================================================================END OF CANVAS'=======================
@@ -1086,6 +1086,8 @@ def searchPupils():
                     filterResults.insert(END,temp)
                     if counter % 2 == 0:
                         filterResults.itemconfig(END,bg=col)
+                    else:
+                        filterResults.itemconfig(END,bg="white")
                         
                     counter+=1
             filterPupilArray=resultArray
