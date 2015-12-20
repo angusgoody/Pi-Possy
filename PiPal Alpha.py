@@ -1069,7 +1069,16 @@ def searchPupils():
 
 def clearFilterPupils():
     filterResults.delete(0,END)
-        
+
+def viewFilterResults(event):
+    print(" ")
+    index = filterResults.curselection()
+    try:
+        picked=filterResults.get(index)
+    except:
+        print("Indexing Error")
+    else:
+        print(picked)
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1141,7 +1150,7 @@ clearFilterResultsButton.grid(row=3,column=2)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
-
+filterResults.bind('<Double-Button-1>', viewFilterResults)
 #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initBackground()
 initTheme()
