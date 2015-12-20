@@ -1019,6 +1019,8 @@ def newFilter():
     clearFilterResultsButton.config(bg=filterPupilCanvas.cget("bg"))
     clearFilterResultsButton.config(activebackground=filterPupilCanvas.cget("bg"))
     cl=status.cget("bg")
+    cl2=window.cget("bg")
+    filterResults.config(selectbackground=cl2)
     filterPupilOption.config(bg=cl)
     filterPupilOption.config(activebackground=cl)
 
@@ -1068,6 +1070,8 @@ def searchPupils():
 
         else:
             filterResults.delete(0,END)
+            counter=0
+            col=status.cget("bg")
             for name in resultArray:
                 try:
                     temp=""
@@ -1080,7 +1084,11 @@ def searchPupils():
                     print("ERROR")
                 else:
                     filterResults.insert(END,temp)
-                    filterPupilArray=resultArray
+                    if counter % 2 == 0:
+                        filterResults.itemconfig(END,bg=col)
+                        
+                    counter+=1
+            filterPupilArray=resultArray
         
 
 def clearFilterPupils():

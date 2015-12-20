@@ -1,6 +1,7 @@
-defaultBackground: royal blue
+defaultColour: lime green
+defaultBackground: #7a99c7
 
-defaultColour: chartreuse2
+
 
 
 
