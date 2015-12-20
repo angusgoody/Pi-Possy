@@ -37,9 +37,9 @@ Ball Controll
 =======================
 Alfie
 Green
-D
+C
 Positioning
-
+Alfie has improved lots this year
 =======================
 Hayden
 Davies
@@ -49,9 +49,9 @@ Finishing
 =======================
 William
 Wright
-B
+C
 Stamina
-
+Needs to work on keeping posetion of ball
 =======================
 Alfie
 Wood
@@ -61,7 +61,7 @@ Ball Controll
 =======================
 Tim
 Brown
-D
+A
 Heading
 
 =======================

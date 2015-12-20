@@ -421,13 +421,15 @@ def changeTheme():
     loadCanvas(changeThemeCanvas, "Theme")
 
 def submitTheme(colour):
-    updateMenuBG(colour)
 
+    
     temp="defaultColour: "
     temp=temp+colour
 
     #Writing to username file to store colour
     updateTheme(colour)
+    updateMenuBG(colour)
+    clearFilterPupils()
     saveLineToFile("userName.txt",temp,"defaultColour:")
     print("Theme changed to",colour)
 
@@ -439,10 +441,16 @@ def showOpenCanvas():
     loadCanvas(openCanvas,"Home")
 
 def updateTheme(colour):
-    if colour not in colourArray:
-        print("Colour not in colour array")
-    else:
+    if colour != None:
         colourPicked.set(colour)
+        widgetArray=["Button"]
+        for item in canvasArray:
+            for widget in item.winfo_children():
+                if widget.winfo_class() in widgetArray:
+                    try:
+                        widget.config(bg=colour)
+                    except:
+                        print("Error changing widget info") 
 
 
     try:

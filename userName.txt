@@ -1,5 +1,13 @@
-defaultColour: lime green
-defaultBackground: #7a99c7
+defaultColour: #a94bf5
+defaultBackground: lawn green
+
+
+
+
+
+
+
+
 
 
 
