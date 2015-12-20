@@ -17,7 +17,7 @@ version=platform.system()
 
 #Sets up window---------
 window=Tk()
-window.geometry("420x320")
+window.geometry("450x350")
 window.title("PiPal")
 
 #Staus bar
@@ -237,9 +237,9 @@ createPupilNotes.grid(row=4,column=1,pady=2)
 #Canvas for filtering pupils-------------------------------------------------------
 filterPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
-Label(filterPupilCanvas,text="Field").grid(row=0,column=0)
-Label(filterPupilCanvas,text="Search").grid(row=1,column=0,pady=5)
-Label(filterPupilCanvas,text="Results").grid(row=3,column=0,pady=5)
+Label(filterPupilCanvas,text="Field:").grid(row=0,column=0)
+Label(filterPupilCanvas,text="Search:").grid(row=1,column=0,pady=5)
+Label(filterPupilCanvas,text="Results:").grid(row=3,column=0,pady=5)
 
 filterVariable=StringVar()
 
@@ -440,7 +440,6 @@ def updateTheme(colour):
     else:
         colourPicked.set(colour)
     for item in mainEntryArray:
-
         try:
             item.config(bg=colour)
         except:
@@ -761,14 +760,24 @@ def updateBackgroundColours(colour):
         item.config(bg=colour)
         for widget in item.winfo_children():
             if widget.winfo_class() not in widgetArray:
-                widget.config(bg=colour)
+                try:
+                    widget.config(bg=colour)
+                    widget.config(activebackground=colour)
+                except:
+                    print("Error changing widget info")
             widget.config(highlightbackground=colour)
+            
 
 def updateButtonBackground(colour):
     for item in canvasArray:
                 for widget in item.winfo_children():
                     if widget.winfo_class() == "Button":
-                        widget.config(bg=colour)
+                        try:
+                            widget.config(bg=colour)
+                            widget.config(activebackground=colour)
+                        except:
+                            print("Error updating widgets")
+                            
 
 #The Function that toggles the text for a certain widget saving the need for one on every widget
 def toggleText(variable,widgetChoice):
@@ -1002,6 +1011,8 @@ def showCreatePupil():
 
 def newFilter():
     loadCanvas(filterPupilCanvas,"Filter Pupils")
+    clearFilterResultsButton.config(bg=filterPupilCanvas.cget("bg"))
+    clearFilterResultsButton.config(activebackground=filterPupilCanvas.cget("bg"))
 
 def searchPupils():
     resultArray=[]
@@ -1130,6 +1141,9 @@ deletePupilButton.grid(row=6,column=1,pady=4)
 #Button for filtering pupils
 filterPupilButton=Button(filterPupilCanvas,text="Search",relief=GROOVE,width=13,command=searchPupils)
 filterPupilButton.grid(row=2,column=1,pady=9)
+
+clearFilterResultsButton=Button(filterPupilCanvas,text="Clear",relief=FLAT)
+clearFilterResultsButton.grid(row=3,column=2)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
