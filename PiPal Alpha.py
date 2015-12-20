@@ -203,8 +203,13 @@ showPupilNotes.grid(row=4,column=1,pady=2)
 viewAllCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
 viewAllListbox=Listbox(viewAllCanvas)
-viewAllListbox.grid(row=0,column=1)
+viewAllListbox.pack(side=LEFT)
 
+viewAllSlider=Scrollbar(viewAllCanvas)
+viewAllSlider.pack(side=RIGHT,fill=Y)
+
+viewAllSlider.config(command=viewAllListbox.yview)
+viewAllListbox.config(yscrollcommand=viewAllSlider.set)
 #Canvas for creating new pupil--------------------------------------
 
 createPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
@@ -968,7 +973,10 @@ def saveNewPupils(array):
                         file.write("\n")
 
                 file.close()
-                print("Overwrite success")
+                try:
+                    messagebox.showinfo("Success","Overwrite success restart to update")
+                except:
+                    print("Overwrite success")
                 overwritePupilButton.config(state=DISABLED)
 
 
@@ -985,14 +993,16 @@ def deletePupilStep():
             overWritePupil("Delete")
 
 def showAllPupils():
+    colour=random.choice(colourArray)
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
 
     counter=1
     for item in pupilDataArray:
         viewAllListbox.insert(END,item[0])
-        cl=random.choice(colourArray)
-        viewAllListbox.itemconfig(END,bg=cl)
+        if counter % 2 == 0:
+            cl=colour
+            viewAllListbox.itemconfig(END,bg=cl)
 
             
         counter+=1
