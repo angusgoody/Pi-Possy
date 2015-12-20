@@ -924,6 +924,7 @@ def overWritePupil(deleteOrNot):
     if deleteOrNot == "Delete":
         saveNewPupils(pupilDataArray)
         loadCanvas(openCanvas,"Home")
+        clearFilterPupils()
         try:
             first=currentViewPupil[0]
             second=currentViewPupil[1]
