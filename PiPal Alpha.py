@@ -421,7 +421,7 @@ def changeTheme():
     loadCanvas(changeThemeCanvas, "Theme")
 
 def submitTheme(colour):
-
+    updateMenuBG(colour)
 
     temp="defaultColour: "
     temp=temp+colour
@@ -483,6 +483,7 @@ def initTheme():
         print("Testing theme colour...")
         result=checkColour(colour)
         if result != None and result != "":
+            updateMenuBG(colour)
             print("Testing sucess")
             updateTheme(colour)
             updateButtonBackground(colour)
@@ -1113,7 +1114,16 @@ def viewFilterResults(event):
         except:
             print("Error loading pupil")
         
-        
+
+def updateMenuBG(colour):
+    menuArray=[]
+    for widget in mainMenu.winfo_children():
+        try:
+            widget.config(activebackground=colour)
+        except:
+            print("Error changing menu BG")
+            
+
 # End of Functions===========================================================
 
 #Add cascades and commands=====================

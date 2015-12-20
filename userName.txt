@@ -1,6 +1,8 @@
-defaultBackground: yellow green
+defaultBackground: royal blue
 
-defaultColour: powder blue
+defaultColour: chartreuse2
+
+
 
 
 
