@@ -202,7 +202,7 @@ showPupilNotes.grid(row=4,column=1,pady=2)
 #Canvas for viewing all students-----------------------------------
 viewAllCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
-viewAllListbox=Listbox(viewAllCanvas)
+viewAllListbox=Listbox(viewAllCanvas,width=25)
 viewAllListbox.pack(side=LEFT)
 
 viewAllSlider=Scrollbar(viewAllCanvas)
@@ -489,15 +489,6 @@ def initTheme():
         else:
             print("Testing of",colour,"failure using default")
             updateTheme("lightblue")
-
-
-def hoverIn(event,button,colour):
-    state=button.cget("state")
-    if state == "normal" or state == "Normal":
-        button.config(bg=colour)
-
-def hoverOut(event,button):
-    button.config(bg=window.cget("bg"))
 
 
 
@@ -993,16 +984,28 @@ def deletePupilStep():
             overWritePupil("Delete")
 
 def showAllPupils():
-    colour=random.choice(colourArray)
+    colour=status.cget("bg")
+    colour2=window.cget("bg")
+    viewAllListbox.config(selectbackground=colour2)
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
 
     counter=1
     for item in pupilDataArray:
-        viewAllListbox.insert(END,item[0])
-        if counter % 2 == 0:
-            cl=colour
-            viewAllListbox.itemconfig(END,bg=cl)
+        try:
+            name=item[0]
+            second=item[1]
+            temp=""
+            temp+=name
+            temp+=" "
+            temp+=second
+            viewAllListbox.insert(END,temp)
+        except:
+            print("ERROR")
+        else:
+            if counter % 2 == 0:
+                cl=colour
+                viewAllListbox.itemconfig(END,bg=cl)
 
             
         counter+=1
