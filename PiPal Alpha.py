@@ -14,7 +14,7 @@ import tkinter.filedialog
 import random
 
 version=platform.system()
-
+print("System platform is",version)
 #Sets up window---------
 window=Tk()
 window.geometry("450x350")
@@ -235,7 +235,7 @@ createPupilTarget.grid(row=3,column=1,pady=2)
 if version == "Windows":
     createPupilNotes=Text(createPupilCanvas,height=5,width=15,wrap=WORD)
 else:
-    createPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
+    createPupilNotes=Text(createPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
 
 createPupilNotes.grid(row=4,column=1,pady=2)
 
