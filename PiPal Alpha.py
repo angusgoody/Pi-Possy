@@ -1029,7 +1029,8 @@ def newFilter():
     cl=status.cget("bg")
     cl2=window.cget("bg")
     filterResults.config(selectbackground=cl2)
-    filterPupilOption.config(bg=cl)
+    if version == "Windows":
+        filterPupilOption.config(bg=cl)
     filterPupilOption.config(activebackground=cl)
 
 def searchPupils():
