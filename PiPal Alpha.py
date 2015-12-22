@@ -203,7 +203,7 @@ else:
 
 showPupilNotes.grid(row=4,column=1,pady=2)
 
-#Canvas for viewing all students-----------------------------------
+#Canvas for viewing all pupils-----------------------------------
 viewAllCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
 viewAllListbox=Listbox(viewAllCanvas,width=25)
@@ -214,6 +214,10 @@ viewAllSlider.pack(side=RIGHT,fill=Y)
 
 viewAllSlider.config(command=viewAllListbox.yview)
 viewAllListbox.config(yscrollcommand=viewAllSlider.set)
+
+pupilOptions=["Grade","A-Z (First name)","A-Z (Second name)"]
+optionVar=StringVar()
+orderPupilOption=OptionMenu(viewAllCanvas,optionVar,*pupilOptions)
 #Canvas for creating new pupil--------------------------------------
 
 createPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
@@ -1086,7 +1090,11 @@ def searchPupils():
             try:
                 messagebox.showinfo("None","No results were found")
             except:
+                clearFilterPupils()
+                filterResults.insert(END,"No Results")
+                #filterResults.config(justify="Center")
                 print("No results Found")
+                
 
         else:
             filterResults.delete(0,END)
