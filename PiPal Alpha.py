@@ -1120,17 +1120,40 @@ def searchPupils():
 def clearFilterPupils():
     filterResults.delete(0,END)
 
+        
+
+def updateMenuBG(colour):
+    menuArray=[]
+    for widget in mainMenu.winfo_children():
+        try:
+            widget.config(activebackground=colour)
+        except:
+            print("Error changing menu BG")
+
+
 def viewFilterResults(event):
-    global filterPupilArray
-    print(" ")
-    index = filterResults.curselection()
     try:
-        picked=filterResults.get(index)
+        doubleClick(filterResults, filterPupilArray)
+    except:
+        print("Error loading pupil")
+   
+        
+
+def viewallResults(event):
+    try:
+        doubleClick(viewAllListbox, pupilDataArray) 
+    except:
+        print("Error loading ")
+
+def doubleClick(listbox,array):
+    index = listbox.curselection()
+    try:
+        picked=listbox.get(index)
     except:
         pass
     else:
         words=picked.split()
-        for pupil in filterPupilArray:
+        for pupil in array:
             valid1=False
             valid2=False
             try:
@@ -1147,16 +1170,8 @@ def viewFilterResults(event):
             showPupil(pupil[0],pupil[1],pupil[2],pupil[3],pupil[4])
         except:
             print("Error loading pupil")
-        
 
-def updateMenuBG(colour):
-    menuArray=[]
-    for widget in mainMenu.winfo_children():
-        try:
-            widget.config(activebackground=colour)
-        except:
-            print("Error changing menu BG")
-            
+                   
 
 # End of Functions===========================================================
 
@@ -1234,6 +1249,7 @@ createPupilButton.grid(row=5,column=1,pady=7)
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 filterResults.bind('<Double-Button-1>', viewFilterResults)
+viewAllListbox.bind('<Double-Button-1>', viewallResults)
 #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initBackground()
 initTheme()
