@@ -132,7 +132,7 @@ colourListBox.pack(side=LEFT)
 
 #Slider for listbox
 colourSlider=Scrollbar(changeThemeCanvas)
-colourSlider.pack(side=RIGHT,fill=Y)
+colourSlider.pack(side=LEFT,fill=Y)
 
 colourSlider.config(command=colourListBox.yview)
 colourListBox.config(yscrollcommand=colourSlider.set)
@@ -158,7 +158,7 @@ backgroundListBox.pack(side=LEFT)
 
 #Slider for listbox
 backgroundSlider=Scrollbar(changeBackgroundCanvas)
-backgroundSlider.pack(side=RIGHT,fill=Y)
+backgroundSlider.pack(side=LEFT,fill=Y)
 
 backgroundSlider.config(command=backgroundListBox.yview)
 backgroundListBox.config(yscrollcommand=backgroundSlider.set)
@@ -210,14 +210,16 @@ viewAllListbox=Listbox(viewAllCanvas,width=25)
 viewAllListbox.pack(side=LEFT)
 
 viewAllSlider=Scrollbar(viewAllCanvas)
-viewAllSlider.pack(side=RIGHT,fill=Y)
+viewAllSlider.pack(side=LEFT,fill=Y)
 
 viewAllSlider.config(command=viewAllListbox.yview)
 viewAllListbox.config(yscrollcommand=viewAllSlider.set)
 
 pupilOptions=["Grade","A-Z (First name)","A-Z (Second name)"]
 optionVar=StringVar()
+
 orderPupilOption=OptionMenu(viewAllCanvas,optionVar,*pupilOptions)
+orderPupilOption.pack(side=BOTTOM)
 #Canvas for creating new pupil--------------------------------------
 
 createPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
