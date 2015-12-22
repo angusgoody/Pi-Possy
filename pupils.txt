@@ -56,8 +56,8 @@ Needs to work on keeping posetion of ball
 Alfie
 Wood
 A
-Ball Controll
-
+Sprinting
+Alfie needs to improve his sprinting ability
 =======================
 Tim
 Brown
@@ -93,4 +93,4 @@ Charlie
 Smith
 F
 Positioning
-Unknown?
+Charlie needs to improve lots if he is going to achieve his target grade of a C

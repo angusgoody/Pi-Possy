@@ -274,7 +274,7 @@ canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas
 themeEntry=Entry(window)
 pupilDataArray=[]
 filterPupilArray=[]
-
+passGrades=["A*","A","B","C"]
 # Start of Functions===========================================================
 
 
@@ -1009,7 +1009,6 @@ def showAllPupils():
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
 
-    counter=1
     for item in pupilDataArray:
         try:
             name=item[0]
@@ -1019,15 +1018,16 @@ def showAllPupils():
             temp+=" "
             temp+=second
             viewAllListbox.insert(END,temp)
+            grade=item[2]
         except:
             print("ERROR")
         else:
-            if counter % 2 == 0:
-                cl=colour
-                viewAllListbox.itemconfig(END,bg=cl)
+            if grade not in passGrades:
+                viewAllListbox.itemconfig(END,bg="salmon")
+            else:
+                viewAllListbox.itemconfig(END,bg="lightgreen")
 
             
-        counter+=1
 
 def showCreatePupil():
     loadCanvas(createPupilCanvas,"Create Pupil")
@@ -1100,14 +1100,18 @@ def searchPupils():
                     temp+=first
                     temp+=" "
                     temp+=second
+                    
+                    grade=name[2]
+                    grade=str(grade)
                 except:
-                    print("ERROR")
+                    print("ERROR getting pupil section")
                 else:
                     filterResults.insert(END,temp)
-                    if counter % 2 == 0:
-                        filterResults.itemconfig(END,bg=col)
+                    if grade not in passGrades:
+                        filterResults.itemconfig(END,bg="salmon")
                     else:
-                        filterResults.itemconfig(END,bg="white")
+                        filterResults.itemconfig(END,bg="lightgreen")
+
                         
                     counter+=1
             filterPupilArray=resultArray

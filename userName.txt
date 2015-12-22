@@ -1,4 +1,4 @@
-defaultColour: gold
-defaultBackground: sea green
+defaultColour: violet red
+defaultBackground: lawn green
 userName123: Angus Goody
 
