@@ -511,6 +511,7 @@ def initTheme():
 
 
 def saveLineToFile(file,lineToAdd,target):
+    lineToAdd=lineToAdd.rstrip()
     content=getReadLines(file)
     print()
     print("Initiating overwrite process -------------")
@@ -549,6 +550,7 @@ def saveLineToFile(file,lineToAdd,target):
         except:
             print("Error opening",file,"to read info")
         else:
+            
             fileToWrite.write(lineToAdd)
             fileToWrite.write("\n")
             for item in contentArray:
@@ -994,7 +996,8 @@ def deletePupilStep():
     try:
         option=messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
     except:
-        print()
+        option=tkiner.filedialog.messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
+        
     else:
         if option == True:
             overWritePupil("Delete")
@@ -1055,6 +1058,7 @@ def searchPupils():
                 pos=tempSearchArray.index(area)
             except:
                 print("Error finding field to search")
+                pos="*"
 
         found=False
         #Searches all fields    
@@ -1218,6 +1222,10 @@ filterPupilButton.grid(row=2,column=1,pady=9)
 
 clearFilterResultsButton=Button(filterPupilCanvas,text="Clear",relief=FLAT,command=clearFilterPupils)
 clearFilterResultsButton.grid(row=3,column=2)
+
+#Buttons for creating pupil
+createPupilButton=Button(createPupilCanvas,text="Create",width=15)
+createPupilButton.grid(row=5,column=1,pady=7)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
