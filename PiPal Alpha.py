@@ -991,8 +991,11 @@ def deletePupilStep():
 def showAllPupils():
     colour=status.cget("bg")
     colour2=window.cget("bg")
-
-    orderPupilOption.config(bg=colour)
+    
+    if version == "Windows":
+        orderPupilOption.config(bg=colour)
+    else:
+        orderPupilOption.config(bg=colour2)
     orderPupilOption.config(activebackground=colour)
     
     viewAllListbox.config(selectbackground=colour2)
