@@ -526,22 +526,11 @@ def saveLineToFile(file,lineToAdd,target):
     print("Line to overwrite with is",lineToAdd)
     print("Target to replace is",target)
     contentArray=[]
-
+    
     #If there is a problem with the file a new one is created
     if content == "" or content == None:
         print("An error occoured opening",file,"creating new one")
         file=open(file,"w")
-        try:
-            now = datetime.datetime.now()
-            now=str(now)
-        except:
-            print("Error getting current date")
-        else:
-            print("Time stamp created")
-            temp="Recovery File created on "
-            temp=temp+now
-            temp=temp+"\n"
-            file.write(temp)
         file.close()
     else:
 
@@ -1072,7 +1061,6 @@ def searchPupils():
             except:
                 clearFilterPupils()
                 filterResults.insert(END,"No Results")
-                #filterResults.config(justify="Center")
                 print("No results Found")
                 
 
@@ -1080,30 +1068,8 @@ def searchPupils():
             filterResults.delete(0,END)
             counter=0
             col=status.cget("bg")
-            for name in resultArray:
-                try:
-                    temp=""
-                    first=name[0]
-                    second=name[1]
-                    temp+=first
-                    temp+=" "
-                    temp+=second
-                    
-                    grade=name[2]
-                    grade=str(grade)
-                except:
-                    print("ERROR getting pupil section")
-                else:
-                    filterResults.insert(END,temp)
-                    if grade not in passGrades:
-                        filterResults.itemconfig(END,bg="salmon")
-                    else:
-                        filterResults.itemconfig(END,bg="lightgreen")
-
-                        
-                    counter+=1
             filterPupilArray=resultArray
-        
+            insertListbox(filterResults, resultArray)
 
 def clearFilterPupils():
     filterResults.delete(0,END)
@@ -1239,7 +1205,7 @@ def optionCommand(value):
     tempArray=[]
     if value == "A-Z (First name)":
         tempArray=sorted(pupilDataArray)
-        print(tempArray)
+        insertListbox(viewAllListbox, tempArray)
 
         
 def insertListbox(listbox,array):
@@ -1264,7 +1230,6 @@ def insertListbox(listbox,array):
         else:
             pupilColour="salmon"
          
-        print(pupilColour)   
         listbox.insert(END,temp)
         listbox.itemconfig(END,bg=pupilColour)
        
