@@ -269,7 +269,7 @@ filterVariable.set("All")
 filterPupilEntry=Entry(filterPupilCanvas)
 filterPupilEntry.grid(row=1,column=1,padx=4)
 
-filterResults=Listbox(filterPupilCanvas,bg="lightgrey")
+filterResults=Listbox(filterPupilCanvas,bg="white")
 filterResults.grid(row=3,column=1,pady=4)
 
 #===================================================================END OF CANVAS'=======================
@@ -1052,12 +1052,28 @@ def searchPupils():
             for pupil in pupilDataArray:
                 try:
                     dataItem=pupil[pos]
+
                 except:
-                    print("Pupil data item not found")
+                    pass
                 else:
                     if target in dataItem:
                         found=True
                         resultArray.append(pupil)
+
+        if found == False:
+            print("No results found trying diffrent areas")
+            target=target.capitalize()
+            for pupil in pupilDataArray:
+                try:
+                    dataItem=pupil[pos]
+
+                except:
+                    pass
+                else:
+                    if target in dataItem:
+                        found=True
+                        resultArray.append(pupil)
+
 
         if found == False:
             try:
@@ -1072,6 +1088,7 @@ def searchPupils():
                 
 
         else:
+            print("Search Success")
             filterResults.delete(0,END)
             counter=0
             col=status.cget("bg")
