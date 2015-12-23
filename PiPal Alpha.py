@@ -1191,11 +1191,48 @@ def getPupilInfo(canvas):
             else:
                 infoArray.append(data)
             
-    print(infoArray)
     return infoArray          
 
 def createPupilInfo():
-    content=getPupilInfo(createPupilCanvas)            
+    content=getPupilInfo(createPupilCanvas)
+    leng=len(content)
+    valid=True
+    try:
+        for x in range(0,leng-1):
+            current=content[x]
+            if current == "" or current == None:
+                valid=False
+                break
+    except:
+        print("Error checking content")
+        
+    else:
+        if valid == False:
+            print("Please fill in all areas")
+            
+        else:
+            print("Fine")
+            savePupilToFile(content)
+
+def savePupilToFile(array):
+    try:
+        file=open("pupils.txt","a")
+    except:
+        file=open("pupils.txt","w")
+    
+    file.write("=======================\n")
+    for line in array:
+        file.write(line)
+        file.write("\n")
+    
+    try:
+        messagebox.showinfog("Success","Pupil created")
+    except:
+        print("Pupil created succesfully")
+        
+        
+        
+          
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
