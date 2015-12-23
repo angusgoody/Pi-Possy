@@ -1208,13 +1208,17 @@ def createPupilInfo():
         
     else:
         if valid == False:
-            print("Please fill in all areas")
+            try:
+                messagebox.showinfo("Info","All fields except notes must be filled")
+            except:
+                print("Please fill in all areas")
             
         else:
             print("Fine")
             savePupilToFile(content)
 
 def savePupilToFile(array):
+    pupilDataArray.append(array)
     try:
         file=open("pupils.txt","a")
     except:
@@ -1232,7 +1236,16 @@ def savePupilToFile(array):
         
         
         
-          
+def addBinding(canvas,function):
+    for widget in canvas.winfo_children():
+        if widget.winfo_class() == "Entry" or widget.winfo_class() == "Text":
+            try:
+                widget.bind("<Return>",function)
+            except:
+                print("Error binding widget")
+            
+def createPupilInfoStep(event):
+    createPupilInfo()          
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1266,7 +1279,7 @@ filterMenu.add_command(label="New Filter",command=newFilter)
 setOpenUser(getUserName())
 getPupilsFromFile()
 addPupilsMenu(pupilDataArray)
-
+addBinding(createPupilCanvas, createPupilInfoStep)
 #Buttons================
 
 #Buttons for theme change
