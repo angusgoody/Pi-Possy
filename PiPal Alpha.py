@@ -989,6 +989,7 @@ def deletePupilStep():
             overWritePupil("Delete")
 
 def showAllPupils():
+    optionVar.set("Order by")
     colour=status.cget("bg")
     colour2=window.cget("bg")
     
@@ -1139,6 +1140,7 @@ def getPupilInfo(canvas):
             try:
                 data=widget.get()
                 data=data.rstrip()
+                data.capitalize()
             except:
                 try:
                     data=widget.get("1.0",END)
@@ -1227,11 +1229,14 @@ def optionCommand(value):
                 grade=pupil[2]
             except:
                 print("Indexing error")
-            else:
-                personalArray.append(second)
-                personalArray.append(name)
-                personalArray.append(grade)
-                firstSort.append(personalArray)
+                name="?"
+                second="?"
+                grade="?"
+                
+            personalArray.append(second)
+            personalArray.append(name)
+            personalArray.append(grade)
+            firstSort.append(personalArray)
                 
         sortArray=sorted(firstSort)
         temp1=[]
@@ -1245,13 +1250,101 @@ def optionCommand(value):
                 grade=item[2]
             except:
                 print("Indexing error")
-            else:
-                personalArray.append(first)
-                personalArray.append(second)
-                personalArray.append(grade)
-                mainArray.append(personalArray)
+                second="?"
+                first="?"
+                grade="?"
                 
-        insertListbox(viewAllListbox, mainArray)                
+            personalArray.append(first)
+            personalArray.append(second)
+            personalArray.append(grade)
+            mainArray.append(personalArray)
+                
+        insertListbox(viewAllListbox, mainArray)  
+     
+   #Order by Grades    
+    if value == "Grade":
+        grades=["A*","A","B","C","D","E","F"]
+        firstArray=[]
+        mainArray=[]
+        
+        invalidGrades=[]
+        for pupil in pupilDataArray:
+            personalArray=[]
+            try:
+                name=pupil[0]      
+                second=pupil[1]
+                grade=pupil[2]           
+            except:
+                print("Indexing error")
+                name="?"
+                second="?"
+                grade="?"
+                
+
+            if grade in grades:
+                try:
+                    pos=grades.index(grade)
+                except:
+                    print("Indexing error")
+                    pos=grade
+                        
+            else:
+                tm=[]
+                pos="*"
+                try:
+                    name=pupil[0]
+                    second=pupil[1]
+                    grade=pupil[2]
+                except:
+                    name="?"
+                    second="?"
+                    grade="?"
+                    
+                tm.append(grade)
+                tm.append(name)
+                tm.append(second)
+                invalidGrades.append(tm)
+                
+            if pos != "*":    
+                personalArray.append(pos)
+                personalArray.append(name)
+                personalArray.append(second)
+                firstArray.append(personalArray)
+                
+            
+        sortArray=sorted(firstArray)
+        for pupil in invalidGrades:
+            sortArray.append(pupil)
+        #Reversing array
+        for item in sortArray:
+            personalArray=[]
+            try:
+                grade=grades[item[0]]
+                name=item[1]
+                second=item[2]
+            except:
+                try:
+                    name=item[1]
+                except:                    
+                    name="?"
+                try:
+                    second=item[2]
+                except:
+                    second="?"
+                try:
+                    grade=item[0]
+                except:
+                    grade="?"
+   
+            personalArray.append(name)   
+            personalArray.append(second) 
+            personalArray.append(grade)
+            mainArray.append(personalArray)
+            
+   
+        insertListbox(viewAllListbox, mainArray)
+                        
+                                            
           
         
 def insertListbox(listbox,array):
@@ -1263,7 +1356,8 @@ def insertListbox(listbox,array):
             grade=pupil[2]
         except:
             name="?"
-            second="?"     
+            second="?"
+            grade="?"     
             
         temp=""     
         temp+=name
