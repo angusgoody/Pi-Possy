@@ -220,8 +220,7 @@ viewAllListbox.config(yscrollcommand=viewAllSlider.set)
 pupilOptions=["Grade","A-Z (First name)","A-Z (Second name)"]
 optionVar=StringVar()
 
-orderPupilOption=OptionMenu(bottomViewAllFrame,optionVar,*pupilOptions)
-orderPupilOption.pack(side=BOTTOM)
+
 #Canvas for creating new pupil--------------------------------------
 
 createPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
@@ -885,8 +884,10 @@ def showPupil(item1,item2,item3,item4,item5):
     currentViewPupil.append(item3)
     currentViewPupil.append(item4)
     currentViewPupil.append(item5)
+    
     #Bindings
 
+    
     showPupilName.bind("<KeyRelease>",checkIfSame)
     showPupilSecond.bind("<KeyRelease>",checkIfSame)
     showPupilGrade.bind("<KeyRelease>",checkIfSame)
@@ -1001,29 +1002,16 @@ def deletePupilStep():
 def showAllPupils():
     colour=status.cget("bg")
     colour2=window.cget("bg")
+
+    orderPupilOption.config(bg=colour2)
+    orderPupilOption.config(activebackground=colour)
+    
     viewAllListbox.config(selectbackground=colour2)
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
-
-    for item in pupilDataArray:
-        try:
-            name=item[0]
-            second=item[1]
-            temp=""
-            temp+=name
-            temp+=" "
-            temp+=second
-            viewAllListbox.insert(END,temp)
-            grade=item[2]
-        except:
-            print("ERROR")
-        else:
-            if grade not in passGrades:
-                viewAllListbox.itemconfig(END,bg="salmon")
-            else:
-                viewAllListbox.itemconfig(END,bg="lightgreen")
-
-            
+    
+    insertListbox(viewAllListbox, pupilDataArray)
+        
 
 def showCreatePupil():
     loadCanvas(createPupilCanvas,"Create Pupil")
@@ -1245,7 +1233,42 @@ def addBinding(canvas,function):
                 print("Error binding widget")
             
 def createPupilInfoStep(event):
-    createPupilInfo()          
+    createPupilInfo()  
+    
+def optionCommand(value):
+    tempArray=[]
+    if value == "A-Z (First name)":
+        tempArray=sorted(pupilDataArray)
+        print(tempArray)
+
+        
+def insertListbox(listbox,array):
+    listbox.delete(0,END)
+    for pupil in array:
+        try:
+            name=pupil[0]
+            second=pupil[1]
+            grade=pupil[2]
+        except:
+            name="?"
+            second="?"     
+            
+        temp=""     
+        temp+=name
+        temp+=" "
+        temp+=second
+        
+        if grade in passGrades:
+            
+            pupilColour="light green"
+        else:
+            pupilColour="salmon"
+         
+        print(pupilColour)   
+        listbox.insert(END,temp)
+        listbox.itemconfig(END,bg=pupilColour)
+       
+                  
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1280,7 +1303,12 @@ setOpenUser(getUserName())
 getPupilsFromFile()
 addPupilsMenu(pupilDataArray)
 addBinding(createPupilCanvas, createPupilInfoStep)
-#Buttons================
+
+#Option Menus
+orderPupilOption=OptionMenu(bottomViewAllFrame,optionVar,*pupilOptions,command=optionCommand)
+orderPupilOption.pack(side=BOTTOM)
+#==============================Buttons===================
+
 
 #Buttons for theme change
 choseThemeButton=Button(changeThemeCanvas,text="Change",command=updateThemeStep,relief=GROOVE)
