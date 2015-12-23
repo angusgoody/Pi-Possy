@@ -1209,11 +1209,50 @@ def createPupilInfoStep(event):
     
 def optionCommand(value):
     tempArray=[]
+    
+    #Order by First Name
     if value == "A-Z (First name)":
         tempArray=sorted(pupilDataArray)
         insertListbox(viewAllListbox, tempArray)
-
-
+    
+    #Order by Second Name
+    if value == "A-Z (Second name)":
+        firstSort=[]
+        mainArray=[]
+        for pupil in pupilDataArray:
+            personalArray=[]
+            try:
+                name=pupil[0]
+                second=pupil[1]
+                grade=pupil[2]
+            except:
+                print("Indexing error")
+            else:
+                personalArray.append(second)
+                personalArray.append(name)
+                personalArray.append(grade)
+                firstSort.append(personalArray)
+                
+        sortArray=sorted(firstSort)
+        temp1=[]
+        
+        #Reveses Array
+        for item in sortArray:
+            personalArray=[]
+            try:
+                second=item[0]
+                first=item[1]
+                grade=item[2]
+            except:
+                print("Indexing error")
+            else:
+                personalArray.append(first)
+                personalArray.append(second)
+                personalArray.append(grade)
+                mainArray.append(personalArray)
+                
+        insertListbox(viewAllListbox, mainArray)                
+          
         
 def insertListbox(listbox,array):
     listbox.delete(0,END)
