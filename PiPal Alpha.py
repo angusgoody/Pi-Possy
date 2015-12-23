@@ -1003,7 +1003,7 @@ def showAllPupils():
     colour=status.cget("bg")
     colour2=window.cget("bg")
 
-    orderPupilOption.config(bg=colour2)
+    orderPupilOption.config(bg=colour)
     orderPupilOption.config(activebackground=colour)
     
     viewAllListbox.config(selectbackground=colour2)
@@ -1068,7 +1068,10 @@ def searchPupils():
 
         if found == False:
             try:
+                clearFilterPupils()
+                filterResults.insert(END,"No Results")
                 messagebox.showinfo("None","No results were found")
+
             except:
                 clearFilterPupils()
                 filterResults.insert(END,"No Results")
@@ -1239,7 +1242,6 @@ def optionCommand(value):
     tempArray=[]
     if value == "A-Z (First name)":
         tempArray=sorted(pupilDataArray)
-        print(tempArray)
 
         
 def insertListbox(listbox,array):
@@ -1264,7 +1266,6 @@ def insertListbox(listbox,array):
         else:
             pupilColour="salmon"
          
-        print(pupilColour)   
         listbox.insert(END,temp)
         listbox.itemconfig(END,bg=pupilColour)
        
@@ -1306,7 +1307,9 @@ addBinding(createPupilCanvas, createPupilInfoStep)
 
 #Option Menus
 orderPupilOption=OptionMenu(bottomViewAllFrame,optionVar,*pupilOptions,command=optionCommand)
-orderPupilOption.pack(side=BOTTOM)
+orderPupilOption.pack(side=BOTTOM,pady=9)
+optionVar.set("Order by")
+
 #==============================Buttons===================
 
 
@@ -1351,6 +1354,7 @@ createPupilButton.grid(row=5,column=1,pady=7)
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 filterResults.bind('<Double-Button-1>', viewFilterResults)
 viewAllListbox.bind('<Double-Button-1>', viewallResults)
+
 #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initBackground()
 initTheme()
