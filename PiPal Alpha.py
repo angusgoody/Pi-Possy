@@ -205,6 +205,8 @@ showPupilNotes.grid(row=4,column=1,pady=2)
 
 #Canvas for viewing all pupils-----------------------------------
 viewAllCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
+bottomViewAllFrame=Frame(viewAllCanvas)
+bottomViewAllFrame.pack(side=BOTTOM,pady=4)
 
 viewAllListbox=Listbox(viewAllCanvas,width=25)
 viewAllListbox.pack(side=LEFT)
@@ -218,7 +220,7 @@ viewAllListbox.config(yscrollcommand=viewAllSlider.set)
 pupilOptions=["Grade","A-Z (First name)","A-Z (Second name)"]
 optionVar=StringVar()
 
-orderPupilOption=OptionMenu(viewAllCanvas,optionVar,*pupilOptions)
+orderPupilOption=OptionMenu(bottomViewAllFrame,optionVar,*pupilOptions)
 orderPupilOption.pack(side=BOTTOM)
 #Canvas for creating new pupil--------------------------------------
 
@@ -905,19 +907,7 @@ def checkIfSame(key):
     global currentViewPupil
     global overwriteArray
 
-    newFirst=showPupilName.get()
-    newSecond=showPupilSecond.get()
-    newGrade=showPupilGrade.get()
-    newTarget=showPupilTarget.get()
-    newNotes=showPupilNotes.get("1.0",END)
-    newNotes=newNotes.rstrip()
-
-    tempArray=[]
-    tempArray.append(newFirst)
-    tempArray.append(newSecond)
-    tempArray.append(newGrade)
-    tempArray.append(newTarget)
-    tempArray.append(newNotes)
+    tempArray=getPupilInfo(viewPupilCanvas)
 
     overwriteArray=tempArray
     if tempArray == currentViewPupil:
@@ -1182,7 +1172,30 @@ def doubleClick(listbox,array):
             print("Error loading pupil")
 
                    
+def getPupilInfo(canvas):
+    infoArray=[]
+    for widget in canvas.winfo_children():
+        if widget.winfo_class() == "Entry" or widget.winfo_class() == "Text":
+            try:
+                data=widget.get()
+                data=data.rstrip()
+            except:
+                try:
+                    data=widget.get("1.0",END)
+                    data=data.rstrip()
+                except:
+                    print("Error")
+                else:
+                    infoArray.append(data)
+                
+            else:
+                infoArray.append(data)
+            
+    print(infoArray)
+    return infoArray          
 
+def createPupilInfo():
+    content=getPupilInfo(createPupilCanvas)            
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1253,7 +1266,7 @@ clearFilterResultsButton=Button(filterPupilCanvas,text="Clear",relief=FLAT,comma
 clearFilterResultsButton.grid(row=3,column=2)
 
 #Buttons for creating pupil
-createPupilButton=Button(createPupilCanvas,text="Create",width=15)
+createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=createPupilInfo)
 createPupilButton.grid(row=5,column=1,pady=7)
 
 #Bindings-------------------------
