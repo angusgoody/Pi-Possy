@@ -1208,10 +1208,8 @@ def optionCommand(value):
     tempArray=[]
     if value == "A-Z (First name)":
         tempArray=sorted(pupilDataArray)
-<<<<<<< HEAD
         insertListbox(viewAllListbox, tempArray)
-=======
->>>>>>> origin/master
+
 
         
 def insertListbox(listbox,array):
