@@ -1395,12 +1395,14 @@ def insertListbox(listbox,array):
             name="?"
             second="?"
             grade="?"     
-            
+        
         temp=""     
         temp+=name
         temp+=" "
         temp+=second
+  
         
+                
         if grade in passGrades:
             
             pupilColour="light green"
@@ -1412,7 +1414,9 @@ def insertListbox(listbox,array):
        
 def searchPupilStep(event):
     searchPupils()
-                      
+   
+def pupilGradeClick(event):
+    print("Not working yet")    
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1449,6 +1453,7 @@ getPupilsFromFile()
 addPupilsMenu(pupilDataArray)
 addBinding(createPupilCanvas, createPupilInfoStep)
 addBinding(filterPupilCanvas,searchPupilStep)
+
 
 #Option Menus
 orderPupilOption=OptionMenu(bottomViewAllFrame,optionVar,*pupilOptions,command=optionCommand)
@@ -1499,6 +1504,7 @@ createPupilButton.grid(row=5,column=1,pady=7)
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 filterResults.bind('<Double-Button-1>', viewFilterResults)
 viewAllListbox.bind('<Double-Button-1>', viewallResults)
+viewAllListbox.bind('<Button-1>', pupilGradeClick)
 
 #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initBackground()
