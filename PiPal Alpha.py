@@ -274,8 +274,19 @@ filterVariable.set("All")
 filterPupilEntry=Entry(filterPupilCanvas)
 filterPupilEntry.grid(row=1,column=1,padx=4)
 
-filterResults=Listbox(filterPupilCanvas,bg="white")
-filterResults.grid(row=3,column=1,pady=4)
+
+
+filterFrame=Frame(filterPupilCanvas)
+filterFrame.grid(row=3,column=1)
+
+filterResults=Listbox(filterFrame)
+filterResults.pack(side=LEFT)
+
+filterResultsScroll=Scrollbar(filterFrame)
+filterResultsScroll.pack(side=LEFT,fill=Y)
+
+filterResultsScroll.config(command=filterResults.yview)
+filterResults.config(yscrollcommand=filterResultsScroll.set)
 
 #===================================================================END OF CANVAS'=======================
 #Arrays
@@ -974,7 +985,6 @@ def saveNewPupils(array):
                             line=line.rstrip()
                         except:
                             print("Error stripping line")
-                        print(line)
                         file.write(line)
                         file.write("\n")
 
