@@ -198,7 +198,7 @@ showPupilTarget=Entry(viewPupilCanvas)
 showPupilTarget.grid(row=3,column=1,pady=2)
 
 if version == "Windows":
-    showPupilNotes=Text(viewPupilCanvas,height=5,width=15,wrap=WORD)
+    showPupilNotes=Text(viewPupilCanvas,height=5,width=15,wrap=WORD,font=("Helvetica", "11"))
 else:
     if version == "Darwin":
         showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
