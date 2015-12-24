@@ -969,6 +969,12 @@ def saveNewPupils(array):
                 for item in array:
                     file.write("=======================\n")
                     for line in item:
+                       
+                        try:
+                            line=line.rstrip()
+                        except:
+                            print("Error stripping line")
+                        print(line)
                         file.write(line)
                         file.write("\n")
 
@@ -1020,7 +1026,6 @@ def newFilter():
     clearFilterResultsButton.config(activebackground=filterPupilCanvas.cget("bg"))
     cl=status.cget("bg")
     cl2=window.cget("bg")
-    filterResults.config(selectbackground=cl2)
     if version == "Windows":
         filterPupilOption.config(bg=cl)
     filterPupilOption.config(activebackground=cl)
@@ -1395,7 +1400,9 @@ def insertListbox(listbox,array):
         listbox.insert(END,temp)
         listbox.itemconfig(END,bg=pupilColour)
        
-                  
+def searchPupilStep(event):
+    searchPupils()
+                      
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1420,6 +1427,7 @@ viewMenu.add_command(label="Change Background",command=changeBackground)
 
 #Pupil Menu
 pupilMenu.add_command(label="View All",command=showAllPupils)
+pupilMenu.add_command(label="New Pupil",command=showCreatePupil)
 pupilMenu.add_separator()
 pupilMenu.add_cascade(label="Pupils",menu=subPupilMenu)
 #Filter Menu
@@ -1430,6 +1438,7 @@ setOpenUser(getUserName())
 getPupilsFromFile()
 addPupilsMenu(pupilDataArray)
 addBinding(createPupilCanvas, createPupilInfoStep)
+addBinding(filterPupilCanvas,searchPupilStep)
 
 #Option Menus
 orderPupilOption=OptionMenu(bottomViewAllFrame,optionVar,*pupilOptions,command=optionCommand)
