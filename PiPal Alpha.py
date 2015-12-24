@@ -3,7 +3,7 @@ __author__ = 'Angus'
 #Angus Goody
 #8/10/15
 
-#Pi Pal version 4.3
+#Pi Pal version 5.1
 
 #Imports-------
 from tkinter import *
@@ -15,10 +15,12 @@ import random
 
 version=platform.system()
 print("System platform is",version)
+
 #Sets up window---------
 window=Tk()
 window.geometry("450x350")
 window.title("PiPal")
+
 
 #Staus bar
 statusVar=StringVar()
@@ -41,6 +43,8 @@ fileMenu=Menu(mainMenu)
 viewMenu=Menu(mainMenu)
 pupilMenu=Menu(mainMenu)
 filterMenu=Menu(mainMenu)
+
+subPupilMenu=Menu(pupilMenu)
 #===================================================================CANVAS'=======================
 
 
@@ -52,6 +56,7 @@ userVar=StringVar()
 
 openLabel=Label(openCanvas,textvariable=userVar,font= "Helvetica 16 bold")
 openLabel.grid(row=0,column=1)
+
 
 #Change user canvas----------------------------------------------
 changeUserNameCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
@@ -854,7 +859,7 @@ def addPupilsMenu(array):
 
             #Menu bit
 
-            pupilMenu.add_command(
+            subPupilMenu.add_command(
             label=displayName,command=lambda item1=field1,
             item2=field2,
             item3=field3,
@@ -1416,7 +1421,7 @@ viewMenu.add_command(label="Change Background",command=changeBackground)
 #Pupil Menu
 pupilMenu.add_command(label="View All",command=showAllPupils)
 pupilMenu.add_separator()
-
+pupilMenu.add_cascade(label="Pupils",menu=subPupilMenu)
 #Filter Menu
 filterMenu.add_command(label="New Filter",command=newFilter)
 
@@ -1481,5 +1486,4 @@ initBackground()
 initTheme()
 
 #print(pupilDataArray)
-
 window.mainloop()
