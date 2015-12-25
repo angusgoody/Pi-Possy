@@ -199,6 +199,7 @@ showPupilTarget.grid(row=3,column=1,pady=2)
 
 if version == "Windows":
     showPupilNotes=Text(viewPupilCanvas,height=5,width=15,wrap=WORD,font=("Helvetica", "11"))
+    
 else:
     if version == "Darwin":
         showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
@@ -249,7 +250,8 @@ createPupilTarget=Entry(createPupilCanvas)
 createPupilTarget.grid(row=3,column=1,pady=2)
 
 if version == "Windows":
-    createPupilNotes=Text(createPupilCanvas,height=5,width=15,wrap=WORD)
+    createPupilNotes=Text(createPupilCanvas,height=5,width=15,wrap=WORD,font=("Helvetica","11"))
+
 else:
     if version == "Linux":
         createPupilNotes=Text(createPupilCanvas,font=("Helvetica", "12"),height=5,width=18,wrap=WORD)
