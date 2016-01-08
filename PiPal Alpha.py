@@ -213,16 +213,27 @@ showPupilNotes.grid(row=4,column=1,pady=2)
 viewAllCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
 mainViewAllFrame=Frame(viewAllCanvas)
-mainViewAllFrame.pack(side=LEFT)
+mainViewAllFrame.pack(side=LEFT,fill=Y,padx=9)
 
 secondViewAllFrame=Frame(viewAllCanvas)
-secondViewAllFrame.pack(side=RIGHT)
+secondViewAllFrame.pack(side=RIGHT,fill=Y)
 
 #Second Frame
-Label(secondViewAllFrame,text="Preview").grid(row=0,column=0)
+Label(secondViewAllFrame,text="Preview").grid(row=0,column=1,pady=15)
+
 Label(secondViewAllFrame,text="Name").grid(row=1,column=0)
 Label(secondViewAllFrame,text="Second").grid(row=2,column=0)
 Label(secondViewAllFrame,text="Grade").grid(row=3,column=0)
+
+previewName=Entry(secondViewAllFrame,state=DISABLED)
+previewName.grid(row=1,column=1)
+
+previewSecond=Entry(secondViewAllFrame,state=DISABLED)
+previewSecond.grid(row=2,column=1)
+
+previewGrade=Entry(secondViewAllFrame,state=DISABLED)
+previewGrade.grid(row=3,column=1)
+
 
 #Main Frame
 bottomViewAllFrame=Frame(mainViewAllFrame)
@@ -322,6 +333,7 @@ def insertEntry(entry,message):
     if entry.winfo_class() == "Text":
         entry.delete("1.0",END)
     else:
+   
         entry.delete(0,END)
     entry.insert(END,message)
 
@@ -815,6 +827,11 @@ def updateBackgroundColours(colour):
                                         print("Error changing",item.winfo_class())
                                     else:
                                         arr=item.winfo_children()
+                                try:
+                                    item.config(highlightbackground=colour) 
+                                except:
+                                    print("Highlight error")    
+                                                              
             widget.config(highlightbackground=colour)
             
             
@@ -1445,7 +1462,39 @@ def searchPupilStep(event):
     searchPupils()
    
 def pupilGradeClick(event):
-    print("Not working yet")    
+    index = viewAllListbox.curselection()
+    try:
+        picked=viewAllListbox.get(index)
+    except:
+        pass
+    else:
+        words=picked.split()
+        for pupil in pupilDataArray:
+            valid1=False
+            valid2=False
+            try:
+                if pupil[0] == words[0]:
+                    valid1=True
+                if pupil[1] == words[1]:
+                    valid2=True
+                
+                if valid1 == True and valid2 == True:
+                    break
+            except:
+                print("ERROR")
+
+
+        try:
+            entrytoInsert=[previewName,previewSecond,previewGrade]
+            for item in entrytoInsert:
+                item.config(state=NORMAL)
+                dataPos=entrytoInsert.index(item)
+                data=pupil[dataPos]
+                insertEntry(item, data)
+        except:
+            print("Error loading pupil")
+            
+            
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1533,7 +1582,7 @@ createPupilButton.grid(row=5,column=1,pady=7)
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 filterResults.bind('<Double-Button-1>', viewFilterResults)
 viewAllListbox.bind('<Double-Button-1>', viewallResults)
-viewAllListbox.bind('<Button-1>', pupilGradeClick)
+viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 
 #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initBackground()
