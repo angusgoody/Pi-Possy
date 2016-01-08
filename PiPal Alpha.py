@@ -1067,6 +1067,12 @@ def showAllPupils():
         orderPupilOption.config(bg=colour2)
     orderPupilOption.config(activebackground=colour)
     
+    entrytoInsert=[previewName,previewSecond,previewGrade]
+    for item in entrytoInsert:
+        item.config(state=NORMAL)
+        insertEntry(item, "")
+        item.config(state=DISABLED)
+        
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
     
@@ -1578,6 +1584,9 @@ clearFilterResultsButton.grid(row=3,column=2)
 createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=createPupilInfo)
 createPupilButton.grid(row=5,column=1,pady=7)
 
+#Buttons for view all pupils
+viewAllPupilButton=Button(secondViewAllFrame,text="View")
+viewAllPupilButton.grid(row=4,column=1,pady=6)
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 filterResults.bind('<Double-Button-1>', viewFilterResults)
