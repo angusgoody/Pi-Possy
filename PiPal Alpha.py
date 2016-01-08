@@ -211,13 +211,27 @@ showPupilNotes.grid(row=4,column=1,pady=2)
 
 #Canvas for viewing all pupils-----------------------------------
 viewAllCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
-bottomViewAllFrame=Frame(viewAllCanvas)
+
+mainViewAllFrame=Frame(viewAllCanvas)
+mainViewAllFrame.pack(side=LEFT)
+
+secondViewAllFrame=Frame(viewAllCanvas)
+secondViewAllFrame.pack(side=RIGHT)
+
+#Second Frame
+Label(secondViewAllFrame,text="Preview").grid(row=0,column=0)
+Label(secondViewAllFrame,text="Name").grid(row=1,column=0)
+Label(secondViewAllFrame,text="Second").grid(row=2,column=0)
+Label(secondViewAllFrame,text="Grade").grid(row=3,column=0)
+
+#Main Frame
+bottomViewAllFrame=Frame(mainViewAllFrame)
 bottomViewAllFrame.pack(side=BOTTOM,pady=4)
 
-viewAllListbox=Listbox(viewAllCanvas,width=25)
+viewAllListbox=Listbox(mainViewAllFrame,width=25)
 viewAllListbox.pack(side=LEFT)
 
-viewAllSlider=Scrollbar(viewAllCanvas)
+viewAllSlider=Scrollbar(mainViewAllFrame)
 viewAllSlider.pack(side=LEFT,fill=Y)
 
 viewAllSlider.config(command=viewAllListbox.yview)
@@ -269,7 +283,7 @@ Label(filterPupilCanvas,text="Results:").grid(row=3,column=0,pady=5)
 
 filterVariable=StringVar()
 
-filterPupilOption=OptionMenu(filterPupilCanvas,filterVariable,"Name","Second","Grade","Target","All")
+filterPupilOption=OptionMenu(filterPupilCanvas,filterVariable,"First","Second","Grade","Target","All")
 filterPupilOption.grid(row=0,column=1,pady=5)
 filterVariable.set("All")
 
@@ -779,6 +793,8 @@ def initBackground():
 def updateBackgroundColours(colour):
     widgetArray=["Entry","Button","Text","Listbox","OptionMenu"]
     window.config(bg=colour)
+
+
     for item in canvasArray:
         item.config(bg=colour)
         for widget in item.winfo_children():
@@ -787,9 +803,21 @@ def updateBackgroundColours(colour):
                     widget.config(bg=colour)
                 except:
                     print("Error changing widget info")
+                else:
+                    if widget.winfo_class() == "Frame":
+                        arr=widget.winfo_children()
+                        while len(arr) > 0:
+                            for item in arr:
+                                if item.winfo_class() not in widgetArray:
+                                    try:
+                                        item.config(bg=colour)
+                                    except:
+                                        print("Error changing",item.winfo_class())
+                                    else:
+                                        arr=item.winfo_children()
             widget.config(highlightbackground=colour)
             
-
+            
 def updateButtonBackground(colour):
     for item in canvasArray:
                 for widget in item.winfo_children():
@@ -1022,7 +1050,6 @@ def showAllPupils():
         orderPupilOption.config(bg=colour2)
     orderPupilOption.config(activebackground=colour)
     
-    viewAllListbox.config(selectbackground=colour2)
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
     
