@@ -1,4 +1,4 @@
+defaultColour: deep pink
 defaultBackground: chartreuse3
-defaultColour: violet red
 userName123: Angus Goody
 

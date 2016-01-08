@@ -1069,9 +1069,11 @@ def showAllPupils():
     
     entrytoInsert=[previewName,previewSecond,previewGrade]
     for item in entrytoInsert:
-        item.config(state=NORMAL)
-        insertEntry(item, "")
-        item.config(state=DISABLED)
+        if item == previewGrade:
+            
+            item.config(state=NORMAL)
+            insertEntry(item, "")
+            item.config(state=DISABLED)
         
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
@@ -1493,10 +1495,18 @@ def pupilGradeClick(event):
         try:
             entrytoInsert=[previewName,previewSecond,previewGrade]
             for item in entrytoInsert:
+                    
                 item.config(state=NORMAL)
                 dataPos=entrytoInsert.index(item)
                 data=pupil[dataPos]
                 insertEntry(item, data)
+                if item == previewGrade:
+                    grade=pupil[dataPos]
+                    if grade not in passGrades:
+                        item.config(fg="red")
+                    else:
+                        item.config(fg="black")
+                
         except:
             print("Error loading pupil")
             
