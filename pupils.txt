@@ -40,7 +40,6 @@ Green
 E
 Vision
 Next bit should
-be on new line
 =======================
 Cameron
 Smith
@@ -144,8 +143,20 @@ A*
 Dribbling
 Unknown?
 =======================
-Rachael
-Is
-Stupid
+Jamie
+Borris
+A
 Everything
-Rachael is a bit special
+Jamie is a bit slow
+=======================
+Billy
+Bob
+C
+Shooting
+Billy is very scared of the ball
+=======================
+Billy
+Bob
+C
+Shooting
+Billy is very scared of the ball

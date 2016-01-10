@@ -55,7 +55,15 @@ statusVar.set("Home")
 userVar=StringVar()
 
 openLabel=Label(openCanvas,textvariable=userVar,font= "Helvetica 16 bold")
-openLabel.grid(row=0,column=1)
+openLabel.pack()
+
+viewNumberFrame=Frame(openCanvas)
+viewNumberFrame.pack(pady=10)
+
+numberVar=StringVar()
+numberVar.set("0")
+Label(viewNumberFrame,text="Number of pupils:").grid(row=0,column=0)
+Label(viewNumberFrame,textvariable=numberVar).grid(row=0,column=1)
 
 
 #Change user canvas----------------------------------------------
@@ -496,6 +504,8 @@ def submitTheme(colour):
 
 
 def showOpenCanvas():
+    leng=len(pupilDataArray)
+    numberVar.set(leng)
     loadCanvas(openCanvas,"Home")
 
 def updateTheme(colour):
@@ -1067,13 +1077,12 @@ def showAllPupils():
         orderPupilOption.config(bg=colour2)
     orderPupilOption.config(activebackground=colour)
     
+    
     entrytoInsert=[previewName,previewSecond,previewGrade]
     for item in entrytoInsert:
-        if item == previewGrade:
-            
-            item.config(state=NORMAL)
-            insertEntry(item, "")
-            item.config(state=DISABLED)
+        item.config(state=NORMAL)
+        insertEntry(item, "")
+        item.config(state=DISABLED)
         
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
@@ -1509,8 +1518,10 @@ def pupilGradeClick(event):
                 
         except:
             print("Error loading pupil")
-            
-            
+
+def viewAllResultsStep():
+    viewallResults("blah")
+                     
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1595,7 +1606,7 @@ createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=create
 createPupilButton.grid(row=5,column=1,pady=7)
 
 #Buttons for view all pupils
-viewAllPupilButton=Button(secondViewAllFrame,text="View")
+viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
 viewAllPupilButton.grid(row=4,column=1,pady=6)
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
@@ -1606,6 +1617,6 @@ viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initBackground()
 initTheme()
-
+showOpenCanvas()
 #print(pupilDataArray)
 window.mainloop()
