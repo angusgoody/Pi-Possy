@@ -1113,7 +1113,7 @@ def searchPupils():
     target=filterPupilEntry.get()
     target=str(target)
     if target != "" and target != None:
-        tempSearchArray=["Name","Second","Grade","Target","All"]
+        tempSearchArray=["First","Second","Grade","Target","All"]
         if area == "All":
             pos="*"
         else:
