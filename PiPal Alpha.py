@@ -233,13 +233,13 @@ Label(secondViewAllFrame,text="Name").grid(row=1,column=0)
 Label(secondViewAllFrame,text="Second").grid(row=2,column=0)
 Label(secondViewAllFrame,text="Grade").grid(row=3,column=0)
 
-previewName=Entry(secondViewAllFrame,state=DISABLED)
+previewName=Entry(secondViewAllFrame)
 previewName.grid(row=1,column=1)
 
-previewSecond=Entry(secondViewAllFrame,state=DISABLED)
+previewSecond=Entry(secondViewAllFrame)
 previewSecond.grid(row=2,column=1)
 
-previewGrade=Entry(secondViewAllFrame,state=DISABLED)
+previewGrade=Entry(secondViewAllFrame)
 previewGrade.grid(row=3,column=1)
 
 
@@ -1087,8 +1087,11 @@ def showAllPupils():
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
     
-    insertListbox(viewAllListbox, pupilDataArray)
-        
+    if len(pupilDataArray) > 0:
+        insertListbox(viewAllListbox, pupilDataArray)
+    else:
+        viewAllListbox.insert(END,"NO DATA")
+                 
 
 def showCreatePupil():
     loadCanvas(createPupilCanvas,"Create Pupil")
@@ -1256,6 +1259,7 @@ def getPupilInfo(canvas):
     return infoArray          
 
 def createPupilInfo():
+    
     content=getPupilInfo(createPupilCanvas)
     leng=len(content)
     valid=True
@@ -1277,10 +1281,13 @@ def createPupilInfo():
             
         else:
             print("Fine")
+            
             savePupilToFile(content)
 
 def savePupilToFile(array):
+    global pupilDataArray
     pupilDataArray.append(array)
+    
     try:
         file=open("pupils.txt","a")
     except:
@@ -1515,13 +1522,14 @@ def pupilGradeClick(event):
                         item.config(fg="red")
                     else:
                         item.config(fg="black")
-                
+                item.config(state=DISABLED)                
         except:
             print("Error loading pupil")
 
 def viewAllResultsStep():
     viewallResults("blah")
-                     
+
+                        
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
