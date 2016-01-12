@@ -863,7 +863,7 @@ def toggleText(variable,widgetChoice):
     elif variable == "white":
         variable="black"
 
-    for item in canvasArray:
+    for item in window.winfo_children():
         for widget in item.winfo_children():
             if widget.winfo_class() == widgetChoice:
                 widget.config(fg=variable)
@@ -1286,22 +1286,31 @@ def createPupilInfo():
 
 def savePupilToFile(array):
     global pupilDataArray
-    pupilDataArray.append(array)
+    if array not in pupilDataArray:
+        pupilDataArray.append(array)
+        try:
+            file=open("pupils.txt","a")
+        except:
+            file=open("pupils.txt","w")
+        
+        file.write("=======================\n")
+        for line in array:
+            file.write(line)
+            file.write("\n")
+        
+        try:
+            messagebox.showinfog("Success","Pupil created")
+        except:
+            print("Pupil created succesfully")
+            
+    else:
+        try:
+            messagebox.showinfo("Duplicate","This pupil allready exists")
+        except:
+            print("This pupil allready exists")
+     
     
-    try:
-        file=open("pupils.txt","a")
-    except:
-        file=open("pupils.txt","w")
-    
-    file.write("=======================\n")
-    for line in array:
-        file.write(line)
-        file.write("\n")
-    
-    try:
-        messagebox.showinfog("Success","Pupil created")
-    except:
-        print("Pupil created succesfully")
+
         
         
         
