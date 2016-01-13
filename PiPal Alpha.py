@@ -189,7 +189,7 @@ viewPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthicknes
 Label(viewPupilCanvas,text="First Name:").grid(row=0,column=0)
 Label(viewPupilCanvas,text="Second Name:").grid(row=1,column=0)
 Label(viewPupilCanvas,text="Grade").grid(row=2,column=0)
-Label(viewPupilCanvas,text="Target:").grid(row=3,column=0)
+Label(viewPupilCanvas,text="Personal Best:").grid(row=3,column=0)
 Label(viewPupilCanvas,text="Notes:").grid(row=4,column=0)
 
 
@@ -267,7 +267,7 @@ createPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickn
 Label(createPupilCanvas,text="First Name:").grid(row=0,column=0)
 Label(createPupilCanvas,text="Second Name:").grid(row=1,column=0)
 Label(createPupilCanvas,text="Grade").grid(row=2,column=0)
-Label(createPupilCanvas,text="Target:").grid(row=3,column=0)
+Label(createPupilCanvas,text="Personal Best:").grid(row=3,column=0)
 Label(createPupilCanvas,text="Notes:").grid(row=4,column=0)
 
 createPupilName=Entry(createPupilCanvas)
@@ -302,7 +302,7 @@ Label(filterPupilCanvas,text="Results:").grid(row=3,column=0,pady=5)
 
 filterVariable=StringVar()
 
-filterPupilOption=OptionMenu(filterPupilCanvas,filterVariable,"First","Second","Grade","Target","All")
+filterPupilOption=OptionMenu(filterPupilCanvas,filterVariable,"First","Second","Grade","Personal Best","All")
 filterPupilOption.grid(row=0,column=1,pady=5)
 filterVariable.set("All")
 
@@ -607,11 +607,8 @@ def saveLineToFile(file,lineToAdd,target):
                 fileToWrite.write(item)
 
             fileToWrite.close()
-            try:
-                messagebox.showinfo("Sucess","Changed infomation")
-            except:
-                print("Changed info")
-            print()
+            askMessage("Sucess","Changed infomation")
+
 
 
 def getFromFile(fileToSearch,target):
@@ -864,9 +861,14 @@ def toggleText(variable,widgetChoice):
         variable="black"
 
     for item in window.winfo_children():
+        print(item.winfo_class())
+        if item.winfo_class() == widgetChoice:
+            item.config(fg=variable)
         for widget in item.winfo_children():
             if widget.winfo_class() == widgetChoice:
                 widget.config(fg=variable)
+                
+                
     return variable
 
 
@@ -1046,10 +1048,7 @@ def saveNewPupils(array):
                         file.write("\n")
 
                 file.close()
-                try:
-                    messagebox.showinfo("Success","Overwrite success restart to update")
-                except:
-                    print("Overwrite success")
+                askMessage("Success","Overwrite success restart to update")
                 overwritePupilButton.config(state=DISABLED)
 
 
@@ -1060,7 +1059,7 @@ def deletePupilStep():
     try:
         option=messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
     except:
-        option=tkiner.filedialog.messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
+        print("Error with tkinter")
         
     else:
         if option == True:
@@ -1162,15 +1161,9 @@ def searchPupils():
 
 
         if found == False:
-            try:
-                clearFilterPupils()
-                filterResults.insert(END,"No Results")
-                messagebox.showinfo("None","No results were found")
-
-            except:
-                clearFilterPupils()
-                filterResults.insert(END,"No Results")
-                print("No results Found")
+            clearFilterPupils()
+            filterResults.insert(END,"No results")
+            askMessage("None","No results were found")
                 
 
         else:
@@ -1181,6 +1174,8 @@ def searchPupils():
             filterPupilArray=resultArray
             insertListbox(filterResults, resultArray)
 
+    else:
+        askMessage("No data","Please enter something")
 def clearFilterPupils():
     filterResults.delete(0,END)
 
@@ -1274,11 +1269,7 @@ def createPupilInfo():
         
     else:
         if valid == False:
-            try:
-                messagebox.showinfo("Info","All fields except notes must be filled")
-            except:
-                print("Please fill in all areas")
-            
+            askMessage("Info", "All fields except notes must be filled")
         else:
             print("Fine")
             
@@ -1298,16 +1289,13 @@ def savePupilToFile(array):
             file.write(line)
             file.write("\n")
         
-        try:
-            messagebox.showinfog("Success","Pupil created")
-        except:
-            print("Pupil created succesfully")
+        
+        askMessage("Success","Pupil created")
+
             
     else:
-        try:
-            messagebox.showinfo("Duplicate","This pupil allready exists")
-        except:
-            print("This pupil allready exists")
+        askMessage("Duplicate","This pupil allready exists")
+
      
     
 
@@ -1536,9 +1524,14 @@ def pupilGradeClick(event):
             print("Error loading pupil")
 
 def viewAllResultsStep():
-    viewallResults("blah")
+    viewallResults("")
 
-                        
+def askMessage(pre,message):
+    
+    try:
+        messagebox.showinfo(pre,message)       
+    except:
+        print(message)                 
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
