@@ -27,13 +27,17 @@ statusVar=StringVar()
 status=Label(window,text="Status",bg="lightblue",textvariable = statusVar)
 status.pack(side=BOTTOM,fill=X)
 
- #Main variables=================
+#Main variables=================
 mainButtonColour="light green"
 userName=""
 encryptionKey=8
 mainEntryTextColour="black"
 mainLabelTextColour="black"
-numberOfTextItems=5 #The variable for how many items are contained for each pupil in the text file
+numberOfTextItems=9 #The variable for how many items are contained for each pupil in the text file
+mainPupilName="pupils.txt"
+mainUserName="userName.txt"
+
+currentViewPupil=[]
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -190,7 +194,12 @@ Label(viewPupilCanvas,text="First Name:").grid(row=0,column=0)
 Label(viewPupilCanvas,text="Second Name:").grid(row=1,column=0)
 Label(viewPupilCanvas,text="Grade").grid(row=2,column=0)
 Label(viewPupilCanvas,text="Personal Best:").grid(row=3,column=0)
-Label(viewPupilCanvas,text="Notes:").grid(row=4,column=0)
+
+displayPersonalBestVar=StringVar()
+displayPersonalBest=Label(viewPupilCanvas,textvariable=displayPersonalBestVar)
+displayPersonalBest.grid(row=4,column=0)
+
+Label(viewPupilCanvas,text="Notes:").grid(row=5,column=0)
 
 
 showPupilName=Entry(viewPupilCanvas)
@@ -202,8 +211,8 @@ showPupilSecond.grid(row=1,column=1,pady=2)
 showPupilGrade=Entry(viewPupilCanvas)
 showPupilGrade.grid(row=2,column=1,pady=2)
 
-showPupilTarget=Entry(viewPupilCanvas)
-showPupilTarget.grid(row=3,column=1,pady=2)
+chosenPeronalBestToView=StringVar()
+chosenPeronalBestToView.set("Select PB")
 
 if version == "Windows":
     showPupilNotes=Text(viewPupilCanvas,height=5,width=15,wrap=WORD,font=("Helvetica", "11"))
@@ -215,8 +224,12 @@ else:
         showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=18,wrap=WORD)
         
 
-showPupilNotes.grid(row=4,column=1,pady=2)
 
+viewPersonalBestEntry=Entry(viewPupilCanvas)
+viewPersonalBestEntry.grid(row=4,column=1)
+
+
+showPupilNotes.grid(row=5,column=1,pady=2)
 #Canvas for viewing all pupils-----------------------------------
 viewAllCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
@@ -327,12 +340,13 @@ filterResults.config(yscrollcommand=filterResultsScroll.set)
 #Arrays
 letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
 
-sportArray=["Football","Hockey","Tennis","Basketball","Rugby"]
 canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas]
 themeEntry=Entry(window)
 pupilDataArray=[]
 filterPupilArray=[]
 passGrades=["A*","A","B","C"]
+mainPBOptions=["100m","Long Jump","200m","Javelin","Hurdles"]
+
 # Start of Functions===========================================================
 
 
@@ -352,6 +366,25 @@ def loadCanvas(canvas,message):
     canvas.pack(expand=True)
     statusVar.set(message)
 
+
+#====================================New added funtions======================
+
+
+
+            
+               
+                      
+            
+        
+
+
+
+
+
+
+
+
+
 #Function that returns lines read
 def getReadLines(fileToRead):
     try:
@@ -361,8 +394,9 @@ def getReadLines(fileToRead):
         print("Error when opening",fileToRead)
     else:
         content=file.readlines()
-        return content
         file.close()
+        return content
+
 
 #The main function that retrives the users name from the file
 def getUserName():
@@ -905,49 +939,48 @@ def getPupilsFromFile():
 #This function will take all pupil infomation and create a drop down menu with them all.
 
 def addPupilsMenu(array):
-
-
-    for array in array:
+    
+    pupilArray=array
+    for array in pupilArray:
         tempArray=[]
         for item in array:
             tempArray.append(item)
+            
+        
         try:
-            field1=tempArray[0]
-            field2=tempArray[1]
-            field3=tempArray[2]
-            field4=tempArray[3]
-            field5=tempArray[4]
+            tempLeng=len(tempArray)
+                  
+                
+                
         except:
-            print("Indexing error")
+            print("Indexing error HERE")
         else:
+            fieldArray=tempArray
             temp=""
-            temp+=field1
+            temp+=fieldArray[0]
             temp+=" "
-            tup=field2
+            tup=fieldArray[1]
             temp+=tup[0]
             displayName=temp
 
             #Menu bit
-
+            print(fieldArray)
             subPupilMenu.add_command(
-            label=displayName,command=lambda item1=field1,
-            item2=field2,
-            item3=field3,
-            item4=field4,
-            item5=field5
-            : showPupil(item1,item2,item3,item4,item5))
+            label=displayName,command=lambda showArray=fieldArray
+            : showPupil(showArray))
 
 
-def showPupil(item1,item2,item3,item4,item5):
+def showPupil(fieldArray):
+    print("Viewing pupil now")
+    print(fieldArray)
     overwritePupilButton.config(state=DISABLED)
 
     global currentViewPupil
     currentViewPupil=[]
-    currentViewPupil.append(item1)
-    currentViewPupil.append(item2)
-    currentViewPupil.append(item3)
-    currentViewPupil.append(item4)
-    currentViewPupil.append(item5)
+    for item in fieldArray:
+        currentViewPupil.append(item)
+        
+
     
     #Bindings
 
@@ -955,16 +988,23 @@ def showPupil(item1,item2,item3,item4,item5):
     showPupilName.bind("<KeyRelease>",checkIfSame)
     showPupilSecond.bind("<KeyRelease>",checkIfSame)
     showPupilGrade.bind("<KeyRelease>",checkIfSame)
-    showPupilTarget.bind("<KeyRelease>",checkIfSame)
     showPupilNotes.bind("<KeyRelease>",checkIfSame)
 
     loadCanvas(viewPupilCanvas, "Showing Pupil")
+    print(fieldArray)
+    personalBests=[fieldArray[3],fieldArray[4],fieldArray[5],fieldArray[6],fieldArray[7]]
+    
+    #This is where the data passed to the function is displayed
+    insertEntry(showPupilName, fieldArray[0])
+    insertEntry(showPupilSecond, fieldArray[1])
+    insertEntry(showPupilGrade,  fieldArray[2])
+    
+    #Personal bests
+    
+    #Add items here
 
-    insertEntry(showPupilName, item1)
-    insertEntry(showPupilSecond, item2)
-    insertEntry(showPupilGrade, item3)
-    insertEntry(showPupilTarget, item4)
-    insertEntry(showPupilNotes, item5)
+        
+    insertEntry(showPupilNotes, fieldArray[8])
 
 #The function that runs every time the keyboard is pressed to update overwrite button state
 
@@ -1191,6 +1231,7 @@ def updateMenuBG(colour):
 
 
 def viewFilterResults(event):
+    
     try:
         doubleClick(filterResults, filterPupilArray)
     except:
@@ -1226,7 +1267,7 @@ def doubleClick(listbox,array):
                 print("ERROR")
 
         try:
-            showPupil(pupil[0],pupil[1],pupil[2],pupil[3],pupil[4])
+            showPupil(pupil)
         except:
             print("Error loading pupil")
 
@@ -1531,7 +1572,37 @@ def askMessage(pre,message):
     try:
         messagebox.showinfo(pre,message)       
     except:
-        print(message)                 
+        print(message)    
+        
+def viewPersonalBest(value):
+    global currentViewPupil
+    #Personal bests are between index 3-7
+    pbArray=[]
+    for x in range(3,8):
+        try:
+            pb=currentViewPupil[x]
+        except:
+            print("Indexing error")
+        else:
+            pbArray.append(pb)        
+    
+    firstMatchArray=mainPBOptions
+    secondMatchArray=pbArray
+    try:
+        pos=mainPBOptions.index(value)
+    except:
+        print("Indexing error")
+    else:
+        try:
+            match=secondMatchArray[pos]
+        except:
+            print("Error finding PB")
+        else:
+            temp=value
+            temp+=":"
+            displayPersonalBestVar.set(temp)
+            insertEntry(viewPersonalBestEntry, match)
+
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1570,10 +1641,18 @@ addBinding(createPupilCanvas, createPupilInfoStep)
 addBinding(filterPupilCanvas,searchPupilStep)
 
 
-#Option Menus
+#Option Menus---------------
+
+#Options for ordering
 orderPupilOption=OptionMenu(bottomViewAllFrame,optionVar,*pupilOptions,command=optionCommand)
 orderPupilOption.pack(side=BOTTOM,pady=9)
 optionVar.set("Order by")
+
+#Options for PB
+personalBestOptions=mainPBOptions
+showPupilPersonalBestOptions=OptionMenu(viewPupilCanvas,chosenPeronalBestToView,*personalBestOptions,command=viewPersonalBest)
+showPupilPersonalBestOptions.config(width=20)
+showPupilPersonalBestOptions.grid(row=3,column=1,pady=2)
 
 #==============================Buttons===================
 
@@ -1599,10 +1678,10 @@ backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
 #Button for overwriting and deleting data
 overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupilStep,relief=GROOVE,width=15)
-overwritePupilButton.grid(row=5,column=1,pady=9)
+overwritePupilButton.grid(row=6,column=1,pady=9)
 
 deletePupilButton=Button(viewPupilCanvas,text="Delete",command=deletePupilStep,relief=GROOVE,width=15)
-deletePupilButton.grid(row=6,column=1,pady=4)
+deletePupilButton.grid(row=7,column=1,pady=4)
 
 #Button for filtering pupils
 filterPupilButton=Button(filterPupilCanvas,text="Search",relief=GROOVE,width=13,command=searchPupils)
@@ -1629,4 +1708,5 @@ initBackground()
 initTheme()
 showOpenCanvas()
 #print(pupilDataArray)
+
 window.mainloop()
