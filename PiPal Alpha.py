@@ -1603,6 +1603,9 @@ def viewPersonalBest(value):
             displayPersonalBestVar.set(temp)
             insertEntry(viewPersonalBestEntry, match)
 
+
+def importPupils():
+    print("Ready to import")
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1618,6 +1621,7 @@ fileMenu.add_command(label="New Pupil",command=showCreatePupil)
 fileMenu.add_separator()
 
 
+
 #View Menu
 viewMenu.add_command(label="Toggle Text Colour",command=toggleLabelTextColour)
 viewMenu.add_separator()
@@ -1628,6 +1632,7 @@ viewMenu.add_command(label="Change Background",command=changeBackground)
 #Pupil Menu
 pupilMenu.add_command(label="View All",command=showAllPupils)
 pupilMenu.add_command(label="New Pupil",command=showCreatePupil)
+pupilMenu.add_command(label="Import pupils",command=importPupils)
 pupilMenu.add_separator()
 pupilMenu.add_cascade(label="Pupils",menu=subPupilMenu)
 #Filter Menu
