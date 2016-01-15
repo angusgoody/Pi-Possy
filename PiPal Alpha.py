@@ -12,6 +12,8 @@ from tkinter import colorchooser
 import platform
 import tkinter.filedialog
 import random
+from tkinter import filedialog
+
 
 version=platform.system()
 print("System platform is",version)
@@ -346,7 +348,7 @@ pupilDataArray=[]
 filterPupilArray=[]
 passGrades=["A*","A","B","C"]
 mainPBOptions=["100m","Long Jump","200m","Javelin","Hurdles"]
-
+newAddedPupils=[]
 # Start of Functions===========================================================
 
 
@@ -632,7 +634,7 @@ def saveLineToFile(file,lineToAdd,target):
         try:
             fileToWrite=open(file,"w")
         except:
-            print("Error opening",file,"to read info")
+            print("Error opening",file,"to write info")
         else:
             
             fileToWrite.write(lineToAdd)
@@ -644,7 +646,19 @@ def saveLineToFile(file,lineToAdd,target):
             askMessage("Sucess","Changed infomation")
 
 
-
+def writeArrayToFile(fileName,array):
+    try:
+        file=open(fileName,"w")
+    except:
+        askError("Error", "Error opening file")
+    else:
+        for line in array:
+            file.write(line)
+            file.write("\n")
+        file.close()
+        print("Writing complete")
+        
+            
 def getFromFile(fileToSearch,target):
     print()
     print("Initialising retrival -------------------")
@@ -911,10 +925,16 @@ def toggleLabelTextColour():
     mainLabelTextColour=toggleText(mainLabelTextColour,"Label")
 
 
-def getPupilsFromFile():
+def getPupilsFromFile(file):
+    global newAddedPupils
+    global pupilDataArray
+    duplicates=0
+    added=0
+    
+    
     placeFiller="Unknown?"
     print("Getting Pupil data---------------")
-    data=getReadLines("pupils.txt")
+    data=getReadLines(file)
     if data != None and data != "":
         lineCounter=0
         for line in data:
@@ -932,9 +952,16 @@ def getPupilsFromFile():
                             tempUserArray.append(lineData)
                         else:
                             tempUserArray.append(" ")
-
-                pupilDataArray.append(tempUserArray)
-
+                
+                if tempUserArray in pupilDataArray:
+                    duplicates+=1
+                else:
+                    pupilDataArray.append(tempUserArray)
+                    newAddedPupils.append(tempUserArray)
+                    added+=1
+                    
+    print("Added",added,"pupils")
+    print("Prevented",duplicates,"duplicates")
 
 #This function will take all pupil infomation and create a drop down menu with them all.
 
@@ -964,7 +991,6 @@ def addPupilsMenu(array):
             displayName=temp
 
             #Menu bit
-            print(fieldArray)
             subPupilMenu.add_command(
             label=displayName,command=lambda showArray=fieldArray
             : showPupil(showArray))
@@ -972,7 +998,6 @@ def addPupilsMenu(array):
 
 def showPupil(fieldArray):
     print("Viewing pupil now")
-    print(fieldArray)
     overwritePupilButton.config(state=DISABLED)
 
     global currentViewPupil
@@ -1605,7 +1630,48 @@ def viewPersonalBest(value):
 
 
 def importPupils():
-    print("Ready to import")
+    global newAddedPupils
+    file=filedialog.askopenfilename()
+    if file != None and file != "":
+        try:
+            openFile=open(file,"r")   
+        except:
+            askError("File", "Error opening file")
+        else:
+            try:
+                content=openFile.readlines()
+                openFile.close()
+            except:
+                askError("Reading", "Error when reading file")
+            else:
+                getPupilsFromFile(file)
+                
+                #Saves to file here
+                try:
+                    exportFile=open("pupils.txt","w")
+                    
+                except:
+                    print("Error opening file")
+                else:
+                    
+                    for array in pupilDataArray:
+                        exportFile.write("=======================\n")
+                        for item in array:
+                            exportFile.write(item)
+                            exportFile.write("\n")
+                    exportFile.close()
+
+                    askMessage("Success", "Import success restart to update")
+                
+                    
+                
+            
+def askError(pre,message):
+    try:
+        messagebox.showerror(pre,message)
+    except:
+        print(message)
+        
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1640,7 +1706,7 @@ filterMenu.add_command(label="New Filter",command=newFilter)
 
 #=======Returns===========
 setOpenUser(getUserName())
-getPupilsFromFile()
+getPupilsFromFile("pupils.txt")
 addPupilsMenu(pupilDataArray)
 addBinding(createPupilCanvas, createPupilInfoStep)
 addBinding(filterPupilCanvas,searchPupilStep)
