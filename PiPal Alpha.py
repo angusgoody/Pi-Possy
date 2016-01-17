@@ -38,8 +38,8 @@ mainLabelTextColour="black"
 numberOfTextItems=9 #The variable for how many items are contained for each pupil in the text file
 mainPupilName="pupils.txt"
 mainUserName="userName.txt"
-
 currentViewPupil=[]
+numberOfPB=5
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -1188,7 +1188,7 @@ def searchPupils():
     target=filterPupilEntry.get()
     target=str(target)
     if target != "" and target != None:
-        tempSearchArray=["First","Second","Grade","Target","All"]
+        tempSearchArray=["First","Second","Grade","Personal Best","All"]
         if area == "All":
             pos="*"
         else:
@@ -1211,6 +1211,19 @@ def searchPupils():
         else:
             for pupil in pupilDataArray:
                 try:
+                    if area == "Personal Best":
+                        miniCounter=2
+                        for x in range(0,numberOfPB):
+                            miniCounter+=1
+                            try:
+                                currentData=pupil
+                            except:
+                                print("Indexing error")
+                            else:
+                                if target in currentData and pupil not in resultArray:
+                                    
+                                    resultArray.append(pupil)
+                            
                     dataItem=pupil[pos]
 
                 except:
@@ -1219,7 +1232,7 @@ def searchPupils():
                     if target in dataItem:
                         resultArray.append(pupil)
 
-        if found == False:
+        if len(resultArray) < 1:
             print("No exact matches found trying capitalized")
             target=target.capitalize()
             for pupil in pupilDataArray:
@@ -1250,8 +1263,18 @@ def searchPupils():
             filterResults.delete(0,END)
             counter=0
             col=status.cget("bg")
-            filterPupilArray=resultArray
-            insertListbox(filterResults, resultArray)
+            
+            filterPupilArray=[]
+            
+            #Remove duplicates
+        
+            for item in resultArray:
+                if item not in filterPupilArray:
+                    filterPupilArray.append(item)
+               
+            filterPupilArray=sorted(filterPupilArray)
+            
+            insertListbox(filterResults, filterPupilArray)
 
     else:
         askMessage("No data","Please enter something")
@@ -1814,4 +1837,5 @@ initTheme()
 showOpenCanvas()
 #print(pupilDataArray)
 
+#Runs program
 window.mainloop()
