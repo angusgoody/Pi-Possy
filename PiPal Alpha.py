@@ -227,7 +227,7 @@ else:
         
 
 
-viewPersonalBestEntry=Entry(viewPupilCanvas)
+viewPersonalBestEntry=Entry(viewPupilCanvas,state=DISABLED)
 viewPersonalBestEntry.grid(row=4,column=1)
 
 
@@ -282,8 +282,8 @@ createPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickn
 Label(createPupilCanvas,text="First Name:").grid(row=0,column=0)
 Label(createPupilCanvas,text="Second Name:").grid(row=1,column=0)
 Label(createPupilCanvas,text="Grade").grid(row=2,column=0)
-Label(createPupilCanvas,text="Personal Best:").grid(row=3,column=0)
-Label(createPupilCanvas,text="Notes:").grid(row=4,column=0)
+Label(createPupilCanvas,text="Personal Best:").grid(row=4,column=0)
+Label(createPupilCanvas,text="Notes:").grid(row=5,column=0)
 
 createPupilName=Entry(createPupilCanvas)
 createPupilName.grid(row=0,column=1,pady=2)
@@ -295,7 +295,9 @@ createPupilGrade=Entry(createPupilCanvas)
 createPupilGrade.grid(row=2,column=1,pady=2)
 
 createPupilTarget=Entry(createPupilCanvas)
-createPupilTarget.grid(row=3,column=1,pady=2)
+createPupilTarget.grid(row=4,column=1,pady=2)
+
+
 
 if version == "Windows":
     createPupilNotes=Text(createPupilCanvas,height=5,width=15,wrap=WORD,font=("Helvetica","11"))
@@ -306,7 +308,7 @@ else:
     else:
         createPupilNotes=Text(createPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
 
-createPupilNotes.grid(row=4,column=1,pady=2)
+createPupilNotes.grid(row=5,column=1,pady=2)
 
 #Canvas for filtering pupils-------------------------------------------------------
 filterPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
@@ -997,39 +999,45 @@ def addPupilsMenu(array):
 
 
 def showPupil(fieldArray):
-    print("Viewing pupil now")
-    overwritePupilButton.config(state=DISABLED)
+    
+    #So screen doesnt reset when same pupil is clicked
+    
+    if fieldArray != currentViewPupil:
+        #Reset screen when pupil is clicked
+        displayPersonalBestVar.set("")
+        insertEntry(viewPersonalBestEntry,"")
+        chosenPeronalBestToView.set("Select PB")
+        overwritePupilButton.config(state=DISABLED)
 
-    global currentViewPupil
-    currentViewPupil=[]
-    for item in fieldArray:
-        currentViewPupil.append(item)
-        
-
-    
-    #Bindings
-
-    
-    showPupilName.bind("<KeyRelease>",checkIfSame)
-    showPupilSecond.bind("<KeyRelease>",checkIfSame)
-    showPupilGrade.bind("<KeyRelease>",checkIfSame)
-    showPupilNotes.bind("<KeyRelease>",checkIfSame)
-
-    loadCanvas(viewPupilCanvas, "Showing Pupil")
-    print(fieldArray)
-    personalBests=[fieldArray[3],fieldArray[4],fieldArray[5],fieldArray[6],fieldArray[7]]
-    
-    #This is where the data passed to the function is displayed
-    insertEntry(showPupilName, fieldArray[0])
-    insertEntry(showPupilSecond, fieldArray[1])
-    insertEntry(showPupilGrade,  fieldArray[2])
-    
-    #Personal bests
-    
-    #Add items here
+        global currentViewPupil
+        currentViewPupil=[]
+        for item in fieldArray:
+            currentViewPupil.append(item)
+            
 
         
-    insertEntry(showPupilNotes, fieldArray[8])
+        #Bindings
+
+        
+        showPupilName.bind("<KeyRelease>",checkIfSame)
+        showPupilSecond.bind("<KeyRelease>",checkIfSame)
+        showPupilGrade.bind("<KeyRelease>",checkIfSame)
+        showPupilNotes.bind("<KeyRelease>",checkIfSame)
+
+        loadCanvas(viewPupilCanvas, "Showing Pupil")
+        personalBests=[fieldArray[3],fieldArray[4],fieldArray[5],fieldArray[6],fieldArray[7]]
+        
+        #This is where the data passed to the function is displayed
+        insertEntry(showPupilName, fieldArray[0])
+        insertEntry(showPupilSecond, fieldArray[1])
+        insertEntry(showPupilGrade,  fieldArray[2])
+        
+        #Personal bests
+        
+        #Add items here
+
+            
+        insertEntry(showPupilNotes, fieldArray[8])
 
 #The function that runs every time the keyboard is pressed to update overwrite button state
 
@@ -1038,7 +1046,7 @@ def checkIfSame(key):
     global overwriteArray
 
     tempArray=getPupilInfo(viewPupilCanvas)
-
+    print(tempArray,"VS",currentViewPupil)
     overwriteArray=tempArray
     if tempArray == currentViewPupil:
         overwritePupilButton.config(state=DISABLED)
@@ -1193,7 +1201,6 @@ def searchPupils():
             for pupil in pupilDataArray:
                 for item in pupil:
                     if target in item:
-                        found=True
                         resultArray.append(pupil)
                         break
 
@@ -1207,25 +1214,29 @@ def searchPupils():
                     pass
                 else:
                     if target in dataItem:
-                        found=True
                         resultArray.append(pupil)
 
         if found == False:
-            print("No results found trying diffrent areas")
+            print("No exact matches found trying capitalized")
             target=target.capitalize()
             for pupil in pupilDataArray:
                 try:
-                    dataItem=pupil[pos]
+                    if area == "All":
+                        for dataItem in pupil:
+                            if target in dataItem:
+                                resultArray.append(pupil)
 
+                    else:                                
+                        dataItem=pupil[pos]
+                    
                 except:
                     pass
                 else:
                     if target in dataItem:
-                        found=True
                         resultArray.append(pupil)
 
 
-        if found == False:
+        if len(resultArray) < 1 == True:
             clearFilterPupils()
             filterResults.insert(END,"No results")
             askMessage("None","No results were found")
@@ -1626,6 +1637,7 @@ def viewPersonalBest(value):
             temp=value
             temp+=":"
             displayPersonalBestVar.set(temp)
+            viewPersonalBestEntry.config(state=NORMAL)
             insertEntry(viewPersonalBestEntry, match)
 
 
@@ -1725,6 +1737,13 @@ showPupilPersonalBestOptions=OptionMenu(viewPupilCanvas,chosenPeronalBestToView,
 showPupilPersonalBestOptions.config(width=20)
 showPupilPersonalBestOptions.grid(row=3,column=1,pady=2)
 
+#Create pupil options
+createPupilOptions=mainPBOptions
+createPupilPersonalBestVar=StringVar()
+createPupilPersonalBestVar.set("Select")
+createPupilPersonalBestOption=OptionMenu(createPupilCanvas,createPupilPersonalBestVar,*createPupilOptions)
+createPupilPersonalBestOption.config(width=20)
+createPupilPersonalBestOption.grid(row=3,column=1,pady=2)
 #==============================Buttons===================
 
 
@@ -1763,7 +1782,7 @@ clearFilterResultsButton.grid(row=3,column=2)
 
 #Buttons for creating pupil
 createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=createPupilInfo)
-createPupilButton.grid(row=5,column=1,pady=7)
+createPupilButton.grid(row=6,column=1,pady=7)
 
 #Buttons for view all pupils
 viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
