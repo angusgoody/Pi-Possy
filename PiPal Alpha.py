@@ -3,7 +3,7 @@ __author__ = 'Angus'
 #Angus Goody
 #8/10/15
 
-#Pi Pal version 5.1
+#Pi Pal version 6.0
 
 #Imports-------
 from tkinter import *
@@ -969,6 +969,9 @@ def getPupilsFromFile(file):
 
 def addPupilsMenu(array):
     
+    #Alphabeticly order
+    array=sorted(array)
+    
     pupilArray=array
     for array in pupilArray:
         tempArray=[]
@@ -1351,7 +1354,19 @@ def createPupilInfo():
             print("Fine")
             
             savePupilToFile(content)
+            
+            #clear canvas
+            clearCanvas(createPupilCanvas)
+            loadCanvas(openCanvas, "Home")
+            
 
+def clearCanvas(canvas):
+    for widget in canvas.winfo_children():
+        if widget.winfo_class() == "Entry":
+            widget.delete(0,END)
+        if widget.winfo_class() == "Notes":
+            widget.delete("1.0",END)
+            
 def savePupilToFile(array):
     global pupilDataArray
     if array not in pupilDataArray:
