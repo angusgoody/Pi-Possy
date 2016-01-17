@@ -483,7 +483,6 @@ def setOpenUser(name):
     if name != "" and name != None:
         temp="Welcome "
         temp=temp+name
-        statusVar.set("Home")
         userVar.set(temp)
 
 #The Function that is launched when the change username function loads from file menu
@@ -1074,7 +1073,7 @@ def overWritePupil(deleteOrNot):
     deleteOrNot.capitalize()
     if deleteOrNot == "Delete":
         saveNewPupils(pupilDataArray)
-        loadCanvas(openCanvas,"Home")
+        showOpenCanvas()
         clearFilterPupils()
         try:
             first=currentViewPupil[0]
@@ -1359,6 +1358,9 @@ def getPupilInfo(canvas):
 def createPupilInfo():
     
     content=getPupilInfo(createPupilCanvas)
+    
+    #Add optionMenu bit here
+    
     leng=len(content)
     valid=True
     try:
@@ -1380,7 +1382,7 @@ def createPupilInfo():
             
             #clear canvas
             clearCanvas(createPupilCanvas)
-            loadCanvas(openCanvas, "Home")
+            showOpenCanvas()
             
 
 def clearCanvas(canvas):
