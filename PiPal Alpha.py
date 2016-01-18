@@ -40,7 +40,7 @@ mainPupilName="pupils.txt"
 mainUserName="userName.txt"
 currentViewPupil=[]
 currentCreatePupil=[]
-
+currentViewCanvas=StringVar()
 
 #Toolbars====================
 mainMenu=Menu(window)
@@ -343,8 +343,9 @@ filterResultsScroll.config(command=filterResults.yview)
 filterResults.config(yscrollcommand=filterResultsScroll.set)
 
 #===================================================================END OF CANVAS'=======================
-#Arrays
-letterArray=['b', 'p', 'K', 'C', 'A', 'e', ' ', '0', '(', '?', 'B', '{', 'l', 'o', 'X', 'q', '|', ')', '3', '"', 'a', 'I', '}', '~', 'V', '%', '\x0c', '`', 'L', '4', 'D', 'z', 't', 'u', '#', 'M', '<', '+', 'T', '8', 'R', ':', '\t', 'E', 'Z', '9', '2', '@', 'h', 'y', "'", '=', 's', ';', 'x', '¦', 'G', '&', 'c', 'N', '6', 'S', '>', '5', '.', '_', '-', '/', 'Q', 'd', 'm', 'O', 'J', 'W', '¬', 'Y', ',', 'k', 'n', '1', '[', '7', 'H', 'j', 'r', '*', ']', 'i', 'P', '!', '\x0b', 'F', '$', '\\', 'U', 'g', 'f', '^', 'v', 'w']
+
+
+#===============================================ARRAYS==================
 
 canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas]
 themeEntry=Entry(window)
@@ -354,6 +355,7 @@ passGrades=["A*","A","B","C"]
 mainPBOptions=["100m","Long Jump","200m","Javelin","Hurdles"]
 numberOfPB=len(mainPBOptions)
 newAddedPupils=[]
+menuPupils=[]
 # Start of Functions===========================================================
 
 
@@ -367,11 +369,14 @@ def insertEntry(entry,message):
     entry.insert(END,message)
 
 def loadCanvas(canvas,message):
-    for item in canvasArray:
-        if item != canvas:
-            item.pack_forget()
-    canvas.pack(expand=True)
-    statusVar.set(message)
+    global currentViewCanvas
+    if canvas != currentViewCanvas:
+        for item in canvasArray:
+            if item != canvas:
+                item.pack_forget()
+        canvas.pack(expand=True)
+        currentViewCanvas.set(canvas)
+        statusVar.set(message)
 
 
 #====================================New added funtions======================
@@ -976,31 +981,35 @@ def addPupilsMenu(array):
     
     pupilArray=array
     for array in pupilArray:
-        tempArray=[]
-        for item in array:
-            tempArray.append(item)
-            
         
-        try:
-            tempLeng=len(tempArray)
-                  
+        #Duplicate testing
+        if array not in menuPupils:
+            menuPupils.append(array)
+            tempArray=[]
+            for item in array:
+                tempArray.append(item)
                 
-                
-        except:
-            print("Indexing error HERE")
-        else:
-            fieldArray=tempArray
-            temp=""
-            temp+=fieldArray[0]
-            temp+=" "
-            tup=fieldArray[1]
-            temp+=tup[0]
-            displayName=temp
+            
+            try:
+                tempLeng=len(tempArray)
+                      
+                    
+                    
+            except:
+                print("Indexing error HERE")
+            else:
+                fieldArray=tempArray
+                temp=""
+                temp+=fieldArray[0]
+                temp+=" "
+                tup=fieldArray[1]
+                temp+=tup[0]
+                displayName=temp
 
-            #Menu bit
-            subPupilMenu.add_command(
-            label=displayName,command=lambda showArray=fieldArray
-            : showPupil(showArray))
+                #Menu bit
+                subPupilMenu.add_command(
+                label=displayName,command=lambda showArray=fieldArray
+                : showPupil(showArray))
 
 
 def showPupil(fieldArray):
@@ -1174,6 +1183,10 @@ def showAllPupils():
 
 def showCreatePupil():
     loadCanvas(createPupilCanvas,"Create Pupil")
+    #Initial setup
+    addNewPBButton.config(state=DISABLED)
+    createPupilPersonalBestVar.set("Select")
+    
 
 def newFilter():
     loadCanvas(filterPupilCanvas,"Filter Pupils")
@@ -1720,15 +1733,22 @@ def importPupils():
 
                     askMessage("Success", "Import success restart to update")
                 
-                    
-                
+                            
             
 def askError(pre,message):
     try:
         messagebox.showerror(pre,message)
     except:
         print(message)
-        
+
+def createAddPB():
+    global currentCreatePupil
+    createPupilPersonalBestVar
+    print("Current",createPupilPersonalBestVar.get())
+
+def createPupilOptionMenuFunction(value):
+    if value != "Select":
+        addNewPBButton.config(state=NORMAL)          
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1786,7 +1806,7 @@ showPupilPersonalBestOptions.grid(row=3,column=1,pady=2)
 createPupilOptions=mainPBOptions
 createPupilPersonalBestVar=StringVar()
 createPupilPersonalBestVar.set("Select")
-createPupilPersonalBestOption=OptionMenu(createPupilCanvas,createPupilPersonalBestVar,*createPupilOptions)
+createPupilPersonalBestOption=OptionMenu(createPupilCanvas,createPupilPersonalBestVar,*createPupilOptions,command=createPupilOptionMenuFunction)
 createPupilPersonalBestOption.config(width=20)
 createPupilPersonalBestOption.grid(row=3,column=1,pady=2)
 #==============================Buttons===================
@@ -1830,8 +1850,8 @@ createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=create
 createPupilButton.grid(row=6,column=1,pady=7)
 
 #Button for adding PB on create canvas
-addNewPBButtpn=Button(createPupilCanvas,text="Add")
-addNewPBButtpn.grid(row=4,column=2)
+addNewPBButton=Button(createPupilCanvas,text="Add",command=createAddPB)
+addNewPBButton.grid(row=4,column=2)
 #Buttons for view all pupils
 viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
 viewAllPupilButton.grid(row=4,column=1,pady=6)
