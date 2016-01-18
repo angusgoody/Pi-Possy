@@ -319,6 +319,9 @@ Label(filterPupilCanvas,text="Field:").grid(row=0,column=0)
 Label(filterPupilCanvas,text="Search:").grid(row=1,column=0,pady=5)
 Label(filterPupilCanvas,text="Results:").grid(row=3,column=0,pady=5)
 
+numberOfFilterResults=StringVar()
+Label(filterPupilCanvas,textvariable=numberOfFilterResults).grid(row=4,column=1,pady=5)
+
 filterVariable=StringVar()
 
 filterPupilOption=OptionMenu(filterPupilCanvas,filterVariable,"First","Second","Grade","Personal Best","All")
@@ -1292,7 +1295,13 @@ def searchPupils():
             filterPupilArray=sorted(filterPupilArray)
             
             insertListbox(filterResults, filterPupilArray)
-
+            
+        #Displays number of results
+        
+        leng=len(resultArray)
+        leng=str(leng)
+        numberOfFilterResults.set(leng)
+                
     else:
         askMessage("No data","Please enter something")
 def clearFilterPupils():
