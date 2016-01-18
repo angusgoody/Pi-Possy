@@ -39,7 +39,9 @@ numberOfTextItems=9 #The variable for how many items are contained for each pupi
 mainPupilName="pupils.txt"
 mainUserName="userName.txt"
 currentViewPupil=[]
-numberOfPB=5
+currentCreatePupil=[]
+
+
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -350,6 +352,7 @@ pupilDataArray=[]
 filterPupilArray=[]
 passGrades=["A*","A","B","C"]
 mainPBOptions=["100m","Long Jump","200m","Javelin","Hurdles"]
+numberOfPB=len(mainPBOptions)
 newAddedPupils=[]
 # Start of Functions===========================================================
 
@@ -1001,6 +1004,7 @@ def addPupilsMenu(array):
 
 
 def showPupil(fieldArray):
+    global currentViewPupil
     
     #So screen doesnt reset when same pupil is clicked
     
@@ -1011,8 +1015,9 @@ def showPupil(fieldArray):
         chosenPeronalBestToView.set("Select PB")
         overwritePupilButton.config(state=DISABLED)
 
-        global currentViewPupil
+        
         currentViewPupil=[]
+        
         for item in fieldArray:
             currentViewPupil.append(item)
             
@@ -1652,9 +1657,9 @@ def askMessage(pre,message):
         
 def viewPersonalBest(value):
     global currentViewPupil
-    #Personal bests are between index 3-7
+    #Personal bests are between index 3-len(pbOptions)
     pbArray=[]
-    for x in range(3,8):
+    for x in range(3,len(mainPBOptions)):
         try:
             pb=currentViewPupil[x]
         except:
@@ -1824,14 +1829,20 @@ clearFilterResultsButton.grid(row=3,column=2)
 createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=createPupilInfo)
 createPupilButton.grid(row=6,column=1,pady=7)
 
+#Button for adding PB on create canvas
+addNewPBButtpn=Button(createPupilCanvas,text="Add")
+addNewPBButtpn.grid(row=4,column=2)
 #Buttons for view all pupils
 viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
 viewAllPupilButton.grid(row=4,column=1,pady=6)
+
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 filterResults.bind('<Double-Button-1>', viewFilterResults)
 viewAllListbox.bind('<Double-Button-1>', viewallResults)
 viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
+viewAllListbox.bind('<Up>', pupilGradeClick)
+viewAllListbox.bind('<Down>', pupilGradeClick)
 
 #This function needs to be here because it changes colours of buttons that would otherwise be under it
 initBackground()
