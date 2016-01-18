@@ -35,7 +35,7 @@ userName=""
 encryptionKey=8
 mainEntryTextColour="black"
 mainLabelTextColour="black"
-numberOfTextItems=9 #The variable for how many items are contained for each pupil in the text file
+numberOfTextItems=4 #The variable for how many items are contained for each pupil in the text file
 mainPupilName="pupils.txt"
 mainUserName="userName.txt"
 currentViewPupil=[]
@@ -357,6 +357,7 @@ filterPupilArray=[]
 passGrades=["A*","A","B","C"]
 mainPBOptions=["100m","Long Jump","200m","Javelin","Hurdles"]
 numberOfPB=len(mainPBOptions)
+numberOfTextItems+=numberOfPB
 newAddedPupils=[]
 menuPupils=[]
 # Start of Functions===========================================================
@@ -1065,7 +1066,6 @@ def checkIfSame(key):
     global overwriteArray
 
     tempArray=getPupilInfo(viewPupilCanvas)
-    print(tempArray,"VS",currentViewPupil)
     overwriteArray=tempArray
     if tempArray == currentViewPupil:
         overwritePupilButton.config(state=DISABLED)
@@ -1758,6 +1758,35 @@ def createAddPB():
 def createPupilOptionMenuFunction(value):
     if value != "Select":
         addNewPBButton.config(state=NORMAL)          
+        
+#Function to order PB's into seperate arrays
+def orderPB():
+    copy=pupilDataArray
+    newArray=[]
+    for pupil in copy:
+        newPupilArray=[]
+        newPBArray=[]
+        removeArray=[]
+        rang=2+numberOfPB+1
+
+        for x in range(3,rang):
+            try:
+                currentData=pupil[x]
+            except:
+                print("Indexing error")
+            else:
+                newPBArray.append(currentData)
+                removeArray.append(currentData)
+                
+        for item in removeArray:
+            pupil.remove(item)
+
+        newPupilArray.append(pupil)
+        newPupilArray.append(newPBArray)
+        newArray.append(newPupilArray)
+    print("Complete")
+    print(newArray)        
+        
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1873,11 +1902,10 @@ viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 viewAllListbox.bind('<Up>', pupilGradeClick)
 viewAllListbox.bind('<Down>', pupilGradeClick)
 
-#This function needs to be here because it changes colours of buttons that would otherwise be under it
+#These function needs to be here because it changes colours of buttons that would otherwise be under it
 initBackground()
 initTheme()
 showOpenCanvas()
-#print(pupilDataArray)
-
+orderPB()
 #Runs program
 window.mainloop()
