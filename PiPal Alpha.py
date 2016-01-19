@@ -52,6 +52,10 @@ viewMenu=Menu(mainMenu)
 pupilMenu=Menu(mainMenu)
 filterMenu=Menu(mainMenu)
 editMenu=Menu(mainMenu)
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 subPupilMenu=Menu(pupilMenu)
 #===================================================================CANVAS'=======================
 
@@ -1093,7 +1097,27 @@ def overWritePupil(deleteOrNot):
         saveNewPupils(pupilDataArray)
         showOpenCanvas()
         clearFilterPupils()
+<<<<<<< HEAD
 
+=======
+        try:
+            first=currentViewPupil[0]
+            second=currentViewPupil[1]
+        except:
+            print("ERROR")
+            temp=""
+        else:
+            temp=""
+            temp+=first
+            temp+=" "
+            second=(second)
+            temp+=second[0]
+            
+        try:
+            pupilMenu.delete(temp)
+        except:
+            print("Error deleting pupil from menu")
+>>>>>>> origin/master
     else:
         if found == True:
             pupilDataArray.insert(pCounter,overwriteArray)
@@ -1776,10 +1800,24 @@ def orderPB():
         newPupilArray.append(newPBArray)
         newArray.append(newPupilArray)
     print("Complete")
+<<<<<<< HEAD
     print(newArray) 
   
 def showBulkScreen():
     print("Ready")      
+=======
+
+def changeOptionWidth(widget):
+    if version == "Windows":
+        widget.config(width=13)
+    else:
+        widget.config(width=20)
+
+def loadBulkEdit():
+    print("Ready")
+
+                
+>>>>>>> origin/master
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1809,11 +1847,17 @@ pupilMenu.add_command(label="New Pupil",command=showCreatePupil)
 pupilMenu.add_command(label="Import pupils",command=importPupils)
 pupilMenu.add_separator()
 pupilMenu.add_cascade(label="Pupils",menu=subPupilMenu)
+
 #Filter Menu
 filterMenu.add_command(label="New Filter",command=newFilter)
 
+<<<<<<< HEAD
 #Edit menu
 editMenu.add_command(label="Bulk Edit",command=showBulkScreen)
+=======
+#Edit Menu
+editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
+>>>>>>> origin/master
 #=======Returns===========
 
 setOpenUser(getUserName())
@@ -1834,7 +1878,7 @@ optionVar.set("Order by")
 #Options for PB
 personalBestOptions=mainPBOptions
 showPupilPersonalBestOptions=OptionMenu(viewPupilCanvas,chosenPeronalBestToView,*personalBestOptions,command=viewPersonalBest)
-showPupilPersonalBestOptions.config(width=20)
+changeOptionWidth(showPupilPersonalBestOptions)
 showPupilPersonalBestOptions.grid(row=3,column=1,pady=2)
 
 #Create pupil options
@@ -1842,7 +1886,7 @@ createPupilOptions=mainPBOptions
 createPupilPersonalBestVar=StringVar()
 createPupilPersonalBestVar.set("Select")
 createPupilPersonalBestOption=OptionMenu(createPupilCanvas,createPupilPersonalBestVar,*createPupilOptions,command=createPupilOptionMenuFunction)
-createPupilPersonalBestOption.config(width=20)
+changeOptionWidth(createPupilPersonalBestOption)
 createPupilPersonalBestOption.grid(row=3,column=1,pady=2)
 #==============================Buttons===================
 
@@ -1885,8 +1929,9 @@ createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=create
 createPupilButton.grid(row=6,column=1,pady=7)
 
 #Button for adding PB on create canvas
-addNewPBButton=Button(createPupilCanvas,text="Add",command=createAddPB)
-addNewPBButton.grid(row=4,column=2)
+addNewPBButton=Button(createPupilCanvas,text="Add",command=createAddPB,relief=GROOVE)
+addNewPBButton.grid(row=4,column=2,padx=9)
+
 #Buttons for view all pupils
 viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
 viewAllPupilButton.grid(row=4,column=1,pady=6)
@@ -1903,6 +1948,11 @@ viewAllListbox.bind('<Down>', pupilGradeClick)
 initBackground()
 initTheme()
 showOpenCanvas()
+<<<<<<< HEAD
 
+=======
+orderPB()
+updateOptionColour()
+>>>>>>> origin/master
 #Runs program
 window.mainloop()
