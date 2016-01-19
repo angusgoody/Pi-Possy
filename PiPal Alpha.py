@@ -346,12 +346,19 @@ filterResultsScroll.pack(side=LEFT,fill=Y)
 filterResultsScroll.config(command=filterResults.yview)
 filterResults.config(yscrollcommand=filterResultsScroll.set)
 
+#Cavvas for bulk edit
+
+bulkEditCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
+
+#Listboxes
+#firstBulkListbox=Listbox()
+
 #===================================================================END OF CANVAS'=======================
 
 
 #===============================================ARRAYS==================
 
-canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas]
+canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas,bulkEditCanvas]
 themeEntry=Entry(window)
 pupilDataArray=[]
 filterPupilArray=[]
