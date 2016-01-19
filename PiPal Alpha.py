@@ -51,6 +51,7 @@ fileMenu=Menu(mainMenu)
 viewMenu=Menu(mainMenu)
 pupilMenu=Menu(mainMenu)
 filterMenu=Menu(mainMenu)
+editMenu=Menu(mainMenu)
 
 subPupilMenu=Menu(pupilMenu)
 #===================================================================CANVAS'=======================
@@ -1104,6 +1105,7 @@ def overWritePupil(deleteOrNot):
             temp+=" "
             second=(second)
             temp+=second[0]
+            
         try:
             pupilMenu.delete(temp)
         except:
@@ -1791,6 +1793,11 @@ def changeOptionWidth(widget):
         widget.config(width=13)
     else:
         widget.config(width=20)
+
+def loadBulkEdit():
+    print("Ready")
+
+                
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1798,7 +1805,7 @@ mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
 mainMenu.add_cascade(label="Pupils",menu=pupilMenu)
 mainMenu.add_cascade(label="Filter",menu=filterMenu)
-
+mainMenu.add_cascade(label="Edit",menu=editMenu)
 #File Menu
 fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
@@ -1820,9 +1827,12 @@ pupilMenu.add_command(label="New Pupil",command=showCreatePupil)
 pupilMenu.add_command(label="Import pupils",command=importPupils)
 pupilMenu.add_separator()
 pupilMenu.add_cascade(label="Pupils",menu=subPupilMenu)
+
 #Filter Menu
 filterMenu.add_command(label="New Filter",command=newFilter)
 
+#Edit Menu
+editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 #=======Returns===========
 setOpenUser(getUserName())
 getPupilsFromFile("pupils.txt")
@@ -1894,6 +1904,7 @@ createPupilButton.grid(row=6,column=1,pady=7)
 #Button for adding PB on create canvas
 addNewPBButton=Button(createPupilCanvas,text="Add",command=createAddPB,relief=GROOVE)
 addNewPBButton.grid(row=4,column=2,padx=9)
+
 #Buttons for view all pupils
 viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
 viewAllPupilButton.grid(row=4,column=1,pady=6)
@@ -1911,6 +1922,6 @@ initBackground()
 initTheme()
 showOpenCanvas()
 orderPB()
-
+updateOptionColour()
 #Runs program
 window.mainloop()
