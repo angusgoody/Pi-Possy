@@ -2,149 +2,74 @@
 Adam
 Roberts
 B
-84
-18
-6
-10
-56
 Adam needs to Improve
 =======================
 Jordan
 Brown
 C
-101
-98
-5
-57
-53
 Jordan needs to Not be so good
 =======================
 Jordan
 Johnson
 B
-41
-65
-21
-41
-53
 Jordan needs to Concentrate
 =======================
 Adam
 Harris
 B
-72
-34
-21
-34
-49
 Adam needs to Run faster
 =======================
 Malcolm
 Thompson
 E
-36
-15
-19
-19
-42
 Malcolm needs to Run faster
 =======================
 Sam
 Black
 D
-47
-96
-84
-85
-25
 Sam needs to Improve
 =======================
 Cameron
 Goody
 A*
-59
-39
-49
-100
-22
 Cameron needs to Work Harder
 =======================
 Chris
 Jones
 C
-68
-9
-75
-27
-98
 Chris needs to Concentrate
 =======================
 Ben
 Davies
 E
-10
-91
-18
-5
-3
 Ben needs to Shut up
 =======================
 Hayden
 Jenkins
 A*
-50
-27
-34
-94
-41
 Hayden needs to Work Harder
 =======================
 Malcolm
 White
 E
-101
-14
-59
-17
-12
 Malcolm needs to Not be so good
 =======================
 Nial
 Evans
 E
-82
-90
-28
-96
-16
 Nial needs to Not be so good
 =======================
 Will
 Smith
 E
-75
-81
-26
-103
-96
 Will needs to Concentrate
 =======================
 Jake
 Smith
 B
-27
-68
-103
-30
-57
 Jake needs to Work Harder
 =======================
 Jack
 Jackson
 B
-5
-77
-11
-16
-39
 Jack needs to Shut up

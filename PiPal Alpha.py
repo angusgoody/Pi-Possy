@@ -1160,9 +1160,8 @@ def overWritePupilStep():
 
 def deletePupilStep():
     try:
-        #option=messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
+        option=messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
         
-        option=True
     except:
         print("Error with tkinter")
         
