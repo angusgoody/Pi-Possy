@@ -51,7 +51,7 @@ fileMenu=Menu(mainMenu)
 viewMenu=Menu(mainMenu)
 pupilMenu=Menu(mainMenu)
 filterMenu=Menu(mainMenu)
-
+editMenu=Menu(mainMenu)
 subPupilMenu=Menu(pupilMenu)
 #===================================================================CANVAS'=======================
 
@@ -360,6 +360,7 @@ numberOfPB=len(mainPBOptions)
 numberOfTextItems+=numberOfPB
 newAddedPupils=[]
 menuPupils=[]
+newOrderPupils=[]
 # Start of Functions===========================================================
 
 
@@ -1092,22 +1093,7 @@ def overWritePupil(deleteOrNot):
         saveNewPupils(pupilDataArray)
         showOpenCanvas()
         clearFilterPupils()
-        try:
-            first=currentViewPupil[0]
-            second=currentViewPupil[1]
-        except:
-            print("ERROR")
-            temp=""
-        else:
-            temp=""
-            temp+=first
-            temp+=" "
-            second=(second)
-            temp+=second[0]
-        try:
-            pupilMenu.delete(temp)
-        except:
-            print("Error deleting pupil from menu")
+
     else:
         if found == True:
             pupilDataArray.insert(pCounter,overwriteArray)
@@ -1149,7 +1135,9 @@ def overWritePupilStep():
 
 def deletePupilStep():
     try:
-        option=messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
+        #option=messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
+        
+        option=True
     except:
         print("Error with tkinter")
         
@@ -1679,6 +1667,7 @@ def askMessage(pre,message):
         
 def viewPersonalBest(value):
     global currentViewPupil
+    
     #Personal bests are between index 3-len(pbOptions)
     pbArray=[]
     for x in range(3,len(mainPBOptions)):
@@ -1761,6 +1750,8 @@ def createPupilOptionMenuFunction(value):
         
 #Function to order PB's into seperate arrays
 def orderPB():
+    global newOrderPupils
+    global pupilDataArray
     copy=pupilDataArray
     newArray=[]
     for pupil in copy:
@@ -1785,8 +1776,10 @@ def orderPB():
         newPupilArray.append(newPBArray)
         newArray.append(newPupilArray)
     print("Complete")
-    print(newArray)        
-        
+    print(newArray) 
+  
+def showBulkScreen():
+    print("Ready")      
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1794,7 +1787,7 @@ mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
 mainMenu.add_cascade(label="Pupils",menu=pupilMenu)
 mainMenu.add_cascade(label="Filter",menu=filterMenu)
-
+mainMenu.add_cascade(label="Edit",menu=editMenu)
 #File Menu
 fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
@@ -1819,9 +1812,13 @@ pupilMenu.add_cascade(label="Pupils",menu=subPupilMenu)
 #Filter Menu
 filterMenu.add_command(label="New Filter",command=newFilter)
 
+#Edit menu
+editMenu.add_command(label="Bulk Edit",command=showBulkScreen)
 #=======Returns===========
+
 setOpenUser(getUserName())
 getPupilsFromFile("pupils.txt")
+
 addPupilsMenu(pupilDataArray)
 addBinding(createPupilCanvas, createPupilInfoStep)
 addBinding(filterPupilCanvas,searchPupilStep)
@@ -1906,6 +1903,6 @@ viewAllListbox.bind('<Down>', pupilGradeClick)
 initBackground()
 initTheme()
 showOpenCanvas()
-orderPB()
+
 #Runs program
 window.mainloop()

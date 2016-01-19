@@ -29,26 +29,6 @@ C
 90
 Daniel is good
 =======================
-Larry
-Ward
-F
-45
-52
-25
-21
-100
-Larry is bad
-=======================
-Will
-Jenkins
-A
-51
-17
-32
-73
-85
-
-=======================
 James
 Williams
 D
@@ -148,13 +128,3 @@ E
 45
 93
 
-=======================
-Tim
-Smith
-F
-40
-98
-64
-45
-93
-Tim is bad at everything
