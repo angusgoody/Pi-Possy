@@ -1785,8 +1785,12 @@ def orderPB():
         newPupilArray.append(newPBArray)
         newArray.append(newPupilArray)
     print("Complete")
-    print(newArray)        
-        
+
+def changeOptionWidth(widget):
+    if version == "Windows":
+        widget.config(width=13)
+    else:
+        widget.config(width=20)
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1837,7 +1841,7 @@ optionVar.set("Order by")
 #Options for PB
 personalBestOptions=mainPBOptions
 showPupilPersonalBestOptions=OptionMenu(viewPupilCanvas,chosenPeronalBestToView,*personalBestOptions,command=viewPersonalBest)
-showPupilPersonalBestOptions.config(width=20)
+changeOptionWidth(showPupilPersonalBestOptions)
 showPupilPersonalBestOptions.grid(row=3,column=1,pady=2)
 
 #Create pupil options
@@ -1845,7 +1849,7 @@ createPupilOptions=mainPBOptions
 createPupilPersonalBestVar=StringVar()
 createPupilPersonalBestVar.set("Select")
 createPupilPersonalBestOption=OptionMenu(createPupilCanvas,createPupilPersonalBestVar,*createPupilOptions,command=createPupilOptionMenuFunction)
-createPupilPersonalBestOption.config(width=20)
+changeOptionWidth(createPupilPersonalBestOption)
 createPupilPersonalBestOption.grid(row=3,column=1,pady=2)
 #==============================Buttons===================
 
@@ -1888,8 +1892,8 @@ createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=create
 createPupilButton.grid(row=6,column=1,pady=7)
 
 #Button for adding PB on create canvas
-addNewPBButton=Button(createPupilCanvas,text="Add",command=createAddPB)
-addNewPBButton.grid(row=4,column=2)
+addNewPBButton=Button(createPupilCanvas,text="Add",command=createAddPB,relief=GROOVE)
+addNewPBButton.grid(row=4,column=2,padx=9)
 #Buttons for view all pupils
 viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
 viewAllPupilButton.grid(row=4,column=1,pady=6)
@@ -1907,5 +1911,6 @@ initBackground()
 initTheme()
 showOpenCanvas()
 orderPB()
+
 #Runs program
 window.mainloop()
