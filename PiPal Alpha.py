@@ -41,6 +41,7 @@ mainUserName="userName.txt"
 currentViewPupil=[]
 currentCreatePupil=[]
 currentViewCanvas=StringVar()
+currentViewCanvasArray=[]
 
 #Toolbars====================
 mainMenu=Menu(window)
@@ -350,8 +351,17 @@ filterResults.config(yscrollcommand=filterResultsScroll.set)
 
 bulkEditCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
-#Listboxes
-#firstBulkListbox=Listbox()
+#Frame for Listboxes
+mainListboxFrame=Frame(bulkEditCanvas)
+mainListboxFrame.pack()
+
+"""
+bulkAllPupilListbox=Listbox(mainListboxFrame)
+colourListBox.pack(side=LEFT)
+"""
+#bulkFilterPupilListbox=Listbox(mainListboxFrame)
+
+
 
 #===================================================================END OF CANVAS'=======================
 
@@ -383,12 +393,16 @@ def insertEntry(entry,message):
 
 def loadCanvas(canvas,message):
     global currentViewCanvas
+    global currentViewCanvasArray
+
+    currentViewCanvasArray=[]
     if canvas != currentViewCanvas:
         for item in canvasArray:
             if item != canvas:
                 item.pack_forget()
         canvas.pack(expand=True)
         currentViewCanvas.set(canvas)
+        currentViewCanvasArray.append(canvas)
         statusVar.set(message)
 
 
@@ -1809,9 +1823,30 @@ def changeOptionWidth(widget):
         widget.config(width=20)
 
 def loadBulkEdit():
-    print("Ready")
+    loadCanvas(bulkEditCanvas, "Bulk Edit")
 
-                
+#Right click menu
+def viewPupilPopup(event):
+    data=currentViewCanvasArray[0]
+    
+    #Only show menu on that canvas
+    if data == viewPupilCanvas:
+        viewPupilMiniMenu.post(event.x_root, event.y_root)
+    
+def showPupilTab():
+    global currentViewPupil
+    print(currentViewPupil)
+    data=currentViewPupil
+    try:
+        name=data[0]
+        newWindow=Tk()
+        newWindow.title(name)
+        for item in data:
+            Label(newWindow,text=item).pack()
+        newWindow.mainloop()
+    except:
+        askError("Error", "Error occoured launching new window")
+    
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1926,6 +1961,13 @@ addNewPBButton.grid(row=4,column=2,padx=9)
 viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
 viewAllPupilButton.grid(row=4,column=1,pady=6)
 
+
+#Right click Menus
+
+#Menu for view pupil
+viewPupilMiniMenu = Menu(currentViewPupil, tearoff=0)
+viewPupilMiniMenu.add_command(label="Open pupil in new tab",command=showPupilTab)
+
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 filterResults.bind('<Double-Button-1>', viewFilterResults)
@@ -1933,11 +1975,14 @@ viewAllListbox.bind('<Double-Button-1>', viewallResults)
 viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 viewAllListbox.bind('<Up>', pupilGradeClick)
 viewAllListbox.bind('<Down>', pupilGradeClick)
-
+window.bind("<Button-2>", viewPupilPopup)
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
 initBackground()
 initTheme()
 showOpenCanvas()
 orderPB()
+
+newWindow=window
+newWindow.mainloop()
 #Runs program
 window.mainloop()
