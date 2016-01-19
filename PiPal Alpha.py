@@ -52,10 +52,7 @@ viewMenu=Menu(mainMenu)
 pupilMenu=Menu(mainMenu)
 filterMenu=Menu(mainMenu)
 editMenu=Menu(mainMenu)
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
 subPupilMenu=Menu(pupilMenu)
 #===================================================================CANVAS'=======================
 
@@ -1097,9 +1094,7 @@ def overWritePupil(deleteOrNot):
         saveNewPupils(pupilDataArray)
         showOpenCanvas()
         clearFilterPupils()
-<<<<<<< HEAD
 
-=======
         try:
             first=currentViewPupil[0]
             second=currentViewPupil[1]
@@ -1117,7 +1112,6 @@ def overWritePupil(deleteOrNot):
             pupilMenu.delete(temp)
         except:
             print("Error deleting pupil from menu")
->>>>>>> origin/master
     else:
         if found == True:
             pupilDataArray.insert(pCounter,overwriteArray)
@@ -1800,12 +1794,7 @@ def orderPB():
         newPupilArray.append(newPBArray)
         newArray.append(newPupilArray)
     print("Complete")
-<<<<<<< HEAD
-    print(newArray) 
-  
-def showBulkScreen():
-    print("Ready")      
-=======
+ 
 
 def changeOptionWidth(widget):
     if version == "Windows":
@@ -1817,7 +1806,6 @@ def loadBulkEdit():
     print("Ready")
 
                 
->>>>>>> origin/master
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1851,13 +1839,9 @@ pupilMenu.add_cascade(label="Pupils",menu=subPupilMenu)
 #Filter Menu
 filterMenu.add_command(label="New Filter",command=newFilter)
 
-<<<<<<< HEAD
 #Edit menu
-editMenu.add_command(label="Bulk Edit",command=showBulkScreen)
-=======
-#Edit Menu
 editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
->>>>>>> origin/master
+
 #=======Returns===========
 
 setOpenUser(getUserName())
@@ -1948,11 +1932,6 @@ viewAllListbox.bind('<Down>', pupilGradeClick)
 initBackground()
 initTheme()
 showOpenCanvas()
-<<<<<<< HEAD
-
-=======
 orderPB()
-updateOptionColour()
->>>>>>> origin/master
 #Runs program
 window.mainloop()
