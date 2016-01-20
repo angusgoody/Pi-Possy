@@ -1098,6 +1098,7 @@ def showPupil(fieldArray):
 
         loadCanvas(viewPupilCanvas, "Showing Pupil")
         personalBests=[fieldArray[3],fieldArray[4],fieldArray[5],fieldArray[6],fieldArray[7]]
+
         
         #This is where the data passed to the function is displayed
         insertEntry(showPupilName, fieldArray[0])
@@ -1383,36 +1384,14 @@ def viewFilterResults(event):
         
 
 def viewallResults(event):
+    
     try:
         doubleClick(viewAllListbox, pupilDataArray) 
     except:
-        print("Error loading ")
+        askError("Error", "Error loading double click pupil")
 
 def doubleClick(listbox,array):
-    index = listbox.curselection()
-    try:
-        picked=listbox.get(index)
-    except:
-        pass
-    else:
-        words=picked.split()
-        for pupil in array:
-            valid1=False
-            valid2=False
-            try:
-                if pupil[0] == words[0]:
-                    valid1=True
-                if pupil[1] == words[1]:
-                    valid2=True
-                if valid1 == True and valid2 == True:
-                    break
-            except:
-                print("ERROR")
-
-        try:
-            showPupil(pupil)
-        except:
-            print("Error loading pupil")
+    askMessage("Fix", "This function is not working currently")
 
                    
 def getPupilInfo(canvas):
@@ -1904,6 +1883,14 @@ def showPupilTab():
     except:
         askError("Error", "Error occoured launching new window")
 
+def preAddBulkPupil():
+    addBulkPupil()
+    size=bulkAllPupilListbox.size()
+    if size  < 1:  
+        addBulkPupilButton.config(state=DISABLED)
+    else:
+        addBulkPupilButton.config(state=NORMAL)
+
 def addBulkPupil():
     pos=bulkAllPupilListbox.curselection()
     array=[]
@@ -1914,30 +1901,37 @@ def addBulkPupil():
         except:
             print("Error getting item")
         else: 
-            words=item.split()
-            pupil=words
-            for pupil in pupilDataArray:
-                valid1=False
-                valid2=False
-                try:
-                    if pupil[0] == words[0]:
-                        valid1=True
-                    if pupil[1] == words[1]:
-                        valid2=True
-                    if valid1 == True and valid2 == True:
-                        break
-                except:
-                    print("ERROR")
+            try:
+                words=item.split()
+                pupil=getPupilFromArray(words)
+                temp=[]
+                temp.append(pupil)
+                insertListboxNonDelete(bulkFilterPupilListbox, temp)
+                bulkAllPupilListbox.delete(pos)
+                bulkAllPupilListbox.selection_set("end")
 
+            except:
+                print("Error loading pupil")
+ 
+#Function that gets       
+def getPupilFromArray(wordArray):
+    words=wordArray
+    for pupil in pupilDataArray:
+        valid1=False
+        valid2=False
+        if pupil[0] == words[0]:
+            valid1=True
+        if pupil[1] == words[1]:
+            valid2=True
+        try:
+            
             if valid1 == True and valid2 == True:
-                try:
-                    tempArray=[]
-                    tempArray.append(pupil)
-                    insertListboxNonDelete(bulkFilterPupilListbox,tempArray)
-                except:
-                    print("Error loading pupil")
-        
-        
+                break
+        except:
+            print("ERROR")
+
+    if valid1 == True and valid2 == True:
+        return pupil        
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -2053,7 +2047,7 @@ viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsS
 viewAllPupilButton.grid(row=4,column=1,pady=6)
 
 #Bulk edit buttons
-addBulkPupilButton=Button(mainListboxFrame,text="Add",width=10,command=addBulkPupil)
+addBulkPupilButton=Button(mainListboxFrame,text="Add",width=10,command=preAddBulkPupil)
 addBulkPupilButton.pack()
 removeBulkPupilButton=Button(mainListboxFrame,text="Remove",width=10)
 removeBulkPupilButton.pack(side=TOP)
@@ -2078,7 +2072,7 @@ initTheme()
 showOpenCanvas()
 orderPB()
 
-newWindow=window
-newWindow.mainloop()
+
+
 #Runs program
 window.mainloop()
