@@ -1906,16 +1906,7 @@ def getPupilFromArray(wordArray):
    
 def preAddBulkPupil():
     addBulkPupil()
-    size=bulkAllPupilListbox.size()
-    if size  < 1:  
-        addBulkPupilButton.config(state=DISABLED)
-    else:
-        addBulkPupilButton.config(state=NORMAL)
-        
-    #Alternate butons
-    size2=bulkFilterPupilListbox.size()
-    if size2 > 0:
-        removeBulkPupilButton.config(state=NORMAL)
+    alternateButtonConfig("Add")
              
 def addBulkPupil():
     pos=bulkAllPupilListbox.curselection()
@@ -1944,16 +1935,7 @@ def getListboxItem(pos,listbox):
         
 def preRemoveBulkPupil():
     removeBulkPupil()
-    size=bulkFilterPupilListbox.size()
-    if size < 1:
-        removeBulkPupilButton.config(state=DISABLED)
-    else:
-        removeBulkPupilButton.config(state=NORMAL)
-        
-    #Alternate
-    size2=bulkAllPupilListbox.size()
-    if size2 > 0:
-        addBulkPupilButton.config(state=NORMAL)
+    alternateButtonConfig("")
     
 def removeBulkPupil():
     pos=bulkFilterPupilListbox.curselection()
@@ -1971,7 +1953,79 @@ def removeBulkPupil():
         except:
             print("Error loading pupil for filter")       
 
+#Function to check len of listboxes each button press
+def alternateButtonConfig(addOrRemove):
+    if addOrRemove == "Add":
+        size=bulkAllPupilListbox.size()
+        if size  < 1:  
+            addBulkPupilButton.config(state=DISABLED)
+        else:
+            addBulkPupilButton.config(state=NORMAL)
+            
+        #Alternate butons
+        size2=bulkFilterPupilListbox.size()
+        if size2 > 0:
+            removeBulkPupilButton.config(state=NORMAL)
+    else:
+        size=bulkFilterPupilListbox.size()
+        if size < 1:
+            removeBulkPupilButton.config(state=DISABLED)
+        else:
+            removeBulkPupilButton.config(state=NORMAL)
+            
+        #Alternate
+        size2=bulkAllPupilListbox.size()
+        if size2 > 0:
+            addBulkPupilButton.config(state=NORMAL)
+  
+def preAddAllBulkPupils():
+    addAllBulkPupils()
+    alternateButtonConfig("Add")       
     
+          
+def addAllBulkPupils():
+    try:
+        items=bulkAllPupilListbox.get(0,END)
+    except:
+        print("Error getting pupils fom listbox")
+    else:
+        for currentItem in items:
+            try:
+                words=currentItem.split()
+                pupil=getPupilFromArray(words)
+                temp=[]
+                temp.append(pupil)
+                insertListboxNonDelete(bulkFilterPupilListbox,temp)
+                bulkAllPupilListbox.delete(END)
+            except:
+                askError("Error","Error adding pupils")
+                print("ERROR WITH THIS PUPIL",currentItem,"AT POS",x)
+                break
+   
+def preRemoveAllBulkPupils():
+    removeAllBulkPupils()
+    alternateButtonConfig("")
+    
+def removeAllBulkPupils():
+    try:
+        items=bulkFilterPupilListbox.get(0,END)
+    except:
+        print("Error getting pupils fom listbox")
+    else:
+        for currentItem in items:
+            try:
+                words=currentItem.split()
+                pupil=getPupilFromArray(words)
+                temp=[]
+                temp.append(pupil)
+                insertListboxNonDelete(bulkAllPupilListbox,temp)
+                bulkFilterPupilListbox.delete(END)
+            except:
+                askError("Error","Error adding pupils")
+                print("ERROR WITH THIS PUPIL",currentItem,"AT POS",x)
+                break
+        
+         
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -2089,8 +2143,16 @@ viewAllPupilButton.grid(row=4,column=1,pady=6)
 #Bulk edit buttons
 addBulkPupilButton=Button(mainListboxFrame,text="Add",width=10,command=preAddBulkPupil)
 addBulkPupilButton.pack()
+
 removeBulkPupilButton=Button(mainListboxFrame,text="Remove",width=10,command=preRemoveBulkPupil)
-removeBulkPupilButton.pack(side=TOP)
+removeBulkPupilButton.pack()
+
+removeAllBulkPupilsButton=Button(mainListboxFrame,text="Remove All",width=10,command=preRemoveAllBulkPupils)
+removeAllBulkPupilsButton.pack(side=BOTTOM)
+
+addAllBulkPupilsButton=Button(mainListboxFrame,text="Add All",width=10,command=preAddAllBulkPupils)
+addAllBulkPupilsButton.pack(side=BOTTOM)
+
 
 #Right click Menus
 
