@@ -1884,8 +1884,6 @@ def showPupilTab():
         askError("Error", "Error occoured launching new window")
 
 
-
-
 #Function that gets pupil from array   
 def getPupilFromArray(wordArray):
     words=wordArray
@@ -1913,6 +1911,11 @@ def preAddBulkPupil():
         addBulkPupilButton.config(state=DISABLED)
     else:
         addBulkPupilButton.config(state=NORMAL)
+        
+    #Alternate butons
+    size2=bulkFilterPupilListbox.size()
+    if size2 > 0:
+        removeBulkPupilButton.config(state=NORMAL)
              
 def addBulkPupil():
     pos=bulkAllPupilListbox.curselection()
@@ -1946,6 +1949,11 @@ def preRemoveBulkPupil():
         removeBulkPupilButton.config(state=DISABLED)
     else:
         removeBulkPupilButton.config(state=NORMAL)
+        
+    #Alternate
+    size2=bulkAllPupilListbox.size()
+    if size2 > 0:
+        addBulkPupilButton.config(state=NORMAL)
     
 def removeBulkPupil():
     pos=bulkFilterPupilListbox.curselection()
@@ -2103,7 +2111,6 @@ initBackground()
 initTheme()
 showOpenCanvas()
 orderPB()
-
 
 
 #Runs program
