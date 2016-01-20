@@ -1883,37 +1883,10 @@ def showPupilTab():
     except:
         askError("Error", "Error occoured launching new window")
 
-def preAddBulkPupil():
-    addBulkPupil()
-    size=bulkAllPupilListbox.size()
-    if size  < 1:  
-        addBulkPupilButton.config(state=DISABLED)
-    else:
-        addBulkPupilButton.config(state=NORMAL)
 
-def addBulkPupil():
-    pos=bulkAllPupilListbox.curselection()
-    array=[]
-    if len(pos) > 0:
-        info=[]
-        try:
-            item=bulkAllPupilListbox.get(pos)
-        except:
-            print("Error getting item")
-        else: 
-            try:
-                words=item.split()
-                pupil=getPupilFromArray(words)
-                temp=[]
-                temp.append(pupil)
-                insertListboxNonDelete(bulkFilterPupilListbox, temp)
-                bulkAllPupilListbox.delete(pos)
-                bulkAllPupilListbox.selection_set("end")
 
-            except:
-                print("Error loading pupil")
- 
-#Function that gets       
+
+#Function that gets pupil from array   
 def getPupilFromArray(wordArray):
     words=wordArray
     for pupil in pupilDataArray:
@@ -1932,6 +1905,65 @@ def getPupilFromArray(wordArray):
 
     if valid1 == True and valid2 == True:
         return pupil        
+   
+def preAddBulkPupil():
+    addBulkPupil()
+    size=bulkAllPupilListbox.size()
+    if size  < 1:  
+        addBulkPupilButton.config(state=DISABLED)
+    else:
+        addBulkPupilButton.config(state=NORMAL)
+             
+def addBulkPupil():
+    pos=bulkAllPupilListbox.curselection()
+    if len(pos) > 0:
+        item=getListboxItem(pos, bulkAllPupilListbox)        
+        try:
+            words=item.split()
+            pupil=getPupilFromArray(words)
+            temp=[]
+            temp.append(pupil)
+            insertListboxNonDelete(bulkFilterPupilListbox, temp)
+            bulkAllPupilListbox.delete(pos)
+            bulkAllPupilListbox.selection_set("end")
+
+        except:
+            print("Error loading pupil")
+ 
+def getListboxItem(pos,listbox):
+    try:
+        item=listbox.get(pos)
+    except:
+        askError("Error", "Error retrieving listbox item")
+        return "? ?"
+    else:
+        return item
+        
+def preRemoveBulkPupil():
+    removeBulkPupil()
+    size=bulkFilterPupilListbox.size()
+    if size < 1:
+        removeBulkPupilButton.config(state=DISABLED)
+    else:
+        removeBulkPupilButton.config(state=NORMAL)
+    
+def removeBulkPupil():
+    pos=bulkFilterPupilListbox.curselection()
+    if len(pos) > 0:
+        item=getListboxItem(pos, bulkFilterPupilListbox)
+        try:
+            words=item.split()
+            pupil=getPupilFromArray(words)
+            temp=[]
+            temp.append(pupil)
+            insertListboxNonDelete(bulkAllPupilListbox, temp)
+            bulkFilterPupilListbox.delete(pos)
+            bulkFilterPupilListbox.selection_set("end")
+ 
+        except:
+            print("Error loading pupil for filter")       
+
+    
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -2049,7 +2081,7 @@ viewAllPupilButton.grid(row=4,column=1,pady=6)
 #Bulk edit buttons
 addBulkPupilButton=Button(mainListboxFrame,text="Add",width=10,command=preAddBulkPupil)
 addBulkPupilButton.pack()
-removeBulkPupilButton=Button(mainListboxFrame,text="Remove",width=10)
+removeBulkPupilButton=Button(mainListboxFrame,text="Remove",width=10,command=preRemoveBulkPupil)
 removeBulkPupilButton.pack(side=TOP)
 
 #Right click Menus
