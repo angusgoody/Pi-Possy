@@ -347,21 +347,48 @@ filterResultsScroll.pack(side=LEFT,fill=Y)
 filterResultsScroll.config(command=filterResults.yview)
 filterResults.config(yscrollcommand=filterResultsScroll.set)
 
-#Cavvas for bulk edit
+#Canvas for bulk edit =======================
 
 bulkEditCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
-#Frame for Listboxes
+
+#==================================LEFT FRAME==================
+
+
+#Frame for Listboxes================
+
 mainListboxFrame=Frame(bulkEditCanvas)
-mainListboxFrame.pack()
-
-"""
-bulkAllPupilListbox=Listbox(mainListboxFrame)
-colourListBox.pack(side=LEFT)
-"""
-#bulkFilterPupilListbox=Listbox(mainListboxFrame)
+mainListboxFrame.pack(side=LEFT)
 
 
+#===========LEFT SUB FRAME============
+viewAllBulkFrame=Frame(mainListboxFrame)
+viewAllBulkFrame.pack(side=LEFT)
+
+bulkAllPupilListbox=Listbox(viewAllBulkFrame,width=16)
+bulkAllPupilListbox.pack(side=LEFT)
+
+bulkViewAllSlider=Scrollbar(viewAllBulkFrame)
+bulkViewAllSlider.pack(side=RIGHT,fill=Y)
+
+bulkViewAllSlider.config(command=bulkAllPupilListbox.yview)
+bulkAllPupilListbox.config(yscrollcommand=bulkViewAllSlider.set)
+
+#===========RIGHT SUB FRAME============
+
+viewFilterBulkFrame=Frame(mainListboxFrame)
+viewFilterBulkFrame.pack(side=RIGHT)
+
+bulkFilterPupilListbox=Listbox(viewFilterBulkFrame,width=16)
+bulkFilterPupilListbox.pack(side=LEFT)
+
+bulkFilterSlider=Scrollbar(viewFilterBulkFrame)
+bulkFilterSlider.pack(side=RIGHT,fill=Y)
+
+bulkFilterSlider.config(command=bulkFilterPupilListbox.yview)
+bulkFilterPupilListbox.config(yscrollcommand=bulkFilterSlider.set)
+
+#==================================RIGHT FRAME==================
 
 #===================================================================END OF CANVAS'=======================
 
@@ -916,8 +943,10 @@ def updateBackgroundColours(colour):
                                         item.config(bg=colour)
                                     except:
                                         print("Error changing",item.winfo_class())
-                                    else:
-                                        arr=item.winfo_children()
+                                    else:                              
+                                       arr=item.winfo_children()
+                                else:
+                                    arr=item.winfo_children()
                                 try:
                                     item.config(highlightbackground=colour) 
                                 except:
@@ -1648,7 +1677,34 @@ def insertListbox(listbox,array):
          
         listbox.insert(END,temp)
         listbox.itemconfig(END,bg=pupilColour)
-       
+
+def insertListboxNonDelete(listbox,array):
+    for pupil in array:
+        try:
+            name=pupil[0]
+            second=pupil[1]
+            grade=pupil[2]
+        except:
+            name="?"
+            second="?"
+            grade="?"     
+        
+        temp=""     
+        temp+=name
+        temp+=" "
+        temp+=second
+  
+        
+                
+        if grade in passGrades:
+            
+            pupilColour="light green"
+        else:
+            pupilColour="salmon"
+         
+        listbox.insert(END,temp)
+        listbox.itemconfig(END,bg=pupilColour)
+           
 def searchPupilStep(event):
     searchPupils()
    
@@ -1824,6 +1880,8 @@ def changeOptionWidth(widget):
 
 def loadBulkEdit():
     loadCanvas(bulkEditCanvas, "Bulk Edit")
+    insertListbox(bulkAllPupilListbox,pupilDataArray)
+    
 
 #Right click menu
 def viewPupilPopup(event):
@@ -1835,7 +1893,6 @@ def viewPupilPopup(event):
     
 def showPupilTab():
     global currentViewPupil
-    print(currentViewPupil)
     data=currentViewPupil
     try:
         name=data[0]
@@ -1846,7 +1903,41 @@ def showPupilTab():
         newWindow.mainloop()
     except:
         askError("Error", "Error occoured launching new window")
-    
+
+def addBulkPupil():
+    pos=bulkAllPupilListbox.curselection()
+    array=[]
+    if len(pos) > 0:
+        info=[]
+        try:
+            item=bulkAllPupilListbox.get(pos)
+        except:
+            print("Error getting item")
+        else: 
+            words=item.split()
+            pupil=words
+            for pupil in pupilDataArray:
+                valid1=False
+                valid2=False
+                try:
+                    if pupil[0] == words[0]:
+                        valid1=True
+                    if pupil[1] == words[1]:
+                        valid2=True
+                    if valid1 == True and valid2 == True:
+                        break
+                except:
+                    print("ERROR")
+
+            if valid1 == True and valid2 == True:
+                try:
+                    tempArray=[]
+                    tempArray.append(pupil)
+                    insertListboxNonDelete(bulkFilterPupilListbox,tempArray)
+                except:
+                    print("Error loading pupil")
+        
+        
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
@@ -1961,6 +2052,11 @@ addNewPBButton.grid(row=4,column=2,padx=9)
 viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
 viewAllPupilButton.grid(row=4,column=1,pady=6)
 
+#Bulk edit buttons
+addBulkPupilButton=Button(mainListboxFrame,text="Add",width=10,command=addBulkPupil)
+addBulkPupilButton.pack()
+removeBulkPupilButton=Button(mainListboxFrame,text="Remove",width=10)
+removeBulkPupilButton.pack(side=TOP)
 
 #Right click Menus
 
