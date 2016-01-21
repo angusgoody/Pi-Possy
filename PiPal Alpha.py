@@ -1039,7 +1039,6 @@ def addPupilsMenu(array):
 
 
 def showPupil(fieldArray):
-
     numberOfDisplayItems=4
     global currentViewPupil
 
@@ -1059,7 +1058,6 @@ def showPupil(fieldArray):
             grade=pupilData[2]
             notes=pupilData[3]
 
-            print(name,second,grade)
         except:
             print("INDEXING ERROR SHOWING PUPIL")
         else:
@@ -1352,14 +1350,38 @@ def viewFilterResults(event):
 def viewallResults(event):
     
     try:
-        doubleClick(viewAllListbox, pupilDataArray) 
+        doubleClick(viewAllListbox, newOrderPupils)
     except:
         askError("Error", "Error loading double click pupil")
 
 def doubleClick(listbox,array):
-    askMessage("Fix", "This function is not working currently")
+    currentView=listbox.curselection()
+    currentitem=listbox.get(currentView)
+    for item in array:
+        try:
+            pupilData=item[0]
+        except:
+            print("Pupil indexing error")
+        else:
+            words=currentitem.split()
+            try:
+                valid1=False
+                valid2=False
+                if pupilData[0] == words[0]:
+                    valid1=True
+                if pupilData[1] == words[1]:
+                    valid2=True
+                if valid1 == True and valid2 == True:
+                    break
+            except:
+                print("ERROR")
 
-                   
+    try:
+        showPupil(item)
+    except:
+        print("Error with show pupil function")
+
+
 def getPupilInfo(canvas):
     infoArray=[]
     for widget in canvas.winfo_children():
