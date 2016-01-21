@@ -1341,7 +1341,7 @@ def updateMenuBG(colour):
 def viewFilterResults(event):
     
     try:
-        doubleClick(filterResults, filterPupilArray)
+        doubleClick(filterResults, newOrderPupils)
     except:
         print("Error loading pupil")
    
