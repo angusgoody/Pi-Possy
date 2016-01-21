@@ -1042,34 +1042,38 @@ def showPupil(fieldArray):
     numberOfDisplayItems=4
     global currentViewPupil
 
+    if currentViewPupil != fieldArray:
 
-    displayPersonalBestVar.set("")
-    chosenPeronalBestToView.set("Select PB")
-    overwritePupilButton.config(state=DISABLED)
-    try:
-        pupilData=fieldArray[0]
-        pbArray=fieldArray[1]
-    except:
-        askError("Error","Error viewing pupil")
-    else:
+
+        displayPersonalBestVar.set("")
+        chosenPeronalBestToView.set("Select PB")
+        overwritePupilButton.config(state=DISABLED)
+        insertEntry(viewPersonalBestEntry,"")
+
         try:
-            name=pupilData[0]
-            second=pupilData[1]
-            grade=pupilData[2]
-            notes=pupilData[3]
-
+            pupilData=fieldArray[0]
+            pbArray=fieldArray[1]
         except:
-            print("INDEXING ERROR SHOWING PUPIL")
+            askError("Error","Error viewing pupil")
         else:
-            insertEntry(showPupilName, name)
-            insertEntry(showPupilSecond, second)
-            insertEntry(showPupilGrade,  grade)
-            insertEntry(showPupilNotes, notes)
+            try:
+                name=pupilData[0]
+                second=pupilData[1]
+                grade=pupilData[2]
+                notes=pupilData[3]
 
-            #Display canvas
-            loadCanvas(viewPupilCanvas, "Showing Pupil")
-            #Updates current pupil
-            currentViewPupil=fieldArray
+            except:
+                print("INDEXING ERROR SHOWING PUPIL")
+            else:
+                insertEntry(showPupilName, name)
+                insertEntry(showPupilSecond, second)
+                insertEntry(showPupilGrade,  grade)
+                insertEntry(showPupilNotes, notes)
+
+                #Display canvas
+                loadCanvas(viewPupilCanvas, "Showing Pupil")
+                #Updates current pupil
+                currentViewPupil=fieldArray
             
             
         
@@ -1311,7 +1315,8 @@ def searchPupils():
             for item in resultArray:
                 if item not in filterPupilArray:
                     filterPupilArray.append(item)
-               
+
+
             filterPupilArray=sorted(filterPupilArray)
             
             insertListbox(filterResults, filterPupilArray)
