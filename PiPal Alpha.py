@@ -782,38 +782,6 @@ def colourPicker():
     if colour != None and colour != "":
         submitTheme(colour)
 
-#Function that can encrypt or decrypt a string using a key
-def encOrDec(line,key,option):
-    finArray=[]
-    trackCounter=0
-    for letter in line:
-        trackCounter+=1
-        if letter not in letterArray:
-            finArray.append(letter)
-            print(letter,"is not supported")
-        else:
-            letterLeng=len(letterArray)
-            position=letterArray.index(letter)
-            if option == "dec":
-                newPos=position-key-trackCounter
-            else:
-                newPos=position+key+trackCounter
-            while newPos > letterLeng:
-                newPos=newPos-letterLeng
-            if newPos == letterLeng:
-                newPos=0
-            try:
-                newLetter=letterArray[newPos]
-            except:
-                print("Error indexing in encryption")
-            else:
-                finArray.append(newLetter)
-
-    temp=""
-    for item in finArray:
-        temp=temp+item
-
-    return temp
 
 
 def changeBackground():
@@ -1031,86 +999,83 @@ def getPupilsFromFile(file):
 #This function will take all pupil infomation and create a drop down menu with them all.
 
 def addPupilsMenu(array):
-    
-    #Alphabeticly order
     array=sorted(array)
-    
-    pupilArray=array
-    for array in pupilArray:
-        
-        #Duplicate testing
-        if array not in menuPupils:
-            menuPupils.append(array)
-            tempArray=[]
-            for item in array:
-                tempArray.append(item)
+    duplicateArray=[]
+    for pupil in array:
+        if pupil not in duplicateArray:       
+            duplicateArray.append(pupil)
+            try:
+                pupilInfo=pupil[0]
+                pupilPB=pupil[1]
+            except:
+                print("INDEX ERROR")
+            else:
+                try:
+                    name=pupilInfo[0]
+                    second=pupilInfo[1]
+                    grade=pupilInfo[2]
+                    notes=pupilInfo[3]
+                except:
+                    print("Error")
+                else:
+                    try:
+                        temp=""
+                        temp+=name
+                        temp+=" "
+                        tup=second
+                        temp+=tup[0]
+                        displayName=temp
+                    except:
+                        print("Error creating display name")
+                    else:
+                        subPupilMenu.add_command(
+                        label=displayName,command=lambda showArray=pupil
+                        : showPupil(showArray))
+                        
+                    
                 
             
-            try:
-                tempLeng=len(tempArray)
-                      
-                    
-                    
-            except:
-                print("Indexing error HERE")
-            else:
-                fieldArray=tempArray
-                temp=""
-                temp+=fieldArray[0]
-                temp+=" "
-                tup=fieldArray[1]
-                temp+=tup[0]
-                displayName=temp
-
-                #Menu bit
-                subPupilMenu.add_command(
-                label=displayName,command=lambda showArray=fieldArray
-                : showPupil(showArray))
+            
 
 
 def showPupil(fieldArray):
+
+    numberOfDisplayItems=4
     global currentViewPupil
-    
-    #So screen doesnt reset when same pupil is clicked
-    
-    if fieldArray != currentViewPupil:
-        #Reset screen when pupil is clicked
-        displayPersonalBestVar.set("")
-        insertEntry(viewPersonalBestEntry,"")
-        chosenPeronalBestToView.set("Select PB")
-        overwritePupilButton.config(state=DISABLED)
 
-        
-        currentViewPupil=[]
-        
-        for item in fieldArray:
-            currentViewPupil.append(item)
+
+    displayPersonalBestVar.set("")
+    chosenPeronalBestToView.set("Select PB")
+    overwritePupilButton.config(state=DISABLED)
+    try:
+        pupilData=fieldArray[0]
+        pbArray=fieldArray[1]
+    except:
+        askError("Error","Error viewing pupil")
+    else:
+        try:
+            name=pupilData[0]
+            second=pupilData[1]
+            grade=pupilData[2]
+            notes=pupilData[3]
+
+            print(name,second,grade)
+        except:
+            print("INDEXING ERROR SHOWING PUPIL")
+        else:
+            insertEntry(showPupilName, name)
+            insertEntry(showPupilSecond, second)
+            insertEntry(showPupilGrade,  grade)
+            insertEntry(showPupilNotes, notes)
+
+            #Display canvas
+            loadCanvas(viewPupilCanvas, "Showing Pupil")
+            #Updates current pupil
+            currentViewPupil=fieldArray
             
-
-        
-        #Bindings
-
-        
-        showPupilName.bind("<KeyRelease>",checkIfSame)
-        showPupilSecond.bind("<KeyRelease>",checkIfSame)
-        showPupilGrade.bind("<KeyRelease>",checkIfSame)
-        showPupilNotes.bind("<KeyRelease>",checkIfSame)
-
-        loadCanvas(viewPupilCanvas, "Showing Pupil")
-        personalBests=[fieldArray[3],fieldArray[4],fieldArray[5],fieldArray[6],fieldArray[7]]
-
-        
-        #This is where the data passed to the function is displayed
-        insertEntry(showPupilName, fieldArray[0])
-        insertEntry(showPupilSecond, fieldArray[1])
-        insertEntry(showPupilGrade,  fieldArray[2])
-        
-        #Personal bests
-        
-        #Add items here
-
             
-        insertEntry(showPupilNotes, fieldArray[8])
+        
+        
 
 #The function that runs every time the keyboard is pressed to update overwrite button state
 
@@ -1124,6 +1089,7 @@ def checkIfSame(key):
         overwritePupilButton.config(state=DISABLED)
     else:
         overwritePupilButton.config(state=NORMAL)
+
 
 def overWritePupil(deleteOrNot):
     global overwriteArray
@@ -1740,34 +1706,29 @@ def askMessage(pre,message):
         
 def viewPersonalBest(value):
     global currentViewPupil
-    
-    #Personal bests are between index 3-len(pbOptions)
-    pbArray=[]
-    for x in range(3,len(mainPBOptions)):
+
+    try:
+        pbArray=currentViewPupil[1]
+    except:
+        print("Pupil indexing error")
+    else:
+        firstMatchArray=mainPBOptions
+        secondMatchArray=pbArray
         try:
-            pb=currentViewPupil[x]
+            pos=mainPBOptions.index(value)
         except:
             print("Indexing error")
         else:
-            pbArray.append(pb)        
-    
-    firstMatchArray=mainPBOptions
-    secondMatchArray=pbArray
-    try:
-        pos=mainPBOptions.index(value)
-    except:
-        print("Indexing error")
-    else:
-        try:
-            match=secondMatchArray[pos]
-        except:
-            print("Error finding PB")
-        else:
-            temp=value
-            temp+=":"
-            displayPersonalBestVar.set(temp)
-            viewPersonalBestEntry.config(state=NORMAL)
-            insertEntry(viewPersonalBestEntry, match)
+            try:
+                match=secondMatchArray[pos]
+            except:
+                print("Error finding PB")
+            else:
+                temp=value
+                temp+=":"
+                displayPersonalBestVar.set(temp)
+                viewPersonalBestEntry.config(state=NORMAL)
+                insertEntry(viewPersonalBestEntry, match)
 
 
 def importPupils():
@@ -1849,7 +1810,7 @@ def orderPB():
         newPupilArray.append(newPBArray)
         newArray.append(newPupilArray)
     print("Complete")
- 
+    newOrderPupils=newArray 
 
 def changeOptionWidth(widget):
     if version == "Windows":
@@ -2062,14 +2023,7 @@ filterMenu.add_command(label="New Filter",command=newFilter)
 #Edit menu
 editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 
-#=======Returns===========
 
-setOpenUser(getUserName())
-getPupilsFromFile("pupils.txt")
-
-addPupilsMenu(pupilDataArray)
-addBinding(createPupilCanvas, createPupilInfoStep)
-addBinding(filterPupilCanvas,searchPupilStep)
 
 
 #Option Menus---------------
@@ -2168,11 +2122,28 @@ viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 viewAllListbox.bind('<Up>', pupilGradeClick)
 viewAllListbox.bind('<Down>', pupilGradeClick)
 window.bind("<Button-2>", viewPupilPopup)
+
+showPupilName.bind("<KeyRelease>",checkIfSame)
+showPupilSecond.bind("<KeyRelease>",checkIfSame)
+showPupilGrade.bind("<KeyRelease>",checkIfSame)
+showPupilNotes.bind("<KeyRelease>",checkIfSame)
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
+
+#=======Returns===========
+
+setOpenUser(getUserName())
+getPupilsFromFile("pupils.txt")
+
+#Order array
+orderPB()
+
+addPupilsMenu(newOrderPupils)
+addBinding(createPupilCanvas, createPupilInfoStep)
+addBinding(filterPupilCanvas,searchPupilStep)
 initBackground()
 initTheme()
 showOpenCanvas()
-orderPB()
+
 
 
 #Runs program
