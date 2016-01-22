@@ -17,7 +17,8 @@ from tkinter import filedialog
 
 version=platform.system()
 print("System platform is",version)
-
+if version == "Darwin":
+    print("Not all Features are supported on MAC")
 #Sets up window---------
 window=Tk()
 window.geometry("450x350")
@@ -434,20 +435,6 @@ def loadCanvas(canvas,message):
 
 
 #====================================New added funtions======================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1869,8 +1856,11 @@ def showPupilTab():
     else:
 
         #window setup
-        newWindow=Tk()
-        newWindow.geometry("300x200")
+        newT=Tk()
+        newWindow=Frame(newT)
+        newWindow.pack(expand=True)
+        
+        newT.geometry("300x300")
         Label(newWindow,text="Name").grid(row=0,column=0)
         Label(newWindow,text="Second").grid(row=1,column=0)
         Label(newWindow,text="Grade").grid(row=2,column=0)
@@ -1895,7 +1885,7 @@ def showPupilTab():
             pos=pbArray.index(item)
             match=matchArray[pos]
             Label(newWindow,text=match).grid(row=position,column=0)
-            
+
             tempEntry=Entry(newWindow)
             tempEntry.delete(0,END)
             tempEntry.insert(END,item)
@@ -1906,7 +1896,7 @@ def showPupilTab():
         except:
             print("Error finding display name")
         else:
-            newWindow.title(displayName)
+            newT.title(displayName)
             displayArray=[newWindowName,newWindowSecond,newWindowGrade,newWindowNotes]
             for item in data:
                 pos=data.index(item)
@@ -1936,6 +1926,9 @@ def getPupilFromArray(wordArray):
     if valid1 == True and valid2 == True:
         return pupil
 
+def prePreAddBulkPupil(event):
+    preAddBulkPupil()
+
 def preAddBulkPupil():
     addBulkPupil()
     alternateButtonConfig("Add")
@@ -1964,6 +1957,9 @@ def getListboxItem(pos,listbox):
         return "? ?"
     else:
         return item
+
+def prePreRemoveBulkPupil(event):
+    preRemoveBulkPupil()
 
 def preRemoveBulkPupil():
     removeBulkPupil()
@@ -2198,6 +2194,10 @@ showPupilName.bind("<KeyRelease>",checkIfSame)
 showPupilSecond.bind("<KeyRelease>",checkIfSame)
 showPupilGrade.bind("<KeyRelease>",checkIfSame)
 showPupilNotes.bind("<KeyRelease>",checkIfSame)
+
+bulkAllPupilListbox.bind("<Double-Button-1>",prePreAddBulkPupil)
+bulkFilterPupilListbox.bind("<Double-Button-1>",prePreRemoveBulkPupil)
+
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
 
 #=======Returns===========
