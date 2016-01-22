@@ -1850,7 +1850,9 @@ def changeOptionWidth(widget):
 
 def loadBulkEdit():
     loadCanvas(bulkEditCanvas, "Bulk Edit")
-    insertListbox(bulkAllPupilListbox,pupilDataArray)
+    temp=pupilDataArray
+    temp=sorted(temp)
+    insertListbox(bulkAllPupilListbox,temp)
 
 
 #Right click menu
@@ -2095,6 +2097,15 @@ def submitBulkEdit():
     for pupil in pupilInfoArray:
         pupil[pos]=text
 
+    print(pupilInfoArray)
+    try:
+        option=messagebox.askyesno("Overwrite","Do you want to overwrite these pupils?")
+    except:
+        print("Tkinter error")
+    else:
+        if option == "Yes":
+            print("Ready to delete")
+            
     #Saves new files
     #for item in pupilInfoArray:
 

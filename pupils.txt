@@ -1,150 +1,180 @@
 =======================
-Chris
-Harris
-E
-6
-95
-76
-5
-103
-Chris needs to Shut up
-=======================
-Hayden
-Mitchell
-C
-48
-65
-24
-80
-80
-Hayden needs to Shut up
-=======================
 Duey
-Taylor
-F
-27
-92
-24
-85
-94
-Duey needs to Concentrate
-=======================
-Jamie
-Smith
-F
-60
-10
-95
-45
-101
-Jamie needs to Work Harder
-=======================
-Will
-Wilson
-A*
-37
-28
-72
-19
-25
-Will needs to Work Harder
-=======================
-Mikey
-Clarke
-E
-96
-38
-39
-32
-99
-Mikey needs to Not be so good
-=======================
-Hayden
 Jenkins
-E
+B
+91
+75
 40
-103
-95
-52
-24
-Hayden needs to Work Harder
+66
+36
+Duey needs to Run faster
 =======================
 Tim
-Robinson
-A
-75
-8
-61
-84
-53
+Green
+A*
+15
+72
+95
+9
+101
 Tim needs to Run faster
 =======================
-Owen
-Jackson
-A*
+Duey
+Robinson
+D
 10
-75
-39
+80
+85
 23
-99
-Owen needs to Work Harder
+14
+Duey needs to Run faster
 =======================
-Malcolm
-Roberts
-A*
-73
-78
-67
-19
-102
-Malcolm needs to Concentrate
-=======================
-Daniel
-Smith
-F
-30
-61
-44
-50
-82
-Daniel needs to Improve
-=======================
-Toby
-Jenkins
-A
-37
-72
+Dylan
+Evans
+B
+77
 68
-45
-8
-Toby needs to Concentrate
+22
+31
+65
+Dylan needs to Improve
 =======================
 Louis
-Johnson
-C
-28
-80
-37
-7
-69
-Louis needs to Improve
+Wright
+A
+11
+10
+57
+29
+40
+Louis needs to Concentrate
 =======================
-Alex
-Mitchell
-A*
-101
-44
-86
-20
-44
-Alex needs to Concentrate
+Toby
+Taylor
+F
+102
+8
+31
+12
+5
+Toby needs to Shut up
 =======================
 Mikey
+Evans
+F
+42
+26
+56
+85
+72
+Mikey needs to Improve
+=======================
+Mikey
+Wood
+B
+30
+56
+18
+28
+19
+Mikey needs to Not be so good
+=======================
+Duey
+Wilson
+C
+42
+48
+29
+100
+71
+Duey needs to Concentrate
+=======================
+Hayden
+Harris
+B
+6
+3
+61
+41
+50
+Hayden needs to Shut up
+=======================
+James
+Jackson
+B
+84
+33
+68
+28
+25
+James needs to Work Harder
+=======================
+Louis
+Jones
+B
+36
+26
+57
+85
+86
+Louis needs to Work Harder
+=======================
+Jordan
+Robinson
+E
+23
+85
+53
+90
+66
+Jordan needs to Shut up
+=======================
+Ben
+Mitchell
+A*
+44
+56
+84
+51
+58
+Ben needs to Shut up
+=======================
+Jake
+Harris
+D
+10
+71
+14
+53
+98
+Jake needs to Run faster
+=======================
+William
+Taylor
+C
+19
+16
+40
+7
+33
+William needs to Work Harder
+=======================
+Malcolm
+Robinson
+D
+8
+77
+8
+46
+20
+Malcolm needs to Run faster
+=======================
+Angus
 Jenkins
 E
-56
-16
-56
-38
-20
-Mikey needs to Not be so good
+43
+6
+99
+81
+10
+Angus needs to Improve
