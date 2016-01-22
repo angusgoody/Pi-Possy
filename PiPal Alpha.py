@@ -398,7 +398,7 @@ Label(secondBulkFrame,text="Select Field:").grid(row=0,column=0)
 Label(secondBulkFrame,text="Change to:").grid(row=1,column=0)
 
 #Entry to change vakue
-bulkChangeEntry=Entry(secondBulkFrame)
+bulkChangeEntry=Entry(secondBulkFrame,justify=CENTER)
 bulkChangeEntry.grid(row=1,column=1)
 
 
@@ -1649,8 +1649,7 @@ def insertListbox(listbox,array):
             pupilColour="light green"
         else:
             pupilColour="salmon"
-        
-        
+
         listbox.insert(END,temp)
         listbox.itemconfig(END,bg=pupilColour)
 
@@ -1849,13 +1848,9 @@ def changeOptionWidth(widget):
     else:
         widget.config(width=20)
 
-bulkLoaded=False
 def loadBulkEdit():
-    global bulkLoaded
     loadCanvas(bulkEditCanvas, "Bulk Edit")
-    if bulkLoaded == False:
-        bulkLoaded=True
-        insertListbox(bulkAllPupilListbox,pupilDataArray)
+    insertListbox(bulkAllPupilListbox,pupilDataArray)
 
 
 #Right click menu
@@ -2075,8 +2070,40 @@ def removeAllBulkPupils():
                 break
 
 
-# End of Functions===========================================================
+def preSubmitBulkEdit():
+    try:
+        submitBulkEdit()
+    except:
+        askError("Error","Error saving pupils")
 
+def submitBulkEdit():
+    field=bulkEditOptionVar.get()
+    text=bulkChangeEntry.get()
+    print(text)
+    print(field)
+
+    #Retrivse pupil info
+    data=bulkFilterPupilListbox.get(0,END)
+    pupilInfoArray=[]
+    for item in data:
+        words=item.split()
+        pupil=getPupilFromArray(words)
+        pupilInfoArray.append(pupil)
+
+    matchArray=bulkEditOptionArray
+    pos=matchArray.index(field)
+    for pupil in pupilInfoArray:
+        pupil[pos]=text
+
+    #Saves new files
+    #for item in pupilInfoArray:
+
+
+
+
+def unlockBulkOptions(event):
+    if event != "Select Field":
+        submitBulkEditButton.config(state=NORMAL)
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2137,8 +2164,9 @@ createPupilPersonalBestOption.grid(row=3,column=1,pady=2)
 
 #Bulk edit options
 bulkEditOptionVar=StringVar()
+bulkEditOptionVar.set("Select field")
 bulkEditOptionArray=["Name","Second Name","Grade"]
-bulkEditOptionMenu=OptionMenu(secondBulkFrame,bulkEditOptionVar,*bulkEditOptionArray)
+bulkEditOptionMenu=OptionMenu(secondBulkFrame,bulkEditOptionVar,*bulkEditOptionArray,command=unlockBulkOptions)
 bulkEditOptionMenu.grid(row=0,column=1)
 
 #==============================Buttons===================
@@ -2202,7 +2230,7 @@ removeAllBulkPupilsButton.pack(side=BOTTOM)
 addAllBulkPupilsButton=Button(mainListboxFrame,text="Add All",width=10,command=preAddAllBulkPupils)
 addAllBulkPupilsButton.pack(side=BOTTOM)
 
-submitBulkEditButton=Button(secondBulkFrame,text="Change",width=10)
+submitBulkEditButton=Button(secondBulkFrame,text="Change",width=10,command=preSubmitBulkEdit,state=DISABLED)
 submitBulkEditButton.grid(row=2,column=1,pady=9)
 
 
