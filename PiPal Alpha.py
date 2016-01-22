@@ -359,7 +359,7 @@ bulkEditCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness
 #Frame for Listboxes================
 
 mainListboxFrame=Frame(bulkEditCanvas)
-mainListboxFrame.pack(side=LEFT)
+mainListboxFrame.pack(side=LEFT,padx=5)
 
 
 #===========LEFT SUB FRAME============
@@ -390,6 +390,18 @@ bulkFilterSlider.config(command=bulkFilterPupilListbox.yview)
 bulkFilterPupilListbox.config(yscrollcommand=bulkFilterSlider.set)
 
 #==================================RIGHT FRAME==================
+secondBulkFrame=Frame(bulkEditCanvas)
+secondBulkFrame.pack(side=RIGHT,padx=5)
+
+#Labels
+Label(secondBulkFrame,text="Select Field:").grid(row=0,column=0)
+Label(secondBulkFrame,text="Change to:").grid(row=1,column=0)
+
+#Entry to change vakue
+bulkChangeEntry=Entry(secondBulkFrame)
+bulkChangeEntry.grid(row=1,column=1)
+
+
 
 #===================================================================END OF CANVAS'=======================
 
@@ -432,6 +444,10 @@ def loadCanvas(canvas,message):
         currentViewCanvas.set(canvas)
         currentViewCanvasArray.append(canvas)
         statusVar.set(message)
+        if canvas == bulkEditCanvas:
+            window.geometry("700x350")
+        else:
+            window.geometry("450x350")
 
 
 #====================================New added funtions======================
@@ -1633,7 +1649,8 @@ def insertListbox(listbox,array):
             pupilColour="light green"
         else:
             pupilColour="salmon"
-
+        
+        
         listbox.insert(END,temp)
         listbox.itemconfig(END,bg=pupilColour)
 
@@ -1832,9 +1849,13 @@ def changeOptionWidth(widget):
     else:
         widget.config(width=20)
 
+bulkLoaded=False
 def loadBulkEdit():
+    global bulkLoaded
     loadCanvas(bulkEditCanvas, "Bulk Edit")
-    insertListbox(bulkAllPupilListbox,pupilDataArray)
+    if bulkLoaded == False:
+        bulkLoaded=True
+        insertListbox(bulkAllPupilListbox,pupilDataArray)
 
 
 #Right click menu
@@ -1859,7 +1880,7 @@ def showPupilTab():
         newT=Tk()
         newWindow=Frame(newT)
         newWindow.pack(expand=True)
-        
+
         newT.geometry("300x300")
         Label(newWindow,text="Name").grid(row=0,column=0)
         Label(newWindow,text="Second").grid(row=1,column=0)
@@ -2093,7 +2114,7 @@ editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 
 
 
-#Option Menus---------------
+#=============================Option Menu===============
 
 #Options for ordering
 orderPupilOption=OptionMenu(bottomViewAllFrame,optionVar,*pupilOptions,command=optionCommand)
@@ -2113,6 +2134,13 @@ createPupilPersonalBestVar.set("Select")
 createPupilPersonalBestOption=OptionMenu(createPupilCanvas,createPupilPersonalBestVar,*createPupilOptions,command=createPupilOptionMenuFunction)
 changeOptionWidth(createPupilPersonalBestOption)
 createPupilPersonalBestOption.grid(row=3,column=1,pady=2)
+
+#Bulk edit options
+bulkEditOptionVar=StringVar()
+bulkEditOptionArray=["Name","Second Name","Grade"]
+bulkEditOptionMenu=OptionMenu(secondBulkFrame,bulkEditOptionVar,*bulkEditOptionArray)
+bulkEditOptionMenu.grid(row=0,column=1)
+
 #==============================Buttons===================
 
 
@@ -2174,6 +2202,9 @@ removeAllBulkPupilsButton.pack(side=BOTTOM)
 addAllBulkPupilsButton=Button(mainListboxFrame,text="Add All",width=10,command=preAddAllBulkPupils)
 addAllBulkPupilsButton.pack(side=BOTTOM)
 
+submitBulkEditButton=Button(secondBulkFrame,text="Change",width=10)
+submitBulkEditButton.grid(row=2,column=1,pady=9)
+
 
 #Right click Menus
 
@@ -2214,7 +2245,6 @@ addBinding(filterPupilCanvas,searchPupilStep)
 initBackground()
 initTheme()
 showOpenCanvas()
-
 
 
 #Runs program
