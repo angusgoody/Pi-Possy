@@ -1,4 +1,4 @@
- __author__ = 'Angus'
+__author__ = 'Angus'
 
 #Angus Goody
 #8/10/15
@@ -1860,16 +1860,17 @@ def viewPupilPopup(event):
 
 def showPupilTab():
     global currentViewPupil
-    data=currentViewPupil
+    current=currentViewPupil
     try:
-        data=data[0]
-        pbArray=data[1]
+        data=current[0]
+        pbArray=current[1]
     except:
         print("Error with pupil format")
     else:
 
         #window setup
-
+        newWindow=Tk()
+        newWindow.geometry("300x200")
         Label(newWindow,text="Name").grid(row=0,column=0)
         Label(newWindow,text="Second").grid(row=1,column=0)
         Label(newWindow,text="Grade").grid(row=2,column=0)
@@ -1891,9 +1892,10 @@ def showPupilTab():
         position=3
         for item in pbArray:
             position+=1
-            pos=item.index(pbArray)
+            pos=pbArray.index(item)
             match=matchArray[pos]
-            Label(newWindow,text=match)
+            Label(newWindow,text=match).grid(row=position,column=0)
+            
             tempEntry=Entry(newWindow)
             tempEntry.delete(0,END)
             tempEntry.insert(END,item)
@@ -1907,7 +1909,7 @@ def showPupilTab():
             newWindow.title(displayName)
             displayArray=[newWindowName,newWindowSecond,newWindowGrade,newWindowNotes]
             for item in data:
-                pos=item.index(data)
+                pos=data.index(item)
                 match=displayArray[pos]
                 match.delete(0,END)
                 match.insert(END,item)
