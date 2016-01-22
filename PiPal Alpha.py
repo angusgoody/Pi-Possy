@@ -1,4 +1,4 @@
-__author__ = 'Angus'
+ __author__ = 'Angus'
 
 #Angus Goody
 #8/10/15
@@ -222,13 +222,13 @@ chosenPeronalBestToView.set("Select PB")
 
 if version == "Windows":
     showPupilNotes=Text(viewPupilCanvas,height=5,width=15,wrap=WORD,font=("Helvetica", "11"))
-    
+
 else:
     if version == "Darwin":
         showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
     if version == "Linux":
         showPupilNotes=Text(viewPupilCanvas,font=("Helvetica", "12"),height=5,width=18,wrap=WORD)
-        
+
 
 
 viewPersonalBestEntry=Entry(viewPupilCanvas,state=DISABLED)
@@ -414,7 +414,7 @@ def insertEntry(entry,message):
     if entry.winfo_class() == "Text":
         entry.delete("1.0",END)
     else:
-   
+
         entry.delete(0,END)
     entry.insert(END,message)
 
@@ -437,11 +437,11 @@ def loadCanvas(canvas,message):
 
 
 
-            
-               
-                      
-            
-        
+
+
+
+
+
 
 
 
@@ -587,7 +587,7 @@ def changeTheme():
 
 def submitTheme(colour):
 
-    
+
     temp="defaultColour: "
     temp=temp+colour
 
@@ -617,7 +617,7 @@ def updateTheme(colour):
                     try:
                         widget.config(bg=colour)
                     except:
-                        print("Error changing widget info") 
+                        print("Error changing widget info")
 
 
     try:
@@ -679,7 +679,7 @@ def saveLineToFile(file,lineToAdd,target):
     print("Line to overwrite with is",lineToAdd)
     print("Target to replace is",target)
     contentArray=[]
-    
+
     #If there is a problem with the file a new one is created
     if content == "" or content == None:
         print("An error occoured opening",file,"creating new one")
@@ -699,7 +699,7 @@ def saveLineToFile(file,lineToAdd,target):
         except:
             print("Error opening",file,"to write info")
         else:
-            
+
             fileToWrite.write(lineToAdd)
             fileToWrite.write("\n")
             for item in contentArray:
@@ -720,8 +720,8 @@ def writeArrayToFile(fileName,array):
             file.write("\n")
         file.close()
         print("Writing complete")
-        
-            
+
+
 def getFromFile(fileToSearch,target):
     print()
     print("Initialising retrival -------------------")
@@ -911,18 +911,18 @@ def updateBackgroundColours(colour):
                                         item.config(bg=colour)
                                     except:
                                         print("Error changing",item.winfo_class())
-                                    else:                              
+                                    else:
                                        arr=item.winfo_children()
                                 else:
                                     arr=item.winfo_children()
                                 try:
-                                    item.config(highlightbackground=colour) 
+                                    item.config(highlightbackground=colour)
                                 except:
-                                    print("Highlight error")    
-                                                              
+                                    print("Highlight error")
+
             widget.config(highlightbackground=colour)
-            
-            
+
+
 def updateButtonBackground(colour):
     for item in canvasArray:
                 for widget in item.winfo_children():
@@ -932,7 +932,7 @@ def updateButtonBackground(colour):
                             widget.config(activebackground=colour)
                         except:
                             print("Error updating widgets")
-                            
+
 
 #The Function that toggles the text for a certain widget saving the need for one on every widget
 def toggleText(variable,widgetChoice):
@@ -948,8 +948,8 @@ def toggleText(variable,widgetChoice):
         for widget in item.winfo_children():
             if widget.winfo_class() == widgetChoice:
                 widget.config(fg=variable)
-                
-                
+
+
     return variable
 
 
@@ -963,8 +963,8 @@ def getPupilsFromFile(file):
     global pupilDataArray
     duplicates=0
     added=0
-    
-    
+
+
     placeFiller="Unknown?"
     print("Getting Pupil data---------------")
     data=getReadLines(file)
@@ -985,14 +985,14 @@ def getPupilsFromFile(file):
                             tempUserArray.append(lineData)
                         else:
                             tempUserArray.append(" ")
-                
+
                 if tempUserArray in pupilDataArray:
                     duplicates+=1
                 else:
                     pupilDataArray.append(tempUserArray)
                     newAddedPupils.append(tempUserArray)
                     added+=1
-                    
+
     print("Added",added,"pupils")
     print("Prevented",duplicates,"duplicates")
 
@@ -1002,7 +1002,7 @@ def addPupilsMenu(array):
     array=sorted(array)
     duplicateArray=[]
     for pupil in array:
-        if pupil not in duplicateArray:       
+        if pupil not in duplicateArray:
             duplicateArray.append(pupil)
             try:
                 pupilInfo=pupil[0]
@@ -1031,11 +1031,11 @@ def addPupilsMenu(array):
                         subPupilMenu.add_command(
                         label=displayName,command=lambda showArray=pupil
                         : showPupil(showArray))
-                        
-                    
-                
-            
-            
+
+
+
+
+
 
 
 def showPupil(fieldArray):
@@ -1074,10 +1074,10 @@ def showPupil(fieldArray):
                 loadCanvas(viewPupilCanvas, "Showing Pupil")
                 #Updates current pupil
                 currentViewPupil=fieldArray
-            
-            
-        
-        
+
+
+
+
 
 #The function that runs every time the keyboard is pressed to update overwrite button state
 
@@ -1107,7 +1107,7 @@ def overWritePupil(deleteOrNot):
         pCounter+=1
 
     #Get menu name
-        
+
     deleteOrNot.capitalize()
     if deleteOrNot == "Delete":
         saveNewPupils(pupilDataArray)
@@ -1126,7 +1126,7 @@ def overWritePupil(deleteOrNot):
             temp+=" "
             second=(second)
             temp+=second[0]
-            
+
         try:
             pupilMenu.delete(temp)
         except:
@@ -1154,7 +1154,7 @@ def saveNewPupils(array):
                 for item in array:
                     file.write("=======================\n")
                     for line in item:
-                       
+
                         try:
                             line=line.rstrip()
                         except:
@@ -1173,10 +1173,10 @@ def overWritePupilStep():
 def deletePupilStep():
     try:
         option=messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
-        
+
     except:
         print("Error with tkinter")
-        
+
     else:
         if option == True:
             overWritePupil("Delete")
@@ -1185,35 +1185,35 @@ def showAllPupils():
     optionVar.set("Order by")
     colour=status.cget("bg")
     colour2=window.cget("bg")
-    
+
     if version == "Windows":
         orderPupilOption.config(bg=colour)
     else:
         orderPupilOption.config(bg=colour2)
     orderPupilOption.config(activebackground=colour)
-    
-    
+
+
     entrytoInsert=[previewName,previewSecond,previewGrade]
     for item in entrytoInsert:
         item.config(state=NORMAL)
         insertEntry(item, "")
         item.config(state=DISABLED)
-        
+
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
-    
+
     if len(pupilDataArray) > 0:
         insertListbox(viewAllListbox, pupilDataArray)
     else:
         viewAllListbox.insert(END,"NO DATA")
-                 
+
 
 def showCreatePupil():
     loadCanvas(createPupilCanvas,"Create Pupil")
     #Initial setup
     addNewPBButton.config(state=DISABLED)
     createPupilPersonalBestVar.set("Select")
-    
+
 
 def newFilter():
     loadCanvas(filterPupilCanvas,"Filter Pupils")
@@ -1243,7 +1243,7 @@ def searchPupils():
                 pos="*"
 
         found=False
-        #Searches all fields    
+        #Searches all fields
         if pos == "*":
             for pupil in pupilDataArray:
                 for item in pupil:
@@ -1251,7 +1251,7 @@ def searchPupils():
                         resultArray.append(pupil)
                         break
 
-        #Searches selected fields                
+        #Searches selected fields
         else:
             for pupil in pupilDataArray:
                 try:
@@ -1265,9 +1265,9 @@ def searchPupils():
                                 print("Indexing error")
                             else:
                                 if target in currentData and pupil not in resultArray:
-                                    
+
                                     resultArray.append(pupil)
-                            
+
                     dataItem=pupil[pos]
 
                 except:
@@ -1286,9 +1286,9 @@ def searchPupils():
                             if target in dataItem:
                                 resultArray.append(pupil)
 
-                    else:                                
+                    else:
                         dataItem=pupil[pos]
-                    
+
                 except:
                     pass
                 else:
@@ -1300,39 +1300,39 @@ def searchPupils():
             clearFilterPupils()
             filterResults.insert(END,"No results")
             askMessage("None","No results were found")
-                
+
 
         else:
             print("Search Success")
             filterResults.delete(0,END)
             counter=0
             col=status.cget("bg")
-            
+
             filterPupilArray=[]
-            
+
             #Remove duplicates
-        
+
             for item in resultArray:
                 if item not in filterPupilArray:
                     filterPupilArray.append(item)
 
 
             filterPupilArray=sorted(filterPupilArray)
-            
+
             insertListbox(filterResults, filterPupilArray)
-            
+
         #Displays number of results
-        
+
         leng=len(resultArray)
         leng=str(leng)
         numberOfFilterResults.set(leng)
-                
+
     else:
         askMessage("No data","Please enter something")
 def clearFilterPupils():
     filterResults.delete(0,END)
 
-        
+
 
 def updateMenuBG(colour):
     menuArray=[]
@@ -1344,16 +1344,16 @@ def updateMenuBG(colour):
 
 
 def viewFilterResults(event):
-    
+
     try:
         doubleClick(filterResults, newOrderPupils)
     except:
         print("Error loading pupil")
-   
-        
+
+
 
 def viewallResults(event):
-    
+
     try:
         doubleClick(viewAllListbox, newOrderPupils)
     except:
@@ -1403,18 +1403,18 @@ def getPupilInfo(canvas):
                     print("Error")
                 else:
                     infoArray.append(data)
-                
+
             else:
                 infoArray.append(data)
-            
-    return infoArray          
+
+    return infoArray
 
 def createPupilInfo():
-    
+
     content=getPupilInfo(createPupilCanvas)
-    
+
     #Add optionMenu bit here
-    
+
     leng=len(content)
     valid=True
     try:
@@ -1425,19 +1425,19 @@ def createPupilInfo():
                 break
     except:
         print("Error checking content")
-        
+
     else:
         if valid == False:
             askMessage("Info", "All fields except notes must be filled")
         else:
             print("Fine")
-            
+
             savePupilToFile(content)
-            
+
             #clear canvas
             clearCanvas(createPupilCanvas)
             showOpenCanvas()
-            
+
 
 def clearCanvas(canvas):
     for widget in canvas.winfo_children():
@@ -1445,7 +1445,7 @@ def clearCanvas(canvas):
             widget.delete(0,END)
         if widget.winfo_class() == "Notes":
             widget.delete("1.0",END)
-            
+
 def savePupilToFile(array):
     global pupilDataArray
     if array not in pupilDataArray:
@@ -1454,25 +1454,25 @@ def savePupilToFile(array):
             file=open("pupils.txt","a")
         except:
             file=open("pupils.txt","w")
-        
+
         file.write("=======================\n")
         for line in array:
             file.write(line)
             file.write("\n")
-        
-        
+
+
         askMessage("Success","Pupil created")
 
-            
+
     else:
         askMessage("Duplicate","This pupil allready exists")
 
-     
-    
 
-        
-        
-        
+
+
+
+
+
 def addBinding(canvas,function):
     for widget in canvas.winfo_children():
         if widget.winfo_class() == "Entry" or widget.winfo_class() == "Text":
@@ -1480,18 +1480,18 @@ def addBinding(canvas,function):
                 widget.bind("<Return>",function)
             except:
                 print("Error binding widget")
-            
+
 def createPupilInfoStep(event):
-    createPupilInfo()  
-    
+    createPupilInfo()
+
 def optionCommand(value):
     tempArray=[]
-    
+
     #Order by First Name
     if value == "A-Z (First name)":
         tempArray=sorted(pupilDataArray)
         insertListbox(viewAllListbox, tempArray)
-    
+
     #Order by Second Name
     if value == "A-Z (Second name)":
         firstSort=[]
@@ -1507,15 +1507,15 @@ def optionCommand(value):
                 name="?"
                 second="?"
                 grade="?"
-                
+
             personalArray.append(second)
             personalArray.append(name)
             personalArray.append(grade)
             firstSort.append(personalArray)
-                
+
         sortArray=sorted(firstSort)
         temp1=[]
-        
+
         #Reveses Array
         for item in sortArray:
             personalArray=[]
@@ -1528,33 +1528,33 @@ def optionCommand(value):
                 second="?"
                 first="?"
                 grade="?"
-                
+
             personalArray.append(first)
             personalArray.append(second)
             personalArray.append(grade)
             mainArray.append(personalArray)
-                
-        insertListbox(viewAllListbox, mainArray)  
-     
-   #Order by Grades    
+
+        insertListbox(viewAllListbox, mainArray)
+
+   #Order by Grades
     if value == "Grade":
         grades=["A*","A","B","C","D","E","F"]
         firstArray=[]
         mainArray=[]
-        
+
         invalidGrades=[]
         for pupil in pupilDataArray:
             personalArray=[]
             try:
-                name=pupil[0]      
+                name=pupil[0]
                 second=pupil[1]
-                grade=pupil[2]           
+                grade=pupil[2]
             except:
                 print("Indexing error")
                 name="?"
                 second="?"
                 grade="?"
-                
+
 
             if grade in grades:
                 try:
@@ -1562,7 +1562,7 @@ def optionCommand(value):
                 except:
                     print("Indexing error")
                     pos=grade
-                        
+
             else:
                 tm=[]
                 pos="*"
@@ -1574,19 +1574,19 @@ def optionCommand(value):
                     name="?"
                     second="?"
                     grade="?"
-                    
+
                 tm.append(grade)
                 tm.append(name)
                 tm.append(second)
                 invalidGrades.append(tm)
-                
-            if pos != "*":    
+
+            if pos != "*":
                 personalArray.append(pos)
                 personalArray.append(name)
                 personalArray.append(second)
                 firstArray.append(personalArray)
-                
-            
+
+
         sortArray=sorted(firstArray)
         for pupil in invalidGrades:
             sortArray.append(pupil)
@@ -1600,7 +1600,7 @@ def optionCommand(value):
             except:
                 try:
                     name=item[1]
-                except:                    
+                except:
                     name="?"
                 try:
                     second=item[2]
@@ -1610,18 +1610,18 @@ def optionCommand(value):
                     grade=item[0]
                 except:
                     grade="?"
-   
-            personalArray.append(name)   
-            personalArray.append(second) 
+
+            personalArray.append(name)
+            personalArray.append(second)
             personalArray.append(grade)
             mainArray.append(personalArray)
-            
-   
+
+
         insertListbox(viewAllListbox, mainArray)
-                        
-                                            
-          
-        
+
+
+
+
 def insertListbox(listbox,array):
     listbox.delete(0,END)
     for pupil in array:
@@ -1632,21 +1632,21 @@ def insertListbox(listbox,array):
         except:
             name="?"
             second="?"
-            grade="?"     
-        
-        temp=""     
+            grade="?"
+
+        temp=""
         temp+=name
         temp+=" "
         temp+=second
-  
-        
-                
+
+
+
         if grade in passGrades:
-            
+
             pupilColour="light green"
         else:
             pupilColour="salmon"
-         
+
         listbox.insert(END,temp)
         listbox.itemconfig(END,bg=pupilColour)
 
@@ -1659,27 +1659,27 @@ def insertListboxNonDelete(listbox,array):
         except:
             name="?"
             second="?"
-            grade="?"     
-        
-        temp=""     
+            grade="?"
+
+        temp=""
         temp+=name
         temp+=" "
         temp+=second
-  
-        
-                
+
+
+
         if grade in passGrades:
-            
+
             pupilColour="light green"
         else:
             pupilColour="salmon"
-         
+
         listbox.insert(END,temp)
         listbox.itemconfig(END,bg=pupilColour)
-           
+
 def searchPupilStep(event):
     searchPupils()
-   
+
 def pupilGradeClick(event):
     index = viewAllListbox.curselection()
     try:
@@ -1696,7 +1696,7 @@ def pupilGradeClick(event):
                     valid1=True
                 if pupil[1] == words[1]:
                     valid2=True
-                
+
                 if valid1 == True and valid2 == True:
                     break
             except:
@@ -1706,7 +1706,7 @@ def pupilGradeClick(event):
         try:
             entrytoInsert=[previewName,previewSecond,previewGrade]
             for item in entrytoInsert:
-                    
+
                 item.config(state=NORMAL)
                 dataPos=entrytoInsert.index(item)
                 data=pupil[dataPos]
@@ -1717,7 +1717,7 @@ def pupilGradeClick(event):
                         item.config(fg="red")
                     else:
                         item.config(fg="black")
-                item.config(state=DISABLED)                
+                item.config(state=DISABLED)
         except:
             print("Error loading pupil")
 
@@ -1725,12 +1725,12 @@ def viewAllResultsStep():
     viewallResults("")
 
 def askMessage(pre,message):
-    
+
     try:
-        messagebox.showinfo(pre,message)       
+        messagebox.showinfo(pre,message)
     except:
-        print(message)    
-        
+        print(message)
+
 def viewPersonalBest(value):
     global currentViewPupil
 
@@ -1763,7 +1763,7 @@ def importPupils():
     file=filedialog.askopenfilename()
     if file != None and file != "":
         try:
-            openFile=open(file,"r")   
+            openFile=open(file,"r")
         except:
             askError("File", "Error opening file")
         else:
@@ -1774,15 +1774,15 @@ def importPupils():
                 askError("Reading", "Error when reading file")
             else:
                 getPupilsFromFile(file)
-                
+
                 #Saves to file here
                 try:
                     exportFile=open("pupils.txt","w")
-                    
+
                 except:
                     print("Error opening file")
                 else:
-                    
+
                     for array in pupilDataArray:
                         exportFile.write("=======================\n")
                         for item in array:
@@ -1791,9 +1791,9 @@ def importPupils():
                     exportFile.close()
 
                     askMessage("Success", "Import success restart to update")
-                
-                            
-            
+
+
+
 def askError(pre,message):
     try:
         messagebox.showerror(pre,message)
@@ -1807,8 +1807,8 @@ def createAddPB():
 
 def createPupilOptionMenuFunction(value):
     if value != "Select":
-        addNewPBButton.config(state=NORMAL)          
-        
+        addNewPBButton.config(state=NORMAL)
+
 #Function to order PB's into seperate arrays
 def orderPB():
     global newOrderPupils
@@ -1829,7 +1829,7 @@ def orderPB():
             else:
                 newPBArray.append(currentData)
                 removeArray.append(currentData)
-                
+
         for item in removeArray:
             pupil.remove(item)
 
@@ -1837,7 +1837,7 @@ def orderPB():
         newPupilArray.append(newPBArray)
         newArray.append(newPupilArray)
     print("Complete")
-    newOrderPupils=newArray 
+    newOrderPupils=newArray
 
 def changeOptionWidth(widget):
     if version == "Windows":
@@ -1848,31 +1848,73 @@ def changeOptionWidth(widget):
 def loadBulkEdit():
     loadCanvas(bulkEditCanvas, "Bulk Edit")
     insertListbox(bulkAllPupilListbox,pupilDataArray)
-    
+
 
 #Right click menu
 def viewPupilPopup(event):
     data=currentViewCanvasArray[0]
-    
+
     #Only show menu on that canvas
     if data == viewPupilCanvas:
         viewPupilMiniMenu.post(event.x_root, event.y_root)
-    
+
 def showPupilTab():
     global currentViewPupil
     data=currentViewPupil
     try:
-        name=data[0]
-        newWindow=Tk()
-        newWindow.title(name)
-        for item in data:
-            Label(newWindow,text=item).pack()
-        newWindow.mainloop()
+        data=data[0]
+        pbArray=data[1]
     except:
-        askError("Error", "Error occoured launching new window")
+        print("Error with pupil format")
+    else:
+
+        #window setup
+
+        Label(newWindow,text="Name").grid(row=0,column=0)
+        Label(newWindow,text="Second").grid(row=1,column=0)
+        Label(newWindow,text="Grade").grid(row=2,column=0)
+        Label(newWindow,text="Notes").grid(row=3,column=0)
+
+        newWindowName=Entry(newWindow)
+        newWindowName.grid(row=0,column=1)
+
+        newWindowSecond=Entry(newWindow)
+        newWindowSecond.grid(row=1,column=1)
+
+        newWindowGrade=Entry(newWindow)
+        newWindowGrade.grid(row=2,column=1)
+
+        newWindowNotes=Entry(newWindow)
+        newWindowNotes.grid(row=3,column=1)
+
+        matchArray=mainPBOptions
+        position=3
+        for item in pbArray:
+            position+=1
+            pos=item.index(pbArray)
+            match=matchArray[pos]
+            Label(newWindow,text=match)
+            tempEntry=Entry(newWindow)
+            tempEntry.delete(0,END)
+            tempEntry.insert(END,item)
+            tempEntry.grid(row=position,column=1)
+
+        try:
+            displayName=data[0]
+        except:
+            print("Error finding display name")
+        else:
+            newWindow.title(displayName)
+            displayArray=[newWindowName,newWindowSecond,newWindowGrade,newWindowNotes]
+            for item in data:
+                pos=item.index(data)
+                match=displayArray[pos]
+                match.delete(0,END)
+                match.insert(END,item)
 
 
-#Function that gets pupil from array   
+
+#Function that gets pupil from array
 def getPupilFromArray(wordArray):
     words=wordArray
     for pupil in pupilDataArray:
@@ -1883,23 +1925,23 @@ def getPupilFromArray(wordArray):
         if pupil[1] == words[1]:
             valid2=True
         try:
-            
+
             if valid1 == True and valid2 == True:
                 break
         except:
             print("ERROR")
 
     if valid1 == True and valid2 == True:
-        return pupil        
-   
+        return pupil
+
 def preAddBulkPupil():
     addBulkPupil()
     alternateButtonConfig("Add")
-             
+
 def addBulkPupil():
     pos=bulkAllPupilListbox.curselection()
     if len(pos) > 0:
-        item=getListboxItem(pos, bulkAllPupilListbox)        
+        item=getListboxItem(pos, bulkAllPupilListbox)
         try:
             words=item.split()
             pupil=getPupilFromArray(words)
@@ -1911,7 +1953,7 @@ def addBulkPupil():
 
         except:
             print("Error loading pupil")
- 
+
 def getListboxItem(pos,listbox):
     try:
         item=listbox.get(pos)
@@ -1920,11 +1962,11 @@ def getListboxItem(pos,listbox):
         return "? ?"
     else:
         return item
-        
+
 def preRemoveBulkPupil():
     removeBulkPupil()
     alternateButtonConfig("")
-    
+
 def removeBulkPupil():
     pos=bulkFilterPupilListbox.curselection()
     if len(pos) > 0:
@@ -1937,19 +1979,19 @@ def removeBulkPupil():
             insertListboxNonDelete(bulkAllPupilListbox, temp)
             bulkFilterPupilListbox.delete(pos)
             bulkFilterPupilListbox.selection_set("end")
- 
+
         except:
-            print("Error loading pupil for filter")       
+            print("Error loading pupil for filter")
 
 #Function to check len of listboxes each button press
 def alternateButtonConfig(addOrRemove):
     if addOrRemove == "Add":
         size=bulkAllPupilListbox.size()
-        if size  < 1:  
+        if size  < 1:
             addBulkPupilButton.config(state=DISABLED)
         else:
             addBulkPupilButton.config(state=NORMAL)
-            
+
         #Alternate butons
         size2=bulkFilterPupilListbox.size()
         if size2 > 0:
@@ -1960,17 +2002,17 @@ def alternateButtonConfig(addOrRemove):
             removeBulkPupilButton.config(state=DISABLED)
         else:
             removeBulkPupilButton.config(state=NORMAL)
-            
+
         #Alternate
         size2=bulkAllPupilListbox.size()
         if size2 > 0:
             addBulkPupilButton.config(state=NORMAL)
-  
+
 def preAddAllBulkPupils():
     addAllBulkPupils()
-    alternateButtonConfig("Add")       
-    
-          
+    alternateButtonConfig("Add")
+
+
 def addAllBulkPupils():
     try:
         items=bulkAllPupilListbox.get(0,END)
@@ -1989,11 +2031,11 @@ def addAllBulkPupils():
                 askError("Error","Error adding pupils")
                 print("ERROR WITH THIS PUPIL",currentItem,"AT POS",x)
                 break
-   
+
 def preRemoveAllBulkPupils():
     removeAllBulkPupils()
     alternateButtonConfig("")
-    
+
 def removeAllBulkPupils():
     try:
         items=bulkFilterPupilListbox.get(0,END)
@@ -2012,8 +2054,8 @@ def removeAllBulkPupils():
                 askError("Error","Error adding pupils")
                 print("ERROR WITH THIS PUPIL",currentItem,"AT POS",x)
                 break
-        
-         
+
+
 # End of Functions===========================================================
 
 #Add cascades and commands=====================
