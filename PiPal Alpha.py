@@ -1962,7 +1962,13 @@ def addBulkPupil():
             temp.append(pupil)
             insertListboxNonDelete(bulkFilterPupilListbox, temp)
             bulkAllPupilListbox.delete(pos)
-            bulkAllPupilListbox.selection_set("end")
+            try:
+           
+                bulkAllPupilListbox.selection_set(pos)
+            except:
+                print("HERE")
+                bulkAllPupilListbox.selection_set("end")
+                
 
         except:
             print("Error loading pupil")
@@ -2115,6 +2121,7 @@ def submitBulkEdit():
 def unlockBulkOptions(event):
     if event != "Select Field":
         submitBulkEditButton.config(state=NORMAL)
+        
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2176,7 +2183,7 @@ createPupilPersonalBestOption.grid(row=3,column=1,pady=2)
 #Bulk edit options
 bulkEditOptionVar=StringVar()
 bulkEditOptionVar.set("Select field")
-bulkEditOptionArray=["Name","Second Name","Grade"]
+bulkEditOptionArray=["Grade"]
 bulkEditOptionMenu=OptionMenu(secondBulkFrame,bulkEditOptionVar,*bulkEditOptionArray,command=unlockBulkOptions)
 bulkEditOptionMenu.grid(row=0,column=1)
 
