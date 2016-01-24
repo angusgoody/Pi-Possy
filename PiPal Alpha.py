@@ -1205,8 +1205,8 @@ def showAllPupils():
     loadCanvas(viewAllCanvas, "Viewing all pupils")
     viewAllListbox.delete(0,END)
 
-    if len(pupilDataArray) > 0:
-        insertListbox(viewAllListbox, pupilDataArray)
+    if len(newOrderPupils) > 0:
+        insertListbox(viewAllListbox, newOrderPupils)
     else:
         viewAllListbox.insert(END,"NO DATA")
 
@@ -1254,6 +1254,7 @@ def checkPupil(pupil,target,item):
 
     return found
 
+#Main search Function updated for Version 7.0
 def searchPupils():
     global newOrderPupils
     #Sets up arrays for results
@@ -1321,6 +1322,7 @@ def searchPupils():
             askMessage("No results","The search returned no results")
             clearFilterPupils()
             filterResults.insert(END,"No results")
+            numberOfFilterResults.set(0)
         else:
             print("Search Sucess")
             #Section to show results
@@ -1488,6 +1490,7 @@ def savePupilToFile(array):
 
 
 
+#Function to add binding to all entry widgets on canvas
 
 def addBinding(canvas,function):
     for widget in canvas.winfo_children():
@@ -1500,34 +1503,40 @@ def addBinding(canvas,function):
 def createPupilInfoStep(event):
     createPupilInfo()
 
+
 def optionCommand(value):
     tempArray=[]
 
     #Order by First Name
     if value == "A-Z (First name)":
-        tempArray=sorted(pupilDataArray)
+        tempArray=sorted(newOrderPupils)
         insertListbox(viewAllListbox, tempArray)
 
     #Order by Second Name
     if value == "A-Z (Second name)":
         firstSort=[]
         mainArray=[]
-        for pupil in pupilDataArray:
-            personalArray=[]
+        for pupil1 in newOrderPupils:
             try:
-                name=pupil[0]
-                second=pupil[1]
-                grade=pupil[2]
+                pupil=pupil1[0]
             except:
-                print("Indexing error")
-                name="?"
-                second="?"
-                grade="?"
+                print("Pupil format error")
+            else:
+                personalArray=[]
+                try:
+                    name=pupil[0]
+                    second=pupil[1]
+                    grade=pupil[2]
+                except:
+                    print("Indexing error")
+                    name="?"
+                    second="?"
+                    grade="?"
 
-            personalArray.append(second)
-            personalArray.append(name)
-            personalArray.append(grade)
-            firstSort.append(personalArray)
+                personalArray.append(second)
+                personalArray.append(name)
+                personalArray.append(grade)
+                firstSort.append(personalArray)
 
         sortArray=sorted(firstSort)
         temp1=[]
@@ -1550,7 +1559,11 @@ def optionCommand(value):
             personalArray.append(grade)
             mainArray.append(personalArray)
 
-        insertListbox(viewAllListbox, mainArray)
+        newOrderArray=[]
+        for item in mainArray:
+            data=getPupilFromNewArray(item)
+            newOrderArray.append(data)
+        insertListbox(viewAllListbox, newOrderArray)
 
    #Order by Grades
     if value == "Grade":
@@ -1559,48 +1572,53 @@ def optionCommand(value):
         mainArray=[]
 
         invalidGrades=[]
-        for pupil in pupilDataArray:
-            personalArray=[]
+        for pupil1 in newOrderPupils:
             try:
-                name=pupil[0]
-                second=pupil[1]
-                grade=pupil[2]
+                pupil=pupil1[0]
             except:
-                print("Indexing error")
-                name="?"
-                second="?"
-                grade="?"
-
-
-            if grade in grades:
-                try:
-                    pos=grades.index(grade)
-                except:
-                    print("Indexing error")
-                    pos=grade
-
+                print("Pupil Format error")
             else:
-                tm=[]
-                pos="*"
+                personalArray=[]
                 try:
                     name=pupil[0]
                     second=pupil[1]
                     grade=pupil[2]
                 except:
+                    print("Indexing error")
                     name="?"
                     second="?"
                     grade="?"
 
-                tm.append(grade)
-                tm.append(name)
-                tm.append(second)
-                invalidGrades.append(tm)
 
-            if pos != "*":
-                personalArray.append(pos)
-                personalArray.append(name)
-                personalArray.append(second)
-                firstArray.append(personalArray)
+                if grade in grades:
+                    try:
+                        pos=grades.index(grade)
+                    except:
+                        print("Indexing error")
+                        pos=grade
+
+                else:
+                    tm=[]
+                    pos="*"
+                    try:
+                        name=pupil[0]
+                        second=pupil[1]
+                        grade=pupil[2]
+                    except:
+                        name="?"
+                        second="?"
+                        grade="?"
+
+                    tm.append(grade)
+                    tm.append(name)
+                    tm.append(second)
+                    invalidGrades.append(tm)
+
+                if pos != "*":
+                    personalArray.append(pos)
+                    personalArray.append(name)
+                    personalArray.append(second)
+                    firstArray.append(personalArray)
 
 
         sortArray=sorted(firstArray)
@@ -1984,7 +2002,6 @@ def addBulkPupil():
 
                 bulkAllPupilListbox.selection_set(pos)
             except:
-                print("HERE")
                 bulkAllPupilListbox.selection_set("end")
 
 
@@ -2018,7 +2035,11 @@ def removeBulkPupil():
             temp.append(pupil)
             insertListboxNonDelete(bulkAllPupilListbox, temp)
             bulkFilterPupilListbox.delete(pos)
-            bulkFilterPupilListbox.selection_set("end")
+            try:
+                bulkFilterPupilListbox.selection_set(pos)
+            except:
+                bulkFilterPupilListbox.selection_set("end")
+
 
         except:
             print("Error loading pupil for filter")
@@ -2069,7 +2090,6 @@ def addAllBulkPupils():
                 bulkAllPupilListbox.delete(END)
             except:
                 askError("Error","Error adding pupils")
-                print("ERROR WITH THIS PUPIL",currentItem,"AT POS",x)
                 break
 
 def preRemoveAllBulkPupils():
@@ -2091,8 +2111,7 @@ def removeAllBulkPupils():
                 insertListboxNonDelete(bulkAllPupilListbox,temp)
                 bulkFilterPupilListbox.delete(END)
             except:
-                askError("Error","Error adding pupils")
-                print("ERROR WITH THIS PUPIL",currentItem,"AT POS",x)
+                askError("Error","Error removing pupils")
                 break
 
 
@@ -2140,6 +2159,39 @@ def unlockBulkOptions(event):
     if event != "Select Field":
         submitBulkEditButton.config(state=NORMAL)
 
+def addAllBind(canvas,function):
+    for item in canvas.winfo_children():
+        childArray=widget.winfo_children()
+        while len(arr) > 0:
+            for item in arr:
+                print()
+
+def getPupilFromNewArray(wordArray):
+    for item in newOrderPupils:
+        try:
+            pupil=item[0]
+        except:
+            print("Pupil format error")
+        else:
+            try:
+                valid1=False
+                valid2=False
+                valid3=False
+                if pupil[0] == wordArray[0]:
+                    valid1=True
+                if pupil[1] == wordArray[1]:
+                    valid2=True
+                if pupil[2] == wordArray[2]:
+                    valid3=True
+
+                if valid1 == True and valid2 == True and valid3 == True:
+                    break
+            except:
+                print("Error indexing pupil")
+
+
+    return(item)
+    
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
