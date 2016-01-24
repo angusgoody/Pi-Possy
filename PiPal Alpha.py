@@ -999,6 +999,7 @@ def getPupilsFromFile(file):
     print("Added",added,"pupils")
     print("Prevented",duplicates,"duplicates")
 
+
 #This function will take all pupil infomation and create a drop down menu with them all.
 
 def addPupilsMenu(array):
@@ -1797,41 +1798,6 @@ def viewPersonalBest(value):
                 insertEntry(viewPersonalBestEntry, match)
 
 
-def importPupils():
-    global newAddedPupils
-    file=filedialog.askopenfilename()
-    if file != None and file != "":
-        try:
-            openFile=open(file,"r")
-        except:
-            askError("File", "Error opening file")
-        else:
-            try:
-                content=openFile.readlines()
-                openFile.close()
-            except:
-                askError("Reading", "Error when reading file")
-            else:
-                getPupilsFromFile(file)
-
-                #Saves to file here
-                try:
-                    exportFile=open("pupils.txt","w")
-
-                except:
-                    print("Error opening file")
-                else:
-
-                    for array in pupilDataArray:
-                        exportFile.write("=======================\n")
-                        for item in array:
-                            exportFile.write(item)
-                            exportFile.write("\n")
-                    exportFile.close()
-
-                    askMessage("Success", "Import success restart to update")
-
-
 
 def askError(pre,message):
     try:
@@ -1851,7 +1817,6 @@ def createPupilOptionMenuFunction(value):
 #Function to order PB's into seperate arrays
 def orderPB():
     global newOrderPupils
-    global pupilDataArray
     copy=pupilDataArray
     newArray=[]
     for pupil in copy:
@@ -2191,7 +2156,7 @@ def getPupilFromNewArray(wordArray):
 
 
     return(item)
-    
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2216,7 +2181,6 @@ viewMenu.add_command(label="Change Background",command=changeBackground)
 #Pupil Menu
 pupilMenu.add_command(label="View All",command=showAllPupils)
 pupilMenu.add_command(label="New Pupil",command=showCreatePupil)
-pupilMenu.add_command(label="Import pupils",command=importPupils)
 pupilMenu.add_separator()
 pupilMenu.add_cascade(label="Pupils",menu=subPupilMenu)
 

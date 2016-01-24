@@ -1,180 +1,130 @@
 =======================
 Duey
-Jenkins
+Johnson
 B
-91
-75
-40
-66
-36
-Duey needs to Run faster
-=======================
-Tim
-Green
-A*
-15
-72
-95
-9
-101
-Tim needs to Run faster
-=======================
-Duey
-Robinson
-D
-10
-80
-85
-23
-14
-Duey needs to Run faster
-=======================
-Dylan
-Evans
-B
-77
-68
-22
-31
-65
-Dylan needs to Improve
-=======================
-Louis
-Wright
-A
-11
-10
-57
-29
-40
-Louis needs to Concentrate
-=======================
-Toby
-Taylor
-F
-102
-8
-31
-12
-5
-Toby needs to Shut up
-=======================
-Mikey
-Evans
-F
-42
-26
-56
-85
-72
-Mikey needs to Improve
-=======================
-Mikey
-Wood
-B
-30
-56
-18
-28
+33
+60
+51
 19
-Mikey needs to Not be so good
-=======================
-Duey
-Wilson
-C
-42
-48
-29
-100
-71
+14
 Duey needs to Concentrate
 =======================
-Hayden
-Harris
-B
-6
-3
-61
-41
-50
-Hayden needs to Shut up
-=======================
-James
-Jackson
-B
-84
-33
-68
-28
-25
-James needs to Work Harder
-=======================
-Louis
-Jones
-B
-36
-26
-57
-85
-86
-Louis needs to Work Harder
-=======================
-Jordan
-Robinson
-E
-23
-85
-53
-90
-66
-Jordan needs to Shut up
-=======================
-Ben
+Chris
 Mitchell
-A*
-44
-56
-84
-51
-58
-Ben needs to Shut up
+E
+25
+43
+20
+76
+49
+Chris needs to Improve
 =======================
-Jake
+Chris
+Goody
+B
+90
+80
+82
+37
+46
+Chris needs to Improve
+=======================
+Tim
+Jenkins
+C
+48
+46
+42
+101
+19
+Tim needs to Work Harder
+=======================
+Hayden
+Walker
+A
+11
+34
+70
+40
+91
+Hayden needs to Concentrate
+=======================
+Dylan
+Green
+B
+8
+93
+20
+41
+47
+Dylan needs to Run faster
+=======================
+Duey
+Black
+A*
+96
+33
+31
+55
+22
+Duey needs to Work Harder
+=======================
+Will
+Green
+A*
+56
+76
+100
+44
+12
+Will needs to Improve
+=======================
+Sam
+Clarke
+A
+78
+41
+16
+101
+86
+Sam needs to Shut up
+=======================
+Charlie
+Taylor
+B
+51
+100
+73
+91
+9
+Charlie needs to Shut up
+=======================
+Duey
 Harris
 D
-10
-71
-14
-53
+3
 98
-Jake needs to Run faster
+97
+17
+15
+Duey needs to Not be so good
 =======================
-William
-Taylor
-C
-19
-16
-40
-7
-33
-William needs to Work Harder
+Adam
+Walker
+B
+78
+56
+26
+42
+75
+Adam needs to Work Harder
 =======================
-Malcolm
-Robinson
-D
-8
-77
-8
-46
-20
-Malcolm needs to Run faster
-=======================
-Angus
-Jenkins
-E
-43
-6
-99
-81
+Cameron
+Johnson
+B
 10
-Angus needs to Improve
+93
+74
+12
+85
+Cameron needs to Not be so good
