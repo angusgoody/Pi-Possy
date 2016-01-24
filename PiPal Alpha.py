@@ -327,7 +327,7 @@ Label(filterPupilCanvas,textvariable=numberOfFilterResults).grid(row=4,column=1,
 
 filterVariable=StringVar()
 
-filterPupilOption=OptionMenu(filterPupilCanvas,filterVariable,"First","Second","Grade","Personal Best","All")
+filterPupilOption=OptionMenu(filterPupilCanvas,filterVariable,"All","First Name","Second Name","Grade","Personal Best")
 filterPupilOption.grid(row=0,column=1,pady=5)
 filterVariable.set("All")
 
@@ -1228,110 +1228,123 @@ def newFilter():
         filterPupilOption.config(bg=cl)
     filterPupilOption.config(activebackground=cl)
 
+
+def checkPupil(pupil,target,item):
+
+    found=False
+    results=[]
+
+    #Direct Checking
+    if target == item:
+        results.append(pupil)
+        found=True
+    elif target in item:
+        results.append(pupil)
+        found=True
+
+    #Capital checking
+    if found == False:
+        copyTarget=target.capitalize()
+        copyItem=item.capitalize()
+
+        if copyItem == copyTarget:
+            found=True
+        elif copyTarget in copyItem:
+            found=True
+
+    return found
+
 def searchPupils():
-    global filterPupilArray
+    global newOrderPupils
+    #Sets up arrays for results
     resultArray=[]
-    area=filterVariable.get()
+
+    areaToSearch=filterVariable.get()
     target=filterPupilEntry.get()
     target=str(target)
-    if target != "" and target != None:
-        tempSearchArray=["First","Second","Grade","Personal Best","All"]
-        if area == "All":
-            pos="*"
-        else:
-            try:
-                pos=tempSearchArray.index(area)
-            except:
-                print("Error finding field to search")
-                pos="*"
+    if target == None:
+        askMessage("Enter","Please enter something")
+    else:
+        matchSearchArray=["First Name","Second Name","Grade","Personal Best","All"]
+        matchPos=matchSearchArray.index(areaToSearch)
+        matchArea=matchSearchArray[matchPos]
+        if matchArea in matchSearchArray:
 
-        found=False
-        #Searches all fields
-        if pos == "*":
-            for pupil in pupilDataArray:
-                for item in pupil:
-                    if target in item:
-                        resultArray.append(pupil)
-                        break
-
-        #Searches selected fields
-        else:
-            for pupil in pupilDataArray:
-                try:
-                    if area == "Personal Best":
-                        miniCounter=2
-                        for x in range(0,numberOfPB):
-                            miniCounter+=1
-                            try:
-                                currentData=pupil
-                            except:
-                                print("Indexing error")
-                            else:
-                                if target in currentData and pupil not in resultArray:
-
-                                    resultArray.append(pupil)
-
-                    dataItem=pupil[pos]
-
-                except:
-                    pass
-                else:
-                    if target in dataItem:
-                        resultArray.append(pupil)
-
-        if len(resultArray) < 1:
-            print("No exact matches found trying capitalized")
-            target=target.capitalize()
-            for pupil in pupilDataArray:
-                try:
-                    if area == "All":
-                        for dataItem in pupil:
-                            if target in dataItem:
+            #PB section
+            if matchArea == "Personal Best":
+                for pupil in newOrderPupils:
+                    try:
+                        section=pupil[1]
+                    except:
+                        print("Search Error")
+                    else:
+                        for item in section:
+                            found=checkPupil(pupil,target,item)
+                            if found == True:
                                 resultArray.append(pupil)
 
-                    else:
-                        dataItem=pupil[pos]
 
+            elif matchArea == "All":
+                for pupil in newOrderPupils:
+                    for section in pupil:
+                        for item in section:
+                            found=checkPupil(pupil,target,item)
+                            if found == True:
+                                resultArray.append(pupil)
+
+            #Other fields
+            else:
+                try:
+                    index=matchSearchArray.index(matchArea)
+                    match=matchSearchArray[index]
                 except:
-                    pass
+                    print("Not a valid field to search")
                 else:
-                    if target in dataItem:
-                        resultArray.append(pupil)
+                    for pupil in newOrderPupils:
+                        try:
+                            section=pupil[0]
+                        except:
+                            print("Error with pupil format")
+                        else:
+                            try:
+                                subSection=section[index]
+                            except:
+                                print("Error with pupil sub format")
+                            else:
+                                found=checkPupil(pupil,target,subSection)
+                                if found == True:
+                                    resultArray.append(pupil)
 
 
-        if len(resultArray) < 1 == True:
+        #Tells user if no results
+        if len(resultArray) < 1:
+            askMessage("No results","The search returned no results")
             clearFilterPupils()
             filterResults.insert(END,"No results")
-            askMessage("None","No results were found")
-
-
         else:
-            print("Search Success")
+            print("Search Sucess")
+            #Section to show results
+
             filterResults.delete(0,END)
             counter=0
             col=status.cget("bg")
-
             filterPupilArray=[]
 
             #Remove duplicates
-
             for item in resultArray:
                 if item not in filterPupilArray:
                     filterPupilArray.append(item)
 
-
+            #Shows results on screen
             filterPupilArray=sorted(filterPupilArray)
-
             insertListbox(filterResults, filterPupilArray)
 
-        #Displays number of results
+            #Displays number of results
 
-        leng=len(resultArray)
-        leng=str(leng)
-        numberOfFilterResults.set(leng)
+            leng=len(filterPupilArray)
+            leng=str(leng)
+            numberOfFilterResults.set(leng)
 
-    else:
-        askMessage("No data","Please enter something")
 def clearFilterPupils():
     filterResults.delete(0,END)
 
@@ -1629,29 +1642,34 @@ def insertListbox(listbox,array):
     listbox.delete(0,END)
     for pupil in array:
         try:
-            name=pupil[0]
-            second=pupil[1]
-            grade=pupil[2]
+            sub=pupil[0]
         except:
-            name="?"
-            second="?"
-            grade="?"
-
-        temp=""
-        temp+=name
-        temp+=" "
-        temp+=second
-
-
-
-        if grade in passGrades:
-
-            pupilColour="light green"
+            print("Pupil format error")
         else:
-            pupilColour="salmon"
+            try:
+                name=sub[0]
+                second=sub[1]
+                grade=sub[2]
+            except:
+                name="?"
+                second="?"
+                grade="?"
 
-        listbox.insert(END,temp)
-        listbox.itemconfig(END,bg=pupilColour)
+            temp=""
+            temp+=name
+            temp+=" "
+            temp+=second
+
+
+
+            if grade in passGrades:
+
+                pupilColour="light green"
+            else:
+                pupilColour="salmon"
+
+            listbox.insert(END,temp)
+            listbox.itemconfig(END,bg=pupilColour)
 
 def insertListboxNonDelete(listbox,array):
     for pupil in array:
@@ -1850,7 +1868,7 @@ def changeOptionWidth(widget):
 
 def loadBulkEdit():
     loadCanvas(bulkEditCanvas, "Bulk Edit")
-    temp=pupilDataArray
+    temp=newOrderPupils
     temp=sorted(temp)
     insertListbox(bulkAllPupilListbox,temp)
 
@@ -1963,12 +1981,12 @@ def addBulkPupil():
             insertListboxNonDelete(bulkFilterPupilListbox, temp)
             bulkAllPupilListbox.delete(pos)
             try:
-           
+
                 bulkAllPupilListbox.selection_set(pos)
             except:
                 print("HERE")
                 bulkAllPupilListbox.selection_set("end")
-                
+
 
         except:
             print("Error loading pupil")
@@ -2111,7 +2129,7 @@ def submitBulkEdit():
     else:
         if option == "Yes":
             print("Ready to delete")
-            
+
     #Saves new files
     #for item in pupilInfoArray:
 
@@ -2121,7 +2139,7 @@ def submitBulkEdit():
 def unlockBulkOptions(event):
     if event != "Select Field":
         submitBulkEditButton.config(state=NORMAL)
-        
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
