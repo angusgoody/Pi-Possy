@@ -3,7 +3,7 @@ __author__ = 'Angus'
 #Angus Goody
 #8/10/15
 
-#Pi Pal version 6.0
+#Pi Pal version 7.2
 
 #Imports-------
 from tkinter import *
@@ -2248,9 +2248,11 @@ removeAllBulkPupilsButton.pack(side=BOTTOM)
 addAllBulkPupilsButton=Button(mainListboxFrame,text="Add All",width=10,command=preAddAllBulkPupils)
 addAllBulkPupilsButton.pack(side=BOTTOM)
 
-submitBulkEditButton=Button(secondBulkFrame,text="Change",width=10,command=preSubmitBulkEdit,state=DISABLED)
-submitBulkEditButton.grid(row=2,column=1,pady=9)
+submitBulkEditButton=Button(secondBulkFrame,text="Change",width=15,command=preSubmitBulkEdit,state=DISABLED)
+submitBulkEditButton.grid(row=2,column=1,pady=5)
 
+deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15)
+deleteBulkButton.grid(row=3,column=1,pady=3)
 
 #Right click Menus
 
