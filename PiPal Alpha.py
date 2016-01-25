@@ -6,6 +6,7 @@ __author__ = 'Angus'
 #Pi Pal version 7.2
 
 #Imports-------
+
 from tkinter import *
 import datetime
 from tkinter import colorchooser
@@ -1652,7 +1653,12 @@ def optionCommand(value):
             mainArray.append(personalArray)
 
 
-        insertListbox(viewAllListbox, mainArray)
+        newOrderArray=[]
+        for item in mainArray:
+            data=getPupilFromNewArray(item)
+            newOrderArray.append(data)
+        insertListbox(viewAllListbox, newOrderArray)
+
 
 
 
