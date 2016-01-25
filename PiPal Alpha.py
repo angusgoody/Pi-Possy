@@ -2163,6 +2163,52 @@ def getPupilFromNewArray(wordArray):
 
     return(item)
 
+def addJustify(canvas,centerOrNot):
+
+    if centerOrNot == True:
+        changeArray=["Entry"]
+        for item in canvas.winfo_children():
+
+            if item.winfo_class() in changeArray:
+                item.config(justify=CENTER)
+
+            childArray=item.winfo_children()
+            while len(childArray) > 0:
+                for child in childArray:
+                    if child.winfo_class() in changeArray:
+                        print(child.winfo_class())
+                        child.config(justify=CENTER)
+
+                childArray=child.winfo_children()
+
+    else:
+        changeArray=["Entry"]
+        for item in canvas.winfo_children():
+
+            if item.winfo_class() in changeArray:
+                item.config(justify=LEFT)
+
+            childArray=item.winfo_children()
+            while len(childArray) > 0:
+
+                for child in childArray:
+                    if child.winfo_class() in changeArray:
+                        print(child.winfo_class())
+                        child.config(justify=LEFT)
+
+                childArray=child.winfo_children()
+
+toggleSide=StringVar()
+toggleSide.set("Center")
+def toggleTextPos():
+    global toggleSide
+    if toggleSide.get() == "Center":
+        toggleSide.set("Left")
+        addJustify(viewPupilCanvas,False)
+    else:
+        addJustify(viewPupilCanvas,True)
+        toggleSide.set("Center")
+        
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2299,6 +2345,7 @@ deleteBulkButton.grid(row=3,column=1,pady=3)
 #Menu for view pupil
 viewPupilMiniMenu = Menu(currentViewPupil, tearoff=0)
 viewPupilMiniMenu.add_command(label="Open pupil in new tab",command=showPupilTab)
+viewPupilMiniMenu.add_command(label="Toggle text position",command=toggleTextPos)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
@@ -2327,13 +2374,14 @@ getPupilsFromFile("pupils.txt")
 #Order array
 orderPB()
 
+#Returns to gather infomation or initiate functions
 addPupilsMenu(newOrderPupils)
 addBinding(createPupilCanvas, createPupilInfoStep)
 addBinding(filterPupilCanvas,searchPupilStep)
 initBackground()
 initTheme()
 showOpenCanvas()
-
+addJustify(viewPupilCanvas,True)
 
 #Runs program
 window.mainloop()
