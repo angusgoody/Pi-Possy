@@ -607,7 +607,7 @@ def submitTheme(colour):
 
 
 def showOpenCanvas():
-    leng=len(pupilDataArray)
+    leng=len(newOrderPupils)
     numberVar.set(leng)
     loadCanvas(openCanvas,"Home")
 
@@ -2208,7 +2208,7 @@ def toggleTextPos():
     else:
         addJustify(viewPupilCanvas,True)
         toggleSide.set("Center")
-        
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2383,5 +2383,6 @@ initTheme()
 showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 
+print(newOrderPupils)
 #Runs program
 window.mainloop()
