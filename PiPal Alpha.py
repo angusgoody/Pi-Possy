@@ -78,6 +78,9 @@ Label(viewNumberFrame,text="Number of pupils:").grid(row=0,column=0)
 Label(viewNumberFrame,textvariable=numberVar).grid(row=0,column=1)
 
 
+
+
+
 #Change user canvas----------------------------------------------
 changeUserNameCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
@@ -893,9 +896,8 @@ def initBackground():
 
 
 def updateBackgroundColours(colour):
-    widgetArray=["Entry","Button","Text","Listbox","OptionMenu"]
+    widgetArray=["Entry","Button","Text","Listbox","OptionMenu","Menu"]
     window.config(bg=colour)
-
 
     for item in canvasArray:
         item.config(bg=colour)
@@ -923,8 +925,10 @@ def updateBackgroundColours(colour):
                                     item.config(highlightbackground=colour)
                                 except:
                                     print("Highlight error")
-
-            widget.config(highlightbackground=colour)
+            try:
+                widget.config(highlightbackground=colour)
+            except:
+                print("Widget error changing highlight colour",widget)
 
 
 def updateButtonBackground(colour):
@@ -2198,6 +2202,7 @@ def addJustify(canvas,centerOrNot):
 
                 childArray=child.winfo_children()
 
+#Function to toggle alignment of text in the view pupil canvas
 toggleSide=StringVar()
 toggleSide.set("Center")
 def toggleTextPos():
@@ -2209,6 +2214,11 @@ def toggleTextPos():
         addJustify(viewPupilCanvas,True)
         toggleSide.set("Center")
 
+def viewBulkViewPopup(event):
+    viewBulkEditMiniMenu.post(event.x_root, event.y_root)
+
+def showBulkMenuPupil():
+    print("Nah")
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2340,12 +2350,18 @@ submitBulkEditButton.grid(row=2,column=1,pady=5)
 deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15)
 deleteBulkButton.grid(row=3,column=1,pady=3)
 
-#Right click Menus
+
+
+#Right click Menus---------------
 
 #Menu for view pupil
 viewPupilMiniMenu = Menu(currentViewPupil, tearoff=0)
 viewPupilMiniMenu.add_command(label="Open pupil in new tab",command=showPupilTab)
 viewPupilMiniMenu.add_command(label="Toggle text position",command=toggleTextPos)
+
+#Bulk edit listboxes
+viewBulkEditMiniMenu=Menu(bulkEditCanvas,tearoff=0)
+viewBulkEditMiniMenu.add_command(label="View pupil",command=showBulkMenuPupil)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
@@ -2355,6 +2371,7 @@ viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 viewAllListbox.bind('<Up>', pupilGradeClick)
 viewAllListbox.bind('<Down>', pupilGradeClick)
 window.bind("<Button-2>", viewPupilPopup)
+bulkAllPupilListbox.bind("<Button-2>",viewBulkViewPopup)
 
 showPupilName.bind("<KeyRelease>",checkIfSame)
 showPupilSecond.bind("<KeyRelease>",checkIfSame)
@@ -2375,6 +2392,7 @@ getPupilsFromFile("pupils.txt")
 orderPB()
 
 #Returns to gather infomation or initiate functions
+
 addPupilsMenu(newOrderPupils)
 addBinding(createPupilCanvas, createPupilInfoStep)
 addBinding(filterPupilCanvas,searchPupilStep)
@@ -2383,6 +2401,5 @@ initTheme()
 showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 
-print(newOrderPupils)
 #Runs program
 window.mainloop()
