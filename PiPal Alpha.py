@@ -2214,11 +2214,23 @@ def toggleTextPos():
         addJustify(viewPupilCanvas,True)
         toggleSide.set("Center")
 
-def viewBulkViewPopup(event):
-    viewBulkEditMiniMenu.post(event.x_root, event.y_root)
 
-def showBulkMenuPupil():
-    print("Nah")
+def preBulkViewAllMenu(event):
+    bulkEditMenu("Add",event)
+
+def preBulkFilterMenu(event):
+    bulkEditMenu("Remove",event)
+
+def bulkEditMenu(listbox,event):
+    print(listbox)
+    if listbox == "Add":
+        bulkViewMiniMenu.post(event.x_root, event.y_root)
+    elif listbox == "Remove":
+        filterViewMiniMenu.post(event.x_root, event.y_root)
+
+
+#Command that is used by listboxes in bulk edit to view pupils
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2360,8 +2372,14 @@ viewPupilMiniMenu.add_command(label="Open pupil in new tab",command=showPupilTab
 viewPupilMiniMenu.add_command(label="Toggle text position",command=toggleTextPos)
 
 #Bulk edit listboxes
-viewBulkEditMiniMenu=Menu(bulkEditCanvas,tearoff=0)
-viewBulkEditMiniMenu.add_command(label="View pupil",command=showBulkMenuPupil)
+bulkViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
+bulkViewMiniMenu.add_command(label="View Pupil")
+bulkViewMiniMenu.add_command(label="Add Pupil")
+
+#Bulk edit listboxes
+filterViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
+filterViewMiniMenu.add_command(label="View Pupil")
+filterViewMiniMenu.add_command(label="Remove Pupil")
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
@@ -2371,7 +2389,8 @@ viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 viewAllListbox.bind('<Up>', pupilGradeClick)
 viewAllListbox.bind('<Down>', pupilGradeClick)
 window.bind("<Button-2>", viewPupilPopup)
-bulkAllPupilListbox.bind("<Button-2>",viewBulkViewPopup)
+bulkAllPupilListbox.bind("<Button-2>",preBulkViewAllMenu)
+bulkFilterPupilListbox.bind("<Button-2>",preBulkFilterMenu)
 
 showPupilName.bind("<KeyRelease>",checkIfSame)
 showPupilSecond.bind("<KeyRelease>",checkIfSame)
