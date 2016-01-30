@@ -6,6 +6,9 @@ __author__ = 'Angus'
 #PETER Version 1.0
 
 
+#Main colour variable for if userName file is not found
+defaultColour="cyan"
+
 #Imports-------
 
 from tkinter import *
@@ -29,11 +32,12 @@ window.title("PETER")
 
 #Staus bar
 statusVar=StringVar()
-status=Label(window,text="Status",bg="lightblue",textvariable = statusVar)
+status=Label(window,text="Status",bg=defaultColour,textvariable = statusVar)
 status.pack(side=BOTTOM,fill=X)
 
 #Main variables=================
 mainButtonColour="light green"
+
 userName=""
 encryptionKey=8
 mainEntryTextColour="black"
@@ -154,7 +158,7 @@ changeThemeCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickn
 
 
 colourPicked=StringVar()
-colourPicked.set("lightblue")
+colourPicked.set(defaultColour)
 
 colourListBox=Listbox(changeThemeCanvas)
 colourListBox.pack(side=LEFT)
@@ -633,7 +637,7 @@ def updateTheme(colour):
     except:
         print("Error with changing status colour")
         print("Using default colours because of unsupported colours:",colour)
-        status.config(bg="lightblue")
+        status.config(bg=defaultColour)
 
 
 def getThemeFromFile():
@@ -654,10 +658,10 @@ def getThemeFromFile():
 
         if found == False:
             print("Colour retival has failed using default colour")
-            return "lightblue"
+            return defaultColour
 
     print("Error when getting info from file function using defaults")
-    return "lightblue"
+    return defaultColour
 
 #Initialises the theme setup process
 def initTheme():
@@ -672,7 +676,7 @@ def initTheme():
             updateButtonBackground(colour)
         else:
             print("Testing of",colour,"failure using default")
-            updateTheme("lightblue")
+            updateTheme(defaultColour)
 
 
 
@@ -1104,10 +1108,53 @@ def checkIfSame(key):
 
 
 def overWritePupil(deleteOrNot):
+    global currentViewPupil
     global overwriteArray
+    copyArray=newOrderPupils
+    print("The overwrite array is",currentViewPupil)
     found=False
     pCounter=0
-    for item in pupilDataArray:
+
+    #Overwrite section
+    foundPupil=False
+
+    for pupil in newOrderPupils:
+        try:
+            dataSection=pupil[0]
+            pbSection=pupil[1]
+        except:
+            askError("Error","Error with pupil format")
+        else:
+            if currentViewPupil == pupil:
+                print("Pupil found in database")
+
+                #Overwrite or delete pupil here
+
+                if deleteOrNot == "Delete":
+                    print("Ready to delete pupil\n")
+                    if currentViewPupil in copyArray:
+                        print("The selected pupil is available to delete")
+                        try:
+                            copyArray.remove(currentViewPupil)
+                        except:
+                            print("Error removing pupil")
+                        else:
+                            if currentViewPupil in copyArray:
+                                print("Pupil is still in array")
+                            else:
+                                print("Pupil is no longer in array")
+                    else:
+                        print("Pupil not found")
+
+                else:
+                    print("Ready for overwrite\n")
+                    print(pupil,"VS\n",overwriteArray)
+                #copyArray.remove(pupil)
+                #foundPupil=True
+                #break
+
+
+        """
 
         if item == currentViewPupil:
             pupilDataArray.remove(item)
@@ -1146,7 +1193,7 @@ def overWritePupil(deleteOrNot):
             pupilDataArray.insert(pCounter,overwriteArray)
             saveNewPupils(pupilDataArray)
 
-
+    """
 def saveNewPupils(array):
     valid=False
     try:
@@ -1182,14 +1229,18 @@ def overWritePupilStep():
 
 def deletePupilStep():
     try:
-        option=messagebox.askyesno("Sure?","Are you sure you want to delete customer?")
+        option=messagebox.askyesno("Sure?","Are you sure you want to delete this Pupil?")
 
     except:
         print("Error with tkinter")
 
     else:
         if option == True:
-            overWritePupil("Delete")
+            try:
+                overWritePupil("Delete")
+            except:
+                askError("Deleting","An error occoured deleting pupil")
+
 
 def showAllPupils():
     optionVar.set("Order by")
