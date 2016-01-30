@@ -1,4 +1,2 @@
-userName123: Angus
-defaultColour: #ff0080
-defaultBackground: lime green
-
+defaultColour: green2
+defaultBackground: maroon2

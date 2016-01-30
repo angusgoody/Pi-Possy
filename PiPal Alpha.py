@@ -1127,41 +1127,45 @@ def overWritePupil(deleteOrNot):
         else:
             if currentViewPupil == pupil:
                 print("Pupil found in database")
-
-                #DELETE SECTION
-                if deleteOrNot == "Delete":
-                    print("=============Ready to delete pupil========")
-                    if currentViewPupil in copyArray:
-                        try:
-                            copyArray.remove(currentViewPupil)
-                        except:
-                            print("Error removing pupil")
-                        else:
-                            if currentViewPupil in copyArray:
-                                print("Pupil is still in array")
-                            else:
-
-                                #Code here to delete pupil
-                                saveNewPupils(copyArray)
-                    else:
-                        print("Pupil not found")
+                break
 
 
-
-                #OVERWRITE section
+    #DELETE SECTION
+    if deleteOrNot == "Delete":
+        print("=============Ready to delete pupil========")
+        if currentViewPupil in copyArray:
+            try:
+                copyArray.remove(currentViewPupil)
+            except:
+                print("Error removing pupil")
+            else:
+                if currentViewPupil in copyArray:
+                    print("Pupil is still in array")
                 else:
-                    print("=============Ready to overwrite pupil========")
-                    print(overwriteArray)
-                    if currentViewPupil in copyArray:
-                        try:
-                            copyArray.remove(currentViewPupil)
-                        except:
-                            print("Error removing pupil")
-                        else:
-                            copyArray.append(currentViewPupil)
 
-                            #Save overwrite here
-                            saveNewPupils(copyArray)
+                    #Code here to delete pupil
+                    saveNewPupils(copyArray)
+
+                    subPupilMenu.Delete("Chris G")
+        else:
+            print("Pupil not found")
+
+
+
+    #OVERWRITE section
+    else:
+        print("=============Ready to overwrite pupil========")
+        print(overwriteArray)
+        if currentViewPupil in copyArray:
+            try:
+                copyArray.remove(currentViewPupil)
+            except:
+                print("Error removing pupil")
+            else:
+                copyArray.append(currentViewPupil)
+
+                #Save overwrite here
+                saveNewPupils(copyArray)
 
 
 
@@ -1213,6 +1217,7 @@ def saveNewPupils(array):
                 file.close()
                 askMessage("Success","Overwrite success restart to update")
                 overwritePupilButton.config(state=DISABLED)
+                showOpenCanvas()
 
 
 def overWritePupilStep():
@@ -1935,6 +1940,10 @@ def loadBulkEdit():
     temp=sorted(temp)
     insertListbox(bulkAllPupilListbox,temp)
 
+    #if button configs are needed
+    alternateButtonConfig("Add")
+    alternateButtonConfig("")
+
 
 #Right click menu
 def viewPupilPopup(event):
@@ -2090,29 +2099,34 @@ def removeBulkPupil():
             print("Error loading pupil for filter")
 
 #Function to check len of listboxes each button press
+#Then based on length of lisbox config buttons
 def alternateButtonConfig(addOrRemove):
-    if addOrRemove == "Add":
-        size=bulkAllPupilListbox.size()
-        if size  < 1:
-            addBulkPupilButton.config(state=DISABLED)
-        else:
-            addBulkPupilButton.config(state=NORMAL)
-
-        #Alternate butons
-        size2=bulkFilterPupilListbox.size()
-        if size2 > 0:
-            removeBulkPupilButton.config(state=NORMAL)
+    size=bulkAllPupilListbox.size()
+    if size  < 1:
+        addBulkPupilButton.config(state=DISABLED)
+        addAllBulkPupilsButton.config(state=DISABLED)
     else:
-        size=bulkFilterPupilListbox.size()
-        if size < 1:
-            removeBulkPupilButton.config(state=DISABLED)
-        else:
-            removeBulkPupilButton.config(state=NORMAL)
+        addBulkPupilButton.config(state=NORMAL)
+        addAllBulkPupilsButton.config(state=NORMAL)
 
-        #Alternate
-        size2=bulkAllPupilListbox.size()
-        if size2 > 0:
-            addBulkPupilButton.config(state=NORMAL)
+    #Alternate butons
+    size2=bulkFilterPupilListbox.size()
+    if size2 > 0:
+        removeBulkPupilButton.config(state=NORMAL)
+
+
+    size=bulkFilterPupilListbox.size()
+    if size < 1:
+        removeBulkPupilButton.config(state=DISABLED)
+        removeAllBulkPupilsButton.config(state=DISABLED)
+    else:
+        removeBulkPupilButton.config(state=NORMAL)
+        removeAllBulkPupilsButton.config(state=NORMAL)
+
+    #Alternate
+    size2=bulkAllPupilListbox.size()
+    if size2 > 0:
+        addBulkPupilButton.config(state=NORMAL)
 
 def preAddAllBulkPupils():
     addAllBulkPupils()
