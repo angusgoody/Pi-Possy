@@ -3,7 +3,8 @@ __author__ = 'Angus'
 #Angus Goody
 #8/10/15
 
-#Pi Pal version 7.2
+#PETER Version 1.0
+
 
 #Imports-------
 
@@ -23,7 +24,7 @@ if version == "Darwin":
 #Sets up window---------
 window=Tk()
 window.geometry("450x350")
-window.title("PiPal")
+window.title("PETER")
 
 
 #Staus bar
