@@ -1143,6 +1143,9 @@ def overWritePupil(deleteOrNot):
                                 print("Pupil is still in array")
                             else:
                                 print("Pupil is no longer in array")
+
+                                #Code here to delete pupil
+                                saveNewPupils(copyArray)
                     else:
                         print("Pupil not found")
 
@@ -1204,20 +1207,39 @@ def saveNewPupils(array):
     else:
         if valid == True:
             try:
-                file=open("pupils.txt","w")
+                file=open("temp.txt","w")
             except:
                 print("Error opening file")
             else:
-                for item in array:
-                    file.write("=======================\n")
-                    for line in item:
+                for pupil in array:
+                    #Write pupils to file here
+                    try:
+                        fileData=pupil[0]
+                        filePB=pupil[1]
+                    except:
+                        print("Error with pupil format")
+                    else:
+                        file.write("=======================\n")
 
-                        try:
-                            line=line.rstrip()
-                        except:
-                            print("Error stripping line")
-                        file.write(line)
-                        file.write("\n")
+                        #Write Data here
+                        for item in fileData:
+                            try:
+                                item=item.rstrip()
+                            except:
+                                print("Error formating line")
+                            else:
+                                file.write(item)
+                                file.write("\n")
+
+                        #Write PB section
+                        for item in filePB:
+                            try:
+                                item=item.rstrip()
+                            except:
+                                print("Error formating line")
+                            else:
+                                file.write(item)
+                                file.write("\n")
 
                 file.close()
                 askMessage("Success","Overwrite success restart to update")
