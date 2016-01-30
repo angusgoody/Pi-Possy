@@ -1461,7 +1461,9 @@ def doubleClick(listbox,array):
 
 
 def getPupilInfo(canvas):
-    infoArray=[]
+
+    #Bit that gets data for pupil
+    dataArray=[]
     for widget in canvas.winfo_children():
         if widget.winfo_class() == "Entry" or widget.winfo_class() == "Text":
             try:
@@ -1475,12 +1477,13 @@ def getPupilInfo(canvas):
                 except:
                     print("Error")
                 else:
-                    infoArray.append(data)
+                    dataArray.append(data)
 
             else:
-                infoArray.append(data)
+                dataArray.append(data)
 
-    return infoArray
+    #Bit that gets PB's for pupil
+    PBArray=[]
 
 def createPupilInfo():
 
@@ -1829,7 +1832,6 @@ def askMessage(pre,message):
         messagebox.showinfo(pre,message)
     except:
         print(message)
-
 def viewPersonalBest(value):
     global currentViewPupil
 
