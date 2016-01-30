@@ -619,19 +619,30 @@ def showOpenCanvas():
     numberVar.set(leng)
     loadCanvas(openCanvas,"Home")
 
+def newUpdate(themeORBackground,colour):
+    themeArray=["Button","OptionMenu"]
+    backgroundArray=["Entry","Button","Text"]
+
+    #Change Bit
+
 def updateTheme(colour):
     if colour != None:
         colourPicked.set(colour)
-        widgetArray=["Button"]
+        widgetArray=["Button","OptionMenu"]
         for item in canvasArray:
-            for widget in item.winfo_children():
-                if widget.winfo_class() in widgetArray:
-                    try:
-                        widget.config(bg=colour)
-                    except:
-                        print("Error changing widget info")
+            childArray=item.winfo_children()
+            while len(childArray) > 0:
+                for widget in childArray:
+                    if widget.winfo_class() in widgetArray:
+                        try:
+                            widget.config(bg=colour)
+                        except:
+                            print("Error changing widget info")
+
+                    childArray=widget.winfo_children()
 
 
+    #Change status  widget colours
     try:
         status.config(bg=colour)
     except:
@@ -924,6 +935,10 @@ def updateBackgroundColours(colour):
                                         print("Error changing",item.winfo_class())
                                     else:
                                        arr=item.winfo_children()
+                                    try:
+                                        widget.config(highlightbackground=colour)
+                                    except:
+                                        pass
                                 else:
                                     arr=item.winfo_children()
                                 try:
