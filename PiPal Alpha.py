@@ -1110,12 +1110,12 @@ def checkIfSame(key):
 def overWritePupil(deleteOrNot):
     global currentViewPupil
     global overwriteArray
+
     copyArray=newOrderPupils
-    print("The overwrite array is",currentViewPupil)
     found=False
     pCounter=0
 
-    #Overwrite section
+    #Overwrite and delete section
     foundPupil=False
 
     for pupil in newOrderPupils:
@@ -1128,12 +1128,10 @@ def overWritePupil(deleteOrNot):
             if currentViewPupil == pupil:
                 print("Pupil found in database")
 
-                #Overwrite or delete pupil here
-
+                #DELETE SECTION
                 if deleteOrNot == "Delete":
-                    print("Ready to delete pupil\n")
+                    print("=============Ready to delete pupil========")
                     if currentViewPupil in copyArray:
-                        print("The selected pupil is available to delete")
                         try:
                             copyArray.remove(currentViewPupil)
                         except:
@@ -1142,62 +1140,33 @@ def overWritePupil(deleteOrNot):
                             if currentViewPupil in copyArray:
                                 print("Pupil is still in array")
                             else:
-                                print("Pupil is no longer in array")
 
                                 #Code here to delete pupil
                                 saveNewPupils(copyArray)
                     else:
                         print("Pupil not found")
 
+
+
+                #OVERWRITE section
                 else:
-                    print("Ready for overwrite\n")
-                    print(pupil,"VS\n",overwriteArray)
-                #copyArray.remove(pupil)
-                #foundPupil=True
-                #break
+                    print("=============Ready to overwrite pupil========")
+                    print(overwriteArray)
+                    if currentViewPupil in copyArray:
+                        try:
+                            copyArray.remove(currentViewPupil)
+                        except:
+                            print("Error removing pupil")
+                        else:
+                            copyArray.append(currentViewPupil)
+
+                            #Save overwrite here
+                            saveNewPupils(copyArray)
 
 
-        """
 
-        if item == currentViewPupil:
-            pupilDataArray.remove(item)
-            found=True
-            break
-
-        pCounter+=1
-
-    #Get menu name
-
-    deleteOrNot.capitalize()
-    if deleteOrNot == "Delete":
-        saveNewPupils(pupilDataArray)
-        showOpenCanvas()
-        clearFilterPupils()
-
-        try:
-            first=currentViewPupil[0]
-            second=currentViewPupil[1]
-        except:
-            print("ERROR")
-            temp=""
-        else:
-            temp=""
-            temp+=first
-            temp+=" "
-            second=(second)
-            temp+=second[0]
-
-        try:
-            pupilMenu.delete(temp)
-        except:
-            print("Error deleting pupil from menu")
-    else:
-        if found == True:
-            pupilDataArray.insert(pCounter,overwriteArray)
-            saveNewPupils(pupilDataArray)
-
-    """
 def saveNewPupils(array):
+    print("Saving new data")
     valid=False
     try:
         if len(array) > 0:
@@ -1207,7 +1176,7 @@ def saveNewPupils(array):
     else:
         if valid == True:
             try:
-                file=open("temp.txt","w")
+                file=open("pupils.txt","w")
             except:
                 print("Error opening file")
             else:
@@ -1247,7 +1216,13 @@ def saveNewPupils(array):
 
 
 def overWritePupilStep():
-    overWritePupil("not")
+    askMessage("Broken","This function is currently not working")
+    """
+    try:
+        overWritePupil("not")
+    except:
+        askError("Error","Error overwriting pupil")
+    """
 
 def deletePupilStep():
     try:

@@ -19,26 +19,6 @@ Chris needs to Improve
 76
 49
 =======================
-Chris
-Goody
-B
-Chris needs to Improve
-90
-80
-82
-37
-46
-=======================
-Tim
-Jenkins
-C
-Tim needs to Work Harder
-48
-46
-42
-101
-19
-=======================
 Hayden
 Walker
 A
@@ -48,16 +28,6 @@ Hayden needs to Concentrate
 70
 40
 91
-=======================
-Dylan
-Green
-B
-Dylan needs to Run faster
-8
-93
-20
-41
-47
 =======================
 Duey
 Black
@@ -89,15 +59,25 @@ Sam needs to Shut up
 101
 86
 =======================
-Duey
-Harris
-D
-Duey needs to Not be so good
-3
-98
-97
-17
-15
+Cameron
+Johnson
+B
+Cameron needs to Not be so good
+10
+93
+74
+12
+85
+=======================
+Dylan
+Green
+B
+Dylan needs to Run faster
+8
+93
+20
+41
+47
 =======================
 Adam
 Walker
@@ -109,12 +89,22 @@ Adam needs to Work Harder
 42
 75
 =======================
-Cameron
-Johnson
+Duey
+Harris
+D
+Duey needs to Not be so good
+3
+98
+97
+17
+15
+=======================
+Chris
+Goody
 B
-Cameron needs to Not be so good
-10
-93
-74
-12
-85
+Chris needs to Improve
+90
+80
+82
+37
+46
