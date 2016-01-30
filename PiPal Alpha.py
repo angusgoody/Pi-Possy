@@ -1899,33 +1899,52 @@ def createPupilOptionMenuFunction(value):
         addNewPBButton.config(state=NORMAL)
 
 #Function to order PB's into seperate arrays
+#This new order array is used throughout rest of program
 def orderPB():
     global newOrderPupils
-    copy=pupilDataArray
-    newArray=[]
-    for pupil in copy:
-        newPupilArray=[]
-        newPBArray=[]
-        removeArray=[]
-        rang=2+numberOfPB+1
+    newOrderPupils=[]
 
-        for x in range(3,rang):
+    numberOfDataItems=4
+
+    #COPYS THE pupil array
+    copyArray=pupilDataArray
+    for pupil in copyArray:
+
+        #Sets up pupil arrays
+        newPupilOverall=[]
+        newPupilData=[]
+        newPupilPB=[]
+
+        #Adds main data
+        for x in range(0,numberOfDataItems):
             try:
-                currentData=pupil[x]
+                currentItem=pupil[x]
             except:
-                print("Indexing error")
+                newPupilData.append("???")
             else:
-                newPBArray.append(currentData)
-                removeArray.append(currentData)
+                newPupilData.append(currentItem)
 
-        for item in removeArray:
-            pupil.remove(item)
+        #Adds main PB
+        range1=numberOfDataItems
+        range2=range1+numberOfPB
+        for y in range(range1,range2):
+            try:
+                currentPB=pupil[y]
+            except:
+                newPupilPB.append("???")
+            else:
+                newPupilPB.append(currentPB)
 
-        newPupilArray.append(pupil)
-        newPupilArray.append(newPBArray)
-        newArray.append(newPupilArray)
-    print("Complete")
-    newOrderPupils=newArray
+
+        newPupilOverall.append(newPupilData)
+        newPupilOverall.append(newPupilPB)
+
+        #Saves to new array here
+        newOrderPupils.append(newPupilOverall)
+
+
+
+
 
 def changeOptionWidth(widget):
     if version == "Windows":
@@ -2495,4 +2514,5 @@ showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 
 #Runs program
+#order()
 window.mainloop()

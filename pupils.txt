@@ -2,129 +2,119 @@
 Duey
 Johnson
 B
+Duey needs to Concentrate
 33
 60
 51
 19
 14
-Duey needs to Concentrate
 =======================
 Chris
-Mitchell
+Mitchell_Burger
 E
+Chris needs to Improve
 25
 43
 20
 76
 49
-Chris needs to Improve
 =======================
 Chris
 Goody
 B
+Chris needs to Improve
 90
 80
 82
 37
 46
-Chris needs to Improve
 =======================
 Tim
 Jenkins
 C
+Tim needs to Work Harder
 48
 46
 42
 101
 19
-Tim needs to Work Harder
 =======================
 Hayden
 Walker
 A
+Hayden needs to Concentrate
 11
 34
 70
 40
 91
-Hayden needs to Concentrate
 =======================
 Dylan
 Green
 B
+Dylan needs to Run faster
 8
 93
 20
 41
 47
-Dylan needs to Run faster
 =======================
 Duey
 Black
 A*
+Duey needs to Work Harder
 96
 33
 31
 55
 22
-Duey needs to Work Harder
 =======================
 Will
 Green
 A*
+Will needs to Improve
 56
 76
 100
 44
 12
-Will needs to Improve
 =======================
 Sam
 Clarke
 A
+Sam needs to Shut up
 78
 41
 16
 101
 86
-Sam needs to Shut up
-=======================
-Charlie
-Taylor
-B
-51
-100
-73
-91
-9
-Charlie needs to Shut up
 =======================
 Duey
 Harris
 D
+Duey needs to Not be so good
 3
 98
 97
 17
 15
-Duey needs to Not be so good
 =======================
 Adam
 Walker
 B
+Adam needs to Work Harder
 78
 56
 26
 42
 75
-Adam needs to Work Harder
 =======================
 Cameron
 Johnson
 B
+Cameron needs to Not be so good
 10
 93
 74
 12
 85
-Cameron needs to Not be so good
