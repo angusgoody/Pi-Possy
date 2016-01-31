@@ -2496,9 +2496,16 @@ viewAllListbox.bind('<Double-Button-1>', viewallResults)
 viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 viewAllListbox.bind('<Up>', pupilGradeClick)
 viewAllListbox.bind('<Down>', pupilGradeClick)
-window.bind("<Button-2>", viewPupilPopup)
-bulkAllPupilListbox.bind("<Button-2>",preBulkViewAllMenu)
-bulkFilterPupilListbox.bind("<Button-2>",preBulkFilterMenu)
+
+if version == "Darwin":
+    window.bind("<Button-2>", viewPupilPopup)
+    bulkAllPupilListbox.bind("<Button-2>",preBulkViewAllMenu)
+    bulkFilterPupilListbox.bind("<Button-2>",preBulkFilterMenu)
+else:
+    window.bind("<Button-3>", viewPupilPopup)
+    bulkAllPupilListbox.bind("<Button-3>",preBulkViewAllMenu)
+    bulkFilterPupilListbox.bind("<Button-3>",preBulkFilterMenu)
+    
 
 showPupilName.bind("<KeyRelease>",checkIfSame)
 showPupilSecond.bind("<KeyRelease>",checkIfSame)
