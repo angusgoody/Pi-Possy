@@ -1789,6 +1789,7 @@ def insertListbox(listbox,array):
             listbox.itemconfig(END,bg=pupilColour)
 
 def insertListboxNonDelete(listbox,array):
+
     for pupil in array:
         try:
             name=pupil[0]
@@ -2104,6 +2105,7 @@ def addBulkPupil():
         removeArray=[]
         for item in pos:
             selectedItem=getListboxItem(item, bulkAllPupilListbox)
+
             try:
                 words=selectedItem.split()
                 pupil=getPupilFromArray(words)
@@ -2117,10 +2119,6 @@ def addBulkPupil():
                 except:
                     print("Selection error")
 
-
-
-
-
             except:
                 print("Error loading pupil")
 
@@ -2131,7 +2129,7 @@ def addBulkPupil():
                 bulkAllPupilListbox.delete(item)
             except:
                 print("Error removing pupil from listbox")
-                
+
 def getListboxItem(pos,listbox):
     try:
         item=listbox.get(pos)
@@ -2420,6 +2418,7 @@ def bulkCheckCommand():
 
 
 
+
 #Command that is used by listboxes in bulk edit to view pupils
 
 #Add cascades and commands=====================
@@ -2559,7 +2558,7 @@ deleteBulkButton.grid(row=3,column=1,pady=3)
 
 #=============Checkbuttons==========
 bulkCheckVar=IntVar()
-check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar)
+check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar,state=DISABLED)
 check.pack(pady=10)
 
 
@@ -2574,12 +2573,12 @@ viewPupilMiniMenu.add_command(label="Toggle text position",command=toggleTextPos
 #Bulk edit listboxes
 bulkViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
 bulkViewMiniMenu.add_command(label="View Pupil")
-bulkViewMiniMenu.add_command(label="Add Pupil")
+bulkViewMiniMenu.add_command(label="Add Pupil",command=preAddBulkPupil)
 
 #Bulk edit listboxes
 filterViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
 filterViewMiniMenu.add_command(label="View Pupil")
-filterViewMiniMenu.add_command(label="Remove Pupil")
+filterViewMiniMenu.add_command(label="Remove Pupil",command=preRemoveBulkPupil)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
