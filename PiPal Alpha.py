@@ -973,6 +973,7 @@ def updateButtonBackground(colour):
 
 #The Function that toggles the text for a certain widget saving the need for one on every widget
 def toggleText(variable,widgetChoice):
+    valid=["Label"]
     if variable == "black":
         variable="white"
     elif variable == "white":
@@ -980,11 +981,14 @@ def toggleText(variable,widgetChoice):
 
     for item in window.winfo_children():
         print(item.winfo_class())
-        if item.winfo_class() == widgetChoice:
+        if item.winfo_class() in valid:
             item.config(fg=variable)
-        for widget in item.winfo_children():
-            if widget.winfo_class() == widgetChoice:
-                widget.config(fg=variable)
+        childArray=item.winfo_children()
+        while len(childArray) > 0:
+            for child in childArray:
+                if child.winfo_class() == widgetChoice:
+                    child.config(fg=variable)
+                childArray=child.winfo_children()
 
 
     return variable
