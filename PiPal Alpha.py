@@ -371,6 +371,7 @@ mainListboxFrame=Frame(bulkEditCanvas)
 mainListboxFrame.pack(side=LEFT,padx=5)
 
 
+
 #===========LEFT SUB FRAME============
 viewAllBulkFrame=Frame(mainListboxFrame)
 viewAllBulkFrame.pack(side=LEFT)
@@ -383,6 +384,9 @@ bulkViewAllSlider.pack(side=RIGHT,fill=Y)
 
 bulkViewAllSlider.config(command=bulkAllPupilListbox.yview)
 bulkAllPupilListbox.config(yscrollcommand=bulkViewAllSlider.set)
+
+
+
 
 #===========RIGHT SUB FRAME============
 
@@ -2350,7 +2354,7 @@ def bulkEditMenu(listbox,event):
         except:
             pass
         else:
-             
+
             #This line stops the pop up menu if nothing is selected
             if len(pos) > 0:
                 filterViewMiniMenu.post(event.x_root, event.y_root)
@@ -2365,6 +2369,14 @@ def toggleStatus():
         status.config(fg="White")
 
 
+def bulkCheckCommand():
+    value=bulkCheckVar.get()
+    if value == 1:
+        print("Here")
+        bulkAllPupilListbox.config(selectmode='multiple')
+    else:
+        bulkAllPupilListbox.selection_clear(0, END)
+        bulkAllPupilListbox.config(selectmode="SINGLE")
 
 
 #Command that is used by listboxes in bulk edit to view pupils
@@ -2496,11 +2508,18 @@ removeAllBulkPupilsButton.pack(side=BOTTOM)
 addAllBulkPupilsButton=Button(mainListboxFrame,text="Add All",width=10,command=preAddAllBulkPupils,relief=FLAT)
 addAllBulkPupilsButton.pack(side=BOTTOM)
 
+
 submitBulkEditButton=Button(secondBulkFrame,text="Change",width=15,command=preSubmitBulkEdit,state=DISABLED,relief=FLAT)
 submitBulkEditButton.grid(row=2,column=1,pady=5)
 
 deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15,relief=FLAT)
 deleteBulkButton.grid(row=3,column=1,pady=3)
+
+
+#=============Checkbuttons==========
+bulkCheckVar=IntVar()
+check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar)
+check.pack(pady=10)
 
 
 
