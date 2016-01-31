@@ -1299,8 +1299,7 @@ def showAllPupils():
 
     if len(newOrderPupils) > 0:
         insertListbox(viewAllListbox, newOrderPupils)
-    else:
-        viewAllListbox.insert(END,"NO DATA")
+
 
 
 def showCreatePupil():
@@ -1463,11 +1462,11 @@ def viewFilterResults(event):
 
 
 def viewallResults(event):
-
-    try:
-        doubleClick(viewAllListbox, newOrderPupils)
-    except:
-        askError("Error", "Error loading double click pupil")
+    if viewAllListbox.size() > 0:
+        try:
+            doubleClick(viewAllListbox, newOrderPupils)
+        except:
+            askError("Error", "Error loading double click pupil")
 
 def doubleClick(listbox,array):
     currentView=listbox.curselection()
@@ -2070,30 +2069,69 @@ def prePreAddBulkPupil(event):
     preAddBulkPupil()
 
 def preAddBulkPupil():
-    addBulkPupil()
-    alternateButtonConfig("Add")
+    try:
+        addBulkPupil()
+        alternateButtonConfig("Add")
+    except:
+        print("Error passing function for bulk edit")
+
 
 def addBulkPupil():
     pos=bulkAllPupilListbox.curselection()
-    if len(pos) > 0:
-        item=getListboxItem(pos, bulkAllPupilListbox)
-        try:
-            words=item.split()
-            pupil=getPupilFromArray(words)
-            temp=[]
-            temp.append(pupil)
-            insertListboxNonDelete(bulkFilterPupilListbox, temp)
-            bulkAllPupilListbox.delete(pos)
+    leng=len(pos)
+    if leng > 0 and leng < 2:
+        if len(pos) > 0:
+            item=getListboxItem(pos, bulkAllPupilListbox)
             try:
+                words=item.split()
+                pupil=getPupilFromArray(words)
+                temp=[]
+                temp.append(pupil)
+                insertListboxNonDelete(bulkFilterPupilListbox, temp)
+                bulkAllPupilListbox.delete(pos)
+                try:
 
-                bulkAllPupilListbox.selection_set(pos)
+                    bulkAllPupilListbox.selection_set(pos)
+                except:
+                    bulkAllPupilListbox.selection_set("end")
+
+
             except:
-                bulkAllPupilListbox.selection_set("end")
+                print("Error loading pupil")
+
+    else:
+        print("Multi Select")
+        removeArray=[]
+        for item in pos:
+            selectedItem=getListboxItem(item, bulkAllPupilListbox)
+            try:
+                words=selectedItem.split()
+                pupil=getPupilFromArray(words)
+                temp=[]
+                temp.append(pupil)
+                insertListboxNonDelete(bulkFilterPupilListbox, temp)
+                removeArray.append(item)
+                try:
+
+                    bulkAllPupilListbox.selection_clear(0,END)
+                except:
+                    print("Selection error")
 
 
-        except:
-            print("Error loading pupil")
 
+
+
+            except:
+                print("Error loading pupil")
+
+        #Removes from listboxes
+        for item in removeArray:
+            print(item)
+            try:
+                bulkAllPupilListbox.delete(item)
+            except:
+                print("Error removing pupil from listbox")
+                
 def getListboxItem(pos,listbox):
     try:
         item=listbox.get(pos)
@@ -2362,7 +2400,6 @@ def bulkEditMenu(listbox,event):
 def toggleStatus():
     statusCol=status.cget("fg")
     statusCol.capitalize()
-    print(statusCol)
     if statusCol == "White" or statusCol == "white":
         status.config(fg="Black")
     else:
@@ -2372,11 +2409,15 @@ def toggleStatus():
 def bulkCheckCommand():
     value=bulkCheckVar.get()
     if value == 1:
-        print("Here")
-        bulkAllPupilListbox.config(selectmode='multiple')
+        bulkAllPupilListbox.config(selectmode='extended')
+        bulkFilterPupilListbox.config(selectmode='extended')
     else:
         bulkAllPupilListbox.selection_clear(0, END)
-        bulkAllPupilListbox.config(selectmode="SINGLE")
+        bulkAllPupilListbox.config(selectmode="browse")
+
+        bulkFilterPupilListbox.selection_clear(0, END)
+        bulkFilterPupilListbox.config(selectmode="browse")
+
 
 
 #Command that is used by listboxes in bulk edit to view pupils

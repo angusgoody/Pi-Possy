@@ -1,3 +1,3 @@
+defaultBackground: DeepSkyBlue2
 defaultColour: SeaGreen3
-defaultBackground: purple1
 userName123: Angus
