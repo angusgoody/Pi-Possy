@@ -980,7 +980,7 @@ def toggleText(variable,widgetChoice):
         variable="black"
 
     for item in window.winfo_children():
-        #print(item.winfo_class())
+        print(item.winfo_class())
         if item.winfo_class() in widgetChoice:
             item.config(fg=variable)
         childArray=item.winfo_children()
@@ -2334,11 +2334,26 @@ def preBulkFilterMenu(event):
     bulkEditMenu("Remove",event)
 
 def bulkEditMenu(listbox,event):
-    print(listbox)
     if listbox == "Add":
-        bulkViewMiniMenu.post(event.x_root, event.y_root)
+        try:
+            pos=bulkAllPupilListbox.curselection()
+        except:
+            pass
+        else:
+
+            #This line stops the pop up menu if nothing is selected
+            if len(pos) > 0:
+                bulkViewMiniMenu.post(event.x_root, event.y_root)
     elif listbox == "Remove":
-        filterViewMiniMenu.post(event.x_root, event.y_root)
+        try:
+            pos=bulkFilterPupilListbox.curselection()
+        except:
+            pass
+        else:
+             
+            #This line stops the pop up menu if nothing is selected
+            if len(pos) > 0:
+                filterViewMiniMenu.post(event.x_root, event.y_root)
 
 def toggleStatus():
     statusCol=status.cget("fg")
@@ -2348,10 +2363,10 @@ def toggleStatus():
         status.config(fg="Black")
     else:
         status.config(fg="White")
-    
-    
-    
-    
+
+
+
+
 #Command that is used by listboxes in bulk edit to view pupils
 
 #Add cascades and commands=====================
