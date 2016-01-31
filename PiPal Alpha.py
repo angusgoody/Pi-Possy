@@ -973,20 +973,20 @@ def updateButtonBackground(colour):
 
 #The Function that toggles the text for a certain widget saving the need for one on every widget
 def toggleText(variable,widgetChoice):
-    valid=["Label"]
+
     if variable == "black":
         variable="white"
     elif variable == "white":
         variable="black"
 
     for item in window.winfo_children():
-        print(item.winfo_class())
-        if item.winfo_class() in valid:
+        #print(item.winfo_class())
+        if item.winfo_class() in widgetChoice:
             item.config(fg=variable)
         childArray=item.winfo_children()
         while len(childArray) > 0:
             for child in childArray:
-                if child.winfo_class() == widgetChoice:
+                if child.winfo_class() in widgetChoice:
                     child.config(fg=variable)
                 childArray=child.winfo_children()
 
@@ -996,7 +996,7 @@ def toggleText(variable,widgetChoice):
 
 def toggleLabelTextColour():
     global mainLabelTextColour
-    mainLabelTextColour=toggleText(mainLabelTextColour,"Label")
+    mainLabelTextColour=toggleText(mainLabelTextColour,["Label"])
 
 
 def getPupilsFromFile(file):
@@ -2340,7 +2340,18 @@ def bulkEditMenu(listbox,event):
     elif listbox == "Remove":
         filterViewMiniMenu.post(event.x_root, event.y_root)
 
-
+def toggleStatus():
+    statusCol=status.cget("fg")
+    statusCol.capitalize()
+    print(statusCol)
+    if statusCol == "White" or statusCol == "white":
+        status.config(fg="Black")
+    else:
+        status.config(fg="White")
+    
+    
+    
+    
 #Command that is used by listboxes in bulk edit to view pupils
 
 #Add cascades and commands=====================
@@ -2359,6 +2370,8 @@ fileMenu.add_separator()
 
 #View Menu
 viewMenu.add_command(label="Toggle Text Colour",command=toggleLabelTextColour)
+viewMenu.add_command(label="Toggle Bar Text Colour",command=toggleStatus)
+
 viewMenu.add_separator()
 viewMenu.add_command(label="Change Info",command=changeUserName)
 viewMenu.add_command(label="Change Theme",command=changeTheme)
