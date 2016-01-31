@@ -626,7 +626,7 @@ def newUpdate(themeORBackground,colour):
     #Change Theme
     if themeORBackground == "Theme":
         print("=============Ready to update theme==========")
-        
+
 
 
     #Change Background
@@ -2407,67 +2407,67 @@ bulkEditOptionMenu.grid(row=0,column=1)
 
 
 #Buttons for theme change
-choseThemeButton=Button(changeThemeCanvas,text="Change",command=updateThemeStep,relief=GROOVE)
+choseThemeButton=Button(changeThemeCanvas,text="Change",command=updateThemeStep,relief=FLAT)
 choseThemeButton.pack(side=BOTTOM,fill=X,padx=8,pady=5)
 
-colourPickerButton=Button(changeThemeCanvas,text="Colour Picker",command=colourPicker,relief=GROOVE)
+colourPickerButton=Button(changeThemeCanvas,text="Colour Picker",command=colourPicker,relief=FLAT)
 colourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
 #Overwrite username button
-overwriteUserNameButton=Button(changeUserNameCanvas,text="Overwrite",command=overwriteUserName,state=DISABLED,relief=GROOVE)
+overwriteUserNameButton=Button(changeUserNameCanvas,text="Overwrite",command=overwriteUserName,state=DISABLED,relief=FLAT)
 overwriteUserNameButton.grid(row=1,column=1,pady=8)
 
 #Button for change background
 
-choseThemeButton=Button(changeBackgroundCanvas,text="Change",command=updateBackgroundStep,relief=GROOVE)
+choseThemeButton=Button(changeBackgroundCanvas,text="Change",command=updateBackgroundStep,relief=FLAT)
 choseThemeButton.pack(side=BOTTOM,fill=X,padx=8,pady=5)
 
-backgroundColourPickerButton=Button(changeBackgroundCanvas,text="Colour Picker",command=backgroundColourPicker,relief=GROOVE)
+backgroundColourPickerButton=Button(changeBackgroundCanvas,text="Colour Picker",command=backgroundColourPicker,relief=FLAT)
 backgroundColourPickerButton.pack(side=BOTTOM,pady=5,fill=X,padx=8)
 
 #Button for overwriting and deleting data
-overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupilStep,relief=GROOVE,width=15)
+overwritePupilButton=Button(viewPupilCanvas,text="Overwrite",state=DISABLED,command=overWritePupilStep,relief=FLAT,width=15)
 overwritePupilButton.grid(row=6,column=1,pady=9)
 
-deletePupilButton=Button(viewPupilCanvas,text="Delete",command=deletePupilStep,relief=GROOVE,width=15)
+deletePupilButton=Button(viewPupilCanvas,text="Delete",command=deletePupilStep,relief=FLAT,width=15)
 deletePupilButton.grid(row=7,column=1,pady=4)
 
 #Button for filtering pupils
-filterPupilButton=Button(filterPupilCanvas,text="Search",relief=GROOVE,width=13,command=searchPupils)
+filterPupilButton=Button(filterPupilCanvas,text="Search",relief=FLAT,width=13,command=searchPupils)
 filterPupilButton.grid(row=2,column=1,pady=9)
 
 clearFilterResultsButton=Button(filterPupilCanvas,text="Clear",relief=FLAT,command=clearFilterPupils)
 clearFilterResultsButton.grid(row=3,column=2)
 
 #Buttons for creating pupil
-createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=createPupilInfo)
+createPupilButton=Button(createPupilCanvas,text="Create",width=15,command=createPupilInfo,relief=FLAT)
 createPupilButton.grid(row=6,column=1,pady=7)
 
 #Button for adding PB on create canvas
-addNewPBButton=Button(createPupilCanvas,text="Add",command=createAddPB,relief=GROOVE)
+addNewPBButton=Button(createPupilCanvas,text="Add",command=createAddPB,relief=FLAT)
 addNewPBButton.grid(row=4,column=2,padx=9)
 
 #Buttons for view all pupils
-viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep)
+viewAllPupilButton=Button(secondViewAllFrame,text="View",command=viewAllResultsStep,relief=FLAT)
 viewAllPupilButton.grid(row=4,column=1,pady=6)
 
 #Bulk edit buttons
-addBulkPupilButton=Button(mainListboxFrame,text="Add",width=10,command=preAddBulkPupil)
+addBulkPupilButton=Button(mainListboxFrame,text="Add",width=10,command=preAddBulkPupil,relief=FLAT)
 addBulkPupilButton.pack()
 
-removeBulkPupilButton=Button(mainListboxFrame,text="Remove",width=10,command=preRemoveBulkPupil)
+removeBulkPupilButton=Button(mainListboxFrame,text="Remove",width=10,command=preRemoveBulkPupil,relief=FLAT)
 removeBulkPupilButton.pack()
 
-removeAllBulkPupilsButton=Button(mainListboxFrame,text="Remove All",width=10,command=preRemoveAllBulkPupils)
+removeAllBulkPupilsButton=Button(mainListboxFrame,text="Remove All",width=10,command=preRemoveAllBulkPupils,relief=FLAT)
 removeAllBulkPupilsButton.pack(side=BOTTOM)
 
-addAllBulkPupilsButton=Button(mainListboxFrame,text="Add All",width=10,command=preAddAllBulkPupils)
+addAllBulkPupilsButton=Button(mainListboxFrame,text="Add All",width=10,command=preAddAllBulkPupils,relief=FLAT)
 addAllBulkPupilsButton.pack(side=BOTTOM)
 
-submitBulkEditButton=Button(secondBulkFrame,text="Change",width=15,command=preSubmitBulkEdit,state=DISABLED)
+submitBulkEditButton=Button(secondBulkFrame,text="Change",width=15,command=preSubmitBulkEdit,state=DISABLED,relief=FLAT)
 submitBulkEditButton.grid(row=2,column=1,pady=5)
 
-deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15)
+deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15,relief=FLAT)
 deleteBulkButton.grid(row=3,column=1,pady=3)
 
 
@@ -2505,7 +2505,7 @@ else:
     window.bind("<Button-3>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-3>",preBulkViewAllMenu)
     bulkFilterPupilListbox.bind("<Button-3>",preBulkFilterMenu)
-    
+
 
 showPupilName.bind("<KeyRelease>",checkIfSame)
 showPupilSecond.bind("<KeyRelease>",checkIfSame)
