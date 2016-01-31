@@ -623,7 +623,16 @@ def newUpdate(themeORBackground,colour):
     themeArray=["Button","OptionMenu"]
     backgroundArray=["Entry","Button","Text"]
 
-    #Change Bit
+    #Change Theme
+    if themeORBackground == "Theme":
+        print("=============Ready to update theme==========")
+        
+
+
+    #Change Background
+    elif themeORBackground == "Background":
+        print("Ready to update background")
+
 
 def updateTheme(colour):
     if colour != None:
@@ -2519,6 +2528,6 @@ initTheme()
 showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 
+newUpdate("Theme","red")
 #Runs program
-#order()
 window.mainloop()
