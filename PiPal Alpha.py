@@ -5,7 +5,7 @@ __author__ = 'Angus'
 
 #PETER Version 1.0
 
-
+ 
 #Main colour variable for if userName file is not found
 defaultColour="cyan"
 
@@ -2121,12 +2121,18 @@ def addBulkPupil():
 
             except:
                 print("Error loading pupil")
-
+        
+        miniCounter=-1
         #Removes from listboxes
         for item in removeArray:
-            print(item)
+            miniCounter+=1
+            if miniCounter != 0:
+                pos=item-miniCounter
+                
+            else:
+                pos=item
             try:
-                bulkAllPupilListbox.delete(item)
+                bulkAllPupilListbox.delete(pos)
             except:
                 print("Error removing pupil from listbox")
 
@@ -2558,7 +2564,7 @@ deleteBulkButton.grid(row=3,column=1,pady=3)
 
 #=============Checkbuttons==========
 bulkCheckVar=IntVar()
-check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar,state=DISABLED)
+check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar,state=NORMAL)
 check.pack(pady=10)
 
 
