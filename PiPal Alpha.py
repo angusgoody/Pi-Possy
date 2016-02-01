@@ -374,7 +374,7 @@ mainListboxFrame.pack(side=LEFT,padx=5)
 
 #===========LEFT SUB FRAME============
 viewAllBulkFrame=Frame(mainListboxFrame)
-viewAllBulkFrame.pack(side=LEFT)
+viewAllBulkFrame.pack(side=LEFT,padx=6)
 
 bulkAllPupilListbox=Listbox(viewAllBulkFrame,width=16)
 bulkAllPupilListbox.pack(side=LEFT)
@@ -391,7 +391,7 @@ bulkAllPupilListbox.config(yscrollcommand=bulkViewAllSlider.set)
 #===========RIGHT SUB FRAME============
 
 viewFilterBulkFrame=Frame(mainListboxFrame)
-viewFilterBulkFrame.pack(side=RIGHT)
+viewFilterBulkFrame.pack(side=RIGHT,padx=6)
 
 bulkFilterPupilListbox=Listbox(viewFilterBulkFrame,width=16)
 bulkFilterPupilListbox.pack(side=LEFT)
