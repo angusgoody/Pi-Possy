@@ -1444,11 +1444,15 @@ def clearFilterPupils():
 
 def updateMenuBG(colour):
     menuArray=[]
-    for widget in mainMenu.winfo_children():
-        try:
-            widget.config(activebackground=colour)
-        except:
-            print("Error changing menu BG")
+    childArray=mainMenu.winfo_children()
+    while len(childArray) > 0:
+        for widget in childArray:
+            try:
+                widget.config(activebackground=colour)
+            except:
+                print("Error changing menu BG")
+
+            childArray=widget.winfo_children()
 
 
 def viewFilterResults(event):
