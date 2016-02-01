@@ -1178,7 +1178,6 @@ def overWritePupil(deleteOrNot):
                     #Code here to delete pupil
                     saveNewPupils(copyArray)
 
-                    subPupilMenu.Delete("Chris G")
         else:
             print("Pupil not found")
 
@@ -1754,9 +1753,29 @@ def optionCommand(value):
 
 
 
-
+#Function ot insert array into lisbox
 def insertListbox(listbox,array):
-    listbox.delete(0,END)
+    #Find items in listbox
+    listboxData=[]
+    listboxes=[listbox]
+    if listbox == bulkAllPupilListbox:
+        listboxes.append(bulkFilterPupilListbox)
+
+    for item in listboxes:
+        try:
+            leng=item.size()
+        except:
+            print("Not listbox format")
+        else:
+            for x in range(0,leng):
+                try:
+                    current=item.get(x)
+                except:
+                    print("Indexing error inserting listbox")
+                else:
+                    listboxData.append(current)
+
+
     for pupil in array:
         try:
             sub=pupil[0]
@@ -1778,17 +1797,32 @@ def insertListbox(listbox,array):
             temp+=second
 
 
+            if temp not in listboxData:
 
-            if grade in passGrades:
+                if grade in passGrades:
 
-                pupilColour="light green"
-            else:
-                pupilColour="salmon"
+                    pupilColour="light green"
+                else:
+                    pupilColour="salmon"
 
-            listbox.insert(END,temp)
-            listbox.itemconfig(END,bg=pupilColour)
+                listbox.insert(END,temp)
+                listbox.itemconfig(END,bg=pupilColour)
 
 def insertListboxNonDelete(listbox,array):
+
+    listboxData=[]
+    try:
+        leng=listbox.size()
+    except:
+        print("Not listbox format")
+    else:
+        for x in range(0,leng):
+            try:
+                current=listbox.get(x)
+            except:
+                print("Indexing error inserting listbox")
+            else:
+                listboxData.append(current)
 
     for pupil in array:
         try:
@@ -1813,8 +1847,9 @@ def insertListboxNonDelete(listbox,array):
         else:
             pupilColour="salmon"
 
-        listbox.insert(END,temp)
-        listbox.itemconfig(END,bg=pupilColour)
+        if temp not in listboxData:
+            listbox.insert(END,temp)
+            listbox.itemconfig(END,bg=pupilColour)
 
 def searchPupilStep(event):
     searchPupils()
@@ -2080,6 +2115,7 @@ def preAddBulkPupil():
 def addBulkPupil():
     pos=bulkAllPupilListbox.curselection()
     leng=len(pos)
+    removeArray=[]
     if leng > 0 and leng < 2:
         if len(pos) > 0:
             item=getListboxItem(pos, bulkAllPupilListbox)
@@ -2102,7 +2138,7 @@ def addBulkPupil():
 
     else:
         print("Multi Select")
-        removeArray=[]
+
         for item in pos:
             selectedItem=getListboxItem(item, bulkAllPupilListbox)
 
@@ -2155,6 +2191,7 @@ def preRemoveBulkPupil():
 def removeBulkPupil():
     pos=bulkFilterPupilListbox.curselection()
     leng=len(pos)
+    removeArray=[]
     if leng > 0 and leng < 2:
         if len(pos) > 0:
             item=getListboxItem(pos, bulkFilterPupilListbox)
@@ -2175,7 +2212,7 @@ def removeBulkPupil():
                 print("Error loading pupil for filter")
     else:
         print("Multi select")
-        removeArray=[]
+
         for item in pos:
             selectedItem=getListboxItem(item, bulkFilterPupilListbox)
 
@@ -2207,7 +2244,7 @@ def removeBulkPupil():
             bulkFilterPupilListbox.delete(pos)
         except:
             print("Error removing pupil from listbox")
-                   
+
 #Function to check len of listboxes each button press
 #Then based on length of lisbox config buttons
 def alternateButtonConfig(addOrRemove):
