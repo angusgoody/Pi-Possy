@@ -2496,6 +2496,12 @@ def bulkCheckCommand():
         bulkFilterPupilListbox.config(selectmode="browse")
 
 
+def loadDoubleClick(listbox):
+    try:
+        doubleClick(listbox, newOrderPupils)
+    except:
+        askError("Error","Error loading pupil")
+
 
 
 #Command that is used by listboxes in bulk edit to view pupils
@@ -2649,15 +2655,21 @@ viewPupilMiniMenu = Menu(currentViewPupil, tearoff=0)
 viewPupilMiniMenu.add_command(label="Open pupil in new tab",command=showPupilTab)
 viewPupilMiniMenu.add_command(label="Toggle text position",command=toggleTextPos)
 
-#Bulk edit listboxes
+#Bulk edit listboxes add mini menu
 bulkViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
-bulkViewMiniMenu.add_command(label="View Pupil")
+bulkViewMiniMenu.add_command(label="View Pupil",command=lambda :loadDoubleClick(bulkAllPupilListbox))
+bulkViewMiniMenu.add_separator()
 bulkViewMiniMenu.add_command(label="Add Pupil",command=preAddBulkPupil)
+bulkViewMiniMenu.add_separator()
+bulkViewMiniMenu.add_command(label="Add All",command=addAllBulkPupils)
 
-#Bulk edit listboxes
+#Bulk edit listboxes remove mini menu
 filterViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
-filterViewMiniMenu.add_command(label="View Pupil")
+filterViewMiniMenu.add_command(label="View Pupil",command=lambda :loadDoubleClick(bulkFilterPupilListbox))
+filterViewMiniMenu.add_separator()
 filterViewMiniMenu.add_command(label="Remove Pupil",command=preRemoveBulkPupil)
+filterViewMiniMenu.add_separator()
+filterViewMiniMenu.add_command(label="Remove All",command=removeAllBulkPupils)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
@@ -2667,6 +2679,7 @@ viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 viewAllListbox.bind('<Up>', pupilGradeClick)
 viewAllListbox.bind('<Down>', pupilGradeClick)
 
+#Mac and PC right click bindings are diffrent
 if version == "Darwin":
     window.bind("<Button-2>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-2>",preBulkViewAllMenu)
