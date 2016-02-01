@@ -5,7 +5,7 @@ __author__ = 'Angus'
 
 #PETER Version 1.0
 
- 
+
 #Main colour variable for if userName file is not found
 defaultColour="cyan"
 
@@ -2121,14 +2121,14 @@ def addBulkPupil():
 
             except:
                 print("Error loading pupil")
-        
+
         miniCounter=-1
-        #Removes from listboxes
+        #Removes from listboxes after they have been added
         for item in removeArray:
             miniCounter+=1
             if miniCounter != 0:
                 pos=item-miniCounter
-                
+
             else:
                 pos=item
             try:
@@ -2154,24 +2154,60 @@ def preRemoveBulkPupil():
 
 def removeBulkPupil():
     pos=bulkFilterPupilListbox.curselection()
-    if len(pos) > 0:
-        item=getListboxItem(pos, bulkFilterPupilListbox)
-        try:
-            words=item.split()
-            pupil=getPupilFromArray(words)
-            temp=[]
-            temp.append(pupil)
-            insertListboxNonDelete(bulkAllPupilListbox, temp)
-            bulkFilterPupilListbox.delete(pos)
+    leng=len(pos)
+    if leng > 0 and leng < 2:
+        if len(pos) > 0:
+            item=getListboxItem(pos, bulkFilterPupilListbox)
             try:
-                bulkFilterPupilListbox.selection_set(pos)
+                words=item.split()
+                pupil=getPupilFromArray(words)
+                temp=[]
+                temp.append(pupil)
+                insertListboxNonDelete(bulkAllPupilListbox, temp)
+                bulkFilterPupilListbox.delete(pos)
+                try:
+                    bulkFilterPupilListbox.selection_set(pos)
+                except:
+                    bulkFilterPupilListbox.selection_set("end")
+
+
             except:
-                bulkFilterPupilListbox.selection_set("end")
+                print("Error loading pupil for filter")
+    else:
+        print("Multi select")
+        removeArray=[]
+        for item in pos:
+            selectedItem=getListboxItem(item, bulkFilterPupilListbox)
 
+            try:
+                words=selectedItem.split()
+                pupil=getPupilFromArray(words)
+                temp=[]
+                temp.append(pupil)
+                insertListboxNonDelete(bulkAllPupilListbox, temp)
+                removeArray.append(item)
+                try:
+                    bulkFilterPupilListbox.selection_clear(0,END)
+                except:
+                    print("Selection error")
 
+            except:
+                print("Error loading pupil")
+
+    miniCounter=-1
+    #Removes from listboxes after they have been added
+    for item in removeArray:
+        miniCounter+=1
+        if miniCounter != 0:
+            pos=item-miniCounter
+
+        else:
+            pos=item
+        try:
+            bulkFilterPupilListbox.delete(pos)
         except:
-            print("Error loading pupil for filter")
-
+            print("Error removing pupil from listbox")
+                   
 #Function to check len of listboxes each button press
 #Then based on length of lisbox config buttons
 def alternateButtonConfig(addOrRemove):
