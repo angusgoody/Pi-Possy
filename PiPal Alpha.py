@@ -1944,8 +1944,14 @@ def createAddPB():
     print("Current",createPupilPersonalBestVar.get())
 
 def createPupilOptionMenuFunction(value):
-    if value != "Select":
-        addNewPBButton.config(state=NORMAL)
+    textFromEntry=createPupilTarget.get()
+    words=textFromEntry.split()
+    if len(words) > 0:
+        if value != "Select":
+            addNewPBButton.config(state=NORMAL)
+    else:
+        addNewPBButton.config(state=DISABLED)
+
 
 #Function to order PB's into seperate arrays
 #This new order array is used throughout rest of program
@@ -2712,6 +2718,7 @@ bulkFilterPupilListbox.bind("<Double-Button-1>",prePreRemoveBulkPupil)
 bulkAllPupilListbox.bind("<Button-1>",bulkDisableViewAll)
 bulkFilterPupilListbox.bind("<Button-1>",bulkDisableFilter)
 
+createPupilTarget.bind("<KeyRelease>",createPupilOptionMenuFunction)
 
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
 
