@@ -2137,7 +2137,6 @@ def addBulkPupil():
                 print("Error loading pupil")
 
     else:
-        print("Multi Select")
 
         for item in pos:
             selectedItem=getListboxItem(item, bulkAllPupilListbox)
@@ -2211,7 +2210,6 @@ def removeBulkPupil():
             except:
                 print("Error loading pupil for filter")
     else:
-        print("Multi select")
 
         for item in pos:
             selectedItem=getListboxItem(item, bulkFilterPupilListbox)
@@ -2502,8 +2500,21 @@ def loadDoubleClick(listbox):
     except:
         askError("Error","Error loading pupil")
 
+def bulkDisableViewAll(event):
+    leng=bulkAllPupilListbox.size()
+    if leng > 0:
+        addAllBulkPupilsButton.config(state=NORMAL)
+        addBulkPupilButton.config(state=NORMAL)
+        removeAllBulkPupilsButton.config(state=DISABLED)
+        removeBulkPupilButton.config(state=DISABLED)
 
-
+def bulkDisableFilter(event):
+    leng=bulkFilterPupilListbox.size()
+    if leng > 0:
+        addAllBulkPupilsButton.config(state=DISABLED)
+        addBulkPupilButton.config(state=DISABLED)
+        removeAllBulkPupilsButton.config(state=NORMAL)
+        removeBulkPupilButton.config(state=NORMAL)
 #Command that is used by listboxes in bulk edit to view pupils
 
 #Add cascades and commands=====================
@@ -2697,6 +2708,10 @@ showPupilNotes.bind("<KeyRelease>",checkIfSame)
 
 bulkAllPupilListbox.bind("<Double-Button-1>",prePreAddBulkPupil)
 bulkFilterPupilListbox.bind("<Double-Button-1>",prePreRemoveBulkPupil)
+
+bulkAllPupilListbox.bind("<Button-1>",bulkDisableViewAll)
+bulkFilterPupilListbox.bind("<Button-1>",bulkDisableFilter)
+
 
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
 
