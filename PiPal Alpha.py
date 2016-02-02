@@ -2173,7 +2173,11 @@ def addBulkPupil():
         for item in removeArray:
             miniCounter+=1
             if miniCounter != 0:
-                pos=item-miniCounter
+                try:
+                    pos=item-miniCounter
+                except:
+                    print("Format error with pupils")
+                    break
 
             else:
                 pos=item
@@ -2245,7 +2249,11 @@ def removeBulkPupil():
     for item in removeArray:
         miniCounter+=1
         if miniCounter != 0:
-            pos=item-miniCounter
+            try:
+                pos=item-miniCounter
+             except:
+                print("Pupil format error")
+                break
 
         else:
             pos=item
