@@ -1,3 +1,3 @@
-defaultBackground: SeaGreen3
+defaultBackground: SkyBlue3
 defaultColour: DarkOrchid2
 userName123: Angus

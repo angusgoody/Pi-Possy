@@ -285,6 +285,7 @@ viewAllSlider.pack(side=LEFT,fill=Y)
 viewAllSlider.config(command=viewAllListbox.yview)
 viewAllListbox.config(yscrollcommand=viewAllSlider.set)
 
+
 pupilOptions=["Grade","A-Z (First name)","A-Z (Second name)"]
 optionVar=StringVar()
 
@@ -1474,7 +1475,6 @@ def viewallResults(event):
             askError("Error", "Error loading double click pupil")
 
 def doubleClick(listbox,array):
-    print("HERE M*")
     currentView=listbox.curselection()
     currentitem=listbox.get(currentView)
     for item in array:
@@ -1606,11 +1606,11 @@ def createPupilInfoStep(event):
 
 def optionCommand(value):
     tempArray=[]
-
+    print(value)
     #Order by First Name
     if value == "A-Z (First name)":
         tempArray=sorted(newOrderPupils)
-        insertListbox(viewAllListbox, tempArray)
+        oldInsertListbox(viewAllListbox, tempArray)
 
     #Order by Second Name
     if value == "A-Z (Second name)":
@@ -1663,7 +1663,7 @@ def optionCommand(value):
         for item in mainArray:
             data=getPupilFromNewArray(item)
             newOrderArray.append(data)
-        insertListbox(viewAllListbox, newOrderArray)
+        oldInsertListbox(viewAllListbox, newOrderArray)
 
    #Order by Grades
     if value == "Grade":
@@ -1724,6 +1724,8 @@ def optionCommand(value):
         sortArray=sorted(firstArray)
         for pupil in invalidGrades:
             sortArray.append(pupil)
+
+
         #Reversing array
         for item in sortArray:
             personalArray=[]
@@ -1755,12 +1757,47 @@ def optionCommand(value):
         for item in mainArray:
             data=getPupilFromNewArray(item)
             newOrderArray.append(data)
-        insertListbox(viewAllListbox, newOrderArray)
+        oldInsertListbox(viewAllListbox, newOrderArray)
 
 
 
+
+#Old format listox insersion
+def oldInsertListbox(listbox,array):
+    listbox.delete(0,END)
+    for pupil in array:
+        try:
+            sub=pupil[0]
+        except:
+            print("Pupil format error")
+        else:
+            try:
+                name=sub[0]
+                second=sub[1]
+                grade=sub[2]
+            except:
+                name="?"
+                second="?"
+                grade="?"
+
+            temp=""
+            temp+=name
+            temp+=" "
+            temp+=second
+
+
+
+            if grade in passGrades:
+
+                pupilColour="light green"
+            else:
+                pupilColour="salmon"
+
+            listbox.insert(END,temp)
+            listbox.itemconfig(END,bg=pupilColour)
 
 #Function ot insert array into lisbox
+
 def insertListbox(listbox,array):
     #Find items in listbox
     listboxData=[]
@@ -2608,9 +2645,13 @@ editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 #=============================Option Menu===============
 
 #Options for ordering
+
+
 orderPupilOption=OptionMenu(bottomViewAllFrame,optionVar,*pupilOptions,command=optionCommand)
 orderPupilOption.pack(side=BOTTOM,pady=9)
 optionVar.set("Order by")
+
+
 
 #Options for PB
 personalBestOptions=mainPBOptions
