@@ -1308,6 +1308,7 @@ def showCreatePupil():
     #Initial setup
     addNewPBButton.config(state=DISABLED)
     createPupilPersonalBestVar.set("Select")
+    setupCreatePB()
 
 
 def newFilter():
@@ -1527,6 +1528,15 @@ def getPupilInfo(canvas):
     #Bit that gets PB's for pupil
     PBArray=[]
 
+currentCreatePupilPBArray=[]
+
+def setupCreatePB():
+    global currentCreatePupilPBArray
+    currentCreatePupilPBArray=[]
+    #Set up current array
+    for x in range(0,numberOfPB):
+        currentCreatePupilPBArray.append([])
+        
 def createPupilInfo():
 
     content=getPupilInfo(createPupilCanvas)
@@ -1989,7 +1999,6 @@ def askError(pre,message):
 
 def createAddPB():
     global currentCreatePupil
-    createPupilPersonalBestVar
     print("Current",createPupilPersonalBestVar.get())
 
 def createPupilOptionMenuFunction(value):
@@ -2601,7 +2610,6 @@ def bulkDisableFilter(event):
 def creatPupilNew():
     newOrderPupils.append([["Bobbafet","Vader","A*","Needs to learn to use lightsaber"],["13","14","21","15","23"]])
     saveNewPupils(newOrderPupils)
-#Command that is used by listboxes in bulk edit to view pupils
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
