@@ -1141,11 +1141,13 @@ def checkIfSame(key):
         overwritePupilButton.config(state=DISABLED)
     else:
         overwritePupilButton.config(state=NORMAL)
+        overwriteArray=tempArray
 
 
 def overWritePupil(deleteOrNot):
     global currentViewPupil
     global overwriteArray
+    print("Overwriting is",overwriteArray)
 
     copyArray=newOrderPupils
     found=False
@@ -1257,13 +1259,13 @@ def saveNewPupils(array):
 
 
 def overWritePupilStep():
-    askMessage("Broken","This function is currently not working")
-    """
+    #askMessage("Broken","This function is currently not working")
+
     try:
         overWritePupil("not")
     except:
         askError("Error","Error overwriting pupil")
-    """
+
 
 def deletePupilStep():
     try:
@@ -2699,9 +2701,10 @@ def creatPupilNew():
     saveNewPupils(newOrderPupils)
 
 def checkPBSame(currentPB):
-    same=False
+    same=True
     currentOption=chosenPeronalBestToView.get()
-    if currentOption != "Select":
+    print(currentOption)
+    if currentOption != "Select PB":
         print()
         try:
             currentPBSecton=currentViewPupil[1]
@@ -2711,14 +2714,13 @@ def checkPBSame(currentPB):
             try:
                 matchPos=mainPBOptions.index(currentOption)
             except:
-                print("Indexing error")
+                print("Indexing error finding PB index")
             else:
                 try:
                     match=currentPBSecton[matchPos]
                 except:
                     print("Second index error")
                 else:
-                    print("Current is",currentPB,"Other is",match)
                     if currentPB == match:
                         same=True
                     else:
