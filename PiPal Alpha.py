@@ -1126,15 +1126,18 @@ def showPupil(fieldArray):
 
 
 
+
 #The function that runs every time the keyboard is pressed to update overwrite button state
 
 def checkIfSame(key):
     global currentViewPupil
     global overwriteArray
 
-    tempArray=getPupilInfo(viewPupilCanvas)
+    tempArray=newGetInfo()
+    pbSame=checkPBSame(currentViewPB.get())
+
     overwriteArray=tempArray
-    if tempArray == currentViewPupil:
+    if tempArray == currentViewPupil and pbSame == True:
         overwritePupilButton.config(state=DISABLED)
     else:
         overwritePupilButton.config(state=NORMAL)
@@ -1502,7 +1505,30 @@ def doubleClick(listbox,array):
     except:
         print("Error with show pupil function")
 
+currentViewPB=StringVar()
+def newGetInfo():
+    global currentViewPB
+    global currentCreatePupilPBArray
+    name=showPupilName.get()
+    second=showPupilSecond.get()
+    grade=showPupilGrade.get()
+    target=viewPersonalBestEntry.get()
+    currentViewPB.set(target)
+    notes=showPupilNotes.get(1.0,END)
+    try:
+        notes=notes.rstrip()
+    except:
+        print("Stripping error")
 
+    try:
+        pbSection=currentViewPupil[1]
+    except:
+        print("Format error with pupil")
+        pbSection=[]
+
+
+    returnArray=[[name,second,grade,notes],pbSection]
+    return(returnArray)
 def getPupilInfo(canvas):
 
     #Bit that gets data for pupil
@@ -1639,7 +1665,6 @@ def createPupilInfoStep(event):
 
 def optionCommand(value):
     tempArray=[]
-    print(value)
     #Order by First Name
     if value == "A-Z (First name)":
         tempArray=sorted(newOrderPupils)
@@ -2673,6 +2698,36 @@ def creatPupilNew():
     newOrderPupils.append([["Bobbafet","Vader","A*","Needs to learn to use lightsaber"],["13","14","21","15","23"]])
     saveNewPupils(newOrderPupils)
 
+def checkPBSame(currentPB):
+    same=False
+    currentOption=chosenPeronalBestToView.get()
+    if currentOption != "Select":
+        print()
+        try:
+            currentPBSecton=currentViewPupil[1]
+        except:
+            print("Pupil format error")
+        else:
+            try:
+                matchPos=mainPBOptions.index(currentOption)
+            except:
+                print("Indexing error")
+            else:
+                try:
+                    match=currentPBSecton[matchPos]
+                except:
+                    print("Second index error")
+                else:
+                    print("Current is",currentPB,"Other is",match)
+                    if currentPB == match:
+                        same=True
+                    else:
+                        same=False
+    if same == True:
+        return True
+    else:
+        return False
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2866,6 +2921,7 @@ showPupilName.bind("<KeyRelease>",checkIfSame)
 showPupilSecond.bind("<KeyRelease>",checkIfSame)
 showPupilGrade.bind("<KeyRelease>",checkIfSame)
 showPupilNotes.bind("<KeyRelease>",checkIfSame)
+viewPersonalBestEntry.bind("<KeyRelease>",checkIfSame)
 
 bulkAllPupilListbox.bind("<Double-Button-1>",prePreAddBulkPupil)
 bulkFilterPupilListbox.bind("<Double-Button-1>",prePreRemoveBulkPupil)
