@@ -2704,7 +2704,6 @@ def checkPBSame(currentPB):
     same=True
     currentOption=chosenPeronalBestToView.get()
     if currentOption != "Select PB":
-        print()
         try:
             currentPBSecton=currentViewPupil[1]
         except:
