@@ -2251,7 +2251,7 @@ def removeBulkPupil():
         if miniCounter != 0:
             try:
                 pos=item-miniCounter
-             except:
+            except:
                 print("Pupil format error")
                 break
 
