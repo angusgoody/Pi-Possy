@@ -2002,13 +2002,11 @@ def createAddPB():
     global currentCreatePupilPBArray
     global currentCreatePupil
     selectedArea=createPupilPersonalBestVar.get()
-    print("Current",selectedArea)
     textFromArray=createPupilTarget.get()
     #Works out match
     copyArray=mainPBOptions
     try:
         matchPos=copyArray.index(selectedArea)
-        print("Found match")
     except:
         print("Error finding PB match array")
     else:
@@ -2017,21 +2015,21 @@ def createAddPB():
         except:
             print("Error updating PB")
         else:
-            print("Updated in array to",textFromArray)
-            print("Current Create pupil array",currentCreatePupilPBArray)
+            print("Added PB success")
 
 
 def createPupilOptionMenuFunction(value):
     global currentCreatePupilPBArray
-
+    #Value from OptionMenu if keystroke triggers function
+    directValue=createPupilPersonalBestVar.get()
     textFromEntry=createPupilTarget.get()
     words=textFromEntry.split()
     if len(words) > 0:
-        if value != "Select":
+        if value != "Select" and directValue != "Select":
             addNewPBButton.config(state=NORMAL)
     else:
         addNewPBButton.config(state=DISABLED)
-    
+
     if value in mainPBOptions:
         #Works out match to diplay in Label
         try:
@@ -2044,12 +2042,11 @@ def createPupilOptionMenuFunction(value):
             except:
                 print("Error occoured viewing current PB")
             else:
-                print(currentItem)
                 if currentItem != []:
                     insertEntry(createPupilTarget,currentItem)
-
                 else:
                     insertEntry(createPupilTarget,"")
+
 
 
 #Function to order PB's into seperate arrays
