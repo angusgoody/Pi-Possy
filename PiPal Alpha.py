@@ -1509,38 +1509,38 @@ def getPupilInfo(canvas):
     dataArray=[]
     for widget in canvas.winfo_children():
         if widget.winfo_class() == "Entry" or widget.winfo_class() == "Text":
-            try:
-                data=widget.get()
-                data=data.rstrip()
-                data.capitalize()
-            except:
+            if widget != createPupilTarget:
                 try:
-                    data=widget.get("1.0",END)
+                    data=widget.get()
                     data=data.rstrip()
+                    data.capitalize()
                 except:
-                    print("Error")
+                    try:
+                        data=widget.get("1.0",END)
+                        data=data.rstrip()
+                    except:
+                        print("Error")
+                    else:
+                        dataArray.append(data)
+
                 else:
                     dataArray.append(data)
 
-            else:
-                dataArray.append(data)
 
-    #Bit that gets PB's for pupil
-    PBArray=[]
-
-currentCreatePupilPBArray=[]
+    return dataArray
 
 def setupCreatePB():
     global currentCreatePupilPBArray
     currentCreatePupilPBArray=[]
     #Set up current array
     for x in range(0,numberOfPB):
-        currentCreatePupilPBArray.append([])
+        currentCreatePupilPBArray.append(["Unknown?"])
 
 def createPupilInfo():
+    global currentCreatePupilPBArray
 
+    mainPupilArray=[]
     content=getPupilInfo(createPupilCanvas)
-
     #Add optionMenu bit here
 
     leng=len(content)
@@ -1559,8 +1559,20 @@ def createPupilInfo():
             askMessage("Info", "All fields except notes must be filled")
         else:
             print("Fine")
+            mainPupilArray.append(content)
+            tempArray=[]
+            for item in currentCreatePupilPBArray:
+                try:
+                    if item == ["Unknown?"]:
+                        tempArray.append(item[0])
+                    else:
+                        tempArray.append(item)
+                except:
+                    tempArray.append("Unknown?")
+            mainPupilArray.append(tempArray)
 
-            savePupilToFile(content)
+            #Section to construct array and save to file
+            savePupilToFile(mainPupilArray)
 
             #clear canvas
             clearCanvas(createPupilCanvas)
@@ -1575,25 +1587,36 @@ def clearCanvas(canvas):
             widget.delete("1.0",END)
 
 def savePupilToFile(array):
-    global pupilDataArray
-    if array not in pupilDataArray:
-        pupilDataArray.append(array)
-        try:
-            file=open("pupils.txt","a")
-        except:
-            file=open("pupils.txt","w")
-
-        file.write("=======================\n")
-        for line in array:
-            file.write(line)
-            file.write("\n")
-
-
-        askMessage("Success","Pupil created")
-
-
+    print("Saving",array)
+    global newOrderPupils
+    try:
+        pupilData=array[0]
+        pupilPB=array[1]
+    except:
+        askError("Format","This pupil has format issues")
     else:
-        askMessage("Duplicate","This pupil allready exists")
+        if array not in newOrderPupils:
+            newOrderPupils.append(array)
+            try:
+                file=open("pupils.txt","a")
+            except:
+                file=open("pupils.txt","w")
+
+            file.write("=======================\n")
+            for item in pupilData:
+                file.write(item)
+                file.write("\n")
+
+            for item in pupilPB:
+                file.write(item)
+                file.write("\n")
+
+
+            askMessage("Success","Pupil created")
+
+
+        else:
+            askMessage("Duplicate","This pupil allready exists")
 
 
 
@@ -2042,7 +2065,8 @@ def createPupilOptionMenuFunction(value):
             except:
                 print("Error occoured viewing current PB")
             else:
-                if currentItem != []:
+
+                if currentItem != ["Unknown?"]:
                     insertEntry(createPupilTarget,currentItem)
                 else:
                     insertEntry(createPupilTarget,"")
