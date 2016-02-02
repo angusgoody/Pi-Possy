@@ -1238,9 +1238,10 @@ def saveNewPupils(array):
                         #Write PB section
                         for item in filePB:
                             try:
+                                item=str(item)
                                 item=item.rstrip()
                             except:
-                                print("Error formating line")
+                                print("Error formating PB")
                             else:
                                 file.write(item)
                                 file.write("\n")
@@ -1448,12 +1449,12 @@ def updateMenuBG(colour):
             widget.config(activebackground=colour)
         except:
             print("Error changing menu BG")
-    try:    
+    try:
         subPupilMenu.config(activebackground=colour)
     except:
         print("Pupil sub menu error")
 
-            
+
 
 
 def viewFilterResults(event):
@@ -1473,6 +1474,7 @@ def viewallResults(event):
             askError("Error", "Error loading double click pupil")
 
 def doubleClick(listbox,array):
+    print("HERE M*")
     currentView=listbox.curselection()
     currentitem=listbox.get(currentView)
     for item in array:
@@ -1831,30 +1833,35 @@ def insertListboxNonDelete(listbox,array):
 
     for pupil in array:
         try:
-            name=pupil[0]
-            second=pupil[1]
-            grade=pupil[2]
+            dataSection=pupil[0]
         except:
-            name="?"
-            second="?"
-            grade="?"
-
-        temp=""
-        temp+=name
-        temp+=" "
-        temp+=second
-
-
-
-        if grade in passGrades:
-
-            pupilColour="light green"
+            print("Pupil format error")
         else:
-            pupilColour="salmon"
+            try:
+                name=dataSection[0]
+                second=dataSection[1]
+                grade=dataSection[2]
+            except:
+                name="?"
+                second="?"
+                grade="?"
 
-        if temp not in listboxData:
-            listbox.insert(END,temp)
-            listbox.itemconfig(END,bg=pupilColour)
+            temp=""
+            temp+=name
+            temp+=" "
+            temp+=second
+
+
+
+            if grade in passGrades:
+
+                pupilColour="light green"
+            else:
+                pupilColour="salmon"
+
+            if temp not in listboxData:
+                listbox.insert(END,temp)
+                listbox.itemconfig(END,bg=pupilColour)
 
 def searchPupilStep(event):
     searchPupils()
@@ -2015,7 +2022,10 @@ def changeOptionWidth(widget):
 def loadBulkEdit():
     loadCanvas(bulkEditCanvas, "Bulk Edit")
     temp=newOrderPupils
-    temp=sorted(temp)
+    try:
+        temp=sorted(temp)
+    except:
+        print("Error sorting pupils for listbox")
     insertListbox(bulkAllPupilListbox,temp)
 
     #if button configs are needed
@@ -2095,19 +2105,27 @@ def showPupilTab():
 #Function that gets pupil from array
 def getPupilFromArray(wordArray):
     words=wordArray
-    for pupil in pupilDataArray:
+    valid1=False
+    valid2=False
+    for pupil in newOrderPupils:
         valid1=False
         valid2=False
-        if pupil[0] == words[0]:
-            valid1=True
-        if pupil[1] == words[1]:
-            valid2=True
         try:
-
-            if valid1 == True and valid2 == True:
-                break
+            data=pupil[0]
         except:
-            print("ERROR")
+            print("Pupil format error")
+        else:
+
+            if data[0] == words[0]:
+                valid1=True
+            if data[1] == words[1]:
+                valid2=True
+            try:
+
+                if valid1 == True and valid2 == True:
+                    break
+            except:
+                print("ERROR")
 
     if valid1 == True and valid2 == True:
         return pupil
@@ -2116,8 +2134,9 @@ def prePreAddBulkPupil(event):
     preAddBulkPupil()
 
 def preAddBulkPupil():
+    addBulkPupil()
     try:
-        addBulkPupil()
+
         alternateButtonConfig("Add")
     except:
         print("Error passing function for bulk edit")
@@ -2130,6 +2149,12 @@ def addBulkPupil():
     if leng > 0 and leng < 2:
         if len(pos) > 0:
             item=getListboxItem(pos, bulkAllPupilListbox)
+            words=item.split()
+            pupil=getPupilFromArray(words)
+            temp=[]
+            temp.append(pupil)
+            insertListboxNonDelete(bulkFilterPupilListbox, temp)
+            bulkAllPupilListbox.delete(pos)
             try:
                 words=item.split()
                 pupil=getPupilFromArray(words)
@@ -2534,6 +2559,11 @@ def bulkDisableFilter(event):
         addBulkPupilButton.config(state=DISABLED)
         removeAllBulkPupilsButton.config(state=NORMAL)
         removeBulkPupilButton.config(state=NORMAL)
+
+#Function for testing create pupi quickly
+def creatPupilNew():
+    newOrderPupils.append([["Bobbafet","Vader","A*","Needs to learn to use lightsaber"],["13","14","21","15","23"]])
+    saveNewPupils(newOrderPupils)
 #Command that is used by listboxes in bulk edit to view pupils
 
 #Add cascades and commands=====================
@@ -2546,6 +2576,7 @@ mainMenu.add_cascade(label="Edit",menu=editMenu)
 fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
 fileMenu.add_command(label="New Pupil",command=showCreatePupil)
+fileMenu.add_command(label="Quick create",command=creatPupilNew)
 fileMenu.add_separator()
 
 
