@@ -1536,7 +1536,7 @@ def setupCreatePB():
     #Set up current array
     for x in range(0,numberOfPB):
         currentCreatePupilPBArray.append([])
-        
+
 def createPupilInfo():
 
     content=getPupilInfo(createPupilCanvas)
@@ -1997,11 +1997,33 @@ def askError(pre,message):
     except:
         print(message)
 
+#Function that adds current PB
 def createAddPB():
+    global currentCreatePupilPBArray
     global currentCreatePupil
-    print("Current",createPupilPersonalBestVar.get())
+    selectedArea=createPupilPersonalBestVar.get()
+    print("Current",selectedArea)
+    textFromArray=createPupilTarget.get()
+    #Works out match
+    copyArray=mainPBOptions
+    try:
+        matchPos=copyArray.index(selectedArea)
+        print("Found match")
+    except:
+        print("Error finding PB match array")
+    else:
+        try:
+            currentCreatePupilPBArray[matchPos]=textFromArray
+        except:
+            print("Error updating PB")
+        else:
+            print("Updated in array to",textFromArray)
+            print("Current Create pupil array",currentCreatePupilPBArray)
+
 
 def createPupilOptionMenuFunction(value):
+    global currentCreatePupilPBArray
+
     textFromEntry=createPupilTarget.get()
     words=textFromEntry.split()
     if len(words) > 0:
@@ -2009,6 +2031,25 @@ def createPupilOptionMenuFunction(value):
             addNewPBButton.config(state=NORMAL)
     else:
         addNewPBButton.config(state=DISABLED)
+    
+    if value in mainPBOptions:
+        #Works out match to diplay in Label
+        try:
+            match=mainPBOptions.index(value)
+        except:
+            print("Match finding error")
+        else:
+            try:
+                currentItem=currentCreatePupilPBArray[match]
+            except:
+                print("Error occoured viewing current PB")
+            else:
+                print(currentItem)
+                if currentItem != []:
+                    insertEntry(createPupilTarget,currentItem)
+
+                else:
+                    insertEntry(createPupilTarget,"")
 
 
 #Function to order PB's into seperate arrays
