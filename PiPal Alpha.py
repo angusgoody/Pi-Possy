@@ -1199,7 +1199,7 @@ def overWritePupil(deleteOrNot):
             except:
                 print("Error removing pupil")
             else:
-                copyArray.append(currentViewPupil)
+                copyArray.append(overwriteArray)
 
                 #Save overwrite here
                 saveNewPupils(copyArray)
@@ -2703,7 +2703,6 @@ def creatPupilNew():
 def checkPBSame(currentPB):
     same=True
     currentOption=chosenPeronalBestToView.get()
-    print(currentOption)
     if currentOption != "Select PB":
         print()
         try:
@@ -2728,7 +2727,7 @@ def checkPBSame(currentPB):
     if same == True:
         return True
     else:
-        return False
+        return currentPB
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)

@@ -9,16 +9,6 @@ Aaron needs to Work Harder
 37
 37
 =======================
-Dylan
-Smith
-C
-Dylan needs to Run faster
-14
-103
-82
-97
-25
-=======================
 Henry
 Clarke
 B
@@ -79,16 +69,6 @@ Ben needs to Concentrate
 101
 67
 =======================
-Ben
-Robinson
-B
-Ben needs to Run faster
-69
-57
-27
-41
-9
-=======================
 Adam
 White
 C
@@ -119,16 +99,6 @@ Adam needs to Not be so good
 23
 100
 =======================
-Chris
-Robinson
-A*
-Chris needs to Concentrate
-85
-100
-102
-32
-15
-=======================
 James
 Roberts
 A*
@@ -158,3 +128,33 @@ Toby needs to Improve
 37
 4
 56
+=======================
+Chris
+Robinson
+A*
+Chris needs to Concentrate
+85
+100
+102
+32
+15
+=======================
+Dylan
+Smith
+C
+Dylan is a lad
+14
+103
+82
+97
+25
+=======================
+Hen
+Robinson
+B
+Ben needs to Run faster
+69
+57
+27
+41
+9
