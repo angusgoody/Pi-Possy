@@ -624,19 +624,6 @@ def showOpenCanvas():
     numberVar.set(leng)
     loadCanvas(openCanvas,"Home")
 
-def newUpdate(themeORBackground,colour):
-    themeArray=["Button","OptionMenu"]
-    backgroundArray=["Entry","Button","Text"]
-
-    #Change Theme
-    if themeORBackground == "Theme":
-        print("=============Ready to update theme==========")
-
-
-
-    #Change Background
-    elif themeORBackground == "Background":
-        print("Ready to update background")
 
 
 def updateTheme(colour):
@@ -1180,7 +1167,6 @@ def overWritePupil(deleteOrNot):
                 if currentViewPupil in copyArray:
                     print("Pupil is still in array")
                 else:
-
                     #Code here to delete pupil
                     saveNewPupils(copyArray)
 
@@ -1601,6 +1587,28 @@ def createPupilInfo():
 
             #Section to construct array and save to file
             savePupilToFile(mainPupilArray)
+
+            #Adds pupil to drop down menu
+            try:
+                pupilData=mainPupilArray[0]
+            except:
+                print("Error formating")
+            else:
+                try:
+                    firstName=pupilData[0]
+                    secondName=pupilData[1]
+                    temp=""
+                    temp+=firstName
+                    temp+=" "
+                    temp+=secondName[0]
+                except:
+                    print("Error finding display name")
+                    temp="?"
+                else:
+
+                    subPupilMenu.add_command(
+                label=temp,command=lambda showArray=mainPupilArray
+                : showPupil(showArray))
 
             #clear canvas
             clearCanvas(createPupilCanvas)
@@ -2951,6 +2959,5 @@ initTheme()
 showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 
-newUpdate("Theme","red")
 #Runs program
 window.mainloop()
