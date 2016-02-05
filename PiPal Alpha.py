@@ -60,7 +60,7 @@ viewMenu=Menu(mainMenu)
 pupilMenu=Menu(mainMenu)
 filterMenu=Menu(mainMenu)
 editMenu=Menu(mainMenu)
-
+groupMenu=Menu(mainMenu)
 subPupilMenu=Menu(pupilMenu)
 #===================================================================CANVAS'=======================
 
@@ -415,6 +415,14 @@ Label(secondBulkFrame,text="Change to:").grid(row=1,column=0)
 bulkChangeEntry=Entry(secondBulkFrame,justify=CENTER)
 bulkChangeEntry.grid(row=1,column=1)
 
+#Canvas for creating new group
+newGroupCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
+
+Label(newGroupCanvas,text="Group Name:").grid(row=0,column=0)
+
+groupNameEntry=Entry(newGroupCanvas)
+groupNameEntry.grid(row=0,column=1)
+
 
 
 #===================================================================END OF CANVAS'=======================
@@ -422,7 +430,7 @@ bulkChangeEntry.grid(row=1,column=1)
 
 #===============================================ARRAYS==================
 
-canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas,bulkEditCanvas]
+canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas,bulkEditCanvas,newGroupCanvas]
 themeEntry=Entry(window)
 pupilDataArray=[]
 filterPupilArray=[]
@@ -2292,12 +2300,6 @@ def addBulkPupil():
     if leng > 0 and leng < 2:
         if len(pos) > 0:
             item=getListboxItem(pos, bulkAllPupilListbox)
-            words=item.split()
-            pupil=getPupilFromArray(words)
-            temp=[]
-            temp.append(pupil)
-            insertListboxNonDelete(bulkFilterPupilListbox, temp)
-            bulkAllPupilListbox.delete(pos)
             try:
                 words=item.split()
                 pupil=getPupilFromArray(words)
@@ -2703,10 +2705,6 @@ def bulkDisableFilter(event):
         removeAllBulkPupilsButton.config(state=NORMAL)
         removeBulkPupilButton.config(state=NORMAL)
 
-#Function for testing create pupi quickly
-def creatPupilNew():
-    newOrderPupils.append([["Bobbafet","Vader","A*","Needs to learn to use lightsaber"],["13","14","21","15","23"]])
-    saveNewPupils(newOrderPupils)
 
 def checkPBSame(currentPB):
     same=True
@@ -2736,17 +2734,24 @@ def checkPBSame(currentPB):
     else:
         return currentPB
 
+def startNewGroup():
+    loadCanvas(newGroupCanvas,"New Group")
+
+def submitNewGroup():
+    askMessage("Not ready","This function is not ready yet but should be soon!")
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
 mainMenu.add_cascade(label="Pupils",menu=pupilMenu)
 mainMenu.add_cascade(label="Filter",menu=filterMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
+mainMenu.add_cascade(label="Groups",menu=groupMenu)
+
 #File Menu
 fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
 fileMenu.add_command(label="New Pupil",command=showCreatePupil)
-fileMenu.add_command(label="Quick create",command=creatPupilNew)
 fileMenu.add_separator()
 
 
@@ -2772,7 +2777,7 @@ filterMenu.add_command(label="New Filter",command=newFilter)
 #Edit menu
 editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 
-
+#PB menu
 
 
 #=============================Option Menu===============
@@ -2875,7 +2880,9 @@ submitBulkEditButton.grid(row=2,column=1,pady=5)
 deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15,relief=FLAT)
 deleteBulkButton.grid(row=3,column=1,pady=3)
 
-
+#Buttons for Groups
+submitGroupButton=Button(newGroupCanvas,text="Create",command=submitNewGroup)
+submitGroupButton.grid(row=1,column=1,pady=5)
 #=============Checkbuttons==========
 bulkCheckVar=IntVar()
 check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar,state=NORMAL)
@@ -2905,7 +2912,8 @@ filterViewMiniMenu.add_separator()
 filterViewMiniMenu.add_command(label="Remove Pupil",command=preRemoveBulkPupil)
 filterViewMiniMenu.add_separator()
 filterViewMiniMenu.add_command(label="Remove All",command=removeAllBulkPupils)
-
+filterViewMiniMenu.add_separator()
+filterViewMiniMenu.add_command(label="New Group",command=startNewGroup)
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 filterResults.bind('<Double-Button-1>', viewFilterResults)
