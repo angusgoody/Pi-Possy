@@ -2042,7 +2042,7 @@ def viewPersonalBest(value):
         try:
             pos=mainPBOptions.index(value)
         except:
-            print("Indexing error")
+            print("Indexing error finding PB position")
         else:
             try:
                 match=secondMatchArray[pos]
@@ -2201,55 +2201,57 @@ def showPupilTab():
     except:
         print("Error with pupil format")
     else:
-
-        #window setup
-        newT=Tk()
-        newWindow=Frame(newT)
-        newWindow.pack(expand=True)
-
-        newT.geometry("300x300")
-        Label(newWindow,text="Name").grid(row=0,column=0)
-        Label(newWindow,text="Second").grid(row=1,column=0)
-        Label(newWindow,text="Grade").grid(row=2,column=0)
-        Label(newWindow,text="Notes").grid(row=3,column=0)
-
-        newWindowName=Entry(newWindow)
-        newWindowName.grid(row=0,column=1)
-
-        newWindowSecond=Entry(newWindow)
-        newWindowSecond.grid(row=1,column=1)
-
-        newWindowGrade=Entry(newWindow)
-        newWindowGrade.grid(row=2,column=1)
-
-        newWindowNotes=Entry(newWindow)
-        newWindowNotes.grid(row=3,column=1)
-
-        matchArray=mainPBOptions
-        position=3
-        for item in pbArray:
-            position+=1
-            pos=pbArray.index(item)
-            match=matchArray[pos]
-            Label(newWindow,text=match).grid(row=position,column=0)
-
-            tempEntry=Entry(newWindow)
-            tempEntry.delete(0,END)
-            tempEntry.insert(END,item)
-            tempEntry.grid(row=position,column=1)
-
         try:
-            displayName=data[0]
+            #window setup
+            newT=Tk()
+            newWindow=Frame(newT)
+            newWindow.pack(expand=True)
+
+            newT.geometry("300x300")
+            Label(newWindow,text="Name").grid(row=0,column=0)
+            Label(newWindow,text="Second").grid(row=1,column=0)
+            Label(newWindow,text="Grade").grid(row=2,column=0)
+            Label(newWindow,text="Notes").grid(row=3,column=0)
+
+            newWindowName=Entry(newWindow)
+            newWindowName.grid(row=0,column=1)
+
+            newWindowSecond=Entry(newWindow)
+            newWindowSecond.grid(row=1,column=1)
+
+            newWindowGrade=Entry(newWindow)
+            newWindowGrade.grid(row=2,column=1)
+
+            newWindowNotes=Entry(newWindow)
+            newWindowNotes.grid(row=3,column=1)
+
+            matchArray=mainPBOptions
+            position=3
+            for item in pbArray:
+                position+=1
+                pos=pbArray.index(item)
+                match=matchArray[pos]
+                Label(newWindow,text=match).grid(row=position,column=0)
+
+                tempEntry=Entry(newWindow)
+                tempEntry.delete(0,END)
+                tempEntry.insert(END,item)
+                tempEntry.grid(row=position,column=1)
+
+            try:
+                displayName=data[0]
+            except:
+                print("Error finding display name")
+            else:
+                newT.title(displayName)
+                displayArray=[newWindowName,newWindowSecond,newWindowGrade,newWindowNotes]
+                for item in data:
+                    pos=data.index(item)
+                    match=displayArray[pos]
+                    match.delete(0,END)
+                    match.insert(END,item)
         except:
-            print("Error finding display name")
-        else:
-            newT.title(displayName)
-            displayArray=[newWindowName,newWindowSecond,newWindowGrade,newWindowNotes]
-            for item in data:
-                pos=data.index(item)
-                match=displayArray[pos]
-                match.delete(0,END)
-                match.insert(END,item)
+            askError("Error","An error occoured displaying pupil")
 
 
 
@@ -2740,6 +2742,14 @@ def startNewGroup():
 def submitNewGroup():
     askMessage("Not ready","This function is not ready yet but should be soon!")
 
+def addPBoptionsToBulkEditOptions():
+    global bulkEditOptionArray
+    bulkEditOptionArray=[]
+    copy=mainPBOptions
+    bulkEditOptionArray.append("Grade")
+    for item in copy:
+        bulkEditOptionArray.append(item)
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2809,6 +2819,8 @@ createPupilPersonalBestOption.grid(row=3,column=1,pady=2)
 bulkEditOptionVar=StringVar()
 bulkEditOptionVar.set("Select field")
 bulkEditOptionArray=["Grade"]
+#Updates optionMenu
+addPBoptionsToBulkEditOptions()
 bulkEditOptionMenu=OptionMenu(secondBulkFrame,bulkEditOptionVar,*bulkEditOptionArray,command=unlockBulkOptions)
 bulkEditOptionMenu.grid(row=0,column=1)
 
