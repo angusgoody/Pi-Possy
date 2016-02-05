@@ -2182,6 +2182,11 @@ def loadBulkEdit():
     #if button configs are needed
     alternateButtonConfig("Add")
     alternateButtonConfig("")
+    try:
+        addPBoptionsToBulkEditOptions()
+    except:
+        askError("Error","Option Menu error")
+
 
 
 #Right click menu
@@ -2511,10 +2516,29 @@ def removeAllBulkPupils():
 
 
 def preSubmitBulkEdit():
+    temp="Would you like to overwrite these pupils"
     try:
-        submitBulkEdit()
+        leng=bulkFilterPupilListbox.size()
+        copyLeng=str(leng)
     except:
-        askError("Error","Error saving pupils")
+        print("Size Error")
+    else:
+        temp="Would you like to overwrite these "
+        temp+=copyLeng
+        temp+="pupils"
+
+    if leng > 0:
+        try:
+            messagebox.askyesno("Overwrite","Would you like to overwrite these pupils")
+        except:
+            print("Feature not supported on:",version)
+        else:
+            try:
+                submitBulkEdit()
+            except:
+                askError("Error","Error saving pupils")
+    else:
+        askMessage("Pupils","Please load some pupils")
 
 def submitBulkEdit():
     field=bulkEditOptionVar.get()
@@ -2522,30 +2546,12 @@ def submitBulkEdit():
     print(text)
     print(field)
 
+    #arrays
+    matchArray=mainPBOptions
     #Retrivse pupil info
     data=bulkFilterPupilListbox.get(0,END)
-    pupilInfoArray=[]
-    for item in data:
-        words=item.split()
-        pupil=getPupilFromArray(words)
-        pupilInfoArray.append(pupil)
-
-    matchArray=bulkEditOptionArray
-    pos=matchArray.index(field)
-    for pupil in pupilInfoArray:
-        pupil[pos]=text
-
-    print(pupilInfoArray)
-    try:
-        option=messagebox.askyesno("Overwrite","Do you want to overwrite these pupils?")
-    except:
-        print("Tkinter error")
-    else:
-        if option == "Yes":
-            print("Ready to delete")
-
-    #Saves new files
-    #for item in pupilInfoArray:
+    #pupil=getPupilFromArray(words)
+    print("The people to change are",data)
 
 
 
