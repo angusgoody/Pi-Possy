@@ -1438,7 +1438,6 @@ def searchPupils():
         if len(resultArray) < 1:
             askMessage("No results","The search returned no results")
             clearFilterPupils()
-            filterResults.insert(END,"No results")
             numberOfFilterResults.set(0)
         else:
             print("Search Sucess")
