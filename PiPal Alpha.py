@@ -2816,6 +2816,7 @@ def newGroup(pupils):
 def newFilterGroup():
     pupils=filterResults.get(0,END)
     newGroup(pupils)
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2959,7 +2960,7 @@ deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15,relief=F
 deleteBulkButton.grid(row=3,column=1,pady=3)
 
 #Buttons for Groups
-submitGroupButton=Button(newGroupCanvas,text="Create",command=submitNewGroup)
+submitGroupButton=Button(newGroupCanvas,text="Create",command=submitNewGroup,relief=FLAT)
 submitGroupButton.grid(row=1,column=1,pady=5)
 #=============Checkbuttons==========
 bulkCheckVar=IntVar()
@@ -3016,7 +3017,7 @@ else:
     window.bind("<Button-3>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-3>",preBulkViewAllMenu)
     bulkFilterPupilListbox.bind("<Button-3>",preBulkFilterMenu)
-    filterResults.bind("<Button-2>",showFilterMenu)
+    filterResults.bind("<Button-3>",showFilterMenu)
 
 
 showPupilName.bind("<KeyRelease>",checkIfSame)
