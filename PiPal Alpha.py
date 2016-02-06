@@ -2757,8 +2757,9 @@ def checkPBSame(currentPB):
     else:
         return currentPB
 
-def startNewGroup():
-    loadCanvas(newGroupCanvas,"New Group")
+def startNewFilterGroup():
+    pupils=bulkFilterPupilListbox.get(0,END)
+    newGroup(pupils)
 
 def submitNewGroup():
     askMessage("Not ready","This function is not ready yet but should be soon!")
@@ -2802,6 +2803,19 @@ def checkGrades():
     passVar.set(passes)
     failVar.set(fails)
 
+def showFilterMenu(event):
+    pos=filterResults.curselection()
+    if len(pos) > 0:
+        filterPupilsMiniMenu.post(event.x_root, event.y_root)
+
+
+def newGroup(pupils):
+    print("Pupils to make new group",pupils)
+    loadCanvas(newGroupCanvas,"New Group")
+
+def newFilterGroup():
+    pupils=filterResults.get(0,END)
+    newGroup(pupils)
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2977,7 +2991,13 @@ filterViewMiniMenu.add_command(label="Remove Pupil",command=preRemoveBulkPupil)
 filterViewMiniMenu.add_separator()
 filterViewMiniMenu.add_command(label="Remove All",command=removeAllBulkPupils)
 filterViewMiniMenu.add_separator()
-filterViewMiniMenu.add_command(label="New Group",command=startNewGroup)
+filterViewMiniMenu.add_command(label="New Group",command=startNewFilterGroup)
+
+#Filter mini menus
+filterPupilsMiniMenu=Menu(filterPupilCanvas,tearoff=0)
+filterPupilsMiniMenu.add_command(label="New Group",command=newFilterGroup)
+
+
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
 filterResults.bind('<Double-Button-1>', viewFilterResults)
@@ -2991,10 +3011,12 @@ if version == "Darwin":
     window.bind("<Button-2>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-2>",preBulkViewAllMenu)
     bulkFilterPupilListbox.bind("<Button-2>",preBulkFilterMenu)
+    filterResults.bind("<Button-2>",showFilterMenu)
 else:
     window.bind("<Button-3>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-3>",preBulkViewAllMenu)
     bulkFilterPupilListbox.bind("<Button-3>",preBulkFilterMenu)
+    filterResults.bind("<Button-2>",showFilterMenu)
 
 
 showPupilName.bind("<KeyRelease>",checkIfSame)
