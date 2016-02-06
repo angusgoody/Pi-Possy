@@ -39,7 +39,6 @@ status.pack(side=BOTTOM,fill=X)
 mainButtonColour="light green"
 
 userName=""
-encryptionKey=8
 mainEntryTextColour="black"
 mainLabelTextColour="black"
 numberOfTextItems=4 #The variable for how many items are contained for each pupil in the text file
@@ -72,17 +71,25 @@ statusVar.set("Home")
 userVar=StringVar()
 
 openLabel=Label(openCanvas,textvariable=userVar,font= "Helvetica 16 bold")
-openLabel.pack()
+openLabel.pack(pady=5)
 
 viewNumberFrame=Frame(openCanvas)
 viewNumberFrame.pack(pady=10)
 
 numberVar=StringVar()
 numberVar.set("0")
-Label(viewNumberFrame,text="Number of pupils:").grid(row=0,column=0)
+Label(viewNumberFrame,text="Total Pupils:",justify=CENTER).grid(row=0,column=0,pady=5)
 Label(viewNumberFrame,textvariable=numberVar).grid(row=0,column=1)
 
+passVar=StringVar()
+passVar.set("0")
+Label(viewNumberFrame,text="A-C Pupils:  ",justify=LEFT).grid(row=1,column=0,pady=5)
+Label(viewNumberFrame,textvariable=passVar).grid(row=1,column=1)
 
+failVar=StringVar()
+failVar.set("0")
+Label(viewNumberFrame,text="D-F Pupils:  ",justify=LEFT).grid(row=2,column=0,pady=5)
+Label(viewNumberFrame,textvariable=failVar).grid(row=2,column=1)
 
 
 
@@ -2756,6 +2763,37 @@ def addPBoptionsToBulkEditOptions():
     for item in copy:
         bulkEditOptionArray.append(item)
 
+def checkGrades():
+    passes=0
+    fails=0
+    matchArray=["A*","A","B","C","D","E","F"]
+    for pupil in newOrderPupils:
+        try:
+            data=pupil[0]
+        except:
+            print("Pupil format error")
+        else:
+            try:
+                grade=data[2]
+
+            except:
+                print("Indexing error")
+            else:
+                try:
+                    pos=matchArray.index(grade)
+                except:
+                    pos=50
+                else:
+                    if pos <= 3:
+                        passes+=1
+                    else:
+                        fails+=1
+
+    passes=str(passes)
+    fails=str(fails)
+    passVar.set(passes)
+    failVar.set(fails)
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -2984,6 +3022,7 @@ initBackground()
 initTheme()
 showOpenCanvas()
 addJustify(viewPupilCanvas,True)
+checkGrades()
 
 #Runs program
 window.mainloop()
