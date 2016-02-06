@@ -10,14 +10,22 @@ __author__ = 'Angus'
 defaultColour="cyan"
 
 #Imports-------
+try:
+    from tkinter import *
+    from tkinter import filedialog
+    from tkinter import colorchooser
+    import tkinter.filedialog
+except:
+    print("Version of python not fully supported")
+    from Tkinter import *
+    from tkColorChooser import askcolor
+    from tkFileDialog import *
 
-from tkinter import *
 import datetime
-from tkinter import colorchooser
+
 import platform
-import tkinter.filedialog
+
 import random
-from tkinter import filedialog
 
 
 version=platform.system()
@@ -2053,6 +2061,7 @@ def askMessage(pre,message):
         messagebox.showinfo(pre,message)
     except:
         print(message)
+
 def viewPersonalBest(value):
     global currentViewPupil
 
@@ -2070,6 +2079,7 @@ def viewPersonalBest(value):
         else:
             try:
                 match=secondMatchArray[pos]
+
             except:
                 print("Error finding PB")
             else:
@@ -2953,6 +2963,9 @@ personalBestOptions=mainPBOptions
 showPupilPersonalBestOptions=OptionMenu(viewPupilCanvas,chosenPeronalBestToView,*personalBestOptions,command=viewPersonalBest)
 changeOptionWidth(showPupilPersonalBestOptions)
 showPupilPersonalBestOptions.grid(row=3,column=1,pady=2)
+
+if version != "Darwin":
+    showPupilPersonalBestOptions.config(width=15)
 
 #Create pupil options
 createPupilOptions=mainPBOptions
