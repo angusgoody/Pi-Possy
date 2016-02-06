@@ -2820,6 +2820,7 @@ def showFilterMenu(event):
 
 
 def newGroup(pupils):
+    groupListbox.delete(0,END)
 
     #Load window
     loadCanvas(newGroupCanvas,"New Group")
