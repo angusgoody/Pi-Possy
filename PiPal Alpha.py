@@ -2280,6 +2280,23 @@ def showPupilTab():
                     match=displayArray[pos]
                     match.delete(0,END)
                     match.insert(END,item)
+
+
+            #Sets up window colour
+
+            colour=random.choice(colourArray)
+            newWindow.config(bg=colour)
+            newT.config(bg=colour)
+            widgetArray=["Label"]
+            for item in newWindow.winfo_children():
+                if item.winfo_class() in widgetArray:
+                    item.config(bg=colour)
+
+                try:
+                    item.config(highlightbackground=colour)
+                except:
+                    print("Widget error")
+
         except:
             askError("Error","An error occoured displaying pupil")
 
@@ -2744,8 +2761,6 @@ def startNewFilterGroup():
     pupils=bulkFilterPupilListbox.get(0,END)
     newGroup(pupils)
 
-def submitNewGroup():
-    askMessage("Not ready","This function is not ready yet but should be soon!")
 
 def addPBoptionsToBulkEditOptions():
     global bulkEditOptionArray
@@ -2880,6 +2895,9 @@ def removeListbox(listbox,removeArray):
         except:
             print("Error removing pupil from listbox")
 
+
+def submitNewGroup():
+    askMessage("Not ready","This function is not ready yet but should be soon!")
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
