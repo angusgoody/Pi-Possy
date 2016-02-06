@@ -2318,11 +2318,8 @@ def prePreAddBulkPupil(event):
 
 def preAddBulkPupil():
     addBulkPupil()
-    try:
+    alternateButtonConfig("Add")
 
-        alternateButtonConfig("Add")
-    except:
-        print("Error passing function for bulk edit")
 
 
 def addBulkPupil():
@@ -2372,21 +2369,7 @@ def addBulkPupil():
 
         miniCounter=-1
         #Removes from listboxes after they have been added
-        for item in removeArray:
-            miniCounter+=1
-            if miniCounter != 0:
-                try:
-                    pos=item-miniCounter
-                except:
-                    print("Format error with pupils")
-                    break
-
-            else:
-                pos=item
-            try:
-                bulkAllPupilListbox.delete(pos)
-            except:
-                print("Error removing pupil from listbox")
+        removeListbox(bulkAllPupilListbox,removeArray)
 
 def getListboxItem(pos,listbox):
     try:
@@ -2403,6 +2386,7 @@ def prePreRemoveBulkPupil(event):
 def preRemoveBulkPupil():
     removeBulkPupil()
     alternateButtonConfig("")
+    sortListbox(bulkAllPupilListbox)
 
 def removeBulkPupil():
     pos=bulkFilterPupilListbox.curselection()
@@ -2447,22 +2431,9 @@ def removeBulkPupil():
                 print("Error loading pupil")
 
     miniCounter=-1
-    #Removes from listboxes after they have been added
-    for item in removeArray:
-        miniCounter+=1
-        if miniCounter != 0:
-            try:
-                pos=item-miniCounter
-            except:
-                print("Pupil format error")
-                break
 
-        else:
-            pos=item
-        try:
-            bulkFilterPupilListbox.delete(pos)
-        except:
-            print("Error removing pupil from listbox")
+    #Removes from listboxes after they have been added
+    removeListbox(bulkFilterPupilListbox,removeArray)
 
 #Function to check len of listboxes each button press
 #Then based on length of lisbox config buttons
@@ -2497,6 +2468,7 @@ def alternateButtonConfig(addOrRemove):
 def preAddAllBulkPupils():
     addAllBulkPupils()
     alternateButtonConfig("Add")
+    sortListbox(bulkAllPupilListbox)
 
 
 def addAllBulkPupils():
@@ -2856,6 +2828,41 @@ def sortListbox(listbox):
     temp=sorted(temp)
     listbox.delete(0,END)
     insertListbox(bulkAllPupilListbox,temp)
+
+#Moves serarch results to bulk edit
+def addFilterToBulk():
+    content=filterResults.get(0,END)
+
+    #Clears the space
+    removeAllBulkPupils()
+
+    bulkAllContent=bulkAllPupilListbox.get(0,END)
+    miniCounter=0
+
+    for item in bulkAllContent:
+        if item in content:
+            removeArray.append(miniCounter)
+        miniCounter+=1
+
+
+def removeListbox(listbox,removeArray):
+    miniCounter=-1
+    for item in removeArray:
+        miniCounter+=1
+        if miniCounter != 0:
+            try:
+                pos=item-miniCounter
+            except:
+                print("Pupil format error")
+                break
+
+        else:
+            pos=item
+        try:
+            listbox.delete(pos)
+        except:
+            print("Error removing pupil from listbox")
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -3036,6 +3043,7 @@ filterViewMiniMenu.add_command(label="New Group",command=startNewFilterGroup)
 #Filter mini menus
 filterPupilsMiniMenu=Menu(filterPupilCanvas,tearoff=0)
 filterPupilsMiniMenu.add_command(label="New Group",command=newFilterGroup)
+filterPupilsMiniMenu.add_command(label="Edit All",command=addFilterToBulk)
 
 
 #Bindings-------------------------
