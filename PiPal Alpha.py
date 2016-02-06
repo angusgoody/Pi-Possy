@@ -650,6 +650,7 @@ def submitTheme(colour):
     updateTheme(colour)
     updateMenuBG(colour)
     clearFilterPupils()
+
     saveLineToFile("userName.txt",temp,"defaultColour:")
     print("Theme changed to",colour)
 
@@ -1452,9 +1453,10 @@ def searchPupils():
 
         #Tells user if no results
         if len(resultArray) < 1:
-            askMessage("No results","The search returned no results")
+
             clearFilterPupils()
             numberOfFilterResults.set(0)
+            askMessage("No results","The search returned no results")
         else:
             print("Search Sucess")
             #Section to show results
@@ -1481,6 +1483,7 @@ def searchPupils():
 
 def clearFilterPupils():
     filterResults.delete(0,END)
+    numberOfFilterResults.set("0")
 
 
 
@@ -2557,18 +2560,24 @@ def preSubmitBulkEdit():
     else:
         temp="Would you like to overwrite these "
         temp+=copyLeng
-        temp+="pupils"
+        temp+=" pupils"
 
     if leng > 0:
-        try:
-            messagebox.askyesno("Overwrite","Would you like to overwrite these pupils")
-        except:
-            print("Feature not supported on:",version)
+        contentFromEntry=bulkChangeEntry.get()
+        words=contentFromEntry.split()
+        if len(words) < 1:
+            askMessage("Content","Please enter a value to change to")
         else:
             try:
-                submitBulkEdit()
+                choice=messagebox.askyesno("Overwrite",temp)
             except:
-                askError("Error","Error saving pupils")
+                print("Feature not supported on:",version)
+            else:
+                if choice == True:
+                    try:
+                        submitBulkEdit()
+                    except:
+                        askError("Error","Error saving pupils")
     else:
         askMessage("Pupils","Please load some pupils")
 
@@ -2589,8 +2598,13 @@ def submitBulkEdit():
 
 
 def unlockBulkOptions(event):
-    if event != "Select Field":
-        submitBulkEditButton.config(state=NORMAL)
+    content=bulkChangeEntry.get()
+    words=content.split()
+    if len(content) < 1:
+        submitBulkEditButton.config(state=DISABLED)
+    else:
+        if event != "Select Field":
+            submitBulkEditButton.config(state=NORMAL)
 
 def addAllBind(canvas,function):
     for item in canvas.winfo_children():
@@ -2915,6 +2929,16 @@ def removeListbox(listbox,removeArray):
 
 def submitNewGroup():
     askMessage("Not ready","This function is not ready yet but should be soon!")
+
+def checkBulkEntry(event):
+    content=bulkChangeEntry.get()
+    words=content.split()
+    if len(words) < 1:
+        submitBulkEditButton.config(state=DISABLED)
+    else:
+        option=bulkEditOptionVar.get()
+        if option != "Select field":
+            submitBulkEditButton.config(state=NORMAL)
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -3136,6 +3160,7 @@ bulkFilterPupilListbox.bind("<Button-1>",bulkDisableFilter)
 
 createPupilTarget.bind("<KeyRelease>",createPupilOptionMenuFunction)
 
+bulkChangeEntry.bind("<KeyRelease>",checkBulkEntry)
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
 
 #=======Returns===========
