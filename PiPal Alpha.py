@@ -430,7 +430,17 @@ Label(newGroupCanvas,text="Group Name:").grid(row=0,column=0)
 groupNameEntry=Entry(newGroupCanvas)
 groupNameEntry.grid(row=0,column=1)
 
+groupListboxFrame=Frame(newGroupCanvas)
+groupListboxFrame.grid(row=2,column=1)
 
+groupListbox=Listbox(groupListboxFrame)
+groupListbox.pack(side=LEFT)
+
+groupSlider=Scrollbar(groupListboxFrame)
+groupSlider.pack(side=RIGHT,fill=Y)
+
+groupSlider.config(command=groupListbox.yview)
+groupListbox.config(yscrollcommand=groupSlider.set)
 
 #===================================================================END OF CANVAS'=======================
 
@@ -2810,8 +2820,22 @@ def showFilterMenu(event):
 
 
 def newGroup(pupils):
-    print("Pupils to make new group",pupils)
+
+    #Load window
     loadCanvas(newGroupCanvas,"New Group")
+
+    #Alphabetcly orders pupils
+    pupils=sorted(pupils)
+
+    #Tracks full users
+    pupilArray=[]
+
+    for item in pupils:
+        words=item.split()
+        pupil=getPupilFromArray(words)
+        pupilArray.append(pupil)
+
+    insertListbox(groupListbox,pupilArray)
 
 def newFilterGroup():
     pupils=filterResults.get(0,END)
