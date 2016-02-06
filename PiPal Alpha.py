@@ -2519,6 +2519,7 @@ def addAllBulkPupils():
 
 def preRemoveAllBulkPupils():
     removeAllBulkPupils()
+    sortListbox(bulkAllPupilListbox)
     alternateButtonConfig("")
 
 def removeAllBulkPupils():
@@ -2842,6 +2843,19 @@ def newFilterGroup():
     pupils=filterResults.get(0,END)
     newGroup(pupils)
 
+#Organisees listbox into alphabetic order
+def sortListbox(listbox):
+
+    temp=[]
+    content=listbox.get(0,END)
+    for item in content:
+        words=item.split()
+        pupil=getPupilFromArray(words)
+        temp.append(pupil)
+
+    temp=sorted(temp)
+    listbox.delete(0,END)
+    insertListbox(bulkAllPupilListbox,temp)
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
