@@ -15,6 +15,7 @@ try:
     from tkinter import filedialog
     from tkinter import colorchooser
     import tkinter.filedialog
+    from tkinter import messagebox
 except:
     print("Version of python not fully supported")
     from Tkinter import *
@@ -27,12 +28,15 @@ import platform
 
 import random
 
+
+
 #Gets infomation about OS
 #Because certain widgets behave diffrently on Linux,Mac and PC
 version=platform.system()
 print("System platform is",version)
 if version == "Darwin":
     print("Not all Features are supported on MAC")
+
 #Sets up window---------
 window=Tk()
 window.geometry("450x350")
