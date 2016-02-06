@@ -2839,10 +2839,27 @@ def addFilterToBulk():
     bulkAllContent=bulkAllPupilListbox.get(0,END)
     miniCounter=0
 
+    removeArray=[]
     for item in bulkAllContent:
         if item in content:
             removeArray.append(miniCounter)
         miniCounter+=1
+
+    removeListbox(bulkAllPupilListbox,removeArray)
+
+    #Get pupils from search results
+    pupilsToAdd=[]
+    for item in content:
+        words=item.split()
+        pupil=getPupilFromArray(words)
+        pupilsToAdd.append(pupil)
+
+    #Adds to bulk menu
+    insertListbox(bulkFilterPupilListbox,pupilsToAdd)
+
+    #Show bulk canvas
+    loadBulkEdit()
+
 
 
 def removeListbox(listbox,removeArray):
