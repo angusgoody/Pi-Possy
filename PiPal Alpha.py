@@ -638,6 +638,12 @@ def showOpenCanvas():
     leng=len(newOrderPupils)
     numberVar.set(leng)
     loadCanvas(openCanvas,"Home")
+    try:
+        checkGrades()
+    except:
+        askError("Error","Error checking grades")
+
+
 
 
 
@@ -1208,6 +1214,8 @@ def overWritePupil(deleteOrNot):
 
 
 def saveNewPupils(array):
+    array=sorted(array)
+
     print("Saving new data")
     valid=False
     try:
