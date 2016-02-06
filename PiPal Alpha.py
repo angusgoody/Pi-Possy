@@ -27,7 +27,8 @@ import platform
 
 import random
 
-
+#Gets infomation about OS
+#Because certain widgets behave diffrently on Linux,Mac and PC
 version=platform.system()
 print("System platform is",version)
 if version == "Darwin":
@@ -841,7 +842,10 @@ def updateThemeStep():
 
 
 def colourPicker():
-    colour= colorchooser.askcolor()[1]
+    try:
+        colour= colorchooser.askcolor()[1]
+    except:
+        colour=askcolor()
     if colour != None and colour != "":
         submitTheme(colour)
 
