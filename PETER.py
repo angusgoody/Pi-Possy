@@ -1608,6 +1608,8 @@ def updateMenuBG(colour):
 
 
 
+def preViewFilterResults():
+    viewFilterResults("")
 
 def viewFilterResults(event):
 
@@ -3333,6 +3335,8 @@ filterViewMiniMenu.add_command(label="New Group",command=startNewFilterGroup)
 
 #Filter mini menus
 filterPupilsMiniMenu=Menu(filterPupilCanvas,tearoff=0)
+filterPupilsMiniMenu.add_command(label="View Pupil",command=preViewFilterResults)
+filterPupilsMiniMenu.add_separator()
 filterPupilsMiniMenu.add_command(label="New Group",command=newFilterGroup)
 filterPupilsMiniMenu.add_command(label="Edit All",command=addFilterToBulk)
 
