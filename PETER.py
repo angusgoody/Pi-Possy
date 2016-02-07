@@ -1251,6 +1251,7 @@ def overWritePupil(deleteOrNot):
     global currentViewPupil
     global overwriteArray
 
+    """
     #Adds tracking numner
     try:
         dataSection1=currentViewPupil[2]
@@ -1266,7 +1267,7 @@ def overWritePupil(deleteOrNot):
             temp=[trackNumber]
             overwriteArray.append(temp)
 
-
+    """
 
     copyArray=newOrderPupils
     found=False
@@ -1313,6 +1314,7 @@ def overWritePupil(deleteOrNot):
         print("=============Ready to overwrite pupil========")
         print("Old data",currentViewPupil)
         print("New data",overwriteArray)
+        print()
         print(overwriteArray)
         if currentViewPupil in copyArray:
             try:
@@ -1387,11 +1389,16 @@ def saveNewPupils(array):
 
 def overWritePupilStep():
     #askMessage("Broken","This function is currently not working")
-
     try:
-        overWritePupil("not")
+        choice=messagebox.askyesno("Sure","Are you sure you want to overwrite data?")
     except:
-        askError("Error","Error overwriting pupil")
+        askMessage("Feature not supported on OS")
+    else:
+        if choice == True:
+            try:
+                overWritePupil("not")
+            except:
+                askError("Error","Error overwriting pupil")
 
 
 def deletePupilStep():

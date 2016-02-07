@@ -21,7 +21,7 @@ Alex needs to Run faster
 =======================
 Alex
 Wright
-A
+B
 Alex needs to Run faster
 38
 87
@@ -81,7 +81,7 @@ Duey needs to Run faster
 =======================
 Felix
 Hall
-E
+B
 Felix needs to Improve
 91
 65
@@ -126,7 +126,7 @@ Mikey needs to Run faster
 22
 44
 15
-70
+12m
 5
 =======================
 Mikey
@@ -143,11 +143,11 @@ Sam
 Evans
 C
 Sam needs to Run faster
+this is because then he can escape bears.
 34
 22
 37
 21
-22
 =======================
 Will
 Hall
