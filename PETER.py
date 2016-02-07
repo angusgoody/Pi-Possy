@@ -1128,7 +1128,32 @@ def showPupil(fieldArray):
     global currentViewPupil
 
 
-    if fieldArray not in overWrittenPupils:
+    if fieldArray in overWrittenPupils:
+        try:
+            data=fieldArray[2]
+        except:
+            print("Format error")
+        else:
+            try:
+                trackNumber=data[0]
+            except:
+                print("Track errror")
+            else:
+                for pupil in newOrderPupils:
+                    try:
+                        pupilData=pupil[2]
+                    except:
+                        print("Format error in overwritten pupils")
+                    else:
+                        try:
+                            pupilTrack=pupilData[0]
+                        except:
+                            print("Invalid tracking format")
+                        else:
+                            if pupilTrack == trackNumber:
+                                fieldArray=pupil
+
+    if fieldArray != None:
         if currentViewPupil != fieldArray:
 
 
@@ -1175,6 +1200,7 @@ def showPupil(fieldArray):
 
 def checkIfSame(key):
     global currentViewPupil
+    print("Current",currentViewPupil)
     global overwriteArray
 
     #get track number
