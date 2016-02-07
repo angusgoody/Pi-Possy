@@ -471,6 +471,8 @@ numberOfTextItems+=numberOfPB
 newAddedPupils=[]
 menuPupils=[]
 newOrderPupils=[]
+overWrittenPupils=[]
+
 # Start of Functions===========================================================
 
 
@@ -1121,41 +1123,48 @@ def addPupilsMenu(array):
 
 
 def showPupil(fieldArray):
+    global overWrittenPupils
     numberOfDisplayItems=4
     global currentViewPupil
 
-    if currentViewPupil != fieldArray:
+
+    if fieldArray not in overWrittenPupils:
+        if currentViewPupil != fieldArray:
 
 
-        displayPersonalBestVar.set("")
-        chosenPeronalBestToView.set("Select PB")
-        overwritePupilButton.config(state=DISABLED)
-        insertEntry(viewPersonalBestEntry,"")
+            displayPersonalBestVar.set("")
+            chosenPeronalBestToView.set("Select PB")
+            overwritePupilButton.config(state=DISABLED)
+            insertEntry(viewPersonalBestEntry,"")
 
-        try:
-            pupilData=fieldArray[0]
-            pbArray=fieldArray[1]
-        except:
-            askError("Error","Error viewing pupil")
-        else:
             try:
-                name=pupilData[0]
-                second=pupilData[1]
-                grade=pupilData[2]
-                notes=pupilData[3]
-
+                pupilData=fieldArray[0]
+                pbArray=fieldArray[1]
             except:
-                print("INDEXING ERROR SHOWING PUPIL")
+                askError("Error","Error viewing pupil")
             else:
-                insertEntry(showPupilName, name)
-                insertEntry(showPupilSecond, second)
-                insertEntry(showPupilGrade,  grade)
-                insertEntry(showPupilNotes, notes)
+                try:
+                    name=pupilData[0]
+                    second=pupilData[1]
+                    grade=pupilData[2]
+                    notes=pupilData[3]
 
-                #Display canvas
-                loadCanvas(viewPupilCanvas, "Showing Pupil")
-                #Updates current pupil
-                currentViewPupil=fieldArray
+                except:
+                    print("INDEXING ERROR SHOWING PUPIL")
+                else:
+                    insertEntry(showPupilName, name)
+                    insertEntry(showPupilSecond, second)
+                    insertEntry(showPupilGrade,  grade)
+                    insertEntry(showPupilNotes, notes)
+
+                    currentViewPupil=fieldArray
+                    #Display canvas
+
+                    loadCanvas(viewPupilCanvas, "Showing Pupil")
+                    #Updates current pupil
+
+    else:
+        askMessage("Edited","This pupil has been edited restart to update")
 
 
 
@@ -1175,13 +1184,17 @@ def checkIfSame(key):
     #Updates the PB if needed
     if pbSame != True:
         current=chosenPeronalBestToView.get()
-        pos=mainPBOptions.index(current)
         try:
-            pbSection=currentViewPupil[1]
+            pos=mainPBOptions.index(current)
         except:
-            print("Format error with pupil PB data")
+            print("Could not find current PB")
         else:
-            pbSection[pos]=pbSame
+            try:
+                pbSection=currentViewPupil[1]
+            except:
+                print("Format error with pupil PB data")
+            else:
+                pbSection[pos]=pbSame
 
 
 
@@ -1254,6 +1267,7 @@ def overWritePupil(deleteOrNot):
 
 
 def saveNewPupils(array):
+    global overWrittenPupils
     array=sorted(array)
 
     print("Saving new data")
@@ -1303,8 +1317,11 @@ def saveNewPupils(array):
 
                 file.close()
                 askMessage("Success","Overwrite success restart to update")
+
                 overwritePupilButton.config(state=DISABLED)
                 showOpenCanvas()
+
+                overWrittenPupils.append(currentViewPupil)
 
 
 def overWritePupilStep():
@@ -2188,7 +2205,9 @@ def orderPB():
 
     #COPYS THE pupil array
     copyArray=pupilDataArray
+    trackNumber=0
     for pupil in copyArray:
+        trackNumber+=1
 
         #Sets up pupil arrays
         newPupilOverall=[]
@@ -2260,8 +2279,10 @@ def viewPupilPopup(event):
         viewPupilMiniMenu.post(event.x_root, event.y_root)
 
 def showPupilTab():
+
     global currentViewPupil
     current=currentViewPupil
+
     try:
         data=current[0]
         pbArray=current[1]

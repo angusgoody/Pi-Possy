@@ -1,6 +1,6 @@
 =======================
 Adam
-Clarke
+Clarke_junior
 E
 Adam needs to Concentrate
 28
@@ -20,7 +20,7 @@ Angus needs to Run faster
 59
 =======================
 Daniel
-Thompson
+James
 B
 Daniel needs to Work Harder
 101
@@ -100,8 +100,8 @@ Unknown?
 Unknown?
 =======================
 William
-Jenkins
-E
+Jones
+A
 William needs to Improve
 87
 8
