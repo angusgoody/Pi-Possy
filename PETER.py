@@ -472,7 +472,7 @@ newAddedPupils=[]
 menuPupils=[]
 newOrderPupils=[]
 overWrittenPupils=[]
-
+deletedPupils=[]
 # Start of Functions===========================================================
 
 
@@ -1124,6 +1124,7 @@ def addPupilsMenu(array):
 
 def showPupil(fieldArray):
     global overWrittenPupils
+    global deletedPupils
     numberOfDisplayItems=4
     global currentViewPupil
 
@@ -1153,7 +1154,7 @@ def showPupil(fieldArray):
                             if pupilTrack == trackNumber:
                                 fieldArray=pupil
 
-    if fieldArray != None:
+    if fieldArray not in deletedPupils:
         if currentViewPupil != fieldArray:
 
 
@@ -1189,7 +1190,7 @@ def showPupil(fieldArray):
                     #Updates current pupil
 
     else:
-        askMessage("Edited","This pupil has been edited restart to update")
+        askMessage("Deleted","This pupil has been deleted")
 
 
 
@@ -1302,6 +1303,7 @@ def overWritePupil(deleteOrNot):
                 else:
                     #Code here to delete pupil
                     saveNewPupils(copyArray)
+                    deletedPupils.append(currentViewPupil)
 
         else:
             print("Pupil not found")
@@ -1382,7 +1384,15 @@ def saveNewPupils(array):
                 askMessage("Success","Overwrite success restart to update")
 
                 overwritePupilButton.config(state=DISABLED)
-                showOpenCanvas()
+
+                try:
+                    canvas=currentViewCanvasArray[0]
+                except:
+                    print("Unable to get canvas infomation")
+                    canvas=None
+
+                if canvas != bulkEditCanvas:
+                    showOpenCanvas()
 
                 overWrittenPupils.append(currentViewPupil)
 
@@ -3102,6 +3112,45 @@ def checkBulkEntry(event):
             submitBulkEditButton.config(state=NORMAL)
 
 
+
+def submitBulkDelete():
+    removeArray=[]
+    size=bulkFilterPupilListbox.size()
+    if size < 1:
+        askMessage("Pupils","Please load pupils to delete first")
+    else:
+        try:
+            choice=messagebox.askyesno("Delete","Are you sure you want to delete these pupils?")
+        except:
+            askMessage("Error","This function is not supported on this OS")
+        else:
+            if choice == True:
+                global newOrderPupils
+                content=bulkFilterPupilListbox.get(0,END)
+                pupilArray=[]
+                track=-1
+                for item in content:
+                    track+=1
+                    removeArray.append(track)
+                    words=item.split()
+                    pupil=getPupilFromArray(words)
+                    pupilArray.append(pupil)
+
+                for pupil in pupilArray:
+                    try:
+                        newOrderPupils.remove(pupil)
+                        deletedPupils.append(pupil)
+                    except:
+                        print("Could not find pupil to delete")
+
+
+                #Removes pupil from bulk listbox
+                removeListbox(bulkFilterPupilListbox,removeArray)
+                saveNewPupils(newOrderPupils)
+
+
+
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -3244,7 +3293,7 @@ addAllBulkPupilsButton.pack(side=BOTTOM)
 submitBulkEditButton=Button(secondBulkFrame,text="Change",width=15,command=preSubmitBulkEdit,state=DISABLED,relief=FLAT)
 submitBulkEditButton.grid(row=2,column=1,pady=5)
 
-deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15,relief=FLAT)
+deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15,relief=FLAT,command=submitBulkDelete)
 deleteBulkButton.grid(row=3,column=1,pady=3)
 
 #Buttons for Groups
