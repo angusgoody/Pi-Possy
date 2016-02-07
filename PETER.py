@@ -1200,12 +1200,27 @@ def showPupil(fieldArray):
 
 def checkIfSame(key):
     global currentViewPupil
-    print("Current",currentViewPupil)
     global overwriteArray
 
-    #get track number
 
     tempArray=newGetInfo()
+
+    #get track number
+    try:
+        data=currentViewPupil[2]
+    except:
+        print("Current pupil error")
+    else:
+        try:
+            tracker=data[0]
+        except:
+            print("Tracker not found")
+        else:
+            temp=[tracker]
+            tempArray.append(temp)
+
+
+
 
     pbSame=checkPBSame(currentViewPB.get())
 
@@ -1223,7 +1238,6 @@ def checkIfSame(key):
                 print("Format error with pupil PB data")
             else:
                 pbSection[pos]=pbSame
-
 
 
     if tempArray == currentViewPupil and pbSame == True:
@@ -3043,8 +3057,7 @@ def checkBulkEntry(event):
         if option != "Select field":
             submitBulkEditButton.config(state=NORMAL)
 
-def tempView():
-    print(newOrderPupils)
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -3083,7 +3096,6 @@ filterMenu.add_command(label="New Filter",command=newFilter)
 editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 
 #groupMenu
-groupMenu.add_command(label="View pupi",command=tempView)
 
 
 #=============================Option Menu===============
