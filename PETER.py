@@ -2369,16 +2369,20 @@ def showPupilTab():
         print("Error with pupil format")
     else:
         try:
+            print()
+        except:
+            pass
+        else:
             #window setup
             newT=Tk()
             newWindow=Frame(newT)
             newWindow.pack(expand=True)
 
-            newT.geometry("300x300")
-            Label(newWindow,text="Name").grid(row=0,column=0)
-            Label(newWindow,text="Second").grid(row=1,column=0)
-            Label(newWindow,text="Grade").grid(row=2,column=0)
-            Label(newWindow,text="Notes").grid(row=3,column=0)
+            newT.geometry("350x350")
+            Label(newWindow,text="Name:").grid(row=0,column=0)
+            Label(newWindow,text="Second:").grid(row=1,column=0)
+            Label(newWindow,text="Grade:").grid(row=2,column=0)
+
 
             newWindowName=Entry(newWindow)
             newWindowName.grid(row=0,column=1)
@@ -2389,16 +2393,17 @@ def showPupilTab():
             newWindowGrade=Entry(newWindow)
             newWindowGrade.grid(row=2,column=1)
 
-            newWindowNotes=Entry(newWindow)
-            newWindowNotes.grid(row=3,column=1)
+
 
             matchArray=mainPBOptions
-            position=3
+            position=2
             for item in pbArray:
                 position+=1
                 pos=pbArray.index(item)
                 match=matchArray[pos]
-                Label(newWindow,text=match).grid(row=position,column=0)
+                temp=match
+                temp+=":"
+                Label(newWindow,text=temp).grid(row=position,column=0)
 
                 tempEntry=Entry(newWindow)
                 tempEntry.delete(0,END)
@@ -2411,12 +2416,42 @@ def showPupilTab():
                 print("Error finding display name")
             else:
                 newT.title(displayName)
-                displayArray=[newWindowName,newWindowSecond,newWindowGrade,newWindowNotes]
+                displayArray=[newWindowName,newWindowSecond,newWindowGrade]
                 for item in data:
+
                     pos=data.index(item)
-                    match=displayArray[pos]
-                    match.delete(0,END)
-                    match.insert(END,item)
+                    if pos != 3:
+                        match=displayArray[pos]
+                        match.delete(0,END)
+                        try:
+                            match.insert(END,item)
+                        except:
+                            match.insert("1.0",END)
+
+
+
+            position+=1
+            Label(newWindow,text="Notes:").grid(row=position,column=0)
+            newNotes=Text(newWindow,height=5,width=15,wrap=WORD,font=("Helvetica", "11"))
+
+            if version == "Windows":
+                newNotes=Text(newWindow,height=5,width=15,wrap=WORD,font=("Helvetica", "11"))
+
+            else:
+                if version == "Darwin":
+                    newNotes=Text(newWindow,font=("Helvetica", "12"),height=5,width=24,wrap=WORD)
+                if version == "Linux":
+                    newNotes=Text(newWindow,font=("Helvetica", "12"),height=5,width=18,wrap=WORD)
+
+
+            newNotes.grid(row=position,column=1)
+
+            try:
+                notes=data[3]
+            except:
+                pass
+            else:
+                newNotes.insert(END,notes)
 
 
             #Sets up window colour
@@ -2433,9 +2468,11 @@ def showPupilTab():
                     item.config(highlightbackground=colour)
                 except:
                     print("Widget error")
-
+        """
         except:
+            print(sys.exc_info()[0])
             askError("Error","An error occoured displaying pupil")
+        """
 
 
 
