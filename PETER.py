@@ -1169,9 +1169,22 @@ def checkIfSame(key):
     global overwriteArray
 
     tempArray=newGetInfo()
+
     pbSame=checkPBSame(currentViewPB.get())
 
-    overwriteArray=tempArray
+    #Updates the PB if needed
+    if pbSame != True:
+        current=chosenPeronalBestToView.get()
+        pos=mainPBOptions.index(current)
+        try:
+            pbSection=currentViewPupil[1]
+        except:
+            print("Format error with pupil PB data")
+        else:
+            pbSection[pos]=pbSame
+
+
+
     if tempArray == currentViewPupil and pbSame == True:
         overwritePupilButton.config(state=DISABLED)
     else:
@@ -1554,6 +1567,9 @@ def newGetInfo():
     target=viewPersonalBestEntry.get()
     currentViewPB.set(target)
     notes=showPupilNotes.get(1.0,END)
+
+
+
     try:
         notes=notes.rstrip()
     except:
@@ -1568,6 +1584,7 @@ def newGetInfo():
 
     returnArray=[[name,second,grade,notes],pbSection]
     return(returnArray)
+
 def getPupilInfo(canvas):
 
     #Bit that gets data for pupil
@@ -2939,6 +2956,7 @@ def checkBulkEntry(event):
         option=bulkEditOptionVar.get()
         if option != "Select field":
             submitBulkEditButton.config(state=NORMAL)
+
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
