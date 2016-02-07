@@ -1177,6 +1177,8 @@ def checkIfSame(key):
     global currentViewPupil
     global overwriteArray
 
+    #get track number
+
     tempArray=newGetInfo()
 
     pbSame=checkPBSame(currentViewPB.get())
@@ -1208,7 +1210,23 @@ def checkIfSame(key):
 def overWritePupil(deleteOrNot):
     global currentViewPupil
     global overwriteArray
-    print("Overwriting is",overwriteArray)
+
+    #Adds tracking numner
+    try:
+        dataSection1=currentViewPupil[2]
+
+    except:
+        print("Format error")
+    else:
+        try:
+            trackNumber=dataSection1[0]
+        except:
+            print("Another error")
+        else:
+            temp=[trackNumber]
+            overwriteArray.append(temp)
+
+
 
     copyArray=newOrderPupils
     found=False
@@ -1251,7 +1269,10 @@ def overWritePupil(deleteOrNot):
 
     #OVERWRITE section
     else:
+        print()
         print("=============Ready to overwrite pupil========")
+        print("Old data",currentViewPupil)
+        print("New data",overwriteArray)
         print(overwriteArray)
         if currentViewPupil in copyArray:
             try:
@@ -1267,7 +1288,7 @@ def overWritePupil(deleteOrNot):
 
 
 def saveNewPupils(array):
-    global overWrittenPupils
+
     array=sorted(array)
 
     print("Saving new data")
@@ -1604,6 +1625,7 @@ def newGetInfo():
 
 def getPupilInfo(canvas):
 
+
     #Bit that gets data for pupil
     dataArray=[]
     for widget in canvas.winfo_children():
@@ -1626,6 +1648,7 @@ def getPupilInfo(canvas):
                     dataArray.append(data)
 
 
+
     return dataArray
 
 def setupCreatePB():
@@ -1636,6 +1659,8 @@ def setupCreatePB():
         currentCreatePupilPBArray.append(["Unknown?"])
 
 def createPupilInfo():
+    global numberOfTrackers
+
     global currentCreatePupilPBArray
 
     mainPupilArray=[]
@@ -1669,6 +1694,11 @@ def createPupilInfo():
                 except:
                     tempArray.append("Unknown?")
             mainPupilArray.append(tempArray)
+
+            #Add trackNumber
+            temp=[numberOfTrackers]
+            mainPupilArray.append(temp)
+            numberOfTrackers+=1
 
             #Section to construct array and save to file
             savePupilToFile(mainPupilArray)
@@ -2197,8 +2227,10 @@ def createPupilOptionMenuFunction(value):
 
 #Function to order PB's into seperate arrays
 #This new order array is used throughout rest of program
+numberOfTrackers=0
 def orderPB():
     global newOrderPupils
+    global numberOfTrackers
     newOrderPupils=[]
 
     numberOfDataItems=4
@@ -2208,6 +2240,7 @@ def orderPB():
     trackNumber=0
     for pupil in copyArray:
         trackNumber+=1
+        numberOfTrackers+=1
 
         #Sets up pupil arrays
         newPupilOverall=[]
@@ -2235,8 +2268,14 @@ def orderPB():
                 newPupilPB.append(currentPB)
 
 
+        #Adds track number
+        temp=[]
+        track=str(trackNumber)
+        temp.append(track)
+
         newPupilOverall.append(newPupilData)
         newPupilOverall.append(newPupilPB)
+        newPupilOverall.append(temp)
 
         #Saves to new array here
         newOrderPupils.append(newPupilOverall)
@@ -2978,6 +3017,8 @@ def checkBulkEntry(event):
         if option != "Select field":
             submitBulkEditButton.config(state=NORMAL)
 
+def tempView():
+    print(newOrderPupils)
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -3015,7 +3056,8 @@ filterMenu.add_command(label="New Filter",command=newFilter)
 #Edit menu
 editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 
-#PB menu
+#groupMenu
+groupMenu.add_command(label="View pupi",command=tempView)
 
 
 #=============================Option Menu===============
