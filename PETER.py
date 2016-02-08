@@ -754,8 +754,14 @@ def saveLineToFile(file,lineToAdd,target):
     #If there is a problem with the file a new one is created
     if content == "" or content == None:
         print("An error occoured opening",file,"creating new one")
-        file=open(file,"w")
-        file.close()
+        fileToWrite=open(file,"w")
+
+        fileToWrite.write(lineToAdd)
+        fileToWrite.write("\n")
+        fileToWrite.close()
+        fileToWrite.close()
+        askMessage("Sucess","Changed infomation")
+
     else:
 
         for line in content:
