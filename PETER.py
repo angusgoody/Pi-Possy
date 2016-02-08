@@ -3158,6 +3158,8 @@ def submitBulkDelete():
 
 
 
+def deletePupilFromMenu():
+    deletePupilStep()
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -3320,6 +3322,8 @@ check.pack(pady=10)
 viewPupilMiniMenu = Menu(currentViewPupil, tearoff=0)
 viewPupilMiniMenu.add_command(label="Open pupil in new tab",command=showPupilTab)
 viewPupilMiniMenu.add_command(label="Toggle text position",command=toggleTextPos)
+viewPupilMiniMenu.add_command(label="Delete Pupil",command=deletePupilFromMenu)
+
 
 #Bulk edit listboxes add mini menu
 bulkViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)

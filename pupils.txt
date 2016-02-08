@@ -8,7 +8,6 @@ Adam needs to Improve
 97
 55
 80
-Unknown?
 =======================
 Alfie
 Roberts
@@ -19,7 +18,6 @@ Alfie needs to Work Harder
 65
 81
 48
-
 =======================
 Angus
 Wright
@@ -30,7 +28,6 @@ Angus needs to Improve
 90
 60
 28
-tripple_m8
 =======================
 Ben
 Clarke
@@ -41,7 +38,6 @@ Ben needs to Meet his target grade
 40
 93
 33
-
 =======================
 Cameron
 White
@@ -52,7 +48,6 @@ Cameron needs to Work Harder
 23
 71
 102
-
 =======================
 Chris
 Jenkins
@@ -63,7 +58,6 @@ Chris needs to Work Harder
 66
 14
 61
-
 =======================
 Chris
 Wood
@@ -74,7 +68,6 @@ Chris needs to Work Harder
 80
 39
 98
-
 =======================
 Conor
 Hall
@@ -85,18 +78,6 @@ Conor needs to Work Harder
 67
 62
 90
-
-=======================
-Daniel
-Robinson
-B
-Daniel needs to Work Harder
-26
-70
-8
-38
-49
-
 =======================
 Daniel
 Walker
@@ -107,7 +88,6 @@ Daniel needs to Not be so good
 16
 90
 92
-
 =======================
 Daniel
 Williams
@@ -118,7 +98,6 @@ Daniel needs to Concentrate
 15
 45
 33
-
 =======================
 Duey
 Wilson
@@ -129,7 +108,6 @@ Duey needs to Work Harder
 84
 14
 5
-
 =======================
 Felix
 White
@@ -140,7 +118,6 @@ Felix needs to Meet his target grade
 17
 72
 49
-
 =======================
 Jack
 Jackson
@@ -151,7 +128,6 @@ Jack needs to Concentrate
 67
 51
 89
-
 =======================
 Jake
 Clarke
@@ -162,7 +138,6 @@ Jake needs to Not be so good
 42
 48
 46
-
 =======================
 Jake
 Robinson
@@ -173,7 +148,6 @@ Jake needs to Work Harder
 72
 13
 10
-
 =======================
 James
 Clarke
@@ -184,7 +158,6 @@ James needs to Run faster
 78
 69
 74
-
 =======================
 Jordan
 Evans
@@ -195,7 +168,6 @@ Jordan needs to Concentrate
 90
 4
 80
-
 =======================
 Jordan
 Jenkins
@@ -206,7 +178,6 @@ Jordan needs to Improve
 59
 48
 67
-
 =======================
 Jordan
 Thompson
@@ -217,7 +188,6 @@ Jordan needs to Concentrate
 99
 24
 78
-
 =======================
 Mikey
 Jones
@@ -228,7 +198,6 @@ Mikey needs to Run faster
 18
 29
 66
-
 =======================
 Mikey
 White
@@ -239,7 +208,6 @@ Mikey needs to Concentrate
 12
 21
 47
-
 =======================
 Nial
 Robinson
@@ -250,7 +218,6 @@ Nial needs to Work Harder
 20
 57
 80
-
 =======================
 Owen
 Hall
@@ -261,7 +228,6 @@ Owen needs to Not be so good
 93
 91
 88
-
 =======================
 Tim
 Clarke
@@ -272,4 +238,3 @@ Tim needs to Concentrate
 16
 90
 92
-
