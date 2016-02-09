@@ -23,7 +23,7 @@ Angus
 Wright
 C
 Angus needs to Improve
-36
+9.8s
 22
 90
 60
@@ -141,7 +141,7 @@ Jake needs to Not be so good
 =======================
 Jake
 Robinson
-C
+D
 Jake needs to Work Harder
 49
 27
