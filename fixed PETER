@@ -3221,8 +3221,7 @@ showPupilPersonalBestOptions=OptionMenu(viewPupilCanvas,chosenPeronalBestToView,
 changeOptionWidth(showPupilPersonalBestOptions)
 showPupilPersonalBestOptions.grid(row=3,column=1,pady=2)
 
-if version != "Darwin":
-    showPupilPersonalBestOptions.config(width=15)
+
 
 #Create pupil options
 createPupilOptions=mainPBOptions
@@ -3241,6 +3240,12 @@ addPBoptionsToBulkEditOptions()
 bulkEditOptionMenu=OptionMenu(secondBulkFrame,bulkEditOptionVar,*bulkEditOptionArray,command=unlockBulkOptions)
 bulkEditOptionMenu.grid(row=0,column=1)
 
+
+#Config for option Menus
+if version != "Darwin" and version != "Windows":
+    showPupilPersonalBestOptions.config(width=15)
+    createPupilPersonalBestOption.config(width=15)
+    
 #==============================Buttons===================
 
 
