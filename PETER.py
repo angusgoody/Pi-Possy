@@ -2048,7 +2048,7 @@ def oldInsertListbox(listbox,array):
         try:
             sub=pupil[0]
         except:
-            print("Pupil format error")
+            print("Pupil format error old listbox")
         else:
             try:
                 name=sub[0]
@@ -2103,7 +2103,7 @@ def insertListbox(listbox,array):
         try:
             sub=pupil[0]
         except:
-            print("Pupil format error")
+            print("Pupil format error new listbox")
         else:
             try:
                 name=sub[0]
@@ -2151,7 +2151,7 @@ def insertListboxNonDelete(listbox,array):
         try:
             dataSection=pupil[0]
         except:
-            print("Pupil format error")
+            print("Pupil format error non delete")
         else:
             try:
                 name=dataSection[0]
@@ -2545,7 +2545,7 @@ def getPupilFromArray(wordArray):
         try:
             data=pupil[0]
         except:
-            print("Pupil format error")
+            print("Pupil format error from array")
         else:
 
             if data[0] == words[0]:
@@ -2830,7 +2830,7 @@ def getPupilFromNewArray(wordArray):
         try:
             pupil=item[0]
         except:
-            print("Pupil format error")
+            print("Pupil format error new array")
         else:
             try:
                 valid1=False
@@ -3125,10 +3125,12 @@ def removeListbox(listbox,removeArray):
     for item in removeArray:
         miniCounter+=1
         if miniCounter != 0:
+            
             try:
+                item=int(item)
                 pos=item-miniCounter
             except:
-                print("Pupil format error")
+                print("Pupil format error in remove listbox")
                 break
 
         else:
@@ -3186,6 +3188,7 @@ def submitBulkDelete():
 
 
                 #Removes pupil from bulk listbox
+                print(removeArray)
                 removeListbox(bulkFilterPupilListbox,removeArray)
                 saveNewPupils(newOrderPupils)
 
@@ -3251,8 +3254,7 @@ showPupilPersonalBestOptions=OptionMenu(viewPupilCanvas,chosenPeronalBestToView,
 changeOptionWidth(showPupilPersonalBestOptions)
 showPupilPersonalBestOptions.grid(row=3,column=1,pady=2)
 
-if version != "Darwin":
-    showPupilPersonalBestOptions.config(width=15)
+
 
 #Create pupil options
 createPupilOptions=mainPBOptions
@@ -3271,6 +3273,12 @@ addPBoptionsToBulkEditOptions()
 bulkEditOptionMenu=OptionMenu(secondBulkFrame,bulkEditOptionVar,*bulkEditOptionArray,command=unlockBulkOptions)
 bulkEditOptionMenu.grid(row=0,column=1)
 
+
+#Config for option Menus
+if version != "Darwin" and version != "Windows":
+    showPupilPersonalBestOptions.config(width=15)
+    createPupilPersonalBestOption.config(width=15)
+    
 #==============================Buttons===================
 
 
