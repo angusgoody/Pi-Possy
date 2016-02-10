@@ -1,3 +1,3 @@
-defaultBackground: dodger blue
-defaultColour: magenta3
+defaultBackground: purple4
+defaultColour: maroon2
 userName123: Angus

@@ -428,8 +428,10 @@ secondBulkFrame=Frame(bulkEditCanvas)
 secondBulkFrame.pack(side=RIGHT,padx=5)
 
 #Labels
-Label(secondBulkFrame,text="Select Field:").grid(row=0,column=0)
-Label(secondBulkFrame,text="Change to:").grid(row=1,column=0)
+fieldLabel=Label(secondBulkFrame,text="Select Field:")
+fieldLabel.grid(row=0,column=0)
+changeLabel=Label(secondBulkFrame,text="Change to:")
+changeLabel.grid(row=1,column=0)
 
 #Entry to change vakue
 bulkChangeEntry=Entry(secondBulkFrame,justify=CENTER)
@@ -697,6 +699,24 @@ def updateTheme(colour):
         print("Error with changing status colour")
         print("Using default colours because of unsupported colours:",colour)
         status.config(bg=defaultColour)
+
+    #Bulk widgets
+    bulkArray=[
+        removeAllBulkPupilsButton,
+removeBulkPupilButton,
+addAllBulkPupilsButton,
+submitBulkEditButton,
+addBulkPupilButton,
+deleteBulkButton
+        ]
+
+    for item in bulkArray:
+        try:
+            item.config(bg=colour)
+        except:
+            print("Error changeing button colour")
+
+        
 
 
 def getThemeFromFile():
@@ -1028,7 +1048,6 @@ def toggleText(variable,widgetChoice):
         variable="black"
 
     for item in window.winfo_children():
-        print(item.winfo_class())
         if item.winfo_class() in widgetChoice:
             item.config(fg=variable)
         childArray=item.winfo_children()
@@ -1039,6 +1058,18 @@ def toggleText(variable,widgetChoice):
                 childArray=child.winfo_children()
 
 
+    #Bulk labels
+    labArray=[
+        fieldLabel,
+        changeLabel,
+        check
+        ]
+
+    for item in labArray:
+        try:
+            item.config(fg=variable)
+        except:
+            print("Label error")
     return variable
 
 
@@ -2371,6 +2402,8 @@ def loadBulkEdit():
         addPBoptionsToBulkEditOptions()
     except:
         askError("Error","Option Menu error")
+
+    
 
 
 
