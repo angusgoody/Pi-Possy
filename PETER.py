@@ -716,7 +716,7 @@ deleteBulkButton
         except:
             print("Error changeing button colour")
 
-        
+
 
 
 def getThemeFromFile():
@@ -2190,38 +2190,30 @@ def pupilGradeClick(event):
         pass
     else:
         words=picked.split()
-        for pupil in pupilDataArray:
-            valid1=False
-            valid2=False
-            try:
-                if pupil[0] == words[0]:
-                    valid1=True
-                if pupil[1] == words[1]:
-                    valid2=True
-
-                if valid1 == True and valid2 == True:
-                    break
-            except:
-                print("ERROR")
-
-
+        pupil=getPupilFromArray(words)
         try:
-            entrytoInsert=[previewName,previewSecond,previewGrade]
-            for item in entrytoInsert:
-
-                item.config(state=NORMAL)
-                dataPos=entrytoInsert.index(item)
-                data=pupil[dataPos]
-                insertEntry(item, data)
-                if item == previewGrade:
-                    grade=pupil[dataPos]
-                    if grade not in passGrades:
-                        item.config(fg="red")
-                    else:
-                        item.config(fg="black")
-                item.config(state=DISABLED)
+            data=pupil[0]
         except:
-            print("Error loading pupil")
+            print("Pupil format error preview")
+        else:
+            try:
+                entrytoInsert=[previewName,previewSecond,previewGrade]
+                for item in entrytoInsert:
+
+                    item.config(state=NORMAL)
+                    dataPos=entrytoInsert.index(item)
+                    dataItem=data[dataPos]
+                    insertEntry(item, dataItem)
+                    if item == previewGrade:
+                        grade=data[dataPos]
+                        if grade not in passGrades:
+                            item.config(fg="red")
+                        else:
+                            item.config(fg="black")
+                    item.config(state=DISABLED)
+            except:
+                print("Error loading pupil preview")
+
 
 def viewAllResultsStep():
     viewallResults("")
@@ -2403,7 +2395,7 @@ def loadBulkEdit():
     except:
         askError("Error","Option Menu error")
 
-    
+
 
 
 
@@ -3125,7 +3117,7 @@ def removeListbox(listbox,removeArray):
     for item in removeArray:
         miniCounter+=1
         if miniCounter != 0:
-            
+
             try:
                 item=int(item)
                 pos=item-miniCounter
@@ -3278,7 +3270,7 @@ bulkEditOptionMenu.grid(row=0,column=1)
 if version != "Darwin" and version != "Windows":
     showPupilPersonalBestOptions.config(width=15)
     createPupilPersonalBestOption.config(width=15)
-    
+
 #==============================Buttons===================
 
 
