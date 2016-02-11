@@ -1,34 +1,4 @@
 =======================
-Adam
-Robinson
-F
-Adam needs to Improve
-34
-11
-97
-55
-80
-=======================
-Alfie
-Roberts
-F
-Alfie needs to Work Harder
-39
-13
-65
-81
-48
-=======================
-Angus
-Wright
-C
-Angus needs to Improve
-9.8s
-22
-90
-60
-28
-=======================
 Ben
 Clarke
 E
@@ -68,16 +38,6 @@ Chris needs to Work Harder
 80
 39
 98
-=======================
-Conor
-Hall
-F
-Conor needs to Work Harder
-87
-19
-67
-62
-90
 =======================
 Daniel
 Walker
@@ -209,16 +169,6 @@ Mikey needs to Concentrate
 21
 47
 =======================
-Nial
-Robinson
-A*
-Nial needs to Work Harder
-15
-20
-20
-57
-80
-=======================
 Owen
 Hall
 F
@@ -228,33 +178,3 @@ Owen needs to Not be so good
 93
 91
 88
-=======================
-Tim
-Clarke
-A*
-Tim needs to Concentrate
-80
-73
-16
-90
-92
-=======================
-TEST
-ICiCLE
-B
-
-9.875
-Unknown?
-Unknown?
-Unknown?
-Unknown?
-=======================
-KDG
-Hemlet
-F
-
-Unknown?
-Unknown?
-Unknown?
-Unknown?
-Unknown?

@@ -1329,6 +1329,17 @@ def overWritePupil(deleteOrNot):
     #DELETE SECTION
     if deleteOrNot == "Delete":
         print("=============Ready to delete pupil========")
+        #Gets menu pos
+
+        menuPos=0
+
+        tempCopy=newOrderPupils
+        tempCopy=sorted(tempCopy)
+        for pupil in tempCopy:
+            if currentViewPupil == pupil:
+                break
+            menuPos+=1
+        print("This pupil is at menu positio",menuPos)
         if currentViewPupil in copyArray:
             try:
                 copyArray.remove(currentViewPupil)
@@ -1341,6 +1352,12 @@ def overWritePupil(deleteOrNot):
                     #Code here to delete pupil
                     saveNewPupils(copyArray)
                     deletedPupils.append(currentViewPupil)
+
+                    #Gets menu pos
+                    try:
+                        subPupilMenu.delete(menuPos)
+                    except:
+                        print("Error disabling pupil menu")
 
         else:
             print("Pupil not found")
