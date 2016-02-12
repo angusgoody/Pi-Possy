@@ -63,6 +63,7 @@ currentViewCanvas=StringVar()
 currentViewCanvasArray=[]
 groupPupilArray=[]
 mainGroupName=""
+totalGroupDataArray=[]
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -476,6 +477,7 @@ menuPupils=[]
 newOrderPupils=[]
 overWrittenPupils=[]
 deletedPupils=[]
+groupNameArray=[]
 # Start of Functions===========================================================
 
 
@@ -3158,14 +3160,28 @@ def removeListbox(listbox,removeArray):
 
 def submitNewGroup():
     global mainGroupName
+    global groupNameArray
     groupName=groupNameEntry.get()
     mainGroupName=groupName
     words=groupName.split()
+
+    pupilFileArray=[]
     if len(words) > 0:
-        askMessage("Not ready","This function is not ready yet but should be soon!")
+        if groupName not in groupNameArray:
+            groupPupils=groupPupilArray
+
+            #Save to file
+            saveGroupToFile(groupPupils)
+            askMessage("Complete","Saved New group")
+            groupNameArray.append(groupName)
+
+            #Create Menu
+            groupMenu.add_command(label=groupName)
+        else:
+            askMessage("Duplicate","This group allready exists")
+
     else:
         askMessage("Name","Please enter a group name")
-        
 
 
 def checkBulkEntry(event):
@@ -3220,6 +3236,68 @@ def submitBulkDelete():
 
 def deletePupilFromMenu():
     deletePupilStep()
+
+def saveGroupToFile(array):
+    groupName=mainGroupName
+
+    lineAray=[]
+    try:
+        fileOpen=open("groups.txt","a")
+    except:
+        print("No group file creating new one")
+        fileOpen=open("groups.txt","w")
+        fileOpen.write("==============================\n")
+        fileOpen.write("GroupName123: ")
+        fileOpen.write(groupName)
+        fileOpen.write("\n")
+
+        #Save pupils
+        for pupil in array:
+            words=pupil.split()
+            try:
+                first=words[0]
+                second=words[1]
+            except:
+                print("File writing error")
+            else:
+                fileOpen.write(first)
+                fileOpen.write(" ")
+                fileOpen.write(second)
+                fileOpen.write("\n")
+
+        fileOpen.close()
+
+    #If the file does exist overwrite it
+    else:
+        fileOpen.write("==============================\n")
+        fileOpen.write("GroupName123: ")
+        fileOpen.write(groupName)
+        fileOpen.write("\n")
+
+        #Save pupils
+        for pupil in array:
+            words=pupil.split()
+            try:
+                first=words[0]
+                second=words[1]
+            except:
+                print("File writing error")
+            else:
+                fileOpen.write(first)
+                fileOpen.write(" ")
+                fileOpen.write(second)
+                fileOpen.write("\n")
+
+        fileOpen.close()
+
+def getGroupsFromFile():
+    content=getReadLines("groups.txt")
+    if content != None:
+        print("Ready to retrieve data")
+
+
+
+
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -3473,5 +3551,6 @@ showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 checkGrades()
 
+getGroupsFromFile()
 #Runs program
 window.mainloop()
