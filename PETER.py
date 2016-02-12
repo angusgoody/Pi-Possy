@@ -61,7 +61,8 @@ currentViewPupil=[]
 currentCreatePupil=[]
 currentViewCanvas=StringVar()
 currentViewCanvasArray=[]
-
+groupPupilArray=[]
+mainGroupName=""
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -1339,7 +1340,6 @@ def overWritePupil(deleteOrNot):
             if currentViewPupil == pupil:
                 break
             menuPos+=1
-        print("This pupil is at menu positio",menuPos)
         if currentViewPupil in copyArray:
             try:
                 copyArray.remove(currentViewPupil)
@@ -3060,6 +3060,10 @@ def showFilterMenu(event):
 
 
 def newGroup(pupils):
+    global groupPupilArray
+    global mainGroupName
+    groupPupilArray=pupils
+
     groupListbox.delete(0,END)
 
     #Load window
@@ -3077,6 +3081,8 @@ def newGroup(pupils):
         pupilArray.append(pupil)
 
     insertListbox(groupListbox,pupilArray)
+
+
 
 def newFilterGroup():
     pupils=filterResults.get(0,END)
@@ -3151,7 +3157,16 @@ def removeListbox(listbox,removeArray):
 
 
 def submitNewGroup():
-    askMessage("Not ready","This function is not ready yet but should be soon!")
+    global mainGroupName
+    groupName=groupNameEntry.get()
+    mainGroupName=groupName
+    words=groupName.split()
+    if len(words) > 0:
+        askMessage("Not ready","This function is not ready yet but should be soon!")
+    else:
+        askMessage("Name","Please enter a group name")
+        
+
 
 def checkBulkEntry(event):
     content=bulkChangeEntry.get()
