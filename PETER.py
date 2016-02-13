@@ -875,8 +875,14 @@ def updateThemeStep():
     except:
         pass
     else:
-        updateButtonBackground(colourPick)
-        submitTheme(colourPick)
+        try:
+            choice=messagebox.askyesno("Sure","Are you sure you want to overwrite theme?")
+        except:
+            askError("Error","Error loading dialog box")
+        else:
+            if choice == True:
+                updateButtonBackground(colourPick)
+                submitTheme(colourPick)
 
 
 
@@ -916,7 +922,13 @@ def updateBackgroundStep():
     except:
         pass
     else:
-        submitBackgroundTheme(colourPick)
+        try:
+            choice=messagebox.askyesno("Sure","Are you sure you want to overwrite background colour?")
+        except:
+            askError("Error","Error loading dialog")
+        else:
+            if choice == True:
+                submitBackgroundTheme(colourPick)
 
 def getBackgroundFromFile():
     testEntry=Entry(window)
@@ -3303,6 +3315,35 @@ def getGroupsFromFile():
 
 
 
+def themeOrBackgroundUpdate(themeOrBackground):
+    if themeOrBackground == "Background":
+        cursor=colourListBox.curselection()
+        try:
+            data=colourListBox.get(cursor)
+        except:
+            print("Error getting data from theme listbox")
+
+    elif themeOrBackground == "Theme":
+        cursor=backgroundListBox.curselection()
+        try:
+            data=backgroundListBox.get(cursor)
+        except:
+            print("Error getting data from background listbox")
+
+def colourPopupMenu(event):
+    try:
+        current=currentViewCanvasArray[0]
+    except:
+        print("Cant preview canvas")
+    else:
+        if current == changeThemeCanvas:
+            currentSelect=colourListBox.curselection()
+            if len(currentSelect) > 0:
+                themeMiniMenu.post(event.x_root, event.y_root)
+        else:
+            currentSelect=backgroundListBox.curselection()
+            if len(currentSelect) > 0:
+                backgroundMiniMenu.post(event.x_root, event.y_root)
 
 
 #Add cascades and commands=====================
@@ -3499,6 +3540,12 @@ filterPupilsMiniMenu.add_separator()
 filterPupilsMiniMenu.add_command(label="New Group",command=newFilterGroup)
 filterPupilsMiniMenu.add_command(label="Edit All",command=addFilterToBulk)
 
+#Change theme mini menu
+themeMiniMenu=Menu(changeThemeCanvas,tearoff=0)
+themeMiniMenu.add_command(label="Change Theme",command=updateThemeStep)
+
+backgroundMiniMenu=Menu(changeBackgroundCanvas,tearoff=0)
+backgroundMiniMenu.add_command(label="Change Background",command=updateBackgroundStep)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
@@ -3514,11 +3561,16 @@ if version == "Darwin":
     bulkAllPupilListbox.bind("<Button-2>",preBulkViewAllMenu)
     bulkFilterPupilListbox.bind("<Button-2>",preBulkFilterMenu)
     filterResults.bind("<Button-2>",showFilterMenu)
+    colourListBox.bind("<Button-2>",colourPopupMenu)
+    backgroundListBox.bind("<Button-2>",colourPopupMenu)
 else:
     window.bind("<Button-3>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-3>",preBulkViewAllMenu)
     bulkFilterPupilListbox.bind("<Button-3>",preBulkFilterMenu)
     filterResults.bind("<Button-3>",showFilterMenu)
+    colourListBox.bind("<Button-3>",colourPopupMenu)
+    backgroundListBox.bind("<Button-3>",colourPopupMenu)
+
 
 
 showPupilName.bind("<KeyRelease>",checkIfSame)
