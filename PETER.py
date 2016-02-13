@@ -7,7 +7,7 @@ __author__ = 'Angus'
 
 
 #Main colour variable for if userName file is not found
-defaultColour="cyan"
+defaultColour="maroon2"
 
 #Imports-------
 try:
@@ -27,6 +27,7 @@ import datetime
 import platform
 
 import random
+
 
 
 
@@ -478,6 +479,8 @@ newOrderPupils=[]
 overWrittenPupils=[]
 deletedPupils=[]
 groupNameArray=[]
+
+
 # Start of Functions===========================================================
 
 
@@ -989,6 +992,9 @@ def initBackground():
     print("Using",col,"as colour")
     if col != None and col != "":
         updateBackgroundColours(col)
+    else:
+        updateBackgroundColours("chartreuse2")
+
 
 
 def updateBackgroundColours(colour):
