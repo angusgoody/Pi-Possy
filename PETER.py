@@ -1377,7 +1377,10 @@ def overWritePupil(deleteOrNot):
         print("=============Ready to delete pupil========")
         #Gets menu pos
 
-        menuPos=0
+        if version == "Windows":
+            menuPos=1
+        else:
+            menuPos=0
 
         tempCopy=newOrderPupils
         tempCopy=sorted(tempCopy)
@@ -1400,7 +1403,10 @@ def overWritePupil(deleteOrNot):
 
                     #Gets menu pos
                     try:
-                        subPupilMenu.delete(menuPos)
+                        if version == "Windows":
+                            subPupilMenu.entryconfig(menuPos,state=DISABLED)
+                        else:
+                            subPupilMenu.delete(menuPos)
                     except:
                         print("Error disabling pupil menu")
                     else:
@@ -3772,5 +3778,6 @@ checkGrades()
 getGroupsFromFile()
 bindArray([openLabel,viewTotalPupilLabel,showNumberLabel,showPassLabel,showPassNumberLabel,showFailLabel,showFailNumber])
 bindLabelArray()
+
 #Runs program
 window.mainloop()

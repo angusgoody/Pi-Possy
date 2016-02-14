@@ -49,16 +49,6 @@ Conor needs to Concentrate
 79
 77
 =======================
-Felix
-Smith
-D
-Felix needs to Work Harder
-63
-28
-85
-75
-16
-=======================
 Hayden
 Taylor
 C
@@ -100,16 +90,6 @@ James needs to Run faster
 61
 =======================
 Jamie
-Brown
-A
-Jamie needs to Concentrate
-63
-92
-72
-64
-48
-=======================
-Jamie
 Evans
 A
 Jamie needs to Meet his target grade
@@ -129,36 +109,6 @@ Louis needs to Concentrate
 10
 19
 =======================
-Mikey
-Williams
-B
-Mikey needs to Meet his target grade
-101
-90
-7
-74
-52
-=======================
-Owen
-Mitchell
-F
-Owen needs to Concentrate
-63
-45
-45
-47
-24
-=======================
-Owen
-White
-A*
-Owen needs to Concentrate
-98
-75
-83
-91
-22
-=======================
 Toby
 Jones
 D
@@ -168,13 +118,3 @@ Toby needs to Run faster
 71
 91
 46
-=======================
-Will
-Harris
-C
-Will needs to Meet his target grade
-69
-46
-26
-8
-75
