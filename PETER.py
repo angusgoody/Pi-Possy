@@ -1196,6 +1196,7 @@ def showPupil(fieldArray):
 
 
     if fieldArray in overWrittenPupils:
+        print("In overwrite pupils")
         try:
             data=fieldArray[2]
         except:
@@ -1220,8 +1221,25 @@ def showPupil(fieldArray):
                             if pupilTrack == trackNumber:
                                 fieldArray=pupil
 
+    #Decides wether to load the pupil or not depending on curret canvas 
     if fieldArray not in deletedPupils:
-        if currentViewPupil != fieldArray:
+        valid=False
+        try:
+            currentCanvas=currentViewCanvasArray[0]
+        except:
+            print("Canvas error")
+        else:
+            if currentCanvas == viewPupilCanvas:
+                if fieldArray == currentViewPupil:
+                    valid=False
+                else:
+                    valid=True
+            else:
+                valid=True
+
+        print(valid)
+        if valid == True:
+
 
 
             displayPersonalBestVar.set("")
