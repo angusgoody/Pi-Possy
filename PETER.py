@@ -2261,7 +2261,15 @@ def pupilGradeClick(event):
 
 
 def viewAllResultsStep():
-    viewallResults("")
+    try:
+        select=viewAllListbox.curselection()
+    except:
+        pass
+    else:
+        if len(select) > 0:
+            viewallResults("")
+        else:
+            askMessage("Pupil","Please click pupil to load")
 
 def askMessage(pre,message):
 
@@ -3453,7 +3461,11 @@ def statusHoverIn(event):
 def statusHoverOut(event):
     statusVar.set(currentCanvasMessage.get())
 
+def preUserName(event):
+    changeUserName()
 
+def preViewAll(event):
+    showAllPupils()
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -3667,6 +3679,8 @@ personalMenu.add_command(label="Change Background",command=changeBackground)
 
 homeScreenMiniMenu.add_cascade(label="Personalise",menu=personalMenu)
 homeScreenMiniMenu.add_command(label="New Filter",command=newFilter)
+homeScreenMiniMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
+
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
@@ -3711,6 +3725,9 @@ bulkChangeEntry.bind("<KeyRelease>",checkBulkEntry)
 viewTotalPupilLabel.bind("<Enter>",totalBinding)
 status.bind("<Enter>",statusHoverIn)
 status.bind("<Leave>",statusHoverOut)
+
+openLabel.bind("<Double-Button-1>",preUserName)
+viewTotalPupilLabel.bind("<Double-Button-1>",preViewAll)
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
 
 #=======Returns===========
