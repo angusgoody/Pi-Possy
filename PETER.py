@@ -1221,7 +1221,7 @@ def showPupil(fieldArray):
                             if pupilTrack == trackNumber:
                                 fieldArray=pupil
 
-    #Decides wether to load the pupil or not depending on curret canvas 
+    #Decides wether to load the pupil or not depending on curret canvas
     if fieldArray not in deletedPupils:
         valid=False
         try:
@@ -1237,7 +1237,6 @@ def showPupil(fieldArray):
             else:
                 valid=True
 
-        print(valid)
         if valid == True:
 
 
@@ -1524,6 +1523,8 @@ def deletePupilStep():
                 overWritePupil("Delete")
             except:
                 askError("Deleting","An error occoured deleting pupil")
+            else:
+                showOpenCanvas()
 
 
 def showAllPupils():
