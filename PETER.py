@@ -3441,6 +3441,18 @@ def totalBinding(event):
         else:
             viewTotalPupilLabel.config(fg="gold")
 
+def statusHoverIn(event):
+    try:
+        current=currentViewCanvasArray[0]
+    except:
+        pass
+    else:
+        if current != openCanvas:
+            statusVar.set("Double Click To Go Home")
+
+def statusHoverOut(event):
+    statusVar.set(currentCanvasMessage.get())
+
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -3697,7 +3709,8 @@ viewPersonalBestEntry.bind("<KeyRelease>",checkIfSame)
 createPupilTarget.bind("<KeyRelease>",createPupilOptionMenuFunction)
 bulkChangeEntry.bind("<KeyRelease>",checkBulkEntry)
 viewTotalPupilLabel.bind("<Enter>",totalBinding)
-
+status.bind("<Enter>",statusHoverIn)
+status.bind("<Leave>",statusHoverOut)
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
 
 #=======Returns===========
