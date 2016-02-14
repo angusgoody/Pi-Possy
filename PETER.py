@@ -1403,6 +1403,8 @@ def overWritePupil(deleteOrNot):
                         subPupilMenu.delete(menuPos)
                     except:
                         print("Error disabling pupil menu")
+                    else:
+                        print("Removed pupil from menu")
 
         else:
             print("Pupil not found")
