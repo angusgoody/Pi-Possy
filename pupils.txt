@@ -1,34 +1,4 @@
 =======================
-Ben
-Clarke
-E
-Ben needs to Meet his target grade
-30
-63
-40
-93
-33
-=======================
-Cameron
-White
-F
-Cameron needs to Work Harder
-101
-65
-23
-71
-102
-=======================
-Chris
-Jenkins
-E
-Chris needs to Work Harder
-66
-101
-66
-14
-61
-=======================
 Chris
 Wood
 A
@@ -38,16 +8,6 @@ Chris needs to Work Harder
 80
 39
 98
-=======================
-Daniel
-Walker
-D
-Daniel needs to Not be so good
-80
-25
-16
-90
-92
 =======================
 Daniel
 Williams

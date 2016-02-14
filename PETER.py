@@ -51,7 +51,8 @@ status.pack(side=BOTTOM,fill=X)
 
 #Main variables=================
 mainButtonColour="light green"
-
+mainThemeColour=StringVar()
+mainThemeColour.set("light green")
 userName=""
 mainEntryTextColour="black"
 mainLabelTextColour="black"
@@ -65,6 +66,7 @@ currentViewCanvasArray=[]
 groupPupilArray=[]
 mainGroupName=""
 totalGroupDataArray=[]
+currentCanvasMessage=StringVar()
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -94,18 +96,27 @@ viewNumberFrame.pack(pady=10)
 
 numberVar=StringVar()
 numberVar.set("0")
-Label(viewNumberFrame,text="Total Pupils:",justify=CENTER).grid(row=0,column=0,pady=5)
-Label(viewNumberFrame,textvariable=numberVar).grid(row=0,column=1)
+viewTotalPupilLabel=Label(viewNumberFrame,text="Total Pupils:",justify=CENTER)
+viewTotalPupilLabel.grid(row=0,column=0,pady=5)
+
+showNumberLabel=Label(viewNumberFrame,textvariable=numberVar)
+showNumberLabel.grid(row=0,column=1)
 
 passVar=StringVar()
 passVar.set("0")
-Label(viewNumberFrame,text="A-C Pupils:  ",justify=LEFT).grid(row=1,column=0,pady=5)
-Label(viewNumberFrame,textvariable=passVar).grid(row=1,column=1)
+showPassLabel=Label(viewNumberFrame,text="A-C Pupils:  ",justify=LEFT)
+showPassLabel.grid(row=1,column=0,pady=5)
+
+showPassNumberLabel=Label(viewNumberFrame,textvariable=passVar)
+showPassNumberLabel.grid(row=1,column=1)
 
 failVar=StringVar()
 failVar.set("0")
-Label(viewNumberFrame,text="D-F Pupils:  ",justify=LEFT).grid(row=2,column=0,pady=5)
-Label(viewNumberFrame,textvariable=failVar).grid(row=2,column=1)
+showFailLabel=Label(viewNumberFrame,text="D-F Pupils:  ",justify=LEFT)
+showFailLabel.grid(row=2,column=0,pady=5)
+
+showFailNumber=Label(viewNumberFrame,textvariable=failVar)
+showFailNumber.grid(row=2,column=1)
 
 
 
@@ -494,9 +505,11 @@ def insertEntry(entry,message):
     entry.insert(END,message)
 
 def loadCanvas(canvas,message):
+    global currentCanvasMessage
     global currentViewCanvas
     global currentViewCanvasArray
 
+    currentCanvasMessage.set(message)
     currentViewCanvasArray=[]
     if canvas != currentViewCanvas:
         for item in canvasArray:
@@ -660,7 +673,7 @@ def submitTheme(colour):
     updateTheme(colour)
     updateMenuBG(colour)
     clearFilterPupils()
-
+    mainThemeColour.set(colour)
     saveLineToFile("userName.txt",temp,"defaultColour:")
     print("Theme changed to",colour)
 
@@ -751,6 +764,7 @@ def getThemeFromFile():
 #Initialises the theme setup process
 def initTheme():
     colour=getThemeFromFile()
+    mainThemeColour.set(colour)
     if colour != "" and colour != None:
         print("Testing theme colour...")
         result=checkColour(colour)
@@ -1062,7 +1076,6 @@ def updateButtonBackground(colour):
 
 #The Function that toggles the text for a certain widget saving the need for one on every widget
 def toggleText(variable,widgetChoice):
-
     if variable == "black":
         variable="white"
     elif variable == "white":
@@ -1079,18 +1092,13 @@ def toggleText(variable,widgetChoice):
                 childArray=child.winfo_children()
 
 
-    #Bulk labels
-    labArray=[
-        fieldLabel,
-        changeLabel,
-        check
-        ]
-
+    labArray=[fieldLabel,changeLabel,check,showFailNumber,showFailLabel,showPassNumberLabel,showPassLabel,viewTotalPupilLabel,showNumberLabel]
     for item in labArray:
         try:
             item.config(fg=variable)
         except:
             print("Label error")
+
     return variable
 
 
@@ -3345,6 +3353,65 @@ def colourPopupMenu(event):
             if len(currentSelect) > 0:
                 backgroundMiniMenu.post(event.x_root, event.y_root)
 
+def showHomeMiniMenu(event):
+    homeScreenMiniMenu.post(event.x_root, event.y_root)
+
+def preOpenCanvas(event):
+    showOpenCanvas()
+
+
+
+#==========Bindins functions=========
+def bindHoverIn(widget,colour):
+    try:
+        widget.config(fg=colour)
+    except:
+        print("Error changing widget colour")
+
+def bindHoverOut(widget):
+    try:
+        widget.config(fg=mainLabelTextColour)
+    except:
+        print("Error changing widget")
+
+
+def bindArray(array):
+    for item in array:
+        if item == showFailLabel or item == showFailNumber:
+            try:
+                item.bind("<Enter>",lambda event, widget=item,colour="salmon":bindHoverIn(widget,colour) )
+                item.bind("<Leave>",lambda event, widget=item: bindHoverOut(widget))
+            except:
+                print("Error binding")
+        else:
+            try:
+                item.bind("<Enter>",lambda event, widget=item,colour=mainThemeColour.get():bindHoverIn(widget,colour) )
+                item.bind("<Leave>",lambda event, widget=item: bindHoverOut(widget))
+            except:
+                print("Error binding")
+
+def checkFailBinding(event):
+    fails=failVar.get()
+    passes=passVar.get()
+    try:
+        fails=int(fails)
+        passes=int(passes)
+    except:
+        pass
+    else:
+        if fails > passes:
+            status.config(bg="salmon")
+            statusVar.set("Majority of pupils below C")
+        elif fails < passes:
+            status.config(bg="light green")
+            statusVar.set("Majority of pupils C or above")
+        else:
+            status.config(bg="gold")
+            statusVar.set("Same amount of pupils below and above C")
+
+def normalStatusBind(event):
+    status.config(bg=mainThemeColour.get())
+    statusVar.set(currentCanvasMessage.get())
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -3544,8 +3611,21 @@ filterPupilsMiniMenu.add_command(label="Edit All",command=addFilterToBulk)
 themeMiniMenu=Menu(changeThemeCanvas,tearoff=0)
 themeMiniMenu.add_command(label="Change Theme",command=updateThemeStep)
 
+#Change background mini menu
 backgroundMiniMenu=Menu(changeBackgroundCanvas,tearoff=0)
 backgroundMiniMenu.add_command(label="Change Background",command=updateBackgroundStep)
+
+#Home screen mini menu
+homeScreenMiniMenu=Menu(openCanvas,tearoff=0)
+
+#Sub menu of homescreen
+personalMenu=Menu(homeScreenMiniMenu)
+personalMenu.add_command(label="Change info",command=changeUserName)
+personalMenu.add_command(label="Change Theme",command=changeTheme)
+personalMenu.add_command(label="Change Background",command=changeBackground)
+
+homeScreenMiniMenu.add_cascade(label="Personalise",menu=personalMenu)
+homeScreenMiniMenu.add_command(label="New Filter",command=newFilter)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
@@ -3554,6 +3634,11 @@ viewAllListbox.bind('<Double-Button-1>', viewallResults)
 viewAllListbox.bind('<ButtonRelease-1>', pupilGradeClick)
 viewAllListbox.bind('<Up>', pupilGradeClick)
 viewAllListbox.bind('<Down>', pupilGradeClick)
+bulkAllPupilListbox.bind("<Double-Button-1>",prePreAddBulkPupil)
+bulkFilterPupilListbox.bind("<Double-Button-1>",prePreRemoveBulkPupil)
+bulkAllPupilListbox.bind("<Button-1>",bulkDisableViewAll)
+bulkFilterPupilListbox.bind("<Button-1>",bulkDisableFilter)
+status.bind("<Double-Button-1>",preOpenCanvas)
 
 #Mac and PC right click bindings are diffrent
 if version == "Darwin":
@@ -3563,6 +3648,7 @@ if version == "Darwin":
     filterResults.bind("<Button-2>",showFilterMenu)
     colourListBox.bind("<Button-2>",colourPopupMenu)
     backgroundListBox.bind("<Button-2>",colourPopupMenu)
+    status.bind("<Button-2>",showHomeMiniMenu)
 else:
     window.bind("<Button-3>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-3>",preBulkViewAllMenu)
@@ -3570,6 +3656,7 @@ else:
     filterResults.bind("<Button-3>",showFilterMenu)
     colourListBox.bind("<Button-3>",colourPopupMenu)
     backgroundListBox.bind("<Button-3>",colourPopupMenu)
+    status.bind("<Button-3>",showHomeMiniMenu)
 
 
 
@@ -3578,16 +3665,12 @@ showPupilSecond.bind("<KeyRelease>",checkIfSame)
 showPupilGrade.bind("<KeyRelease>",checkIfSame)
 showPupilNotes.bind("<KeyRelease>",checkIfSame)
 viewPersonalBestEntry.bind("<KeyRelease>",checkIfSame)
-
-bulkAllPupilListbox.bind("<Double-Button-1>",prePreAddBulkPupil)
-bulkFilterPupilListbox.bind("<Double-Button-1>",prePreRemoveBulkPupil)
-
-bulkAllPupilListbox.bind("<Button-1>",bulkDisableViewAll)
-bulkFilterPupilListbox.bind("<Button-1>",bulkDisableFilter)
-
 createPupilTarget.bind("<KeyRelease>",createPupilOptionMenuFunction)
-
 bulkChangeEntry.bind("<KeyRelease>",checkBulkEntry)
+
+status.bind("<Enter>",checkFailBinding)
+status.bind("<Leave>",normalStatusBind)
+
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
 
 #=======Returns===========
@@ -3608,7 +3691,8 @@ initTheme()
 showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 checkGrades()
-
 getGroupsFromFile()
+bindArray([openLabel,viewTotalPupilLabel,showNumberLabel,showPassLabel,showPassNumberLabel,showFailLabel,showFailNumber])
+
 #Runs program
 window.mainloop()
