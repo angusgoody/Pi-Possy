@@ -3383,12 +3383,14 @@ def bindArray(array):
                 item.bind("<Leave>",lambda event, widget=item: bindHoverOut(widget))
             except:
                 print("Error binding")
-        else:
+        elif item != viewTotalPupilLabel:
             try:
                 item.bind("<Enter>",lambda event, widget=item,colour=mainThemeColour.get():bindHoverIn(widget,colour) )
                 item.bind("<Leave>",lambda event, widget=item: bindHoverOut(widget))
             except:
                 print("Error binding")
+        else:
+            item.bind("<Leave>",lambda event, widget=item: bindHoverOut(widget))
 
 def checkFailBinding(event):
     fails=failVar.get()
@@ -3412,6 +3414,33 @@ def checkFailBinding(event):
 def normalStatusBind(event):
     status.config(bg=mainThemeColour.get())
     statusVar.set(currentCanvasMessage.get())
+
+def bindLabelArray():
+    array=[showFailNumber,showPassNumberLabel,showNumberLabel]
+    for item in array:
+        try:
+            item.bind("<Enter>",checkFailBinding)
+            item.bind("<Leave>",normalStatusBind)
+        except:
+            print("Binding error")
+
+def totalBinding(event):
+    fails=failVar.get()
+    passes=passVar.get()
+    try:
+        fails=int(fails)
+        passes=int(passes)
+    except:
+        pass
+    else:
+        if fails > passes:
+            viewTotalPupilLabel.config(fg="salmon")
+
+        elif fails < passes:
+            viewTotalPupilLabel.config(fg="light green")
+        else:
+            viewTotalPupilLabel.config(fg="gold")
+
 
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -3667,9 +3696,7 @@ showPupilNotes.bind("<KeyRelease>",checkIfSame)
 viewPersonalBestEntry.bind("<KeyRelease>",checkIfSame)
 createPupilTarget.bind("<KeyRelease>",createPupilOptionMenuFunction)
 bulkChangeEntry.bind("<KeyRelease>",checkBulkEntry)
-
-status.bind("<Enter>",checkFailBinding)
-status.bind("<Leave>",normalStatusBind)
+viewTotalPupilLabel.bind("<Enter>",totalBinding)
 
 #These function needs to be here because it changes colours of buttons that would otherwise be under it
 
@@ -3693,6 +3720,6 @@ addJustify(viewPupilCanvas,True)
 checkGrades()
 getGroupsFromFile()
 bindArray([openLabel,viewTotalPupilLabel,showNumberLabel,showPassLabel,showPassNumberLabel,showFailLabel,showFailNumber])
-
+bindLabelArray()
 #Runs program
 window.mainloop()
