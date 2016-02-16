@@ -53,6 +53,8 @@ status.pack(side=BOTTOM,fill=X)
 mainButtonColour="light green"
 mainThemeColour=StringVar()
 mainThemeColour.set("light green")
+mainBackgroundColour=StringVar()
+
 userName=""
 mainEntryTextColour="black"
 mainLabelTextColour="black"
@@ -470,6 +472,10 @@ groupSlider.pack(side=RIGHT,fill=Y)
 
 groupSlider.config(command=groupListbox.yview)
 groupListbox.config(yscrollcommand=groupSlider.set)
+#===================================================================ADD NEW CANVAS' HERE ONLY=======================
+
+#===================================================================ADD NEW CANVAS' HERE ONLY=======================
+
 
 #===================================================================END OF CANVAS'=======================
 
@@ -664,7 +670,7 @@ def changeTheme():
     loadCanvas(changeThemeCanvas, "Theme")
 
 def submitTheme(colour):
-
+    global mainThemeColour
 
     temp="defaultColour: "
     temp=temp+colour
@@ -919,7 +925,6 @@ def backgroundColourPicker():
         submitBackgroundTheme(colour)
 
 def submitBackgroundTheme(colour):
-
     updateBackgroundColours(colour)
 
     temp="defaultBackground: "
@@ -1024,9 +1029,11 @@ def initBackground():
 
 
 def updateBackgroundColours(colour):
+    global mainBackgroundColour
     widgetArray=["Entry","Button","Text","Listbox","OptionMenu","Menu"]
     window.config(bg=colour)
-
+    mainBackgroundColour.set(colour)
+    print("SET new variable")
     for item in canvasArray:
         item.config(bg=colour)
         for widget in item.winfo_children():
@@ -3397,11 +3404,22 @@ def preOpenCanvas(event):
 
 
 #==========Bindins functions=========
-def bindHoverIn(widget,colour):
-    try:
-        widget.config(fg=colour)
-    except:
-        print("Error changing widget colour")
+def bindHoverIn(widget):
+
+    #Checks if text will be same as background colour
+    backgroundColour=mainBackgroundColour.get()
+    theme=mainThemeColour.get()
+    if theme != backgroundColour:
+        try:
+            widget.config(fg=mainThemeColour.get())
+        except:
+            print("Error changing widget colour")
+    else:
+        try:
+            widget.config(fg="black")
+        except:
+            print("Error changing widget colour")
+
 
 def bindHoverOut(widget):
     try:
@@ -3412,20 +3430,8 @@ def bindHoverOut(widget):
 
 def bindArray(array):
     for item in array:
-        if item == showFailLabel or item == showFailNumber:
-            try:
-                item.bind("<Enter>",lambda event, widget=item,colour="salmon":bindHoverIn(widget,colour) )
-                item.bind("<Leave>",lambda event, widget=item: bindHoverOut(widget))
-            except:
-                print("Error binding")
-        elif item != viewTotalPupilLabel:
-            try:
-                item.bind("<Enter>",lambda event, widget=item,colour=mainThemeColour.get():bindHoverIn(widget,colour) )
-                item.bind("<Leave>",lambda event, widget=item: bindHoverOut(widget))
-            except:
-                print("Error binding")
-        else:
-            item.bind("<Leave>",lambda event, widget=item: bindHoverOut(widget))
+        item.bind("<Enter>",lambda event, widget=item:bindHoverIn(widget) )
+        item.bind("<Leave>",lambda event, widget=item: bindHoverOut(widget))
 
 def checkFailBinding(event):
     fails=failVar.get()
@@ -3451,10 +3457,10 @@ def normalStatusBind(event):
     statusVar.set(currentCanvasMessage.get())
 
 def bindLabelArray():
-    array=[showFailNumber,showPassNumberLabel,showNumberLabel]
+    array=[showNumberLabel,showPassNumberLabel,showFailNumber]
     for item in array:
         try:
-            item.bind("<Enter>",checkFailBinding)
+            item.bind("<Button-1>",checkFailBinding)
             item.bind("<Leave>",normalStatusBind)
         except:
             print("Binding error")
@@ -3493,6 +3499,11 @@ def preUserName(event):
 
 def preViewAll(event):
     showAllPupils()
+
+#####################################ADD NEW FUNCTIONS HERE ONLY##################
+
+
+#####################################ADD NEW FUNCTIONS HERE ONLY##################
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
@@ -3700,13 +3711,14 @@ homeScreenMiniMenu=Menu(openCanvas,tearoff=0)
 
 #Sub menu of homescreen
 personalMenu=Menu(homeScreenMiniMenu)
-personalMenu.add_command(label="Change info",command=changeUserName)
+personalMenu.add_command(label="Change Info",command=changeUserName)
 personalMenu.add_command(label="Change Theme",command=changeTheme)
 personalMenu.add_command(label="Change Background",command=changeBackground)
 
 homeScreenMiniMenu.add_cascade(label="Personalise",menu=personalMenu)
 homeScreenMiniMenu.add_command(label="New Filter",command=newFilter)
 homeScreenMiniMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
+homeScreenMiniMenu.add_command(label="New Pupil",command=showCreatePupil)
 
 
 #Bindings-------------------------
@@ -3776,7 +3788,7 @@ showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 checkGrades()
 getGroupsFromFile()
-bindArray([openLabel,viewTotalPupilLabel,showNumberLabel,showPassLabel,showPassNumberLabel,showFailLabel,showFailNumber])
+bindArray([openLabel,viewTotalPupilLabel,showPassLabel,showFailLabel])
 bindLabelArray()
 
 #Runs program
