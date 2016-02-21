@@ -45,7 +45,7 @@ window.title("PETER")
 
 #So window cannot be resized
 window.maxsize(700,400)
-
+window.minsize(450,350)
 #Staus bar
 statusVar=StringVar()
 status=Label(window,text="Status",bg=defaultColour,textvariable = statusVar)
@@ -532,8 +532,10 @@ def loadCanvas(canvas,message):
         statusVar.set(message)
         if canvas == bulkEditCanvas:
             window.geometry("700x350")
+            window.minsize(700,350)
         else:
             window.geometry("450x350")
+            window.minsize(450,350)
 
 
 #====================================New added funtions======================
@@ -3521,7 +3523,12 @@ def sortFails(event):
 
 #####################################ADD NEW FUNCTIONS HERE ONLY##################
 
+def temp(event):
+    print()
+    print(window.winfo_width())
+    print(window.winfo_height())
 
+window.bind("<Configure>",temp)
 #####################################ADD NEW FUNCTIONS HERE ONLY##################
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
