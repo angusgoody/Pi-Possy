@@ -317,7 +317,7 @@ previewGrade.grid(row=3,column=1)
 bottomViewAllFrame=Frame(mainViewAllFrame)
 bottomViewAllFrame.pack(side=BOTTOM,pady=4)
 
-viewAllListbox=Listbox(mainViewAllFrame,width=25)
+viewAllListbox=Listbox(mainViewAllFrame,width=28)
 viewAllListbox.pack(side=LEFT)
 
 viewAllSlider=Scrollbar(mainViewAllFrame)
@@ -1501,7 +1501,7 @@ def saveNewPupils(array):
                                 file.write("\n")
 
                 file.close()
-                askMessage("Success","Overwrite success restart to update")
+                askMessage("Success","Overwrite success restart to update fully")
 
                 overwritePupilButton.config(state=DISABLED)
 
@@ -2875,22 +2875,70 @@ def preSubmitBulkEdit():
                     try:
                         submitBulkEdit()
                     except:
-                        askError("Error","Error saving pupils")
+                        askError("Error","There was a problem editing the pupils")
+                    else:
+                        askMessage("Success","Bulk edit sucess")
+
     else:
         askMessage("Pupils","Please load some pupils")
 
 def submitBulkEdit():
     field=bulkEditOptionVar.get()
     text=bulkChangeEntry.get()
-    print(text)
-    print(field)
 
     #arrays
     matchArray=mainPBOptions
     #Retrivse pupil info
     data=bulkFilterPupilListbox.get(0,END)
-    #pupil=getPupilFromArray(words)
-    print("The people to change are",data)
+
+    #Change Grade
+    if field == "Grade":
+        numberPos="0 2"
+    else:
+        matchArray=mainPBOptions
+        for item in matchArray:
+            numberPos=""
+            if item == field:
+                index=matchArray.index(item)
+                index=str(index)
+                numberPos="1 "
+                numberPos+=index
+                break
+
+    #The first number represents what array and second the position in array
+    print("Using",numberPos,"as position")
+    numberPos=numberPos.split()
+    try:
+        mainSectionIndex=numberPos[0]
+        subSectionIndex=numberPos[1]
+        mainSectionIndex=int(mainSectionIndex)
+        subSectionIndex=int(subSectionIndex)
+    except:
+        print("Error indexing array positions")
+    else:
+        #Uses numberPos in pupils format
+
+        #Changes all the selected pupils
+        for item in data:
+            words=item.split()
+            pupil=getPupilFromArray(words)
+            try:
+                mainSection=pupil[mainSectionIndex]
+            except:
+                print("Error with pupil format")
+            else:
+                try:
+                    subSection=mainSection[subSectionIndex]
+                except:
+                    print("The value does not exist")
+                else:
+                    mainSection[subSectionIndex]=text
+        removeAllBulkPupils()
+
+        #Save the new data to file
+        saveNewPupils(newOrderPupils)
+
+
 
 
 
