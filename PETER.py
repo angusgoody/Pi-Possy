@@ -534,7 +534,6 @@ def loadCanvas(canvas,message):
             window.geometry("700x350")
             window.minsize(700,350)
         else:
-            window.geometry("450x350")
             window.minsize(450,350)
 
 
@@ -3523,12 +3522,6 @@ def sortFails(event):
 
 #####################################ADD NEW FUNCTIONS HERE ONLY##################
 
-def temp(event):
-    print()
-    print(window.winfo_width())
-    print(window.winfo_height())
-
-window.bind("<Configure>",temp)
 #####################################ADD NEW FUNCTIONS HERE ONLY##################
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
