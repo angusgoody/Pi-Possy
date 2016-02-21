@@ -71,6 +71,9 @@ groupPupilArray=[]
 mainGroupName=""
 totalGroupDataArray=[]
 currentCanvasMessage=StringVar()
+
+passColour="light green"
+failColour="salmon"
 #Toolbars====================
 mainMenu=Menu(window)
 window.config(menu=mainMenu)
@@ -2149,9 +2152,9 @@ def oldInsertListbox(listbox,array):
 
             if grade in passGrades:
 
-                pupilColour="light green"
+                pupilColour=passColour
             else:
-                pupilColour="salmon"
+                pupilColour=failColour
 
             listbox.insert(END,temp)
             listbox.itemconfig(END,bg=pupilColour)
@@ -2205,9 +2208,10 @@ def insertListbox(listbox,array):
 
                 if grade in passGrades:
 
-                    pupilColour="light green"
+                    pupilColour=passColour
                 else:
-                    pupilColour="salmon"
+                    pupilColour=failColour
+
 
                 listbox.insert(END,temp)
                 listbox.itemconfig(END,bg=pupilColour)
@@ -2252,9 +2256,9 @@ def insertListboxNonDelete(listbox,array):
 
             if grade in passGrades:
 
-                pupilColour="light green"
+                pupilColour=passColour
             else:
-                pupilColour="salmon"
+                pupilColour=failColour
 
             if temp not in listboxData:
                 listbox.insert(END,temp)
@@ -3445,18 +3449,22 @@ def checkFailBinding(event):
         pass
     else:
         if fails > passes:
-            status.config(bg="salmon")
+            status.config(bg=failColour)
             statusVar.set("Majority of pupils below C")
         elif fails < passes:
-            status.config(bg="light green")
+            status.config(bg=passColour)
             statusVar.set("Majority of pupils C or above")
         else:
             status.config(bg="gold")
             statusVar.set("Same amount of pupils below and above C")
 
-def normalStatusBind(event):
+def normalStatusBind(widget):
     status.config(bg=mainThemeColour.get())
     statusVar.set(currentCanvasMessage.get())
+    changeNumberColour(widget)
+
+def changeNumberColour(widget):
+    widget.config(fg=mainLabelTextColour)
 
 def bindLabelArray():
     array=[showNumberLabel,showPassNumberLabel,showFailNumber]
@@ -3464,26 +3472,11 @@ def bindLabelArray():
         try:
             if item == showNumberLabel:
                 item.bind("<Button-1>",checkFailBinding)
-            item.bind("<Leave>",normalStatusBind)
+            item.bind("<Leave>",lambda event, widget=item :normalStatusBind(widget))
         except:
             print("Binding error")
 
-def totalBinding(event):
-    fails=failVar.get()
-    passes=passVar.get()
-    try:
-        fails=int(fails)
-        passes=int(passes)
-    except:
-        pass
-    else:
-        if fails > passes:
-            viewTotalPupilLabel.config(fg="salmon")
 
-        elif fails < passes:
-            viewTotalPupilLabel.config(fg="light green")
-        else:
-            viewTotalPupilLabel.config(fg="gold")
 
 def statusHoverIn(event):
     try:
@@ -3518,11 +3511,14 @@ def viewFailStatus(event):
     temp+=" pupils below grade C"
     statusVar.set(temp)
 
+def sortPasses(event):
+    askMessage("Not ready","This function is coming soon")
+def sortFails(event):
+    askMessage("Not ready","This function is coming soon")
 #====================================================END OF BINDING FUNCTIONS============
 
 #Load pupils by grade into bulk edit
-def sortPasses():
-    print("Currently under construction")
+
 #####################################ADD NEW FUNCTIONS HERE ONLY##################
 
 
@@ -3784,7 +3780,6 @@ showPupilNotes.bind("<KeyRelease>",checkIfSame)
 viewPersonalBestEntry.bind("<KeyRelease>",checkIfSame)
 createPupilTarget.bind("<KeyRelease>",createPupilOptionMenuFunction)
 bulkChangeEntry.bind("<KeyRelease>",checkBulkEntry)
-viewTotalPupilLabel.bind("<Enter>",totalBinding)
 status.bind("<Enter>",statusHoverIn)
 status.bind("<Leave>",statusHoverOut)
 
@@ -3792,6 +3787,8 @@ openLabel.bind("<Double-Button-1>",preUserName)
 viewTotalPupilLabel.bind("<Double-Button-1>",preViewAll)
 showPassNumberLabel.bind("<Button-1>",viewPassStatus)
 showFailNumber.bind("<Button-1>",viewFailStatus)
+showPassLabel.bind("<Double-Button-1>",sortPasses)
+showFailLabel.bind("<Double-Button-1>",sortFails)
 #=======Returns===========
 
 setOpenUser(getUserName())
@@ -3811,7 +3808,7 @@ showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 checkGrades()
 getGroupsFromFile()
-bindArray([openLabel,viewTotalPupilLabel,showPassLabel,showFailLabel])
+bindArray([openLabel,viewTotalPupilLabel,showPassLabel,showFailLabel,showNumberLabel,showFailNumber,showPassNumberLabel])
 bindLabelArray()
 
 #Runs program
