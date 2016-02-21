@@ -477,7 +477,24 @@ groupSlider.pack(side=RIGHT,fill=Y)
 
 groupSlider.config(command=groupListbox.yview)
 groupListbox.config(yscrollcommand=groupSlider.set)
+
+#============Show Group Canvas=========
+showGroupCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
+
+showGroupLabelVar=StringVar()
+
+showGroupLabel=Label(showGroupCanvas,textvariable=showGroupLabelVar)
+showGroupLabel.grid(row=0,column=1,pady=5)
+
+showGroupListbox=Listbox(showGroupCanvas)
+showGroupListbox.grid(row=1,column=1,pady=5)
+
 #===================================================================ADD NEW CANVAS' HERE ONLY=======================
+
+
+
+
+
 
 #===================================================================ADD NEW CANVAS' HERE ONLY=======================
 
@@ -487,7 +504,7 @@ groupListbox.config(yscrollcommand=groupSlider.set)
 
 #===============================================ARRAYS==================
 
-canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas,bulkEditCanvas,newGroupCanvas]
+canvasArray=[filterPupilCanvas,openCanvas,changeUserNameCanvas,changeThemeCanvas,changeBackgroundCanvas,showGroupCanvas,viewPupilCanvas,viewAllCanvas,createPupilCanvas,bulkEditCanvas,newGroupCanvas]
 themeEntry=Entry(window)
 pupilDataArray=[]
 filterPupilArray=[]
@@ -3296,7 +3313,7 @@ def submitNewGroup():
 
             #Create Menu
             #This needs to be a function
-            groupMenu.add_command(label=groupName)
+            addGroupMenuBar(groupName,groupPupils)
         else:
             askMessage("Duplicate","This group allready exists")
 
@@ -3470,7 +3487,8 @@ def getGroupsFromFile():
                         currentGroupArray.append(currentPupils)
 
                 overAllArray.append(currentGroupArray)
-        print("Main array is",overAllArray)
+
+        return overAllArray
 def themeOrBackgroundUpdate(themeOrBackground):
     if themeOrBackground == "Background":
         cursor=colourListBox.curselection()
@@ -3615,6 +3633,60 @@ def sortPasses(event):
     askMessage("Not ready","This function is coming soon")
 def sortFails(event):
     askMessage("Not ready","This function is coming soon")
+
+def initNewGroups():
+    global groupOrderArray
+    global groupNameArray
+    if groupOrderArray != None and groupOrderArray != "":
+        leng=len(groupOrderArray)
+        if leng > 0:
+            for group in groupOrderArray:
+                try:
+                    name=group[0]
+                    pupils=group[1]
+                except:
+                    print("Indexing error")
+                else:
+                    #Name section
+                    try:
+                        groupName=name[0]
+                    except:
+                        print("Name error")
+                    else:
+                        if groupName not in groupNameArray:
+                            groupNameArray.append(groupName)
+
+                        else:
+                            print("Stopped duplicate")
+
+                    #Add to menu bar
+                    addGroupMenuBar(groupName,pupils)
+
+#Adds new groups to menu bar
+def addGroupMenuBar(name,pupils):
+    groupMenu.add_command(
+label=name,command=lambda  showName= name ,showArray=pupils
+: showGroup(showName,showArray))
+
+
+#Shows group on screen
+def showGroup(name,pupils):
+    loadCanvas(showGroupCanvas,"Viewing Group")
+    showGroupLabelVar.set(name)
+    corrupt=False
+    #Gets actual pupil infomation
+    realArray=[]
+    for pupil in pupils:
+        words=pupil.split()
+        actual=getPupilFromArray(words)
+        if actual != None and actual != "":
+            realArray.append(actual)
+        else:
+            corrupt=True
+    insertListbox(showGroupListbox,realArray)
+    if corrupt == True:
+        askMessage("Missing","Some of the pupils in group no longer exist")
+
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -3912,7 +3984,8 @@ initTheme()
 showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 checkGrades()
-getGroupsFromFile()
+groupOrderArray=getGroupsFromFile()
+initNewGroups()
 bindArray([openLabel,viewTotalPupilLabel,showPassLabel,showFailLabel,showNumberLabel,showFailNumber,showPassNumberLabel])
 bindLabelArray()
 

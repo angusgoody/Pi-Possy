@@ -1,47 +1,15 @@
 ==============================
-GroupName123: Volleyball
-Daniel Walker
-Daniel Williams
-Duey Wilson
-Felix White
+GroupName123: New Group
+Alex Green
+Alex Mitchell
+Angus Jones
+Ben Roberts
+Cameron Wood
+Charlie Johnson
+Conor Jones
 ==============================
-GroupName123: Dunno
-Duey Wilson
-Felix White
-Jack Jackson
-Jake Clarke
-Jake Robinson
-==============================
-GroupName123: Dunno_two
-Duey Wilson
-Felix White
-Jack Jackson
-Jake Clarke
-Jake Robinson
-==============================
-GroupName123: Volleyball
-Adam Jones
-Alfie Mitchell
-Angus Hall
-Hayden Taylor
-Hayden White
-James Jackson
-Jamie Evans
-==============================
-GroupName123: Athletics
-Angus Hall
-Conor Jenkins
-Conor White
-Hayden Taylor
-Hayden White
-Henry Smith
-==============================
-GroupName123: After School Club
-Adam Jones
-Alfie Mitchell
-Angus Hall
-Hayden Taylor
-Hayden White
-James Jackson
-Jamie Evans
-Conor White
+GroupName123: Banter Burger
+Adam White
+Alex Brown
+Alex Green
+Alex Mitchell
