@@ -3442,7 +3442,6 @@ def getGroupsFromFile():
         for line in content:
             lineCounter+=1
             if line == "==============================\n":
-                print("Found group segment - the current line position is",lineCounter)
                 currentGroupArray=[]
 
                 groupCounter+=1
@@ -3474,7 +3473,6 @@ def getGroupsFromFile():
                             try:
                                 current=content[x]
                                 current=current.rstrip()
-                                print(current)
                             except:
                                 print("Indexing error")
                             else:
@@ -3723,6 +3721,15 @@ def insertGroupListbox(array):
                     else:
                         showGroupListbox.itemconfig(END,bg=failColour)
 
+
+def overwriteGroup():
+    groupName=showGroupLabelVar.get()
+    print("Going to overwrite",groupName)
+
+    pupils=showGroupListbox.get(0,END)
+    print("Pupils are",pupils)
+    askMessage("Not Ready","This function should be ready soon")
+
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -3889,6 +3896,9 @@ deleteBulkButton.grid(row=3,column=1,pady=3)
 #Buttons for Groups
 submitGroupButton=Button(newGroupCanvas,text="Create",command=submitNewGroup,relief=FLAT)
 submitGroupButton.grid(row=1,column=1,pady=5)
+
+overwriteGroupButton=Button(showGroupCanvas,text="Save",command=overwriteGroup)
+overwriteGroupButton.grid(row=2,column=1,pady=5)
 #=============Checkbuttons==========
 bulkCheckVar=IntVar()
 check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar,state=NORMAL)

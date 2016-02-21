@@ -9,7 +9,6 @@ Charlie Johnson
 Conor Jones
 ==============================
 GroupName123: Banter Burger
-Adam White
 Alex Brown
 Alex Green
 Alex Mitchell
