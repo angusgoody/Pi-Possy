@@ -2181,6 +2181,7 @@ def oldInsertListbox(listbox,array):
 #Function ot insert array into lisbox
 
 def insertListbox(listbox,array):
+    print(array)
     #Find items in listbox
     listboxData=[]
     listboxes=[listbox]
@@ -3683,9 +3684,44 @@ def showGroup(name,pupils):
             realArray.append(actual)
         else:
             corrupt=True
-    insertListbox(showGroupListbox,realArray)
+    insertGroupListbox(pupils)
     if corrupt == True:
         askMessage("Missing","Some of the pupils in group no longer exist")
+
+def insertGroupListbox(array):
+    showGroupListbox.delete(0,END)
+    array=sorted(array)
+    for pupil in array:
+        words=pupil.split()
+        real=getPupilFromArray(words)
+        if real != None:
+            try:
+                data=real[0]
+            except:
+                print("Format error")
+            else:
+                grade=data[2]
+                grade=str(grade)
+                grade=grade.capitalize()
+                passGrades=["A*","A","B","C"]
+
+                try:
+                    name=data[0]
+                    second=data[1]
+                except:
+                    print("Name error")
+                else:
+                    temp=""
+                    temp+=name
+                    temp+=" "
+                    temp+=second
+
+                    #add to listbox
+                    showGroupListbox.insert(END,temp)
+                    if grade in passGrades:
+                        showGroupListbox.itemconfig(END,bg=passColour)
+                    else:
+                        showGroupListbox.itemconfig(END,bg=failColour)
 
 #====================================================END OF BINDING FUNCTIONS============
 

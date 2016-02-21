@@ -19,16 +19,6 @@ Adam needs to Meet his target grade
 58
 90
 =======================
-Adam
-White
-A
-Adam needs to Not be so good
-55
-28
-58
-8
-98
-=======================
 Alex
 Brown
 D
@@ -41,7 +31,7 @@ Alex needs to Improve
 =======================
 Alex
 Green
-D
+A*
 Alex needs to Concentrate
 5
 33
@@ -51,7 +41,7 @@ Alex needs to Concentrate
 =======================
 Alex
 Mitchell
-C
+F
 Alex needs to Run faster
 78
 20
@@ -101,7 +91,7 @@ Charlie needs to Improve
 =======================
 Conor
 Jones
-C
+D
 Conor needs to Improve
 10
 12
