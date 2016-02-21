@@ -2521,7 +2521,7 @@ def showPupilTab():
             newT=Tk()
             newWindow=Frame(newT)
             newWindow.pack(expand=True)
-
+            #
             newT.geometry("350x350")
             Label(newWindow,text="Name:").grid(row=0,column=0)
             Label(newWindow,text="Second:").grid(row=1,column=0)
@@ -2612,11 +2612,8 @@ def showPupilTab():
                     item.config(highlightbackground=colour)
                 except:
                     print("Widget error")
-        """
-        except:
-            print(sys.exc_info()[0])
-            askError("Error","An error occoured displaying pupil")
-        """
+
+
 
 
 
@@ -2876,8 +2873,7 @@ def preSubmitBulkEdit():
                         submitBulkEdit()
                     except:
                         askError("Error","There was a problem editing the pupils")
-                    else:
-                        askMessage("Success","Bulk edit sucess")
+
 
     else:
         askMessage("Pupils","Please load some pupils")
@@ -3414,9 +3410,53 @@ def saveGroupToFile(array):
         fileOpen.close()
 
 def getGroupsFromFile():
+    global groupNameArray
+    global groupPupilArray
+
     content=getReadLines("groups.txt")
     if content != None:
-        print("Ready to retrieve data")
+        print()
+        print("=====Starting group retrival======")
+        groupCounter=0
+        lineCounter=-1
+
+        for line in content:
+            lineCounter+=1
+            if line == "==============================\n":
+                print("Found group segment - the current line position is",lineCounter)
+                groupCounter+=1
+                try:
+                    nameLine=content[lineCounter+1]
+                except:
+                    pass
+                else:
+                    words=nameLine.split()
+                    try:
+                        leng=len(words)
+                        temp=""
+                        for x in range(1,leng):
+                            temp+=words[x]
+                            temp+=" "
+                        groupName=temp
+                    except:
+                        pass
+                        groupName="???"
+                    else:
+                        print("Found group of name",groupName)
+
+                        for x in range(lineCounter+2,len(content)):
+                            try:
+                                current=content[x]
+                                current=current.rstrip()
+                                print(current)
+                            except:
+                                print("Indexing error")
+                            else:
+                                if current != "==============================":
+                                    print("Going to add",current,"to",groupName)
+                                else:
+                                    #New group has been found
+                                    break
 
 
 
@@ -3566,11 +3606,17 @@ def sortFails(event):
     askMessage("Not ready","This function is coming soon")
 #====================================================END OF BINDING FUNCTIONS============
 
-#Load pupils by grade into bulk edit
 
-#####################################ADD NEW FUNCTIONS HERE ONLY##################
+#####################################ADD NEW FUNCTIONS UNDER HERE##################
 
-#####################################ADD NEW FUNCTIONS HERE ONLY##################
+
+
+
+
+
+
+
+#####################################ADD NEW FUNCTIONS ABOVE HERE##################
 #Add cascades and commands=====================
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="View",menu=viewMenu)
