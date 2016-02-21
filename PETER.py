@@ -43,6 +43,8 @@ window=Tk()
 window.geometry("450x350")
 window.title("PETER")
 
+#So window cannot be resized
+window.maxsize(700,400)
 
 #Staus bar
 statusVar=StringVar()
@@ -2506,7 +2508,7 @@ def showPupilTab():
         print("Error with pupil format")
     else:
         try:
-            print()
+            x=3
         except:
             pass
         else:
@@ -3403,7 +3405,7 @@ def preOpenCanvas(event):
 
 
 
-#==========Bindins functions=========
+#====================================================BINDING FUNCTIONS============
 def bindHoverIn(widget):
 
     #Checks if text will be same as background colour
@@ -3460,7 +3462,8 @@ def bindLabelArray():
     array=[showNumberLabel,showPassNumberLabel,showFailNumber]
     for item in array:
         try:
-            item.bind("<Button-1>",checkFailBinding)
+            if item == showNumberLabel:
+                item.bind("<Button-1>",checkFailBinding)
             item.bind("<Leave>",normalStatusBind)
         except:
             print("Binding error")
@@ -3494,12 +3497,32 @@ def statusHoverIn(event):
 def statusHoverOut(event):
     statusVar.set(currentCanvasMessage.get())
 
+#Functions that launch when double click home screen widgets
 def preUserName(event):
     changeUserName()
 
 def preViewAll(event):
     showAllPupils()
 
+#Functions for single click home screen widgets
+def viewPassStatus(event):
+    passes=passVar.get()
+    temp="Currently there are "
+    temp+=passes
+    temp+=" pupils C grade and above"
+    statusVar.set(temp)
+def viewFailStatus(event):
+    fails=failVar.get()
+    temp="Currently there are "
+    temp+=fails
+    temp+=" pupils below grade C"
+    statusVar.set(temp)
+
+#====================================================END OF BINDING FUNCTIONS============
+
+#Load pupils by grade into bulk edit
+def sortPasses():
+    print("Currently under construction")
 #####################################ADD NEW FUNCTIONS HERE ONLY##################
 
 
@@ -3767,8 +3790,8 @@ status.bind("<Leave>",statusHoverOut)
 
 openLabel.bind("<Double-Button-1>",preUserName)
 viewTotalPupilLabel.bind("<Double-Button-1>",preViewAll)
-#These function needs to be here because it changes colours of buttons that would otherwise be under it
-
+showPassNumberLabel.bind("<Button-1>",viewPassStatus)
+showFailNumber.bind("<Button-1>",viewFailStatus)
 #=======Returns===========
 
 setOpenUser(getUserName())

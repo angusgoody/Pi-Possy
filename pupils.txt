@@ -6,7 +6,7 @@ Adam needs to Run faster
 26
 73
 103
-44
+98m
 50
 =======================
 Alfie
@@ -85,7 +85,7 @@ E
 James needs to Run faster
 48
 82
-29
+28
 33
 61
 =======================
