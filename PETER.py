@@ -502,6 +502,7 @@ overWrittenPupils=[]
 deletedPupils=[]
 groupNameArray=[]
 
+groupOrderArray=[]
 
 # Start of Functions===========================================================
 
@@ -3284,7 +3285,6 @@ def submitNewGroup():
     mainGroupName=groupName
     words=groupName.split()
 
-    pupilFileArray=[]
     if len(words) > 0:
         if groupName not in groupNameArray:
             groupPupils=groupPupilArray
@@ -3295,6 +3295,7 @@ def submitNewGroup():
             groupNameArray.append(groupName)
 
             #Create Menu
+            #This needs to be a function
             groupMenu.add_command(label=groupName)
         else:
             askMessage("Duplicate","This group allready exists")
@@ -3410,8 +3411,8 @@ def saveGroupToFile(array):
         fileOpen.close()
 
 def getGroupsFromFile():
-    global groupNameArray
-    global groupPupilArray
+
+    overAllArray=[]
 
     content=getReadLines("groups.txt")
     if content != None:
@@ -3424,6 +3425,8 @@ def getGroupsFromFile():
             lineCounter+=1
             if line == "==============================\n":
                 print("Found group segment - the current line position is",lineCounter)
+                currentGroupArray=[]
+
                 groupCounter+=1
                 try:
                     nameLine=content[lineCounter+1]
@@ -3438,12 +3441,17 @@ def getGroupsFromFile():
                             temp+=words[x]
                             temp+=" "
                         groupName=temp
+                        groupName=groupName.rstrip()
                     except:
                         pass
                         groupName="???"
                     else:
                         print("Found group of name",groupName)
+                        temp=[groupName]
+                        currentGroupArray.append(temp)
 
+
+                        currentPupils=[]
                         for x in range(lineCounter+2,len(content)):
                             try:
                                 current=content[x]
@@ -3453,13 +3461,16 @@ def getGroupsFromFile():
                                 print("Indexing error")
                             else:
                                 if current != "==============================":
-                                    print("Going to add",current,"to",groupName)
+                                    currentPupils.append(current)
                                 else:
                                     #New group has been found
                                     break
 
+                        #Adds pupils
+                        currentGroupArray.append(currentPupils)
 
-
+                overAllArray.append(currentGroupArray)
+        print("Main array is",overAllArray)
 def themeOrBackgroundUpdate(themeOrBackground):
     if themeOrBackground == "Background":
         cursor=colourListBox.curselection()
