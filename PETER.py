@@ -1470,16 +1470,15 @@ def overWritePupil(deleteOrNot):
 
 
 def saveNewPupils(array):
-
     array=sorted(array)
 
     print("Saving new data")
     valid=False
     try:
-        if len(array) > 0:
+        if type(array) is list:
             valid=True
     except:
-        print("Not an array passed to function")
+        print("Error with argument type")
     else:
         if valid == True:
             try:
@@ -1533,6 +1532,8 @@ def saveNewPupils(array):
                     showOpenCanvas()
 
                 overWrittenPupils.append(currentViewPupil)
+        else:
+            print("This array is invalid and cannot be saved")
 
 
 def overWritePupilStep():
@@ -2181,7 +2182,6 @@ def oldInsertListbox(listbox,array):
 #Function ot insert array into lisbox
 
 def insertListbox(listbox,array):
-    print(array)
     #Find items in listbox
     listboxData=[]
     listboxes=[listbox]
@@ -3897,8 +3897,9 @@ deleteBulkButton.grid(row=3,column=1,pady=3)
 submitGroupButton=Button(newGroupCanvas,text="Create",command=submitNewGroup,relief=FLAT)
 submitGroupButton.grid(row=1,column=1,pady=5)
 
-overwriteGroupButton=Button(showGroupCanvas,text="Save",command=overwriteGroup)
+overwriteGroupButton=Button(showGroupCanvas,text="Save",command=overwriteGroup,relief=FLAT)
 overwriteGroupButton.grid(row=2,column=1,pady=5)
+
 #=============Checkbuttons==========
 bulkCheckVar=IntVar()
 check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar,state=NORMAL)
