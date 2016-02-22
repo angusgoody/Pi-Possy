@@ -1366,24 +1366,6 @@ def overWritePupil(deleteOrNot):
     global currentViewPupil
     global overwriteArray
 
-    """
-    #Adds tracking numner
-    try:
-        dataSection1=currentViewPupil[2]
-
-    except:
-        print("Format error")
-    else:
-        try:
-            trackNumber=dataSection1[0]
-        except:
-            print("Another error")
-        else:
-            temp=[trackNumber]
-            overwriteArray.append(temp)
-
-    """
-
     copyArray=newOrderPupils
     found=False
     pCounter=0
@@ -3730,6 +3712,15 @@ def overwriteGroup():
     print("Pupils are",pupils)
     askMessage("Not Ready","This function should be ready soon")
 
+def showGroupListboxMiniMenu(event):
+    pos=showGroupListbox.curselection()
+    if len(pos) > 0:
+        showGroupMiniMenu.post(event.x_root, event.y_root)
+
+
+def showHelp():
+    askMessage("Help","Once we have a help guide this will be available")
+
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -3756,7 +3747,7 @@ fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
 fileMenu.add_command(label="New Pupil",command=showCreatePupil)
 fileMenu.add_separator()
-
+fileMenu.add_command(label="Help Guide",command=showHelp)
 
 
 #View Menu
@@ -3958,11 +3949,17 @@ personalMenu.add_command(label="Change Info",command=changeUserName)
 personalMenu.add_command(label="Change Theme",command=changeTheme)
 personalMenu.add_command(label="Change Background",command=changeBackground)
 
+homeScreenMiniMenu.add_command(label="Home",command=showOpenCanvas)
 homeScreenMiniMenu.add_cascade(label="Personalise",menu=personalMenu)
 homeScreenMiniMenu.add_command(label="New Filter",command=newFilter)
 homeScreenMiniMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 homeScreenMiniMenu.add_command(label="New Pupil",command=showCreatePupil)
+homeScreenMiniMenu.add_command(label="Help",command=showHelp)
 
+showHelp
+#View Group mini menu
+showGroupMiniMenu=Menu(showGroupCanvas,tearoff=0)
+showGroupMiniMenu.add_command(label="View Pupil",command=lambda :loadDoubleClick(showGroupListbox))
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
@@ -3986,6 +3983,7 @@ if version == "Darwin":
     colourListBox.bind("<Button-2>",colourPopupMenu)
     backgroundListBox.bind("<Button-2>",colourPopupMenu)
     status.bind("<Button-2>",showHomeMiniMenu)
+    showGroupListbox.bind("<Button-2>",showGroupListboxMiniMenu)
 else:
     window.bind("<Button-3>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-3>",preBulkViewAllMenu)
@@ -3994,6 +3992,7 @@ else:
     colourListBox.bind("<Button-3>",colourPopupMenu)
     backgroundListBox.bind("<Button-3>",colourPopupMenu)
     status.bind("<Button-3>",showHomeMiniMenu)
+    showGroupListbox.bind("<Button-3>",showGroupListboxMiniMenu)
 
 
 
@@ -4013,6 +4012,9 @@ showPassNumberLabel.bind("<Button-1>",viewPassStatus)
 showFailNumber.bind("<Button-1>",viewFailStatus)
 showPassLabel.bind("<Double-Button-1>",sortPasses)
 showFailLabel.bind("<Double-Button-1>",sortFails)
+
+
+
 #=======Returns===========
 
 setOpenUser(getUserName())
