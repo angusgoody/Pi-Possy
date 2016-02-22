@@ -2522,7 +2522,8 @@ def showPupilTab():
             newT=Tk()
             newWindow=Frame(newT)
             newWindow.pack(expand=True)
-            #
+            newT.maxsize(450,650)
+            newT.minsize(300,350)
             newT.geometry("350x350")
             Label(newWindow,text="Name:").grid(row=0,column=0)
             Label(newWindow,text="Second:").grid(row=1,column=0)
