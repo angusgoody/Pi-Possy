@@ -10,16 +10,6 @@ Cameron needs to Concentrate
 76
 =======================
 Adam
-Clarke
-A*
-Adam needs to Concentrate
-32
-6
-90
-77
-56
-=======================
-Adam
 Thompson
 F
 Adam needs to Meet his target grade
@@ -87,7 +77,7 @@ Ben needs to Work Harder
 19
 33
 32
-36
+20s
 =======================
 Charlie
 Johnson
@@ -97,7 +87,7 @@ Charlie needs to Improve
 13
 83
 46
-49
+20s
 =======================
 Conor
 Jones
@@ -107,7 +97,7 @@ Conor needs to Improve
 12
 59
 27
-16
+20s
 =======================
 Daniel
 Evans
@@ -117,7 +107,7 @@ Daniel needs to Improve
 69
 5
 6
-34
+20s
 =======================
 Duey
 Harris
@@ -153,7 +143,7 @@ Henry
 Smith
 C
 Henry needs to Work Harder
-67
+55
 89
 69m
 64

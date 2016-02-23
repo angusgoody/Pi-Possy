@@ -3721,7 +3721,7 @@ def showGroupListboxMiniMenu(event):
 
 
 def showHelp():
-    openLink("https://drive.google.com/drive/folders/0B_HDzRT6N--LYzZpVUxMZUlOa00")
+    openLink("https://drive.google.com/folderview?id=0B_HDzRT6N--LUzVzMTlPN2ZwTEU&usp=sharing")
 
 
 def showWebsite():
