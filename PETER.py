@@ -28,7 +28,7 @@ import platform
 
 import random
 
-
+import webbrowser
 
 
 #Gets infomation about OS
@@ -86,6 +86,7 @@ filterMenu=Menu(mainMenu)
 editMenu=Menu(mainMenu)
 groupMenu=Menu(mainMenu)
 subPupilMenu=Menu(pupilMenu)
+helpMenu=Menu(mainMenu)
 #===================================================================CANVAS'=======================
 
 
@@ -3720,8 +3721,18 @@ def showGroupListboxMiniMenu(event):
 
 
 def showHelp():
-    askMessage("Help","Once we have a help guide this will be available")
+    openLink("https://drive.google.com/drive/folders/0B_HDzRT6N--LYzZpVUxMZUlOa00")
 
+
+def showWebsite():
+    openLink("http://angusgoody.wix.com/pipossy#!peter/bge9x")
+
+
+def openLink(link):
+    try:
+        webbrowser.open_new(link)
+    except:
+        askError("Error","Error opening link")
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -3742,13 +3753,13 @@ mainMenu.add_cascade(label="Pupils",menu=pupilMenu)
 mainMenu.add_cascade(label="Filter",menu=filterMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
 mainMenu.add_cascade(label="Groups",menu=groupMenu)
+mainMenu.add_cascade(label="Help",menu=helpMenu)
 
 #File Menu
 fileMenu.add_command(label="Home",command=showOpenCanvas)
 fileMenu.add_separator()
 fileMenu.add_command(label="New Pupil",command=showCreatePupil)
 fileMenu.add_separator()
-fileMenu.add_command(label="Help Guide",command=showHelp)
 
 
 #View Menu
@@ -3772,7 +3783,9 @@ filterMenu.add_command(label="New Filter",command=newFilter)
 #Edit menu
 editMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 
-#groupMenu
+#Help Menus
+helpMenu.add_command(label="Help Guides",command=showHelp)
+helpMenu.add_command(label="Website",command=showWebsite)
 
 
 #=============================Option Menu===============
