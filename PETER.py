@@ -1501,7 +1501,7 @@ def saveNewPupils(array):
                                 file.write("\n")
 
                 file.close()
-                askMessage("Success","Overwrite success restart to update fully")
+                askMessage("Success","Overwrite success")
 
                 overwritePupilButton.config(state=DISABLED)
 

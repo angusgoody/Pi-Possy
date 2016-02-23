@@ -135,7 +135,7 @@ B
 Henry needs to Work Harder
 48
 92
-54
+69m
 23
 77
 =======================
@@ -145,7 +145,7 @@ B
 Henry needs to Run faster
 41
 26
-37
+69m
 45
 6
 =======================
@@ -155,7 +155,7 @@ C
 Henry needs to Work Harder
 67
 89
-45
+69m
 64
 63
 =======================
@@ -165,7 +165,7 @@ D
 Henry needs to Improve
 21
 7
-51
+69m
 93
 45
 =======================

@@ -1,24 +1,9 @@
+
 ==============================
-GroupName123: New Group
-Alex Green
-Alex Mitchell
-Angus Jones
-Ben Roberts
-Cameron Wood
-Charlie Johnson
-Conor Jones
-==============================
-GroupName123: Banter Burger
-Alex Brown
-Alex Green
-Alex Mitchell
-==============================
-GroupName123: Catchup
+GroupName123: Football Club
+Adam Clarke
 Adam Thompson
+Adam White
 Alex Brown
+Alex Green
 Alex Mitchell
-Cameron Wood
-Conor Jones
-Duey Harris
-Henry Walker
-Jake Wilson
