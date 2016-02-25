@@ -1597,6 +1597,9 @@ def newFilter():
 
 def checkPupil(pupil,target,item):
 
+    target=str(target)
+    item=str(item)
+    
     found=False
     results=[]
 
@@ -1652,6 +1655,7 @@ def searchPupils():
 
 
             elif matchArea == "All":
+                print("All")
                 for pupil in newOrderPupils:
                     for section in pupil:
                         for item in section:
@@ -3721,7 +3725,7 @@ def showGroupListboxMiniMenu(event):
 
 
 def showHelp():
-    openLink("https://drive.google.com/drive/folders/0B_HDzRT6N--LYzZpVUxMZUlOa00")
+    openLink("https://drive.google.com/folderview?id=0B_HDzRT6N--LUzVzMTlPN2ZwTEU&usp=sharing")
 
 
 def showWebsite():
