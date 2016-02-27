@@ -3298,22 +3298,39 @@ def removeListbox(listbox,removeArray):
 def submitNewGroup():
     global mainGroupName
     global groupNameArray
+    global groupOrderArray
+
     groupName=groupNameEntry.get()
+
+    words=groupName.split()
+    temp=""
+    for item in words:
+        copy=item.capitalize()
+        temp+=copy
+        temp+=" "
+
+    groupName=temp
+
     mainGroupName=groupName
     words=groupName.split()
 
     if len(words) > 0:
         if groupName not in groupNameArray:
             groupPupils=groupPupilArray
-
+            groupPupils=sorted(groupPupils)
             #Save to file
             saveGroupToFile(groupPupils)
             askMessage("Complete","Saved New group")
             groupNameArray.append(groupName)
-
-            #Create Menu
-            #This needs to be a function
             addGroupMenuBar(groupName,groupPupils)
+
+            #Adds to the main group array
+            mainAddArray=[]
+            temp=[groupName]
+            mainAddArray.append(temp)
+            mainAddArray.append(groupPupils)
+
+            groupOrderArray.append(mainAddArray)
         else:
             askMessage("Duplicate","This group allready exists")
 
@@ -3454,7 +3471,12 @@ def getGroupsFromFile():
                         leng=len(words)
                         temp=""
                         for x in range(1,leng):
-                            temp+=words[x]
+                            current=words[x]
+                            try:
+                                current=current.capitalize()
+                            except:
+                                print("Capital error")
+                            temp+=current
                             temp+=" "
                         groupName=temp
                         groupName=groupName.rstrip()
@@ -3653,14 +3675,18 @@ def initNewGroups():
                     except:
                         print("Name error")
                     else:
+                        valid=True
                         if groupName not in groupNameArray:
                             groupNameArray.append(groupName)
 
+
                         else:
                             print("Stopped duplicate")
+                            valid=False
 
                     #Add to menu bar
-                    addGroupMenuBar(groupName,pupils)
+                    if valid == True:
+                        addGroupMenuBar(groupName,pupils)
 
 #Adds new groups to menu bar
 def addGroupMenuBar(name,pupils):
@@ -3794,6 +3820,8 @@ def overwriteGroup():
                     section[1]=overwriePupilArray
                     print("Changed with",overwritePupils)
                     break
+                else:
+                    print(groupName,"vs",overwriteName)
 
 
 
@@ -3878,6 +3906,7 @@ def deleteGroup():
     except:
         askMessage("Python","Python module error")
     else:
+        found=False
         if option == True:
             overwriteName=showGroupLabelVar.get()
             success=True
@@ -3893,6 +3922,7 @@ def deleteGroup():
                     print("Group Format error")
                 else:
                     if groupName == overwriteName:
+                        found=True
                         try:
                             groupOrderArray.remove(item)
                         except:
@@ -3905,10 +3935,14 @@ def deleteGroup():
                             #Remove from menu bar
                             try:
                                 groupMenu.delete(counter)
+                                groupNameArray.remove(groupName)
                             except:
                                 print("Could not remove from menu bar")
 
                             showOpenCanvas()
+
+            if found == False:
+                askMessage("Can not find","Group cannot be deleted")
 
 
 

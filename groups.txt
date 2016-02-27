@@ -2,3 +2,26 @@
 GroupName123: Catchup
 Adam Adamson
 Adam Thompson
+==============================
+GroupName123: My New Class
+Adam Adamson
+Adam Thompson
+Alex Brown
+Alex Green
+Alex Mitchell
+Angus Jones
+Ben Roberts
+Charlie Johnson
+Conor Jones
+Daniel Evans
+Duey Harris
+Henry Evans
+Henry Green
+Henry Smith
+Henry Walker
+Jordan Smith
+==============================
+GroupName123: Just For Banter 
+Adam White
+Alex Brown
+Alex Green
