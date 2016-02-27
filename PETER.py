@@ -3482,10 +3482,12 @@ def getGroupsFromFile():
                                     break
 
                         #Adds pupils
+                        currentPupils=sorted(currentPupils)
                         currentGroupArray.append(currentPupils)
 
                 overAllArray.append(currentGroupArray)
 
+        overAllArray=sorted(overAllArray)
         return overAllArray
 def themeOrBackgroundUpdate(themeOrBackground):
     if themeOrBackground == "Background":
@@ -3767,6 +3769,7 @@ def overwriteGroup():
             print("Error with group format before")
         else:
             if groupName == overwriteName:
+
                 if pupilSection == overwriePupilArray:
                     sameData=True
 
@@ -3775,6 +3778,7 @@ def overwriteGroup():
     else:
 
         #Makes changes
+        found=False
         for section in groupOrderArray:
             try:
                 nameSection=section[0]
@@ -3784,15 +3788,20 @@ def overwriteGroup():
             except:
                 print("Error with group format while changing")
             else:
+
                 if groupName == overwriteName:
+                    found=True
                     section[1]=overwriePupilArray
                     print("Changed with",overwritePupils)
-                break
+                    break
 
 
 
-        #Saves the new array here
-        actualOverWriteGroup()
+        if found == True:
+            #Saves the new array here
+            actualOverWriteGroup()
+        else:
+            askMessage("Found","Data could not be changed")
 
 def actualOverWriteGroup():
     try:
@@ -3854,6 +3863,9 @@ def openLink(link):
 def removeGroupPupil():
     pupil=showGroupListbox.curselection()
     removeListbox(showGroupListbox,pupil)
+
+def deleteGroup():
+    print("===========Delete Group========")
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -4023,9 +4035,11 @@ deleteBulkButton.grid(row=3,column=1,pady=3)
 submitGroupButton=Button(newGroupCanvas,text="Create",command=submitNewGroup,relief=FLAT)
 submitGroupButton.grid(row=1,column=1,pady=5)
 
-overwriteGroupButton=Button(showGroupCanvas,text="Save",command=overwriteGroup,relief=FLAT)
+overwriteGroupButton=Button(showGroupCanvas,text="Save",command=overwriteGroup,relief=FLAT,width=12)
 overwriteGroupButton.grid(row=2,column=1,pady=5)
 
+deleteGroupButton=Button(showGroupCanvas,text="Delete",command=deleteGroup,relief=FLAT,width=12)
+deleteGroupButton.grid(row=3,column=1,pady=5)
 #=============Checkbuttons==========
 bulkCheckVar=IntVar()
 check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar,state=NORMAL)
