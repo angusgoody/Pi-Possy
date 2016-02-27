@@ -1599,7 +1599,7 @@ def checkPupil(pupil,target,item):
 
     target=str(target)
     item=str(item)
-    
+
     found=False
     results=[]
 
@@ -3663,16 +3663,30 @@ def showGroup(name,pupils):
     corrupt=False
     #Gets actual pupil infomation
     realArray=[]
+    corruptArray=[]
+
     for pupil in pupils:
         words=pupil.split()
         actual=getPupilFromArray(words)
         if actual != None and actual != "":
             realArray.append(actual)
         else:
+            corruptArray.append(pupil)
             corrupt=True
     insertGroupListbox(pupils)
     if corrupt == True:
-        askMessage("Missing","Some of the pupils in group no longer exist")
+
+        #Asks to overwrite old pupils
+        try:
+            option=messagebox.askyesno("Overwrite","Would you like to remove pupils no longer in this group")
+        except:
+            askMessage("Tkinter","Error with Python feature not supported")
+        else:
+            if option == True:
+                overwriteGroup()
+
+
+
 
 def insertGroupListbox(array):
     showGroupListbox.delete(0,END)
@@ -3711,12 +3725,96 @@ def insertGroupListbox(array):
 
 
 def overwriteGroup():
-    groupName=showGroupLabelVar.get()
-    print("Going to overwrite",groupName)
+    global groupOrderArray
+    print()
+    print("================Overwriting Group==========")
 
-    pupils=showGroupListbox.get(0,END)
-    print("Pupils are",pupils)
-    askMessage("Not Ready","This function should be ready soon")
+    #Gets fields to overwrite
+    overwriteName=showGroupLabelVar.get()
+    overwritePupils=showGroupListbox.get(0,END)
+    overwriePupilArray=[]
+
+    #Converts pupils into array format
+    for pupil in overwritePupils:
+        overwriePupilArray.append(pupil)
+
+    """
+    #Shows array before overwrite
+    print("Array before is...")
+    for section in groupOrderArray:
+        try:
+            nameSection=section[0]
+            pupilSection=section[1]
+        except:
+            print("Error with group format before")
+        else:
+            print(nameSection)
+            print(pupilSection)
+            print()
+
+    """
+    #Makes changes
+    for section in groupOrderArray:
+        try:
+            nameSection=section[0]
+            pupilSection=section[1]
+
+            groupName=nameSection[0]
+        except:
+            print("Error with group format while changing")
+        else:
+            if groupName == overwriteName:
+                section[1]=overwriePupilArray
+                print("Changed with",overwritePupils)
+            break
+
+    """
+    #Shows Array after changes
+    print("Array after is...")
+    for section in groupOrderArray:
+        try:
+            nameSection=section[0]
+            pupilSection=section[1]
+        except:
+            print("Error with group format after")
+        else:
+            print(nameSection)
+            print(pupilSection)
+            print()
+    """
+
+    #Saves the new array here
+    actualOverWriteGroup()
+
+def actualOverWriteGroup():
+    try:
+        file=open("groups.txt","w")
+    except:
+        askError("Error","An Error occoured")
+    else:
+        for group in groupOrderArray:
+            file.write("==============================\n")
+            try:
+                nameSection=group[0]
+                pupilSection=group[1]
+
+                groupName=nameSection[0]
+            except:
+                print("Format error")
+            else:
+                temp="GroupName123: "
+                temp+=groupName
+                file.write(temp)
+                file.write("\n")
+
+                #Add pupils
+                for pupil in pupilSection:
+                    file.write(pupil)
+                    file.write("\n")
+        file.close()
+        askMessage("Success","Overite success")
+
+
 
 def showGroupListboxMiniMenu(event):
     pos=showGroupListbox.curselection()
@@ -3744,6 +3842,10 @@ def openLink(link):
                 webbrowser.open_new(link)
             except:
                 askError("Error","Error opening link")
+
+def removeGroupPupil():
+    pupil=showGroupListbox.curselection()
+    removeListbox(showGroupListbox,pupil)
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -3985,6 +4087,7 @@ showHelp
 #View Group mini menu
 showGroupMiniMenu=Menu(showGroupCanvas,tearoff=0)
 showGroupMiniMenu.add_command(label="View Pupil",command=lambda :loadDoubleClick(showGroupListbox))
+showGroupMiniMenu.add_command(label="Remove Pupil",command=removeGroupPupil)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
