@@ -487,8 +487,19 @@ showGroupLabelVar=StringVar()
 showGroupLabel=Label(showGroupCanvas,textvariable=showGroupLabelVar)
 showGroupLabel.grid(row=0,column=1,pady=5)
 
-showGroupListbox=Listbox(showGroupCanvas)
-showGroupListbox.grid(row=1,column=1,pady=5)
+#Sub Frame for Listbox and Slider
+
+showGroupListboxFrame=Frame(showGroupCanvas)
+showGroupListboxFrame.grid(row=1,column=1,pady=5)
+
+showGroupSlider=Scrollbar(showGroupListboxFrame)
+showGroupSlider.pack(side=RIGHT,fill=Y)
+
+showGroupListbox=Listbox(showGroupListboxFrame)
+showGroupListbox.pack(side=LEFT)
+
+showGroupSlider.config(command=showGroupListbox.yview)
+showGroupListbox.config(yscrollcommand=showGroupSlider.set)
 
 #===================================================================ADD NEW CANVAS' HERE ONLY=======================
 
@@ -4084,7 +4095,7 @@ showHelp
 #View Group mini menu
 showGroupMiniMenu=Menu(showGroupCanvas,tearoff=0)
 showGroupMiniMenu.add_command(label="View Pupil",command=lambda :loadDoubleClick(showGroupListbox))
-showGroupMiniMenu.add_command(label="Remove Pupil",command=removeGroupPupil)
+showGroupMiniMenu.add_command(label="Remove From Group",command=removeGroupPupil)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
