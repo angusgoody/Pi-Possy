@@ -3738,53 +3738,46 @@ def overwriteGroup():
     for pupil in overwritePupils:
         overwriePupilArray.append(pupil)
 
-    """
-    #Shows array before overwrite
-    print("Array before is...")
+    sameData=False
+
+
+    #Check if data has been changed
     for section in groupOrderArray:
         try:
             nameSection=section[0]
             pupilSection=section[1]
+            groupName=nameSection[0]
+
         except:
             print("Error with group format before")
         else:
-            print(nameSection)
-            print(pupilSection)
-            print()
-
-    """
-    #Makes changes
-    for section in groupOrderArray:
-        try:
-            nameSection=section[0]
-            pupilSection=section[1]
-
-            groupName=nameSection[0]
-        except:
-            print("Error with group format while changing")
-        else:
             if groupName == overwriteName:
-                section[1]=overwriePupilArray
-                print("Changed with",overwritePupils)
-            break
+                if pupilSection == overwriePupilArray:
+                    sameData=True
 
-    """
-    #Shows Array after changes
-    print("Array after is...")
-    for section in groupOrderArray:
-        try:
-            nameSection=section[0]
-            pupilSection=section[1]
-        except:
-            print("Error with group format after")
-        else:
-            print(nameSection)
-            print(pupilSection)
-            print()
-    """
+    if sameData == True:
+        askMessage("Same","The Data has not been changed")
+    else:
+            
+        #Makes changes
+        for section in groupOrderArray:
+            try:
+                nameSection=section[0]
+                pupilSection=section[1]
 
-    #Saves the new array here
-    actualOverWriteGroup()
+                groupName=nameSection[0]
+            except:
+                print("Error with group format while changing")
+            else:
+                if groupName == overwriteName:
+                    section[1]=overwriePupilArray
+                    print("Changed with",overwritePupils)
+                break
+
+
+
+        #Saves the new array here
+        actualOverWriteGroup()
 
 def actualOverWriteGroup():
     try:
