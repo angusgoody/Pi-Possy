@@ -3657,7 +3657,9 @@ label=name,command=lambda  showName= name ,showArray=pupils
 
 
 #Shows group on screen
+showMessage=True
 def showGroup(name,pupils):
+    global showMessage
     loadCanvas(showGroupCanvas,"Viewing Group")
     showGroupLabelVar.set(name)
     corrupt=False
@@ -3677,13 +3679,15 @@ def showGroup(name,pupils):
     if corrupt == True:
 
         #Asks to overwrite old pupils
-        try:
-            option=messagebox.askyesno("Overwrite","Would you like to remove pupils no longer in this group")
-        except:
-            askMessage("Tkinter","Error with Python feature not supported")
-        else:
-            if option == True:
-                overwriteGroup()
+        if showMessage == True:
+            try:
+                option=messagebox.askyesno("Overwrite","Would you like to remove pupils no longer in this group")
+            except:
+                askMessage("Tkinter","Error with Python feature not supported")
+            else:
+                if option == True:
+                    showMessage=False
+                    overwriteGroup()
 
 
 
@@ -3758,7 +3762,7 @@ def overwriteGroup():
     if sameData == True:
         askMessage("Same","The Data has not been changed")
     else:
-            
+
         #Makes changes
         for section in groupOrderArray:
             try:
