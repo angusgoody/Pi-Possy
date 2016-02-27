@@ -3734,9 +3734,16 @@ def showWebsite():
 
 def openLink(link):
     try:
-        webbrowser.open_new(link)
+        temp="Are you sure you want to load this link"
+        option=messagebox.askyesno("Sure",temp)
     except:
-        askError("Error","Error opening link")
+        askError("Error","Error launching link")
+    else:
+        if option == True:
+            try:
+                webbrowser.open_new(link)
+            except:
+                askError("Error","Error opening link")
 #====================================================END OF BINDING FUNCTIONS============
 
 

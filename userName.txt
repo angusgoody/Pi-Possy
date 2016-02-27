@@ -1,3 +1,3 @@
-defaultBackground: gold
-defaultColour: #4e6cff
+defaultBackground: chartreuse2
+defaultColour: VioletRed1
 userName123: PETER
