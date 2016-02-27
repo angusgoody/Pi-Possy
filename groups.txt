@@ -2,6 +2,7 @@
 GroupName123: Catchup
 Adam Adamson
 Adam Thompson
+Ben Roberts
 ==============================
 GroupName123: My New Class
 Adam Adamson
@@ -20,8 +21,3 @@ Henry Green
 Henry Smith
 Henry Walker
 Jordan Smith
-==============================
-GroupName123: Just For Banter 
-Adam White
-Alex Brown
-Alex Green

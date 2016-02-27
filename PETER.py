@@ -2514,6 +2514,10 @@ def loadBulkEdit():
 def viewPupilPopup(event):
     data=currentViewCanvasArray[0]
 
+    #Get sub groups
+    viewPupilGroupMenu.delete(0,END)
+    for item in groupNameArray:
+        viewPupilGroupMenu.add_command(label=item,command=lambda x=item: addCertainPupilToGroup(x))
     #Only show menu on that canvas
     if data == viewPupilCanvas:
         viewPupilMiniMenu.post(event.x_root, event.y_root)
@@ -3860,7 +3864,13 @@ def actualOverWriteGroup():
                     file.write("\n")
         file.close()
         if success == True:
-            askMessage("Success","Overite success")
+            try:
+                current=currentViewCanvasArray[0]
+            except:
+                pass
+            else:
+                if current != viewPupilCanvas:
+                    askMessage("Success","Overwrite success")
         else:
             askMessage("Error","Group was not changed")
 
@@ -3945,7 +3955,43 @@ def deleteGroup():
                 askMessage("Can not find","Group cannot be deleted")
 
 
+def addCertainPupilToGroup(name):
 
+    print(name)
+    try:
+        data=currentViewPupil[0]
+    except:
+        print("Format error")
+    else:
+        temp=""
+        try:
+            pupilName=data[0]
+            second=data[1]
+        except:
+            print("Indexing error")
+        else:
+            temp+=pupilName
+            temp+=" "
+            temp+=second
+
+            for item in groupOrderArray:
+                try:
+                    nameSection=item[0]
+                    pupilSection=item[1]
+
+                    groupName=nameSection[0]
+                except:
+                    print("Error indexing")
+                else:
+                    if groupName == name:
+                        if temp not in pupilSection:
+                            pupilSection.append(temp)
+                            actualOverWriteGroup()
+                            askMessage("Success","New pupil added to group")
+                        else:
+                            askMessage("Duplicate","This pupil is allready in this group")
+                    else:
+                        print(groupName,"vs",name)
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -4132,8 +4178,16 @@ check.pack(pady=10)
 #Menu for view pupil
 viewPupilMiniMenu = Menu(currentViewPupil, tearoff=0)
 viewPupilMiniMenu.add_command(label="Open pupil in new tab",command=showPupilTab)
+viewPupilMiniMenu.add_separator()
+
+#Cascade menu
+viewPupilGroupMenu=Menu(viewPupilMiniMenu)
+viewPupilMiniMenu.add_cascade(label="Add To Group",menu=viewPupilGroupMenu)
+viewPupilMiniMenu.add_separator()
 viewPupilMiniMenu.add_command(label="Toggle text position",command=toggleTextPos)
+viewPupilMiniMenu.add_separator()
 viewPupilMiniMenu.add_command(label="Delete Pupil",command=deletePupilFromMenu)
+
 
 
 #Bulk edit listboxes add mini menu
