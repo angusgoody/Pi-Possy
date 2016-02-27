@@ -3804,10 +3804,11 @@ def overwriteGroup():
             askMessage("Found","Data could not be changed")
 
 def actualOverWriteGroup():
+    success=True
     try:
         file=open("groups.txt","w")
     except:
-        askError("Error","An Error occoured")
+        askError("Error","An Error occoured opening file")
     else:
         for group in groupOrderArray:
             file.write("==============================\n")
@@ -3818,6 +3819,7 @@ def actualOverWriteGroup():
                 groupName=nameSection[0]
             except:
                 print("Format error")
+                success=False
             else:
                 temp="GroupName123: "
                 temp+=groupName
@@ -3829,7 +3831,10 @@ def actualOverWriteGroup():
                     file.write(pupil)
                     file.write("\n")
         file.close()
-        askMessage("Success","Overite success")
+        if success == True:
+            askMessage("Success","Overite success")
+        else:
+            askMessage("Error","Group was not changed")
 
 
 
@@ -3865,7 +3870,48 @@ def removeGroupPupil():
     removeListbox(showGroupListbox,pupil)
 
 def deleteGroup():
+    global groupOrderArray
     print("===========Delete Group========")
+
+    try:
+        option=messagebox.askyesno("Sure","Are you sure you want to delete group?")
+    except:
+        askMessage("Python","Python module error")
+    else:
+        if option == True:
+            overwriteName=showGroupLabelVar.get()
+            success=True
+
+            #Removes group from array and then saves data
+            counter=-1
+            for item in groupOrderArray:
+                counter+=1
+                try:
+                    groupNameSection=item[0]
+                    groupName=groupNameSection[0]
+                except:
+                    print("Group Format error")
+                else:
+                    if groupName == overwriteName:
+                        try:
+                            groupOrderArray.remove(item)
+                        except:
+                            success=False
+                        else:
+
+                            #Saving new data bit
+                            actualOverWriteGroup()
+
+                            #Remove from menu bar
+                            try:
+                                groupMenu.delete(counter)
+                            except:
+                                print("Could not remove from menu bar")
+
+                            showOpenCanvas()
+
+
+
 #====================================================END OF BINDING FUNCTIONS============
 
 

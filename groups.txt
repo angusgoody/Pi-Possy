@@ -2,25 +2,3 @@
 GroupName123: Catchup
 Adam Adamson
 Adam Thompson
-==============================
-GroupName123: Football Club
-Adam Thompson
-Alex Brown
-Alex Green
-Alex Mitchell
-==============================
-GroupName123: My Class
-Adam Adamson
-Adam Thompson
-Alex Brown
-Alex Green
-Alex Mitchell
-Angus Jones
-Ben Roberts
-Charlie Johnson
-Conor Jones
-Daniel Evans
-Henry Evans
-Henry Green
-Henry Smith
-Jordan Smith
