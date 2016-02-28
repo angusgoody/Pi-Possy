@@ -3,10 +3,12 @@ GroupName123: Catchup
 Adam Adamson
 Adam Thompson
 Ben Roberts
+Alex Brown
 ==============================
-GroupName123: My New Class
+GroupName123: My Class 
 Adam Adamson
 Adam Thompson
+Adam White
 Alex Brown
 Alex Green
 Alex Mitchell

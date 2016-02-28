@@ -703,7 +703,7 @@ def checkOverwrite(event):
 
 
 def changeTheme():
-    loadCanvas(changeThemeCanvas, "Theme")
+    loadCanvas(changeThemeCanvas, "Change Theme")
 
 def submitTheme(colour):
     global mainThemeColour
@@ -1103,7 +1103,7 @@ def updateBackgroundColours(colour):
             try:
                 widget.config(highlightbackground=colour)
             except:
-                print("Widget error changing highlight colour",widget)
+                pass
 
 
 def updateButtonBackground(colour):
@@ -2522,10 +2522,8 @@ def viewPupilPopup(event):
     if data == viewPupilCanvas:
         viewPupilMiniMenu.post(event.x_root, event.y_root)
 
-def showPupilTab():
-
-    global currentViewPupil
-    current=currentViewPupil
+def showPupilTab(pupilToView):
+    current=pupilToView
 
     try:
         data=current[0]
@@ -3067,6 +3065,14 @@ def bulkEditMenu(listbox,event):
 
             #This line stops the pop up menu if nothing is selected
             if len(pos) > 0:
+                try:
+                    current=bulkAllPupilListbox.curselection()
+                    if len(current) > 1:
+                        bulkViewMiniMenu.entryconfig(0,label="View Pupils In Tabs")
+                    else:
+                        bulkViewMiniMenu.entryconfig(0,label="View Pupil")
+                except:
+                    pass
                 bulkViewMiniMenu.post(event.x_root, event.y_root)
     elif listbox == "Remove":
         try:
@@ -3077,6 +3083,14 @@ def bulkEditMenu(listbox,event):
 
             #This line stops the pop up menu if nothing is selected
             if len(pos) > 0:
+                try:
+                    current=bulkFilterPupilListbox.curselection()
+                    if len(current) > 1:
+                        filterViewMiniMenu.entryconfig(0,label="View Pupils In Tabs")
+                    else:
+                        filterViewMiniMenu.entryconfig(0,label="View Pupil")
+                except:
+                    pass
                 filterViewMiniMenu.post(event.x_root, event.y_root)
 
 def toggleStatus():
@@ -3546,6 +3560,18 @@ def colourPopupMenu(event):
                 backgroundMiniMenu.post(event.x_root, event.y_root)
 
 def showHomeMiniMenu(event):
+
+    #Check if current is home screen
+    try:
+        currentCanvas=currentViewCanvasArray[0]
+    except:
+        currentCanvas="?"
+    else:
+        if currentCanvas == openCanvas:
+            homeScreenMiniMenu.entryconfig(0,state=DISABLED)
+        else:
+            homeScreenMiniMenu.entryconfig(0,state=NORMAL)
+
     homeScreenMiniMenu.post(event.x_root, event.y_root)
 
 def preOpenCanvas(event):
@@ -3992,6 +4018,47 @@ def addCertainPupilToGroup(name):
                             askMessage("Duplicate","This pupil is allready in this group")
                     else:
                         print(groupName,"vs",name)
+
+def preSubmitNewGroup(event):
+    submitNewGroup()
+
+def preOpenNewPupilTab():
+    showPupilTab(currentViewPupil)
+
+def viewBulkPupil(listbox):
+    try:
+        current=listbox.curselection()
+    except:
+        print("Error with listbox")
+    else:
+        if len(current) == 1:
+            loadDoubleClick(listbox)
+        else:
+            leng=len(current)
+            if leng > 20:
+                askMessage("Too Many","No more than 20 pupils can be opened at once")
+            else:
+                try:
+                    temp="Would you like to open these "
+                    leng=len(current)
+                    leng=str(leng)
+                    temp+=leng
+                    temp+=" pupils in new tabs"
+                    option=messagebox.askyesno("Open",temp)
+                except:
+                    askMessage("Error","Python Tkinter Error")
+                else:
+                    if option == True:
+                        for item in current:
+                            try:
+                                viewPupil=listbox.get(item)
+                                words=viewPupil.split()
+                                pupil=getPupilFromArray(words)
+                                if pupil != None:
+                                    showPupilTab(pupil)
+                            except:
+                                print("Error loading pupil tab")
+
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -4177,7 +4244,7 @@ check.pack(pady=10)
 
 #Menu for view pupil
 viewPupilMiniMenu = Menu(currentViewPupil, tearoff=0)
-viewPupilMiniMenu.add_command(label="Open pupil in new tab",command=showPupilTab)
+viewPupilMiniMenu.add_command(label="Open pupil in new tab",command=preOpenNewPupilTab)
 viewPupilMiniMenu.add_separator()
 
 #Cascade menu
@@ -4192,21 +4259,21 @@ viewPupilMiniMenu.add_command(label="Delete Pupil",command=deletePupilFromMenu)
 
 #Bulk edit listboxes add mini menu
 bulkViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
-bulkViewMiniMenu.add_command(label="View Pupil",command=lambda :loadDoubleClick(bulkAllPupilListbox))
+bulkViewMiniMenu.add_command(label="View Pupil",command=lambda :viewBulkPupil(bulkAllPupilListbox))
 bulkViewMiniMenu.add_separator()
 bulkViewMiniMenu.add_command(label="Add Pupil",command=preAddBulkPupil)
-bulkViewMiniMenu.add_separator()
 bulkViewMiniMenu.add_command(label="Add All",command=addAllBulkPupils)
 
 #Bulk edit listboxes remove mini menu
 filterViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
-filterViewMiniMenu.add_command(label="View Pupil",command=lambda :loadDoubleClick(bulkFilterPupilListbox))
+filterViewMiniMenu.add_command(label="View Pupil",command=lambda :viewBulkPupil(bulkFilterPupilListbox))
 filterViewMiniMenu.add_separator()
 filterViewMiniMenu.add_command(label="Remove Pupil",command=preRemoveBulkPupil)
-filterViewMiniMenu.add_separator()
 filterViewMiniMenu.add_command(label="Remove All",command=removeAllBulkPupils)
 filterViewMiniMenu.add_separator()
 filterViewMiniMenu.add_command(label="New Group",command=startNewFilterGroup)
+filterViewCascade=Menu(filterViewMiniMenu)
+filterViewMiniMenu.add_cascade(label="Add To Group",menu=filterViewCascade)
 
 #Filter mini menus
 filterPupilsMiniMenu=Menu(filterPupilCanvas,tearoff=0)
@@ -4233,6 +4300,7 @@ personalMenu.add_command(label="Change Theme",command=changeTheme)
 personalMenu.add_command(label="Change Background",command=changeBackground)
 
 homeScreenMiniMenu.add_command(label="Home",command=showOpenCanvas)
+homeScreenMiniMenu.add_separator()
 homeScreenMiniMenu.add_cascade(label="Personalise",menu=personalMenu)
 homeScreenMiniMenu.add_command(label="New Filter",command=newFilter)
 homeScreenMiniMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
@@ -4312,6 +4380,7 @@ orderPB()
 addPupilsMenu(newOrderPupils)
 addBinding(createPupilCanvas, createPupilInfoStep)
 addBinding(filterPupilCanvas,searchPupilStep)
+addBinding(newGroupCanvas,preSubmitNewGroup)
 initBackground()
 initTheme()
 showOpenCanvas()
