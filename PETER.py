@@ -3093,6 +3093,7 @@ def bulkEditMenu(listbox,event):
                     pass
 
                 #Adds items to array
+                filterViewCascade.delete(0,END)
                 for item in groupNameArray:
                     filterViewCascade.add_command(label=item,command=lambda listbox=bulkFilterPupilListbox, group=item: preAddGroupPupils(listbox,group))
                 filterViewMiniMenu.post(event.x_root, event.y_root)
@@ -3123,18 +3124,6 @@ def toggleStatus():
     else:
         status.config(fg="White")
 
-
-def bulkCheckCommand():
-    value=bulkCheckVar.get()
-    if value == 1:
-        bulkAllPupilListbox.config(selectmode='extended')
-        bulkFilterPupilListbox.config(selectmode='extended')
-    else:
-        bulkAllPupilListbox.selection_clear(0, END)
-        bulkAllPupilListbox.config(selectmode="browse")
-
-        bulkFilterPupilListbox.selection_clear(0, END)
-        bulkFilterPupilListbox.config(selectmode="browse")
 
 
 def loadDoubleClick(listbox):
@@ -4131,6 +4120,23 @@ def addArrayToGroup(array,group):
     actualOverWriteGroup()
 
 
+def changeSelectType(event):
+    matchArray=["browse",'extended','multiple']
+    bulkAllPupilListbox.selection_clear(0, END)
+    bulkFilterPupilListbox.selection_clear(0, END)
+    try:
+        index=selectTypeOptions.index(event)
+    except:
+        print("Error changing")
+    else:
+        try:
+            match=matchArray[index]
+        except:
+            print("Index error")
+        else:
+            bulkAllPupilListbox.config(selectmode=match)
+            bulkFilterPupilListbox.config(selectmode=match)
+
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -4303,12 +4309,18 @@ submitGroupButton.grid(row=1,column=1,pady=5)
 overwriteGroupButton=Button(showGroupCanvas,text="Save",command=overwriteGroup,relief=FLAT,width=12)
 overwriteGroupButton.grid(row=2,column=1,pady=5)
 
-deleteGroupButton=Button(showGroupCanvas,text="Delete",command=deleteGroup,relief=FLAT,width=12)
+deleteGroupButton=Button(showGroupCanvas,text="Delete Group",command=deleteGroup,relief=FLAT,width=12)
 deleteGroupButton.grid(row=3,column=1,pady=5)
+
 #=============Checkbuttons==========
-bulkCheckVar=IntVar()
-check=Checkbutton(mainListboxFrame,text="Select",command=bulkCheckCommand,variable=bulkCheckVar,state=NORMAL)
-check.pack(pady=10)
+
+#OptionMenu for bulk selection type
+selectTypeOptions=["Normal","Drag","Multi"]
+selectTypeVar=StringVar()
+selectTypeVar.set("Select")
+selectTypeOptionMenu=OptionMenu(mainListboxFrame,selectTypeVar,*selectTypeOptions,command=changeSelectType)
+selectTypeOptionMenu.config(width=12)
+selectTypeOptionMenu.pack(pady=10)
 
 
 
