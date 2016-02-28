@@ -3272,34 +3272,8 @@ def sortListbox(listbox):
 
 #Moves serarch results to bulk edit
 def addFilterToBulk():
-    content=filterResults.get(0,END)
+    addArrayToBulkEdit(filterResults)
 
-    #Clears the space
-    removeAllBulkPupils()
-
-    bulkAllContent=bulkAllPupilListbox.get(0,END)
-    miniCounter=0
-
-    removeArray=[]
-    for item in bulkAllContent:
-        if item in content:
-            removeArray.append(miniCounter)
-        miniCounter+=1
-
-    removeListbox(bulkAllPupilListbox,removeArray)
-
-    #Get pupils from search results
-    pupilsToAdd=[]
-    for item in content:
-        words=item.split()
-        pupil=getPupilFromArray(words)
-        pupilsToAdd.append(pupil)
-
-    #Adds to bulk menu
-    insertListbox(bulkFilterPupilListbox,pupilsToAdd)
-
-    #Show bulk canvas
-    loadBulkEdit()
 
 
 
@@ -4137,6 +4111,44 @@ def changeSelectType(event):
             bulkAllPupilListbox.config(selectmode=match)
             bulkFilterPupilListbox.config(selectmode=match)
 
+
+def addGroupToBulk():
+    addArrayToBulkEdit(showGroupListbox)
+
+#New function to add items to filter bulk listbox and add remove them from view all bulk listbox
+def addArrayToBulkEdit(listbox):
+    try:
+        content=listbox.get(0,END)
+    except:
+        print("No listbox function")
+    else:
+
+        #Clears the space
+        removeAllBulkPupils()
+
+        bulkAllContent=bulkAllPupilListbox.get(0,END)
+        miniCounter=0
+
+        removeArray=[]
+        for item in bulkAllContent:
+            if item in content:
+                removeArray.append(miniCounter)
+            miniCounter+=1
+
+        removeListbox(bulkAllPupilListbox,removeArray)
+
+        #Get pupils from search results
+        pupilsToAdd=[]
+        for item in content:
+            words=item.split()
+            pupil=getPupilFromArray(words)
+            pupilsToAdd.append(pupil)
+
+        #Adds to bulk menu
+        insertListbox(bulkFilterPupilListbox,pupilsToAdd)
+
+        #Show bulk canvas
+        loadBulkEdit()
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -4396,6 +4408,7 @@ showHelp
 showGroupMiniMenu=Menu(showGroupCanvas,tearoff=0)
 showGroupMiniMenu.add_command(label="View Pupil",command=lambda :loadDoubleClick(showGroupListbox))
 showGroupMiniMenu.add_command(label="Remove From Group",command=removeGroupPupil)
+showGroupMiniMenu.add_command(label="Edit Group",command=addGroupToBulk)
 
 #Bindings-------------------------
 changeUserNameEntry.bind("<KeyRelease>",checkOverwrite)
