@@ -812,7 +812,7 @@ def initTheme():
         result=checkColour(colour)
         if result != None and result != "":
             updateMenuBG(colour)
-            print("Testing sucess")
+            print("Testing Success")
             updateTheme(colour)
             updateButtonBackground(colour)
         else:
@@ -842,7 +842,7 @@ def saveLineToFile(file,lineToAdd,target):
         fileToWrite.write("\n")
         fileToWrite.close()
         fileToWrite.close()
-        askMessage("Sucess","Changed infomation")
+        askMessage("Success","Changed infomation")
 
     else:
 
@@ -865,7 +865,7 @@ def saveLineToFile(file,lineToAdd,target):
                 fileToWrite.write(item)
 
             fileToWrite.close()
-            askMessage("Sucess","Changed infomation")
+            askMessage("Success","Changed infomation")
 
 
 def writeArrayToFile(fileName,array):
@@ -1031,7 +1031,7 @@ def getBackgroundFromFile():
                                     colour=colour
 
                         else:
-                            print("Second background test sucess")
+                            print("Second background test Success")
                             colour=temp
         else:
             tempEntry=Entry(window)
@@ -1705,7 +1705,7 @@ def searchPupils():
             numberOfFilterResults.set(0)
             askMessage("No results","The search returned no results")
         else:
-            print("Search Sucess")
+            print("Search Success")
             #Section to show results
 
             filterResults.delete(0,END)
@@ -3091,7 +3091,29 @@ def bulkEditMenu(listbox,event):
                         filterViewMiniMenu.entryconfig(0,label="View Pupil")
                 except:
                     pass
+
+                #Adds items to array
+                for item in groupNameArray:
+                    filterViewCascade.add_command(label=item,command=lambda listbox=bulkFilterPupilListbox, group=item: preAddGroupPupils(listbox,group))
                 filterViewMiniMenu.post(event.x_root, event.y_root)
+
+def preAddGroupPupils(listbox,group):
+    try:
+        indexes=listbox.get(0,END)
+    except:
+        print("No Listbox passed to function")
+    else:
+        trackArray=[]
+        for item in indexes:
+            try:
+                words=item.split()
+                pupil=getPupilFromArray(words)
+                if pupil != None:
+                    trackArray.append(pupil)
+            except:
+                print("Pupil error")
+
+        addArrayToGroup(trackArray,group)
 
 def toggleStatus():
     statusCol=status.cget("fg")
@@ -3895,7 +3917,7 @@ def actualOverWriteGroup():
             except:
                 pass
             else:
-                if current != viewPupilCanvas:
+                if current == showGroupCanvas:
                     askMessage("Success","Overwrite success")
         else:
             askMessage("Error","Group was not changed")
@@ -4058,6 +4080,56 @@ def viewBulkPupil(listbox):
                                     showPupilTab(pupil)
                             except:
                                 print("Error loading pupil tab")
+def addArrayToGroup(array,group):
+
+    addCounter=0
+    for item in array:
+        try:
+            dataSection=item[0]
+        except:
+            print("Error formating pupil")
+        else:
+            try:
+                temp=""
+                temp+=dataSection[0]
+                temp+=" "
+                temp+=dataSection[1]
+            except:
+                print("Name could not be found")
+            else:
+                #Add to group array
+                for section in groupOrderArray:
+                    try:
+                        nameSection=section[0]
+                        pupilSection=section[1]
+
+                        groupName=nameSection[0]
+                    except:
+                        print("Formatting error")
+                    else:
+                        if groupName == group:
+                            if temp not in pupilSection:
+                                pupilSection.append(temp)
+                                addCounter+=1
+                            else:
+                                print("Pupil allready in group")
+
+
+    leng=len(array)
+    copy=addCounter
+    copy=str(copy)
+    leng=str(leng)
+
+    temp="Added "
+    temp+=copy
+    temp+=" pupils out of "
+    temp+=leng
+    temp+=" to group"
+    askMessage("Success",temp)
+
+    #Saves the new groups to file
+    actualOverWriteGroup()
+
 
 #====================================================END OF BINDING FUNCTIONS============
 

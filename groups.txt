@@ -2,10 +2,12 @@
 GroupName123: Catchup
 Adam Adamson
 Adam Thompson
-Ben Roberts
 Alex Brown
+Ben Roberts
+Charlie Johnson
+Conor Jones
 ==============================
-GroupName123: My Class 
+GroupName123: My Class
 Adam Adamson
 Adam Thompson
 Adam White
