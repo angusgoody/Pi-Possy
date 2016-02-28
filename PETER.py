@@ -533,6 +533,8 @@ groupNameArray=[]
 
 groupOrderArray=[]
 
+beforeAddedGroups=[]
+afterAddedGroups=[]
 # Start of Functions===========================================================
 
 
@@ -1666,7 +1668,6 @@ def searchPupils():
 
 
             elif matchArea == "All":
-                print("All")
                 for pupil in newOrderPupils:
                     for section in pupil:
                         for item in section:
@@ -3332,15 +3333,20 @@ def submitNewGroup():
     mainGroupName=groupName
     words=groupName.split()
 
+    pupilTuple=groupListbox.get(0,END)
+    pupilsToAdd=[]
+    for item in pupilTuple:
+        pupilsToAdd.append(item)
+
     if len(words) > 0:
         if groupName not in groupNameArray:
-            groupPupils=groupPupilArray
+            groupPupils=pupilsToAdd
             groupPupils=sorted(groupPupils)
+
             #Save to file
             saveGroupToFile(groupPupils)
-            askMessage("Complete","Saved New group")
             groupNameArray.append(groupName)
-            addGroupMenuBar(groupName,groupPupils)
+
 
             #Adds to the main group array
             mainAddArray=[]
@@ -3349,6 +3355,12 @@ def submitNewGroup():
             mainAddArray.append(groupPupils)
 
             groupOrderArray.append(mainAddArray)
+
+            afterAddedGroups.append(mainAddArray)
+
+            updateGroupMenu()
+            askMessage("Complete","Saved New group")
+
         else:
             askMessage("Duplicate","This group allready exists")
 
@@ -3529,6 +3541,7 @@ def getGroupsFromFile():
 
         overAllArray=sorted(overAllArray)
         return overAllArray
+
 def themeOrBackgroundUpdate(themeOrBackground):
     if themeOrBackground == "Background":
         cursor=colourListBox.curselection()
@@ -3970,10 +3983,11 @@ def deleteGroup():
 
                             #Remove from menu bar
                             try:
-                                groupMenu.delete(counter)
                                 groupNameArray.remove(groupName)
                             except:
-                                print("Could not remove from menu bar")
+                                print("Could not delete group from array")
+
+                            updateGroupMenu()
 
                             showOpenCanvas()
 
@@ -4164,6 +4178,20 @@ def addArrayToBulkEdit(listbox):
 
         #Show bulk canvas
         loadBulkEdit()
+
+def updateGroupMenu():
+    global groupOrderArray
+    groupMenu.delete(2,END)
+    copy=sorted(groupOrderArray)
+    for item in copy:
+        try:
+            nameSection=item[0]
+            name=nameSection[0]
+            pupilSection=item[1]
+        except:
+            print("Group Format Error")
+        else:
+            addGroupMenuBar(name,pupilSection)
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -4438,6 +4466,10 @@ bulkAllPupilListbox.bind("<Button-1>",bulkDisableViewAll)
 bulkFilterPupilListbox.bind("<Button-1>",bulkDisableFilter)
 status.bind("<Double-Button-1>",preOpenCanvas)
 
+#Menu for groups
+groupMenu.add_command(label="New Group",command=lambda: loadCanvas(newGroupCanvas,"New Group"))
+groupMenu.add_separator()
+
 #Mac and PC right click bindings are diffrent
 if version == "Darwin":
     window.bind("<Button-2>", viewPupilPopup)
@@ -4499,6 +4531,8 @@ showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 checkGrades()
 groupOrderArray=getGroupsFromFile()
+for item in groupOrderArray:
+    beforeAddedGroups.append(item)
 initNewGroups()
 bindArray([openLabel,viewTotalPupilLabel,showPassLabel,showFailLabel,showNumberLabel,showFailNumber,showPassNumberLabel])
 bindLabelArray()

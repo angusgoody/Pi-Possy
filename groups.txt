@@ -1,13 +1,9 @@
 ==============================
-GroupName123: My Class
+GroupName123: After School Club
 Adam Adamson
 Adam White
 Alex Brown
 Alex Green
-Alex Mitchell
-Angus Jones
-Ben Roberts
-Charlie Johnson
 Conor Jones
 Daniel Evans
 Duey Harris
@@ -17,7 +13,7 @@ Henry Smith
 Henry Walker
 Jordan Smith
 ==============================
-GroupName123: Catchup 
+GroupName123: Catchup
 Adam Adamson
 Alex Brown
 Alex Green
