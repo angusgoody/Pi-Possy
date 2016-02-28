@@ -2795,8 +2795,18 @@ def alternateButtonConfig(addOrRemove):
         addBulkPupilButton.config(state=DISABLED)
         addAllBulkPupilsButton.config(state=DISABLED)
     else:
-        addBulkPupilButton.config(state=NORMAL)
-        addAllBulkPupilsButton.config(state=NORMAL)
+        try:
+            currentSelect=bulkAllPupilListbox.curselection()
+        except:
+            pass
+        else:
+            addAllBulkPupilsButton.config(state=NORMAL)
+            if len(currentSelect) > 0:
+                addBulkPupilButton.config(state=NORMAL)
+
+            else:
+                addBulkPupilButton.config(state=DISABLED)
+
 
     #Alternate butons
     size2=bulkFilterPupilListbox.size()
@@ -2809,13 +2819,19 @@ def alternateButtonConfig(addOrRemove):
         removeBulkPupilButton.config(state=DISABLED)
         removeAllBulkPupilsButton.config(state=DISABLED)
     else:
-        removeBulkPupilButton.config(state=NORMAL)
-        removeAllBulkPupilsButton.config(state=NORMAL)
+        try:
+            currentSelect=bulkFilterPupilListbox.curselection()
+        except:
+            pass
+        else:
+            removeAllBulkPupilsButton.config(state=NORMAL)
 
-    #Alternate
-    size2=bulkAllPupilListbox.size()
-    if size2 > 0:
-        addBulkPupilButton.config(state=NORMAL)
+            if len(currentSelect) > 0:
+                removeBulkPupilButton.config(state=NORMAL)
+            else:
+                removeBulkPupilButton.config(state=DISABLED)
+
+
 
 def preAddAllBulkPupils():
     addAllBulkPupils()
@@ -3137,13 +3153,12 @@ def bulkDisableViewAll(event):
     if leng > 0:
         addAllBulkPupilsButton.config(state=NORMAL)
         addBulkPupilButton.config(state=NORMAL)
-        removeAllBulkPupilsButton.config(state=DISABLED)
+        #removeAllBulkPupilsButton.config(state=DISABLED)
         removeBulkPupilButton.config(state=DISABLED)
 
 def bulkDisableFilter(event):
     leng=bulkFilterPupilListbox.size()
     if leng > 0:
-        addAllBulkPupilsButton.config(state=DISABLED)
         addBulkPupilButton.config(state=DISABLED)
         removeAllBulkPupilsButton.config(state=NORMAL)
         removeBulkPupilButton.config(state=NORMAL)
@@ -4332,7 +4347,7 @@ selectTypeVar=StringVar()
 selectTypeVar.set("Select")
 selectTypeOptionMenu=OptionMenu(mainListboxFrame,selectTypeVar,*selectTypeOptions,command=changeSelectType)
 selectTypeOptionMenu.config(width=12)
-selectTypeOptionMenu.pack(pady=10)
+selectTypeOptionMenu.pack(pady=12)
 
 
 
