@@ -4191,12 +4191,10 @@ def updateGroupMenu():
 def removePupilNewGroup():
     try:
         currentPos=groupListbox.curselection()
-        data=groupListbox.get(currentPos)
     except:
         print("Listbox error")
     else:
-        temp=[data]
-        removeListbox(groupListbox,temp)
+        removeListbox(groupListbox,currentPos)
 
 
 def postMenu(event,listbox,menu):
@@ -4451,7 +4449,7 @@ homeScreenMiniMenu=Menu(openCanvas,tearoff=0)
 
 #Create Group Mini meun
 createGroupMiniMenu=Menu(groupListbox)
-createGroupMiniMenu.add_command(label="Remove Pupil")
+createGroupMiniMenu.add_command(label="Remove Pupil",command=removePupilNewGroup)
 
 
 #Sub menu of homescreen
