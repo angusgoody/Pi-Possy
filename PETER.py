@@ -1071,7 +1071,6 @@ def updateBackgroundColours(colour):
     widgetArray=["Entry","Button","Text","Listbox","OptionMenu","Menu"]
     window.config(bg=colour)
     mainBackgroundColour.set(colour)
-    print("SET new variable")
     for item in canvasArray:
         item.config(bg=colour)
         for widget in item.winfo_children():
@@ -3237,10 +3236,6 @@ def checkGrades():
     passVar.set(passes)
     failVar.set(fails)
 
-def showFilterMenu(event):
-    pos=filterResults.curselection()
-    if len(pos) > 0:
-        filterPupilsMiniMenu.post(event.x_root, event.y_root)
 
 
 def newGroup(pupils):
@@ -3576,20 +3571,6 @@ def themeOrBackgroundUpdate(themeOrBackground):
         except:
             print("Error getting data from background listbox")
 
-def colourPopupMenu(event):
-    try:
-        current=currentViewCanvasArray[0]
-    except:
-        print("Cant preview canvas")
-    else:
-        if current == changeThemeCanvas:
-            currentSelect=colourListBox.curselection()
-            if len(currentSelect) > 0:
-                themeMiniMenu.post(event.x_root, event.y_root)
-        else:
-            currentSelect=backgroundListBox.curselection()
-            if len(currentSelect) > 0:
-                backgroundMiniMenu.post(event.x_root, event.y_root)
 
 def showHomeMiniMenu(event):
 
@@ -3934,12 +3915,6 @@ def actualOverWriteGroup():
 
 
 
-def showGroupListboxMiniMenu(event):
-    pos=showGroupListbox.curselection()
-    if len(pos) > 0:
-        showGroupMiniMenu.post(event.x_root, event.y_root)
-
-
 def showHelp():
     openLink("https://drive.google.com/folderview?id=0B_HDzRT6N--LUzVzMTlPN2ZwTEU&usp=sharing")
 
@@ -4211,6 +4186,29 @@ def updateGroupMenu():
             print("Group Format Error")
         else:
             addGroupMenuBar(name,pupilSection)
+
+
+def removePupilNewGroup():
+    try:
+        currentPos=groupListbox.curselection()
+        data=groupListbox.get(currentPos)
+    except:
+        print("Listbox error")
+    else:
+        temp=[data]
+        removeListbox(groupListbox,temp)
+
+
+def postMenu(event,listbox,menu):
+    try:
+        current=listbox.curselection()
+    except:
+        print("Listbox error")
+    else:
+        if len(current) > 0:
+            menu.post(event.x_root, event.y_root)
+
+
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -4451,6 +4449,11 @@ backgroundMiniMenu.add_command(label="Change Background",command=updateBackgroun
 #Home screen mini menu
 homeScreenMiniMenu=Menu(openCanvas,tearoff=0)
 
+#Create Group Mini meun
+createGroupMiniMenu=Menu(groupListbox)
+createGroupMiniMenu.add_command(label="Remove Pupil")
+
+
 #Sub menu of homescreen
 personalMenu=Menu(homeScreenMiniMenu)
 personalMenu.add_command(label="Change Info",command=changeUserName)
@@ -4494,20 +4497,22 @@ if version == "Darwin":
     window.bind("<Button-2>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-2>",preBulkViewAllMenu)
     bulkFilterPupilListbox.bind("<Button-2>",preBulkFilterMenu)
-    filterResults.bind("<Button-2>",showFilterMenu)
-    colourListBox.bind("<Button-2>",colourPopupMenu)
-    backgroundListBox.bind("<Button-2>",colourPopupMenu)
+    filterResults.bind("<Button-2>",lambda event: postMenu(event,filterResults,filterPupilsMiniMenu))
+    colourListBox.bind("<Button-2>",lambda event: postMenu(event,colourListBox,themeMiniMenu))
+    backgroundListBox.bind("<Button-2>",lambda event: postMenu(event,backgroundListBox,backgroundMiniMenu))
     status.bind("<Button-2>",showHomeMiniMenu)
-    showGroupListbox.bind("<Button-2>",showGroupListboxMiniMenu)
+    showGroupListbox.bind("<Button-2>",lambda event: postMenu(event,showGroupListbox,showGroupMiniMenu))
+    groupListbox.bind("<Button-2>",lambda event: postMenu(event,groupListbox,createGroupMiniMenu))
 else:
     window.bind("<Button-3>", viewPupilPopup)
     bulkAllPupilListbox.bind("<Button-3>",preBulkViewAllMenu)
     bulkFilterPupilListbox.bind("<Button-3>",preBulkFilterMenu)
-    filterResults.bind("<Button-3>",showFilterMenu)
-    colourListBox.bind("<Button-3>",colourPopupMenu)
-    backgroundListBox.bind("<Button-3>",colourPopupMenu)
+    filterResults.bind("<Button-2>",lambda event: postMenu(event,filterResults,filterPupilsMiniMenu))
+    colourListBox.bind("<Button-2>",lambda event: postMenu(event,colourListBox,themeMiniMenu))
+    backgroundListBox.bind("<Button-2>",lambda event: postMenu(event,backgroundListBox,backgroundMiniMenu))
     status.bind("<Button-3>",showHomeMiniMenu)
-    showGroupListbox.bind("<Button-3>",showGroupListboxMiniMenu)
+    showGroupListbox.bind("<Button-3>",lambda event: postMenu(event,showGroupListbox,showGroupMiniMenu))
+    groupListbox.bind("<Button-3>",lambda event: postMenu(event,groupListbox,createGroupMiniMenu))
 
 
 
@@ -4554,7 +4559,7 @@ if groupOrderArray != None:
     for item in groupOrderArray:
         beforeAddedGroups.append(item)
 else:
-    groupOrderArray=[]    
+    groupOrderArray=[]
 initNewGroups()
 bindArray([openLabel,viewTotalPupilLabel,showPassLabel,showFailLabel,showNumberLabel,showFailNumber,showPassNumberLabel])
 bindLabelArray()
