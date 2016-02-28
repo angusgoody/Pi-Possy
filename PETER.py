@@ -2400,11 +2400,19 @@ def createAddPB():
         except:
             print("Error updating PB")
         else:
-            print("Added PB success")
+            askMessage("Success","Added PB")
 
+def checkData():
+    text=createPupilTarget.get()
+    words=text.split()
+    if len(words) > 0:
+        addNewPBButton.config(state=NORMAL)
+    else:
+        addNewPBButton.config(state=DISABLED)
 
 def createPupilOptionMenuFunction(value):
     global currentCreatePupilPBArray
+    checkData()
     #Value from OptionMenu if keystroke triggers function
     directValue=createPupilPersonalBestVar.get()
     textFromEntry=createPupilTarget.get()
