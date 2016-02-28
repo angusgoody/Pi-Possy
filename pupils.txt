@@ -2,7 +2,7 @@
 Adam
 Adamson
 D
-Cameron needs to Concentrate
+Nothing
 66
 81
 38
@@ -22,12 +22,12 @@ Adam needs to Not be so good
 Alex
 Brown
 D
-Alex needs to Improve
 58
-40
-22
-16
-91
+58
+8
+98
+123
+
 =======================
 Alex
 Green

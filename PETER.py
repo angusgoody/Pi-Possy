@@ -1802,8 +1802,13 @@ def newGetInfo():
     grade=showPupilGrade.get()
     target=viewPersonalBestEntry.get()
     currentViewPB.set(target)
-    notes=showPupilNotes.get(1.0,END)
-
+    placeHolder=showPupilNotes.get(1.0,END)
+    words=placeHolder.split()
+    notes=""
+    for item in words:
+        item=item.rstrip()
+        notes=notes+item
+        notes+=" "
 
 
     try:
@@ -1835,8 +1840,14 @@ def getPupilInfo(canvas):
                     data.capitalize()
                 except:
                     try:
-                        data=widget.get("1.0",END)
-                        data=data.rstrip()
+                        placeHolder=widget.get("1.0",END)
+                        words=placeHolder.split()
+                        data=""
+                        for item in words:
+                            item=item.rstrip()
+                            data=data+item
+                            data+=" "
+                        print(data)
                     except:
                         print("Error")
                     else:
