@@ -3334,32 +3334,51 @@ def submitNewGroup():
     words=groupName.split()
 
     pupilTuple=groupListbox.get(0,END)
+
     pupilsToAdd=[]
     for item in pupilTuple:
         pupilsToAdd.append(item)
 
+    lengOfPupils=len(pupilsToAdd)
+
+    #Capitalizes group name
+    words=groupName.split()
+    groupName=""
+    for item in words:
+        item=item.capitalize()
+        groupName+=item
+        groupName+=" "
+        
+    groupName=groupName.rstrip()
     if len(words) > 0:
         if groupName not in groupNameArray:
-            groupPupils=pupilsToAdd
-            groupPupils=sorted(groupPupils)
+            if lengOfPupils  < 1:
+                try:
+                    option=messagebox.askyesno("Empty","Would you like to create an empty group?")
+                except:
+                    askMessage("Tkinter","Feature Not Supported")
+                else:
+                    if option == True:
+                        groupPupils=pupilsToAdd
+                        groupPupils=sorted(groupPupils)
 
-            #Save to file
-            saveGroupToFile(groupPupils)
-            groupNameArray.append(groupName)
+                        #Save to file
+                        saveGroupToFile(groupPupils)
+                        groupNameArray.append(groupName)
 
 
-            #Adds to the main group array
-            mainAddArray=[]
-            temp=[groupName]
-            mainAddArray.append(temp)
-            mainAddArray.append(groupPupils)
+                        #Adds to the main group array
+                        mainAddArray=[]
+                        temp=[groupName]
+                        mainAddArray.append(temp)
+                        mainAddArray.append(groupPupils)
 
-            groupOrderArray.append(mainAddArray)
+                        groupOrderArray.append(mainAddArray)
 
-            afterAddedGroups.append(mainAddArray)
+                        afterAddedGroups.append(mainAddArray)
 
-            updateGroupMenu()
-            askMessage("Complete","Saved New group")
+                        updateGroupMenu()
+                        askMessage("Complete","Saved New group")
 
         else:
             askMessage("Duplicate","This group allready exists")
