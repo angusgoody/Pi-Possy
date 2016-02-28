@@ -3348,7 +3348,7 @@ def submitNewGroup():
         item=item.capitalize()
         groupName+=item
         groupName+=" "
-        
+
     groupName=groupName.rstrip()
     if len(words) > 0:
         if groupName not in groupNameArray:
@@ -4550,8 +4550,11 @@ showOpenCanvas()
 addJustify(viewPupilCanvas,True)
 checkGrades()
 groupOrderArray=getGroupsFromFile()
-for item in groupOrderArray:
-    beforeAddedGroups.append(item)
+if groupOrderArray != None:
+    for item in groupOrderArray:
+        beforeAddedGroups.append(item)
+else:
+    groupOrderArray=[]    
 initNewGroups()
 bindArray([openLabel,viewTotalPupilLabel,showPassLabel,showFailLabel,showNumberLabel,showFailNumber,showPassNumberLabel])
 bindLabelArray()
