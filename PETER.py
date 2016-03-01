@@ -3364,6 +3364,7 @@ def submitNewGroup():
         groupName+=" "
 
     groupName=groupName.rstrip()
+    valid=False
     if len(words) > 0:
         if groupName not in groupNameArray:
             if lengOfPupils  < 1:
@@ -3373,26 +3374,32 @@ def submitNewGroup():
                     askMessage("Tkinter","Feature Not Supported")
                 else:
                     if option == True:
-                        groupPupils=pupilsToAdd
-                        groupPupils=sorted(groupPupils)
+                        valid=True
+            else:
+                valid=True       
+                
+  
+            if valid == True:              
+                groupPupils=pupilsToAdd
+                groupPupils=sorted(groupPupils)
 
-                        #Save to file
-                        saveGroupToFile(groupPupils)
-                        groupNameArray.append(groupName)
+                #Save to file
+                saveGroupToFile(groupPupils)
+                groupNameArray.append(groupName)
 
 
-                        #Adds to the main group array
-                        mainAddArray=[]
-                        temp=[groupName]
-                        mainAddArray.append(temp)
-                        mainAddArray.append(groupPupils)
+                #Adds to the main group array
+                mainAddArray=[]
+                temp=[groupName]
+                mainAddArray.append(temp)
+                mainAddArray.append(groupPupils)
 
-                        groupOrderArray.append(mainAddArray)
+                groupOrderArray.append(mainAddArray)
 
-                        afterAddedGroups.append(mainAddArray)
+                afterAddedGroups.append(mainAddArray)
 
-                        updateGroupMenu()
-                        askMessage("Complete","Saved New group")
+                updateGroupMenu()
+                askMessage("Complete","Saved New group")
 
         else:
             askMessage("Duplicate","This group allready exists")
@@ -4225,7 +4232,8 @@ def postMenu(event,listbox,menu):
         if len(current) > 0:
             menu.post(event.x_root, event.y_root)
 
-
+def clearGroupEntry():
+    groupListbox.delete(0,END)
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -4401,6 +4409,8 @@ overwriteGroupButton.grid(row=2,column=1,pady=5)
 deleteGroupButton=Button(showGroupCanvas,text="Delete Group",command=deleteGroup,relief=FLAT,width=12)
 deleteGroupButton.grid(row=3,column=1,pady=5)
 
+clearGroupEntryButton=Button(newGroupCanvas,text="Clear",command=clearGroupEntry)
+clearGroupEntryButton.grid(row=3,column=1)
 #=============Checkbuttons==========
 
 #OptionMenu for bulk selection type
