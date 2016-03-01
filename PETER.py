@@ -4408,7 +4408,10 @@ selectTypeOptions=["Normal","Drag","Multi"]
 selectTypeVar=StringVar()
 selectTypeVar.set("Select")
 selectTypeOptionMenu=OptionMenu(mainListboxFrame,selectTypeVar,*selectTypeOptions,command=changeSelectType)
-selectTypeOptionMenu.config(width=12)
+if version == "Darwin":
+    selectTypeOptionMenu.config(width=12)
+else:
+    selectTypeOptionMenu.config(width=7)
 selectTypeOptionMenu.pack(pady=12)
 
 

@@ -4,6 +4,7 @@ Adam Adamson
 Adam White
 Alex Brown
 Alex Green
+Charlie Johnson
 Conor Jones
 Daniel Evans
 Duey Harris
@@ -12,7 +13,6 @@ Henry Green
 Henry Smith
 Henry Walker
 Jordan Smith
-Charlie Johnson
 ==============================
 GroupName123: Catchup
 Adam Adamson
@@ -20,3 +20,9 @@ Alex Brown
 Alex Green
 Duey Harris
 Henry Walker
+Alex Mitchell
+Angus Jones
+Ben Roberts
+Charlie Johnson
+Conor Jones
+Daniel Evans
