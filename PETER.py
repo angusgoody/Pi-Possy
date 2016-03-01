@@ -4400,7 +4400,7 @@ deleteBulkButton=Button(secondBulkFrame,text="Delete Selected",width=15,relief=F
 deleteBulkButton.grid(row=3,column=1,pady=3)
 
 #Buttons for Groups
-submitGroupButton=Button(newGroupCanvas,text="Create",command=submitNewGroup,relief=FLAT)
+submitGroupButton=Button(newGroupCanvas,text="Create",command=submitNewGroup,relief=FLAT,width=12)
 submitGroupButton.grid(row=1,column=1,pady=5)
 
 overwriteGroupButton=Button(showGroupCanvas,text="Save",command=overwriteGroup,relief=FLAT,width=12)
@@ -4409,7 +4409,7 @@ overwriteGroupButton.grid(row=2,column=1,pady=5)
 deleteGroupButton=Button(showGroupCanvas,text="Delete Group",command=deleteGroup,relief=FLAT,width=12)
 deleteGroupButton.grid(row=3,column=1,pady=5)
 
-clearGroupEntryButton=Button(newGroupCanvas,text="Clear",command=clearGroupEntry)
+clearGroupEntryButton=Button(newGroupCanvas,text="Clear",command=clearGroupEntry,relief=FLAT,width=12)
 clearGroupEntryButton.grid(row=3,column=1,pady=5)
 #=============Checkbuttons==========
 
