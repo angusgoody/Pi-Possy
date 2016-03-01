@@ -4410,7 +4410,7 @@ deleteGroupButton=Button(showGroupCanvas,text="Delete Group",command=deleteGroup
 deleteGroupButton.grid(row=3,column=1,pady=5)
 
 clearGroupEntryButton=Button(newGroupCanvas,text="Clear",command=clearGroupEntry)
-clearGroupEntryButton.grid(row=3,column=1)
+clearGroupEntryButton.grid(row=3,column=1,pady=5)
 #=============Checkbuttons==========
 
 #OptionMenu for bulk selection type
