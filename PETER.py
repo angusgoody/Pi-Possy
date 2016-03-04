@@ -4201,7 +4201,7 @@ def addArrayToBulkEdit(listbox):
 
 def updateGroupMenu():
     global groupOrderArray
-    groupMenu.delete(2,END)
+    groupMenu.delete(3,END)
     copy=sorted(groupOrderArray)
     for item in copy:
         try:
