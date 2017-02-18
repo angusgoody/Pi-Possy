@@ -1,35 +1,6 @@
 ==============================
-GroupName123: After School Club
-Adam Adamson
-Adam White
-Alex Brown
-Alex Green
-Charlie Johnson
-Conor Jones
+GroupName123: Mr Grattan Rugby
 Daniel Evans
 Duey Harris
-Henry Evans
 Henry Green
 Henry Smith
-Henry Walker
-Jordan Smith
-==============================
-GroupName123: Catchup
-Adam Adamson
-Alex Brown
-Alex Green
-Duey Harris
-Henry Walker
-Alex Mitchell
-Angus Jones
-Ben Roberts
-Charlie Johnson
-Conor Jones
-Daniel Evans
-==============================
-GroupName123: Golf 
-Alex Green
-Alex Mitchell
-Angus Jones
-Ben Roberts
-Charlie Johnson

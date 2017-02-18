@@ -245,6 +245,11 @@ for colour in duplicateTestingArray:
     except:
         print("Error in colour array")
 
+#Show Current Colour
+
+Label(changeBackgroundCanvas,text="Current Colour").pack()
+showBackgroundCurrentColourEntry=Entry(changeBackgroundCanvas)
+showBackgroundCurrentColourEntry.pack()
 #Canvas for viewing pupils-----------------------------------------------
 viewPupilCanvas=Canvas(window,width=200,height=200,relief=None,highlightthickness=0)
 
@@ -535,6 +540,7 @@ groupOrderArray=[]
 
 beforeAddedGroups=[]
 afterAddedGroups=[]
+logArray=[]
 # Start of Functions===========================================================
 
 
@@ -554,7 +560,7 @@ def loadCanvas(canvas,message):
 
     currentCanvasMessage.set(message)
     currentViewCanvasArray=[]
-    if canvas != currentViewCanvas:
+    if canvas != currentViewCanvas.get():
         for item in canvasArray:
             if item != canvas:
                 item.pack_forget()
@@ -564,9 +570,11 @@ def loadCanvas(canvas,message):
         statusVar.set(message)
         if canvas == bulkEditCanvas:
             window.geometry("700x350")
-            window.minsize(700,350)
+            window.minsize(900,350)
         else:
             window.minsize(450,350)
+
+        
 
 
 #====================================New added funtions======================
@@ -1067,6 +1075,10 @@ def initBackground():
 
 
 def updateBackgroundColours(colour):
+    
+    #Change entry colour
+    showBackgroundCurrentColourEntry.config(bg=colour)
+    insertEntry(showBackgroundCurrentColourEntry,colour)
     global mainBackgroundColour
     widgetArray=["Entry","Button","Text","Listbox","OptionMenu","Menu"]
     window.config(bg=colour)
@@ -1136,7 +1148,7 @@ def toggleText(variable,widgetChoice):
                 childArray=child.winfo_children()
 
 
-    labArray=[fieldLabel,changeLabel,check,showFailNumber,showFailLabel,showPassNumberLabel,showPassLabel,viewTotalPupilLabel,showNumberLabel]
+    labArray=[fieldLabel,changeLabel,showFailNumber,showFailLabel,showPassNumberLabel,showPassLabel,viewTotalPupilLabel,showNumberLabel]
     for item in labArray:
         try:
             item.config(fg=variable)
@@ -1149,6 +1161,7 @@ def toggleText(variable,widgetChoice):
 def toggleLabelTextColour():
     global mainLabelTextColour
     mainLabelTextColour=toggleText(mainLabelTextColour,["Label"])
+
 
 
 def getPupilsFromFile(file):
@@ -3376,10 +3389,10 @@ def submitNewGroup():
                     if option == True:
                         valid=True
             else:
-                valid=True       
-                
-  
-            if valid == True:              
+                valid=True
+
+
+            if valid == True:
                 groupPupils=pupilsToAdd
                 groupPupils=sorted(groupPupils)
 
@@ -3606,12 +3619,27 @@ def showHomeMiniMenu(event):
     except:
         currentCanvas="?"
     else:
+
+        #Checking here
+
+        miniCanvasArray=["Home","Change info","Change background","change theme","New filter","Bulk Edit","New Pupil","Help"]
+        matchCanvasArray=[openCanvas,changeUserNameCanvas,changeBackgroundCanvas,changeThemeCanvas,filterPupilCanvas,bulkEditCanvas,createPupilCanvas,""]
+
+        try:
+            correct=matchCanvasArray.index(currentCanvas)
+        except:
+            print("Error")
+        else:
+            pass
+
+
         if currentCanvas == openCanvas:
             homeScreenMiniMenu.entryconfig(0,state=DISABLED)
         else:
             homeScreenMiniMenu.entryconfig(0,state=NORMAL)
 
     homeScreenMiniMenu.post(event.x_root, event.y_root)
+
 
 def preOpenCanvas(event):
     showOpenCanvas()
@@ -4233,7 +4261,50 @@ def postMenu(event,listbox,menu):
             menu.post(event.x_root, event.y_root)
 
 def clearGroupEntry():
-    groupListbox.delete(0,END)
+    groupListbox.delete(0,END)#
+  
+
+def selectAllAC():
+    allPupils=bulkAllPupilListbox.get(0,END)
+    passPupils=[]    
+    for item in allPupils:
+        words=item.split()
+        pupil=getPupilFromArray(words)
+        try:
+            grade=pupil[0][2]
+        except:
+            print("ERROR")
+        else:
+            if grade in passGrades:
+                passPupils.append(item)
+          
+    for pupil in allPupils:
+        if pupil in passPupils:
+            index=allPupils.index(pupil)
+            bulkAllPupilListbox.selection_set(index)
+                    
+        #bulkAllPupilListbox.selection_set(pos)
+        #insertListboxNonDelete(listbox,array)
+        
+def selectAllDF():
+    allPupils=bulkAllPupilListbox.get(0,END)
+    passPupils=[]    
+    for item in allPupils:
+        words=item.split()
+        pupil=getPupilFromArray(words)
+        try:
+            grade=pupil[0][2]
+        except:
+            print("ERROR")
+        else:
+            if grade not in passGrades:
+                passPupils.append(item)
+          
+    for pupil in allPupils:
+        if pupil in passPupils:
+            index=allPupils.index(pupil)
+            bulkAllPupilListbox.selection_set(index)
+    
 #====================================================END OF BINDING FUNCTIONS============
 
 
@@ -4447,8 +4518,11 @@ viewPupilMiniMenu.add_command(label="Delete Pupil",command=deletePupilFromMenu)
 bulkViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
 bulkViewMiniMenu.add_command(label="View Pupil",command=lambda :viewBulkPupil(bulkAllPupilListbox))
 bulkViewMiniMenu.add_separator()
-bulkViewMiniMenu.add_command(label="Add Pupil",command=preAddBulkPupil)
+bulkViewMiniMenu.add_command(label="Add Pupil(s)",command=preAddBulkPupil)
 bulkViewMiniMenu.add_command(label="Add All",command=addAllBulkPupils)
+bulkViewMiniMenu.add_separator()
+bulkViewMiniMenu.add_command(label="Select All A-C",command=selectAllAC)
+bulkViewMiniMenu.add_command(label="Select All D-F",command=selectAllDF)
 
 #Bulk edit listboxes remove mini menu
 filterViewMiniMenu=Menu(bulkEditCanvas,tearoff=0)
@@ -4490,6 +4564,7 @@ personalMenu.add_command(label="Change Info",command=changeUserName)
 personalMenu.add_command(label="Change Theme",command=changeTheme)
 personalMenu.add_command(label="Change Background",command=changeBackground)
 
+
 homeScreenMiniMenu.add_command(label="Home",command=showOpenCanvas)
 homeScreenMiniMenu.add_separator()
 homeScreenMiniMenu.add_cascade(label="Personalise",menu=personalMenu)
@@ -4497,6 +4572,7 @@ homeScreenMiniMenu.add_command(label="New Filter",command=newFilter)
 homeScreenMiniMenu.add_command(label="Bulk Edit",command=loadBulkEdit)
 homeScreenMiniMenu.add_command(label="New Pupil",command=showCreatePupil)
 homeScreenMiniMenu.add_command(label="Help",command=showHelp)
+
 
 showHelp
 #View Group mini menu
