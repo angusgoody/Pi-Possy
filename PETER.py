@@ -4265,6 +4265,7 @@ def clearGroupEntry():
   
 
 def selectAllAC():
+    bulkAllPupilListbox.selection_clear(0, END)
     allPupils=bulkAllPupilListbox.get(0,END)
     passPupils=[]    
     for item in allPupils:
@@ -4287,6 +4288,7 @@ def selectAllAC():
         #insertListboxNonDelete(listbox,array)
         
 def selectAllDF():
+    bulkAllPupilListbox.selection_clear(0, END)
     allPupils=bulkAllPupilListbox.get(0,END)
     passPupils=[]    
     for item in allPupils:
