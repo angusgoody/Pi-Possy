@@ -81,6 +81,8 @@ def getColourForBackground(hexValue):
 
 #=============================CLASSES=================================
 
+#==========UI CLASSES============
+
 class mainFrame(Frame):
 	"""
 	This is a modified frame class which 
@@ -157,6 +159,30 @@ class screenClass(mainFrame):
 		children=self.winfo_children()
 		return children
 
+class displayView(mainFrame):
+	"""
+	This is the class for displaying multiple boxes
+	of data on the screen
+	"""
+	class displaySection(mainFrame):
+		"""
+		This is the subclass for each section of the displayView
+		"""
+		def __init__(self,parent,colour):
+			mainFrame.__init__(self,parent)
+			self.displayColour="#ffffff"
+
+		def addColour(self,colour):
+			self.displayColour=colour
+			self.colour(self.displayColour)
+
+
+	def __init(self,parent):
+		mainFrame.__init__(self,parent)
+
+	def addSection(self,colour,frameToDisplay):
+		sectionInstance=displayView.displaySection(self,colour)
+		#sectionInstance.a
 
 
 #=============================MAIN UI SETUP=================================
@@ -172,7 +198,7 @@ statusFrame.colour("#B2FF00")
 
 #Home screen
 homeScreen=screenClass("Home")
-homeScreen.colour("#f8c13b")
+
 
 
 
@@ -180,5 +206,8 @@ homeScreen.colour("#f8c13b")
 
 #=============================BINDINGS=============================
 statusFrame.addBinding(lambda event: homeScreen.show())
+
+#=============================PROGRAM SETUP=============================
+
 #=============================MAIN RETURN=============================
 window.mainloop()
