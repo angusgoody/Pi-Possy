@@ -126,7 +126,7 @@ class mainFrame(Frame):
 			if child.winfo_class() == mainFrame:
 				child.addBinding(child,bindFunction)
 			else:
-				child.bind("<<Double-Button-1>",bindFunction)
+				child.bind("<Double-Button-1>",bindFunction)
 
 class screenClass(mainFrame):
 	"""
@@ -174,13 +174,11 @@ statusFrame.colour("#B2FF00")
 homeScreen=screenClass("Home")
 homeScreen.colour("#f8c13b")
 
-tempScreen=screenClass("TEMP")
-tempScreen.colour("#ff4bb8")
+
 
 #=============================FUNCTIONS=============================
 
 #=============================BINDINGS=============================
-statusFrame.addBinding(homeScreen.show())
-tempScreen.show()
+statusFrame.addBinding(lambda event: homeScreen.show())
 #=============================MAIN RETURN=============================
 window.mainloop()
