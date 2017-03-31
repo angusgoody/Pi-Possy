@@ -128,13 +128,41 @@ class mainFrame(Frame):
 			else:
 				child.bind("<<Double-Button-1>",bindFunction)
 
+class screenClass(mainFrame):
+	"""
+	Class for screen that is based off the Frame class
+	"""
+	screenArray=[]
+	lastScreen=None
+	def __init__(self,name):
+		#Initialise the instance as a frame as well
+		mainFrame.__init__(self,window)
+		self.name=name
+		screenClass.screenArray.append(self)
+
+
+	def show(self):
+		"""
+		This makes sure the current screen isn't reloaded
+		"""
+		if self != screenClass.lastScreen:
+			for item in screenClass.screenArray:
+				item.pack_forget()
+			self.pack(expand=True, fill=BOTH)
+			statusVar.set(self.name)
+			screenClass.lastScreen=self
+
+
+	def getChildren(self):
+		children=self.winfo_children()
+		return children
 
 
 
 #=============================MAIN UI SETUP=================================
 #Status bar
 statusVar=StringVar()
-statusVar.set("Home")
+statusVar.set("")
 statusFrame=mainFrame(window)
 statusFrame.pack(side=BOTTOM,fill=X)
 status=Label(statusFrame,textvariable=statusVar,font="Arial 15 bold")
@@ -142,9 +170,17 @@ status.pack(expand=True)
 statusFrame.colour("#B2FF00")
 
 
+#Home screen
+homeScreen=screenClass("Home")
+homeScreen.colour("#f8c13b")
+
+tempScreen=screenClass("TEMP")
+tempScreen.colour("#ff4bb8")
+
 #=============================FUNCTIONS=============================
 
 #=============================BINDINGS=============================
-
+statusFrame.addBinding(homeScreen.show())
+tempScreen.show()
 #=============================MAIN RETURN=============================
 window.mainloop()
