@@ -10,7 +10,7 @@ window=Tk()
 window.title("PETER 2.0")
 window.geometry("500x400")
 
-#=============================COLOUR SETUPS=================================
+#=============================PRE FUNCTION SETUPS=================================
 
 #==============HEX FUNCTIONS================
 
@@ -77,6 +77,8 @@ def getColourForBackground(hexValue):
 			chosenColour = "#000000"
 	return chosenColour
 
+#==============UTILITY FUNCTIONS================
+
 #=============================CLASSES=================================
 
 class mainFrame(Frame):
@@ -102,9 +104,8 @@ class mainFrame(Frame):
 		#Recursivley search through all children and change colour
 		children=self.winfo_children()
 		for child in children:
-			print(child.winfo_class())
 			if child.winfo_class() == mainFrame:
-				child.colour(chosenColour)
+				child.colour(child,chosenColour)
 			else:
 				if child.winfo_class() in widgetArray:
 					child.config(highlightbackground=chosenColour)
@@ -114,6 +115,19 @@ class mainFrame(Frame):
 				#Update labels so they show up on certain colours
 				if child.winfo_class() == "Label":
 					child.config(fg=fgColour)
+
+	#Add a binding function to the frame and children
+	def addBinding(self,bindFunction):
+		self.bind("<Double-Button-1>",bindFunction)
+
+		#Recursivley search through all children and add binding
+		children = self.winfo_children()
+		for child in children:
+			if child.winfo_class() == mainFrame:
+				child.addBinding(child,bindFunction)
+			else:
+				child.bind("<<Double-Button-1>",bindFunction)
+
 
 
 
@@ -129,6 +143,8 @@ statusFrame.colour("#B2FF00")
 
 
 #=============================FUNCTIONS=============================
+
+#=============================BINDINGS=============================
 
 #=============================MAIN RETURN=============================
 window.mainloop()
