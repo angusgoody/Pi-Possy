@@ -907,7 +907,6 @@ def getFromFile(fileToSearch,target):
                 print("Returning",line)
                 print()
                 return line
-                break
     else:
         return ""
 
@@ -3018,9 +3017,9 @@ def unlockBulkOptions(event):
 
 def addAllBind(canvas,function):
     for item in canvas.winfo_children():
-        childArray=widget.winfo_children()
-        while len(arr) > 0:
-            for item in arr:
+        childArray=item.winfo_children()
+        while len(childArray) > 0:
+            for item in childArray:
                 print()
 
 def getPupilFromNewArray(wordArray):
