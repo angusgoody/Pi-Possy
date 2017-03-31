@@ -1,4 +1,4 @@
-__author__ = 'Angus'
+8__author__ = 'Angus'
 
 #Angus Goody
 #8/10/15
@@ -31,7 +31,7 @@ import random
 import webbrowser
 
 
-#Gets infomation about OS
+#Gets information about OS
 #Because certain widgets behave diffrently on Linux,Mac and PC
 version=platform.system()
 print("System platform is",version)
