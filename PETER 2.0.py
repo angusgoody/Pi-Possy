@@ -1,5 +1,8 @@
 # coding=utf-8
 
+#Angus Goody
+#PETER 2.0
+#1/04/17
 
 #=============================IMPORTS=============================
 from tkinter import *
@@ -25,9 +28,6 @@ def convertHex(value,intoDecOrHex):
 		hexValue = hexValue + str((format(value, '02x')).upper())
 		return hexValue
 
-
-
-
 def getHexSections(hexValue):
 	"""
 	This will split a 6 digit hex number into pairs and store them
@@ -48,13 +48,12 @@ def getDecimalHexSections(hexValue):
 		decimalArray.append(decimalValue)
 	return decimalArray
 
-
 def getColourForBackground(hexValue):
 	"""
-		This function will return white or black as a text colour
-		depending on what the background colour passed to it is. For
-		example if a dark background is passed then white will be returned because
-		white shows up on dark best.
+	This function will return white or black as a text colour
+	depending on what the background colour passed to it is. For
+	example if a dark background is passed then white will be returned because
+	white shows up on dark best.
 	"""
 	chosenColour="Black"
 	whiteCounter = 0
@@ -106,9 +105,10 @@ class mainFrame(Frame):
 		#Recursivley search through all children and change colour
 		children=self.winfo_children()
 		for child in children:
-			if child.winfo_class() == mainFrame:
-				child.colour(child,chosenColour)
-			else:
+			try:
+				if mainFrame in child.__bases__:
+					child.colour(child,chosenColour)
+			except:
 				if child.winfo_class() in widgetArray:
 					child.config(highlightbackground=chosenColour)
 				else:
@@ -118,17 +118,10 @@ class mainFrame(Frame):
 				if child.winfo_class() == "Label":
 					child.config(fg=fgColour)
 
-	#Add a binding function to the frame and children
+	#Add binding method
 	def addBinding(self,bindFunction):
-		self.bind("<Double-Button-1>",bindFunction)
+		pass
 
-		#Recursivley search through all children and add binding
-		children = self.winfo_children()
-		for child in children:
-			if child.winfo_class() == mainFrame:
-				child.addBinding(child,bindFunction)
-			else:
-				child.bind("<Double-Button-1>",bindFunction)
 
 class screenClass(mainFrame):
 	"""
@@ -161,8 +154,9 @@ class screenClass(mainFrame):
 
 class displayView(mainFrame):
 	"""
-	This is the class for displaying multiple boxes
-	of data on the screen
+	This is the class for displaying multiple frames
+	of data on the screen. The frames are equally spaced
+	apart and automatically adjust colour etc
 	"""
 	def __init__(self,parent):
 		mainFrame.__init__(self,parent)
@@ -200,18 +194,32 @@ homeScreen=screenClass("Home")
 homeDisplayScreen=displayView(homeScreen)
 homeDisplayScreen.pack(expand=True,fill=BOTH)
 
+#Section setup
 homeDisplayScreen.addLabelSection("Do something","#3060e2")
-homeDisplayScreen.addLabelSection("Do Dunno","#ff4bb8")
 
+homeEntrySection=mainFrame(homeDisplayScreen)
+homeEntrySection.pack(fill=BOTH,expand=True)
+Label(homeEntrySection,text="Enter name").pack(expand=True)
+
+homeEntry=Entry(homeEntrySection)
+homeEntry.pack(expand=True)
+
+homeDisplayScreen.addSection("#f8c13b",homeEntrySection)
 homeDisplayScreen.showSections()
 
 
 #=============================FUNCTIONS=============================
 
+def test():
+	messagebox.askyesno("DUnno","Red or yellow")
 #=============================BINDINGS=============================
 statusFrame.addBinding(lambda event: homeScreen.show())
+homeDisplayScreen.addBinding(lambda event: test())
+
 
 #=============================PROGRAM SETUP=============================
 homeScreen.show()
+
+
 #=============================MAIN RETURN=============================
 window.mainloop()
