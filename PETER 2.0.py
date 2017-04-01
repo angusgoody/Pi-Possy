@@ -4,7 +4,7 @@
 #=============================IMPORTS=============================
 from tkinter import *
 from tkinter import messagebox
-
+from tkinter import font
 #=============================WINDOW SETUP=============================
 window=Tk()
 window.title("PETER 2.0")
@@ -164,29 +164,27 @@ class displayView(mainFrame):
 	This is the class for displaying multiple boxes
 	of data on the screen
 	"""
-	class displaySection(mainFrame):
-		"""
-		This is the subclass for each section of the displayView
-		"""
-		def __init__(self,parent,colour):
-			mainFrame.__init__(self,parent)
-			self.displayColour="#ffffff"
-
-		def addColour(self,colour):
-			self.displayColour=colour
-			self.colour(self.displayColour)
-
-
-	def __init(self,parent):
+	def __init__(self,parent):
 		mainFrame.__init__(self,parent)
+		self.frameArray=[]
 
 	def addSection(self,colour,frameToDisplay):
-		sectionInstance=displayView.displaySection(self,colour)
-		#sectionInstance.a
+		frameToDisplay.colour(colour)
+		self.frameArray.append(frameToDisplay)
+
+	def addLabelSection(self,text,colour):
+		newFrame=mainFrame(self)
+		Label(newFrame,text=text,font=font.Font(size=16)).pack(expand=True)
+		self.addSection(colour,newFrame)
+
+	def showSections(self):
+		for item in self.frameArray:
+			item.pack(expand=True, fill=BOTH)
+
 
 
 #=============================MAIN UI SETUP=================================
-#Status bar
+#-------STATUS BAR-------
 statusVar=StringVar()
 statusVar.set("")
 statusFrame=mainFrame(window)
@@ -196,10 +194,16 @@ status.pack(expand=True)
 statusFrame.colour("#B2FF00")
 
 
-#Home screen
+#-------Home screen-------
 homeScreen=screenClass("Home")
 
+homeDisplayScreen=displayView(homeScreen)
+homeDisplayScreen.pack(expand=True,fill=BOTH)
 
+homeDisplayScreen.addLabelSection("Do something","#3060e2")
+homeDisplayScreen.addLabelSection("Do Dunno","#ff4bb8")
+
+homeDisplayScreen.showSections()
 
 
 #=============================FUNCTIONS=============================
@@ -208,6 +212,6 @@ homeScreen=screenClass("Home")
 statusFrame.addBinding(lambda event: homeScreen.show())
 
 #=============================PROGRAM SETUP=============================
-
+homeScreen.show()
 #=============================MAIN RETURN=============================
 window.mainloop()
