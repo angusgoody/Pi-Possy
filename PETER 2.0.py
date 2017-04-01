@@ -209,8 +209,8 @@ homeDisplayScreen=displayView(homeScreen)
 homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
-homeDisplayScreen.addLabelSection("Do something","#3060e2")
-homeDisplayScreen.addLabelSection("Do Nothing","#F951A3")
+homeDisplayScreen.addLabelSection("Do something","#2A3A19")
+homeDisplayScreen.addLabelSection("Do Nothing","#29FFE3")
 homeDisplayScreen.showSections()
 
 
@@ -238,10 +238,14 @@ def insertEntry(entry,message):
 
 #=============================MENU/CASCADES=============================
 
-#===Initial Cascades===
+#=====Initial Cascades=====
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
 
+#======COMMANDS======
+
+#File Menu
+fileMenu.add_command(label="Home",command=lambda: homeScreen.show())
 #=============================BINDINGS=============================
 statusFrame.addBinding(lambda event: homeScreen.show())
 
