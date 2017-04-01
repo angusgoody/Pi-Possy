@@ -1,4 +1,4 @@
-8__author__ = 'Angus'
+#__author__ = 'Angus'
 
 #Angus Goody
 #8/10/15

@@ -120,8 +120,13 @@ class mainFrame(Frame):
 
 	#Add binding method
 	def addBinding(self,bindFunction):
-		pass
-
+		self.bind("<Double-Button-1>",bindFunction)
+		children=self.winfo_children()
+		for child in children:
+			if child.winfo_class() == "Frame":
+				child.addBinding(bindFunction)
+			else:
+				child.bind("<Double-Button-1>",bindFunction)
 
 class screenClass(mainFrame):
 	"""
@@ -178,6 +183,7 @@ class displayView(mainFrame):
 
 
 #=============================MAIN UI SETUP=================================
+
 #-------STATUS BAR-------
 statusVar=StringVar()
 statusVar.set("")
@@ -196,25 +202,15 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
 homeDisplayScreen.addLabelSection("Do something","#3060e2")
-
-homeEntrySection=mainFrame(homeDisplayScreen)
-homeEntrySection.pack(fill=BOTH,expand=True)
-Label(homeEntrySection,text="Enter name").pack(expand=True)
-
-homeEntry=Entry(homeEntrySection)
-homeEntry.pack(expand=True)
-
-homeDisplayScreen.addSection("#f8c13b",homeEntrySection)
+homeDisplayScreen.addLabelSection("Do Nothing","#F951A3")
 homeDisplayScreen.showSections()
 
 
 #=============================FUNCTIONS=============================
 
-def test():
-	messagebox.askyesno("DUnno","Red or yellow")
+
 #=============================BINDINGS=============================
 statusFrame.addBinding(lambda event: homeScreen.show())
-homeDisplayScreen.addBinding(lambda event: test())
 
 
 #=============================PROGRAM SETUP=============================
