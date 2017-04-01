@@ -12,6 +12,16 @@ from tkinter import font
 window=Tk()
 window.title("PETER 2.0")
 window.geometry("500x400")
+#=============================MENUS SETUP=============================
+
+#Main Menu
+mainMenu=Menu(window)
+window.config(menu=mainMenu)
+
+#Sub Menus
+fileMenu=Menu(mainMenu)
+editMenu=Menu(mainMenu)
+
 
 #=============================PRE FUNCTION SETUPS=================================
 
@@ -75,8 +85,6 @@ def getColourForBackground(hexValue):
 			#Black is returned
 			chosenColour = "#000000"
 	return chosenColour
-
-#==============UTILITY FUNCTIONS================
 
 #=============================CLASSES=================================
 
@@ -206,8 +214,33 @@ homeDisplayScreen.addLabelSection("Do Nothing","#F951A3")
 homeDisplayScreen.showSections()
 
 
-#=============================FUNCTIONS=============================
+#=============================FUNCTIONS============================
 
+#=========UTILITY FUNCTIONS===========
+def askMessage(pre,message):
+	"""
+	This function will launch the tkinter
+	dialog and ask a question to user
+	"""
+	try:
+		messagebox.showinfo(pre,message)
+	except:
+		print(message)
+
+def insertEntry(entry,message):
+	"""
+	This function will add text into entry
+	"""
+	entry.delete(0,END)
+	entry.insert(END,message)
+
+#=========PROGRAM FUNCTIONS===========
+
+#=============================MENU/CASCADES=============================
+
+#===Initial Cascades===
+mainMenu.add_cascade(label="File",menu=fileMenu)
+mainMenu.add_cascade(label="Edit",menu=editMenu)
 
 #=============================BINDINGS=============================
 statusFrame.addBinding(lambda event: homeScreen.show())
@@ -217,5 +250,5 @@ statusFrame.addBinding(lambda event: homeScreen.show())
 homeScreen.show()
 
 
-#=============================MAIN RETURN=============================
+#================================END==================================
 window.mainloop()
