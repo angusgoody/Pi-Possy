@@ -363,7 +363,7 @@ homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
 homeDisplayScreen.showSections()
 
 #endregion
-#====================View All SCREEN====================
+#====================View All SCREEN================
 
 #============================================(MAIN FUNCTIONS)================================================
 

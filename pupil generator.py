@@ -7,7 +7,7 @@ from tkinter import *
 import random
 from tkinter import font
 from tkinter import filedialog
-
+from tkinter import ttk
 window=Tk()
 window.title("Pupil Generator")
 window.geometry("500x400")
@@ -248,16 +248,55 @@ class displayView(mainFrame):
 		for item in self.frameArray:
 			item.pack(expand=True, fill=BOTH)
 
+class masterControl(mainFrame):
+	"""
+	This frame is used to control different
+	views that can be changed.
+	"""
+	viewArray=[]
+	def __init__(self,parent):
+		mainFrame.__init__(self,parent)
 
+	def addView(self,frameToDisplay):
+		masterControl.viewArray.append(frameToDisplay)
+	def showView(self,screenToDisplay):
+		if screenToDisplay in masterControl.viewArray:
+			for item in masterControl.viewArray:
+				item.pack_forget()
+			screenToDisplay.pack(expand=True,fill=BOTH)
 #===================================================(UI SETUP)===================================================
 
-
-#Status
+#==================STATUS==============
+#Status bar
 statusVar=StringVar()
-statusVar.set("")
+statusVar.set("Home")
 
+statusBaseFrame=mainFrame(window)
+statusBaseFrame.pack(side=BOTTOM,fill=X)
+statusBaseFrame.colour("#F951A3")
 
-#Home screen
+#Status master control
+statusController=masterControl(statusBaseFrame)
+statusController.pack(expand=True, fill=BOTH)
+
+#Home Status View
+statusMainView=mainFrame(statusController)
+Label(statusMainView,textvariable=statusVar,font="Arial 15 bold").pack(expand=True)
+statusMainView.colour("#A9F955")
+
+#Loading Status View
+statusLoadingView=mainFrame(statusController)
+Label(statusLoadingView,text="Loading..",font="Arial 12").pack()
+statusProgressBar = ttk.Progressbar(statusLoadingView, orient="horizontal", length=200, mode="determinate")
+statusProgressBar.pack(fill=X)
+statusLoadingView.colour("#F9AA5E")
+
+#Adding Views to status control
+statusController.addView(statusMainView)
+statusController.addView(statusLoadingView)
+
+#==================HOME==============
+
 homeScreen=screenClass("Home")
 homeDisplay=displayView(homeScreen)
 homeDisplay.pack(expand=True,fill=BOTH)
@@ -307,7 +346,7 @@ def insertEntry(entry,message):
 #===================================================(SETUP)===================================================
 
 homeScreen.show()
-
+statusController.showView(statusLoadingView)
 #===================================================(END)===================================================
 
 window.mainloop()
