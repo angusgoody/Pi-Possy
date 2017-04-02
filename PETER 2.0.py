@@ -127,14 +127,14 @@ class mainFrame(Frame):
 					child.config(fg=fgColour)
 
 	#Add binding method
-	def addBinding(self,bindFunction):
-		self.bind("<Double-Button-1>",bindFunction)
+	def addBinding(self,bindButton,bindFunction):
+		self.bind(bindButton,bindFunction)
 		children=self.winfo_children()
 		for child in children:
 			if child.winfo_class() == "Frame":
-				child.addBinding(bindFunction)
+				child.addBinding(bindButton,bindFunction)
 			else:
-				child.bind("<Double-Button-1>",bindFunction)
+				child.bind(bindButton,bindFunction)
 
 class screenClass(mainFrame):
 	"""
@@ -171,6 +171,7 @@ class displayView(mainFrame):
 	of data on the screen. The frames are equally spaced
 	apart and automatically adjust colour etc
 	"""
+	labelSections={}
 	def __init__(self,parent):
 		mainFrame.__init__(self,parent)
 		self.frameArray=[]
@@ -179,10 +180,30 @@ class displayView(mainFrame):
 		frameToDisplay.colour(colour)
 		self.frameArray.append(frameToDisplay)
 
-	def addLabelSection(self,text,colour):
+	def addLabelSection(self,text,colour,indentify):
+		"""
+		This method will add a small section to the display
+		view with some text on. It does this by creating a pre
+		made frame and using the addSection method
+		"""
+		#Creates the frame to display
 		newFrame=mainFrame(self)
 		Label(newFrame,text=text,font=font.Font(size=16)).pack(expand=True)
 		self.addSection(colour,newFrame)
+		#Add Frame to dictionary to track it using identifier string
+		displayView.labelSections[indentify]=newFrame
+
+	def addLabelCommand(self,identifier,bindButton,command):
+		"""
+		This method will use the identifier to add a binding
+		command to a label section because they do not have a 
+		deceleration in the main program. 
+		"""
+		if identifier in displayView.labelSections:
+			instance=displayView.labelSections[identifier]
+			instance.addBinding(bindButton,command)
+		else:
+			print("Unknown identifier")
 
 	def showSections(self):
 		for item in self.frameArray:
@@ -209,8 +230,11 @@ homeDisplayScreen=displayView(homeScreen)
 homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
-homeDisplayScreen.addLabelSection("Do something","#2A3A19")
-homeDisplayScreen.addLabelSection("Do Nothing","#29FFE3")
+homeDisplayScreen.addLabelSection("Welcome Angus","#0A5C55","Welcome")
+homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
+homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
+homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
+
 homeDisplayScreen.showSections()
 
 
@@ -235,6 +259,8 @@ def insertEntry(entry,message):
 	entry.insert(END,message)
 
 #=========PROGRAM FUNCTIONS===========
+def test():
+	askMessage("No idea","JIMMY")
 
 #=============================MENU/CASCADES=============================
 
@@ -246,10 +272,10 @@ mainMenu.add_cascade(label="Edit",menu=editMenu)
 
 #File Menu
 fileMenu.add_command(label="Home",command=lambda: homeScreen.show())
+
 #=============================BINDINGS=============================
-statusFrame.addBinding(lambda event: homeScreen.show())
-
-
+statusFrame.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
+homeDisplayScreen.addLabelCommand("Welcome","<Double-Button-1>",lambda event: test())
 #=============================PROGRAM SETUP=============================
 homeScreen.show()
 
