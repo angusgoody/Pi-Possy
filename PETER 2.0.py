@@ -21,9 +21,27 @@ window.config(menu=mainMenu)
 #Sub Menus
 fileMenu=Menu(mainMenu)
 editMenu=Menu(mainMenu)
+helpMenu=Menu(mainMenu)
+
+#=============================GLOBAL VARIABLES=============================
 
 
-#=============================PRE FUNCTION SETUPS=================================
+#=============================GLOBAL ARRAYS=============================
+mainLogArray=[]
+
+
+#=============================PRE FUNCTIONS=================================
+
+#==============LOG FUNCTIONS================
+def report(message,*extra):
+	temp=message
+	if len(extra) > 0:
+		#Concatonate variables
+		for item in extra:
+			temp+=" "
+			temp+=item
+	print("Reported",temp)
+
 
 #==============HEX FUNCTIONS================
 
@@ -203,7 +221,7 @@ class displayView(mainFrame):
 			instance=displayView.labelSections[identifier]
 			instance.addBinding(bindButton,command)
 		else:
-			print("Unknown identifier")
+			report("Unknown identifier:",identifier)
 
 	def showSections(self):
 		for item in self.frameArray:
@@ -230,7 +248,7 @@ homeDisplayScreen=displayView(homeScreen)
 homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
-homeDisplayScreen.addLabelSection("Welcome Angus","#0A5C55","Welcome")
+homeDisplayScreen.addLabelSection("Welcome Angus","#D33E85","Welcome")
 homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
 homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
@@ -267,6 +285,7 @@ def test():
 #=====Initial Cascades=====
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
+mainMenu.add_cascade(label="Help",menu=helpMenu)
 
 #======COMMANDS======
 
