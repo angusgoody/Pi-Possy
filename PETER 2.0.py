@@ -9,7 +9,8 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import font
 from tkinter import ttk
-
+import random
+import datetime
 #============================================WINDOW SETUP==============================================
 window=Tk()
 window.title("PETER 2.0")
@@ -106,6 +107,18 @@ def getColourForBackground(hexValue):
 			chosenColour = "#000000"
 	return chosenColour
 
+def generateHexColour():
+	"""
+	This function will generate a random HEX colour
+
+	"""
+	baseNumber=random.randint(1,16777216)
+	hexValue=convertHex(baseNumber,"Hex")
+	hexLeng=len(hexValue)
+	while hexLeng != 7:
+		hexValue=hexValue+"0"
+		hexLeng=len(hexValue)
+	return hexValue
 #============================================CLASSES==============================================
 
 #==========UI CLASSES============
@@ -168,7 +181,6 @@ class screenClass(mainFrame):
 		self.name=name
 		screenClass.screenArray.append(self)
 
-
 	def show(self):
 		"""
 		This makes sure the current screen isn't reloaded
@@ -179,7 +191,6 @@ class screenClass(mainFrame):
 			self.pack(expand=True, fill=BOTH)
 			statusVar.set(self.name)
 			screenClass.lastScreen=self
-
 
 	def getChildren(self):
 		children=self.winfo_children()
@@ -230,10 +241,10 @@ class displayView(mainFrame):
 			item.pack(expand=True, fill=BOTH)
 
 
-
 #==========================================MAIN UI SETUP============================================
 
 #====================STATUS BAR====================
+#region statusbar
 statusVar=StringVar()
 statusVar.set("")
 statusFrame=mainFrame(window)
@@ -242,23 +253,25 @@ status=Label(statusFrame,textvariable=statusVar,font="Arial 15 bold")
 status.pack(expand=True)
 statusFrame.colour("#B2FF00")
 
-
+#endregion
 #====================HOME SCREEN====================
-
+#region homescreen
 homeScreen=screenClass("Home")
 
 homeDisplayScreen=displayView(homeScreen)
 homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
-homeDisplayScreen.addLabelSection("Welcome Angus","#D33E85","Welcome")
+homeDisplayScreen.addLabelSection("Welcome Angus","#A33066","Welcome")
 homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
 homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
 
 homeDisplayScreen.showSections()
 
+#endregion
 #====================LOG SCREEN====================
+#region logscreen
 logScreen=screenClass("Logs")
 
 columnArray=["Message","Time"]
@@ -274,9 +287,12 @@ logTree.column("Time",width=5,minwidth=20)
 logTree.heading("Message",text="Message")
 logTree.heading("Time",text="Time")
 
+#endregion
+
 #============================================MAIN FUNCTIONS==============================================
 
 #=========UTILITY FUNCTIONS===========
+
 def askMessage(pre,message):
 	"""
 	This function will launch the tkinter
