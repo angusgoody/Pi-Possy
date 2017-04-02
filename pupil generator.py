@@ -1,6 +1,12 @@
 
+#Angus Goody
+#PETER Pupil generator 
+#2/04/17
+
 from tkinter import *
 import random
+from tkinter import font
+from tkinter import filedialog
 
 window=Tk()
 window.title("Pupil Generator")
@@ -14,7 +20,8 @@ names=["Billy","Sam","Jack","Ben","James","Daniel","Ethan","Charlie","Jordan"]
 second=["Smith","Turner","Jones","Taylor","Williams","Brown","White"]
 
 
-#Hex Functions
+#===================================================(INIT FUNCTIONS)===================================================
+
 def convertHex(value,intoDecOrHex):
 	"""
 	Convert a decimal to hex or hex to decimal
@@ -73,7 +80,10 @@ def getColourForBackground(hexValue):
 			#Black is returned
 			chosenColour = "#000000"
 	return chosenColour
-#Classes
+	
+	
+#===================================================(CLASSES)===================================================
+
 def recursiveChangeColour(parent,colour,fgColour):
 	"""
 	This function will recursivly search all children
@@ -117,6 +127,7 @@ def recursiveBind(parent,bindButton,bindFunction):
 		except:
 			pass
 
+
 class mainFrame(Frame):
 	"""
 	This is a modified frame class which 
@@ -139,7 +150,33 @@ class mainFrame(Frame):
 	#Add binding method
 	def addBinding(self,bindButton,bindFunction):
 		recursiveBind(self,bindButton,bindFunction)
+
+class masterFrame(mainFrame):
+	"""
+	Class for screen that is based off the Frame class
+	"""
+	screenArray=[]
+	lastScreen=None
+	def __init__(self,parent):
+		#Initialise the instance as a frame as well
+		mainFrame.__init__(self,parent)
+		screenClass.screenArray.append(self)
+	
+	def addView(self,frameToAdd):
+		masterFrame.screenArray.append(frameToAdd)
 		
+		
+	def show(self,frameToDisplay):
+		"""
+		This makes sure the current screen isn't reloaded
+		"""
+		if frameToDisplay != screenClass.lastScreen:
+			for item in screenClass.screenArray:
+				item.pack_forget()
+			frameToDisplay.pack(expand=True, fill=BOTH)
+			print("DONE")
+			screenClass.lastScreen=self	
+
 class screenClass(mainFrame):
 	"""
 	Class for screen that is based off the Frame class
@@ -212,16 +249,13 @@ class displayView(mainFrame):
 			item.pack(expand=True, fill=BOTH)
 
 
-#UI setup
+#===================================================(UI SETUP)===================================================
+
 
 #Status
 statusVar=StringVar()
 statusVar.set("")
-statusFrame=mainFrame(window)
-statusFrame.pack(side=BOTTOM,fill=X)
-status=Label(statusFrame,textvariable=statusVar,font="Arial 15 bold")
-status.pack(expand=True)
-statusFrame.colour("#B2FF00")
+
 
 #Home screen
 homeScreen=screenClass("Home")
@@ -234,11 +268,46 @@ numberOfPupilsFrameSub=mainFrame(numberOfPupilsFrame)
 numberOfPupilsFrameSub.pack(expand=True)
 
 Label(numberOfPupilsFrameSub,text="Number of Pupils").pack()
-numberOfPupilsEntry=Entry(numberOfPupilsFrameSub)
+numberOfPupilsEntry=Entry(numberOfPupilsFrameSub,justify=CENTER)
 numberOfPupilsEntry.pack()
-homeDisplay.addSection("#4886A3",numberOfPupilsFrame)
+
+#Choose Directory
+homeChooseDir=mainFrame(homeDisplay)
+homeChooseDirSub=mainFrame(homeChooseDir)
+homeChooseDirSub.pack(expand=True)
+
+Label(homeChooseDirSub,text="Location").pack()
+
+homeChooseDirEntry=Entry(homeChooseDirSub)
+homeChooseDirEntry.pack()
+
+homeChooseButton=Button(homeChooseDirSub,text="Browse")
+homeChooseButton.pack()
+
+#Export Button
+homeExportButtonFrame=mainFrame(homeDisplay)
+
+exportButton=Button(homeExportButtonFrame,text="Export",width=20)
+exportButton.pack(expand=True)
+
+#Add Sections
+homeDisplay.addSection("#5AB247",numberOfPupilsFrame)
+homeDisplay.addSection("#62C14D",homeChooseDir)
+homeDisplay.addSection("#78D367",homeExportButtonFrame)
 homeDisplay.showSections()
 
-#Setup
+#===================================================(FUNCTIONS)===================================================
+def insertEntry(entry,message):
+	"""
+	This function will add text into entry
+	"""
+	entry.delete(0,END)
+	entry.insert(END,message)
+	
+#===================================================(SETUP)===================================================
+
 homeScreen.show()
+
+#===================================================(END)===================================================
+
 window.mainloop()

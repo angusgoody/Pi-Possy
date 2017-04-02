@@ -24,6 +24,7 @@ window.config(menu=mainMenu)
 #Sub Menus
 fileMenu=Menu(mainMenu)
 editMenu=Menu(mainMenu)
+studentMenu=Menu(mainMenu)
 helpMenu=Menu(mainMenu)
 
 #============================================(GLOBAL VARIABLES)================================================
@@ -324,15 +325,8 @@ homeDisplayScreen=displayView(homeScreen)
 homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
-welcomeSection=mainFrame(homeDisplayScreen)
-welcomeSectionSub=mainFrame(welcomeSection)
-welcomeSectionSub.pack(expand=True)
 
-Label(welcomeSectionSub,text="WELCOME GUYS").pack()
-welcomeEntry=Entry(welcomeSectionSub)
-welcomeEntry.pack()
-
-homeDisplayScreen.addSection("#52A341",welcomeSection)
+homeDisplayScreen.addLabelSection("Welcome","#52A341","Welcome")
 homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
 homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
@@ -340,7 +334,7 @@ homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
 homeDisplayScreen.showSections()
 
 #endregion
-
+#====================View All SCREEN====================
 
 #============================================(MAIN FUNCTIONS)================================================
 
@@ -366,16 +360,17 @@ def insertEntry(entry,message):
 #=========PROGRAM FUNCTIONS===========
 
 def test():
-	askMessage("LEO","PENIS")
+	askMessage("LEO","Hi")
 #============================================(MENUS/CASCADES)================================================
 
-#====================CASCADES====================
+#============CASCADES==========
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
+mainMenu.add_cascade(label="Students",menu=studentMenu)
 mainMenu.add_cascade(label="Help",menu=helpMenu)
 
-#====================COMMANDS====================
+#============CASCADES==========
 
 
 #File Menu
