@@ -183,13 +183,11 @@ class masterControl(mainFrame):
 	views that can be changed.
 	"""
 	viewArray=[]
-	def __init__(self,parent,colour):
+	def __init__(self,parent):
 		mainFrame.__init__(self,parent)
-		self.colour=colour
 
 	def addView(self,frameToDisplay):
 		masterControl.viewArray.append(frameToDisplay)
-
 	def showView(self,screenToDisplay):
 		if screenToDisplay in masterControl.viewArray:
 			for item in masterControl.viewArray:
@@ -326,12 +324,27 @@ def generateHexColour():
 #============================================(MAIN UI SETUP)================================================
 
 #====================STATUS BAR====================
+
 #region statusbar
 statusVar=StringVar()
 statusVar.set("")
+
 statusBaseFrame=mainFrame(window)
 statusBaseFrame.pack(side=BOTTOM,fill=X)
 statusBaseFrame.colour("#F951A3")
+
+#Status master control
+statusController=masterControl(statusBaseFrame)
+statusController.pack(expand=True, fill=BOTH)
+
+#Actual Status View
+statusMainView=mainFrame(statusController)
+Label(statusMainView,textvariable=statusVar,font="Arial 15 bold").pack(expand=True)
+statusMainView.colour("#A9F955")
+
+#Adding Views to status control
+statusController.addView(statusMainView)
+
 #endregion
 #====================HOME SCREEN====================
 #region homescreen
@@ -388,7 +401,6 @@ mainMenu.add_cascade(label="Help",menu=helpMenu)
 
 #============CASCADES==========
 
-
 #File Menu
 fileMenu.add_command(label="Home",command=lambda: homeScreen.show())
 
@@ -400,7 +412,7 @@ helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 #============================================(BINDINGS)================================================
 
 #Status Bar
-#statusFrame.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
+statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
 
 #Home screen
 homeDisplayScreen.addBinding("<Double-Button-1>",lambda event: test() )
@@ -408,6 +420,7 @@ homeDisplayScreen.addBinding("<Double-Button-1>",lambda event: test() )
 
 #============================================(INITIAL SETUP)================================================
 homeScreen.show()
+statusController.showView(statusMainView)
 
 #============================================(END)================================================
 window.mainloop()
