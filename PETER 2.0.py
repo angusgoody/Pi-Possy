@@ -177,6 +177,25 @@ class displayView(mainFrame):
 		for item in self.frameArray:
 			item.pack(expand=True, fill=BOTH)
 
+class masterControl(mainFrame):
+	"""
+	This frame is used to control different
+	views that can be changed.
+	"""
+	viewArray=[]
+	def __init__(self,parent,colour):
+		mainFrame.__init__(self,parent)
+		self.colour=colour
+
+	def addView(self,frameToDisplay):
+		masterControl.viewArray.append(frameToDisplay)
+
+	def showView(self,screenToDisplay):
+		if screenToDisplay in masterControl.viewArray:
+			for item in masterControl.viewArray:
+				item.pack_forget()
+			screenToDisplay.pack(expand=True,fill=BOTH)
+
 #====================LOG SCREEN====================
 #region logscreen
 logScreen=screenClass("Logs")
@@ -310,12 +329,9 @@ def generateHexColour():
 #region statusbar
 statusVar=StringVar()
 statusVar.set("")
-statusFrame=mainFrame(window)
-statusFrame.pack(side=BOTTOM,fill=X)
-status=Label(statusFrame,textvariable=statusVar,font="Arial 15 bold")
-status.pack(expand=True)
-statusFrame.colour("#B2FF00")
-
+statusBaseFrame=mainFrame(window)
+statusBaseFrame.pack(side=BOTTOM,fill=X)
+statusBaseFrame.colour("#F951A3")
 #endregion
 #====================HOME SCREEN====================
 #region homescreen
@@ -384,7 +400,7 @@ helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 #============================================(BINDINGS)================================================
 
 #Status Bar
-statusFrame.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
+#statusFrame.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
 
 #Home screen
 homeDisplayScreen.addBinding("<Double-Button-1>",lambda event: test() )
