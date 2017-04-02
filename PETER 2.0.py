@@ -4,15 +4,17 @@
 #PETER 2.0
 #1/04/17
 
-#=============================IMPORTS=============================
+#============================================IMPORTS==============================================
 from tkinter import *
 from tkinter import messagebox
 from tkinter import font
-#=============================WINDOW SETUP=============================
+from tkinter import ttk
+
+#============================================WINDOW SETUP==============================================
 window=Tk()
 window.title("PETER 2.0")
 window.geometry("500x400")
-#=============================MENUS SETUP=============================
+#============================================MENU SETUP==============================================
 
 #Main Menu
 mainMenu=Menu(window)
@@ -23,14 +25,14 @@ fileMenu=Menu(mainMenu)
 editMenu=Menu(mainMenu)
 helpMenu=Menu(mainMenu)
 
-#=============================GLOBAL VARIABLES=============================
+#============================================GLOBAL VARIABLES==============================================
 
 
-#=============================GLOBAL ARRAYS=============================
+#============================================GLOBAL ARRAYS==============================================
 mainLogArray=[]
 
 
-#=============================PRE FUNCTIONS=================================
+#============================================PRE FUNCTIONS==============================================
 
 #==============LOG FUNCTIONS================
 def report(message,*extra):
@@ -104,7 +106,7 @@ def getColourForBackground(hexValue):
 			chosenColour = "#000000"
 	return chosenColour
 
-#=============================CLASSES=================================
+#============================================CLASSES==============================================
 
 #==========UI CLASSES============
 
@@ -229,9 +231,9 @@ class displayView(mainFrame):
 
 
 
-#=============================MAIN UI SETUP=================================
+#==========================================MAIN UI SETUP============================================
 
-#-------STATUS BAR-------
+#====================STATUS BAR====================
 statusVar=StringVar()
 statusVar.set("")
 statusFrame=mainFrame(window)
@@ -241,7 +243,8 @@ status.pack(expand=True)
 statusFrame.colour("#B2FF00")
 
 
-#-------Home screen-------
+#====================HOME SCREEN====================
+
 homeScreen=screenClass("Home")
 
 homeDisplayScreen=displayView(homeScreen)
@@ -255,8 +258,23 @@ homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
 
 homeDisplayScreen.showSections()
 
+#====================LOG SCREEN====================
+logScreen=screenClass("Logs")
 
-#=============================FUNCTIONS============================
+columnArray=["Message","Time"]
+allColumnArray=["Message","Time"]
+
+#Display log widgets
+logTree=ttk.Treeview(logScreen,columns=allColumnArray,show="headings")
+logTree.pack(fill="both",expand=True)
+
+logTree.column("Message",width=10,minwidth=45)
+logTree.column("Time",width=5,minwidth=20)
+
+logTree.heading("Message",text="Message")
+logTree.heading("Time",text="Time")
+
+#============================================MAIN FUNCTIONS==============================================
 
 #=========UTILITY FUNCTIONS===========
 def askMessage(pre,message):
@@ -280,24 +298,38 @@ def insertEntry(entry,message):
 def test():
 	askMessage("No idea","JIMMY")
 
-#=============================MENU/CASCADES=============================
+#============================================MENUS/CASCADES==============================================
 
-#=====Initial Cascades=====
+#====================CASCADES====================
+
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
 mainMenu.add_cascade(label="Help",menu=helpMenu)
 
-#======COMMANDS======
+#====================COMMANDS====================
+
 
 #File Menu
 fileMenu.add_command(label="Home",command=lambda: homeScreen.show())
 
-#=============================BINDINGS=============================
+#Edit Menu
+
+#Help Menu
+helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
+
+#============================================BINDINGS==============================================
+
+#Status Bar
 statusFrame.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
+
+#Home screen
 homeDisplayScreen.addLabelCommand("Welcome","<Double-Button-1>",lambda event: test())
-#=============================PROGRAM SETUP=============================
+
+#=============================================BUTTONS===========================================
+
+#============================================INITIAL SETUP==============================================
 homeScreen.show()
 
 
-#================================END==================================
+#============================================END==============================================
 window.mainloop()
