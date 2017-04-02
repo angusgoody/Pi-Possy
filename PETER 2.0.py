@@ -4,18 +4,18 @@
 #PETER 2.0
 #1/04/17
 
-#============================================IMPORTS==============================================
+#============================================(IMPORTS)================================================
 from tkinter import *
 from tkinter import messagebox
 from tkinter import font
 from tkinter import ttk
 import random
 import datetime
-#============================================WINDOW SETUP==============================================
+#============================================(WINDOW SETUP)================================================
 window=Tk()
 window.title("PETER 2.0")
 window.geometry("500x400")
-#============================================MENU SETUP==============================================
+#============================================(MENU SETUP)================================================
 
 #Main Menu
 mainMenu=Menu(window)
@@ -26,24 +26,205 @@ fileMenu=Menu(mainMenu)
 editMenu=Menu(mainMenu)
 helpMenu=Menu(mainMenu)
 
-#============================================GLOBAL VARIABLES==============================================
+#============================================(GLOBAL VARIABLES)================================================
+maxLogSize=100
 
-
-#============================================GLOBAL ARRAYS==============================================
+#============================================(GLOBAL ARRAYS)================================================
 mainLogArray=[]
 
+#============================================(EXTRA CODE SPACE)================================================
+"""
+This area is for code that needs to be
+at the top of the program because it needs
+to be declared before certain items
+"""
+#====================UI CLASSES====================
 
-#============================================PRE FUNCTIONS==============================================
+def recursiveChangeColour(parent,colour,fgColour):
+	"""
+	This function will recursivly search all children
+	of an element and change their colour
+	"""
+	widgetArray =["Entry", "Button", "Text", "Listbox", "OptionMenu", "Menu"]
+	parentClass=parent.winfo_class()
+	if parentClass == "Frame":
+		parent.config(bg=colour)
+		children=parent.winfo_children()
+		for item in children:
+			recursiveChangeColour(item,colour,fgColour)
+	else:
+		try:
+			#Certain widgets need diffrent attention
+			if parent.winfo_class() in widgetArray:
+					parent.config(highlightbackground=colour)
+			else:
+				parent.config(bg=colour)
+
+			#Update labels so they show up on certain colours
+			if parent.winfo_class() == "Label":
+					parent.config(fg=fgColour)
+		except:
+			pass
+
+def recursiveBind(parent,bindButton,bindFunction):
+	"""
+	This function is similar to the change colour function
+	but it uses recursion to add a binding to every child
+	"""
+	parentClass=parent.winfo_class()
+	if parentClass == "Frame":
+		parent.bind(bindButton,bindFunction)
+		children=parent.winfo_children()
+		for item in children:
+			recursiveBind(item,bindButton,bindFunction)
+	else:
+		try:
+			parent.bind(bindButton,bindFunction)
+		except:
+			pass
+
+class mainFrame(Frame):
+	"""
+	This is a modified frame class which 
+	can be modified for every frame on screen. It 
+	automatically changes colours and updates text colours
+	 so they appear on dark/light background
+	"""
+	def __init(self,parent):
+		Frame.__init__(self,parent)
+
+	#Update colour method
+	def colour(self,chosenColour):
+
+		#Get FG colour for selected colour
+		fgColour=getColourForBackground(chosenColour)
+
+		#Recursivley search through all children and change colour
+		recursiveChangeColour(self,chosenColour,fgColour)
+
+	#Add binding method
+	def addBinding(self,bindButton,bindFunction):
+		recursiveBind(self,bindButton,bindFunction)
+
+class screenClass(mainFrame):
+	"""
+	Class for screen that is based off the Frame class
+	"""
+	screenArray=[]
+	lastScreen=None
+	def __init__(self,name):
+		#Initialise the instance as a frame as well
+		mainFrame.__init__(self,window)
+		self.name=name
+		screenClass.screenArray.append(self)
+
+	#Show screen method
+	def show(self):
+		if self != screenClass.lastScreen:
+			for item in screenClass.screenArray:
+				item.pack_forget()
+			self.pack(expand=True, fill=BOTH)
+			statusVar.set(self.name)
+			screenClass.lastScreen=self
+
+	#Get children method
+	def getChildren(self):
+		children=self.winfo_children()
+		return children
+
+class displayView(mainFrame):
+	"""
+	This is the class for displaying multiple frames
+	of data on the screen. The frames are equally spaced
+	apart and automatically adjust colour etc
+	"""
+	labelSections={}
+	def __init__(self,parent):
+		mainFrame.__init__(self,parent)
+		self.frameArray=[]
+
+	def addSection(self,colour,frameToDisplay):
+		frameToDisplay.colour(colour)
+		self.frameArray.append(frameToDisplay)
+
+	def addLabelSection(self,text,colour,indentify):
+		"""
+		This method will add a small section to the display
+		view with some text on. It does this by creating a pre
+		made frame and using the addSection method
+		"""
+		#Creates the frame to display
+		newFrame=mainFrame(self)
+		Label(newFrame,text=text,font=font.Font(size=16)).pack(expand=True)
+		self.addSection(colour,newFrame)
+		#Add Frame to dictionary to track it using identifier string
+		displayView.labelSections[indentify]=newFrame
+
+	def addLabelCommand(self,identifier,bindButton,command):
+		"""
+		This method will use the identifier to add a binding
+		command to a label section because they do not have a 
+		deceleration in the main program. 
+		"""
+		if identifier in displayView.labelSections:
+			instance=displayView.labelSections[identifier]
+			instance.addBinding(bindButton,command)
+		else:
+			report("Unknown identifier:",identifier)
+
+	def showSections(self):
+		for item in self.frameArray:
+			item.pack(expand=True, fill=BOTH)
+
+#====================LOG SCREEN====================
+#region logscreen
+logScreen=screenClass("Logs")
+
+columnArray=["Message","Time"]
+allColumnArray=["Message","Time"]
+
+#Display log widgets
+logTree=ttk.Treeview(logScreen,columns=allColumnArray,show="headings")
+logTree.pack(fill="both",expand=True)
+
+logTree.column("Message",width=10,minwidth=45)
+logTree.column("Time",width=5,minwidth=20)
+
+logTree.heading("Message",text="Message")
+logTree.heading("Time",text="Time")
+
+#endregion
+
+#============================================(PRE FUNCTIONS)================================================
+
 
 #==============LOG FUNCTIONS================
 def report(message,*extra):
-	temp=message
 	if len(extra) > 0:
 		#Concatonate variables
 		for item in extra:
-			temp+=" "
-			temp+=item
-	print("Reported",temp)
+			message+=" "
+			message+=str(item)
+
+	currentTime=datetime.datetime.now().time()
+	temp=[message,currentTime]
+
+	#Makes sure logArray isn't filled up
+	if len(mainLogArray) < maxLogSize:
+		mainLogArray.append(temp)
+	else:
+		print("Log array filled up")
+	logTree.insert("" , 0,values=(message,currentTime))
+
+#==============FILE FUNCTIONS================
+def getContent(fileName):
+	try:
+		file=open(fileName)
+	except:
+		report("Error opening file",fileName)
+	else:
+		content=file.readlines()
+		return content
 
 
 #==============HEX FUNCTIONS================
@@ -119,129 +300,10 @@ def generateHexColour():
 		hexValue=hexValue+"0"
 		hexLeng=len(hexValue)
 	return hexValue
-#============================================CLASSES==============================================
-
-#==========UI CLASSES============
-
-class mainFrame(Frame):
-	"""
-	This is a modified frame class which 
-	can be modified for every frame on screen. It 
-	automatically changes colours and updates text colours
-	 so they appear on dark/light background
-	"""
-	def __init(self,parent):
-		Frame.__init__(self,parent)
-
-	#Update colour method
-	def colour(self,chosenColour):
-
-		#Get FG colour for selected colour
-		fgColour=getColourForBackground(chosenColour)
-		widgetArray =["Entry", "Button", "Text", "Listbox", "OptionMenu", "Menu"]
-
-		#Update frame itself
-		self.config(bg=chosenColour)
-
-		#Recursivley search through all children and change colour
-		children=self.winfo_children()
-		for child in children:
-			try:
-				if mainFrame in child.__bases__:
-					child.colour(child,chosenColour)
-			except:
-				if child.winfo_class() in widgetArray:
-					child.config(highlightbackground=chosenColour)
-				else:
-					child.config(bg=chosenColour)
-
-				#Update labels so they show up on certain colours
-				if child.winfo_class() == "Label":
-					child.config(fg=fgColour)
-
-	#Add binding method
-	def addBinding(self,bindButton,bindFunction):
-		self.bind(bindButton,bindFunction)
-		children=self.winfo_children()
-		for child in children:
-			if child.winfo_class() == "Frame":
-				child.addBinding(bindButton,bindFunction)
-			else:
-				child.bind(bindButton,bindFunction)
-
-class screenClass(mainFrame):
-	"""
-	Class for screen that is based off the Frame class
-	"""
-	screenArray=[]
-	lastScreen=None
-	def __init__(self,name):
-		#Initialise the instance as a frame as well
-		mainFrame.__init__(self,window)
-		self.name=name
-		screenClass.screenArray.append(self)
-
-	def show(self):
-		"""
-		This makes sure the current screen isn't reloaded
-		"""
-		if self != screenClass.lastScreen:
-			for item in screenClass.screenArray:
-				item.pack_forget()
-			self.pack(expand=True, fill=BOTH)
-			statusVar.set(self.name)
-			screenClass.lastScreen=self
-
-	def getChildren(self):
-		children=self.winfo_children()
-		return children
-
-class displayView(mainFrame):
-	"""
-	This is the class for displaying multiple frames
-	of data on the screen. The frames are equally spaced
-	apart and automatically adjust colour etc
-	"""
-	labelSections={}
-	def __init__(self,parent):
-		mainFrame.__init__(self,parent)
-		self.frameArray=[]
-
-	def addSection(self,colour,frameToDisplay):
-		frameToDisplay.colour(colour)
-		self.frameArray.append(frameToDisplay)
-
-	def addLabelSection(self,text,colour,indentify):
-		"""
-		This method will add a small section to the display
-		view with some text on. It does this by creating a pre
-		made frame and using the addSection method
-		"""
-		#Creates the frame to display
-		newFrame=mainFrame(self)
-		Label(newFrame,text=text,font=font.Font(size=16)).pack(expand=True)
-		self.addSection(colour,newFrame)
-		#Add Frame to dictionary to track it using identifier string
-		displayView.labelSections[indentify]=newFrame
-
-	def addLabelCommand(self,identifier,bindButton,command):
-		"""
-		This method will use the identifier to add a binding
-		command to a label section because they do not have a 
-		deceleration in the main program. 
-		"""
-		if identifier in displayView.labelSections:
-			instance=displayView.labelSections[identifier]
-			instance.addBinding(bindButton,command)
-		else:
-			report("Unknown identifier:",identifier)
-
-	def showSections(self):
-		for item in self.frameArray:
-			item.pack(expand=True, fill=BOTH)
+#============================================(CLASSES)================================================
 
 
-#==========================================MAIN UI SETUP============================================
+#============================================(MAIN UI SETUP)================================================
 
 #====================STATUS BAR====================
 #region statusbar
@@ -262,7 +324,15 @@ homeDisplayScreen=displayView(homeScreen)
 homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
-homeDisplayScreen.addLabelSection("Welcome Angus","#A33066","Welcome")
+welcomeSection=mainFrame(homeDisplayScreen)
+welcomeSectionSub=mainFrame(welcomeSection)
+welcomeSectionSub.pack(expand=True)
+
+Label(welcomeSectionSub,text="WELCOME GUYS").pack()
+welcomeEntry=Entry(welcomeSectionSub)
+welcomeEntry.pack()
+
+homeDisplayScreen.addSection("#52A341",welcomeSection)
 homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
 homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
@@ -270,26 +340,9 @@ homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
 homeDisplayScreen.showSections()
 
 #endregion
-#====================LOG SCREEN====================
-#region logscreen
-logScreen=screenClass("Logs")
 
-columnArray=["Message","Time"]
-allColumnArray=["Message","Time"]
 
-#Display log widgets
-logTree=ttk.Treeview(logScreen,columns=allColumnArray,show="headings")
-logTree.pack(fill="both",expand=True)
-
-logTree.column("Message",width=10,minwidth=45)
-logTree.column("Time",width=5,minwidth=20)
-
-logTree.heading("Message",text="Message")
-logTree.heading("Time",text="Time")
-
-#endregion
-
-#============================================MAIN FUNCTIONS==============================================
+#============================================(MAIN FUNCTIONS)================================================
 
 #=========UTILITY FUNCTIONS===========
 
@@ -311,10 +364,10 @@ def insertEntry(entry,message):
 	entry.insert(END,message)
 
 #=========PROGRAM FUNCTIONS===========
-def test():
-	askMessage("No idea","JIMMY")
 
-#============================================MENUS/CASCADES==============================================
+def test():
+	askMessage("LEO","PENIS")
+#============================================(MENUS/CASCADES)================================================
 
 #====================CASCADES====================
 
@@ -333,19 +386,17 @@ fileMenu.add_command(label="Home",command=lambda: homeScreen.show())
 #Help Menu
 helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 
-#============================================BINDINGS==============================================
+#============================================(BINDINGS)================================================
 
 #Status Bar
 statusFrame.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
 
 #Home screen
-homeDisplayScreen.addLabelCommand("Welcome","<Double-Button-1>",lambda event: test())
+homeDisplayScreen.addBinding("<Double-Button-1>",lambda event: test() )
+#============================================(BUTTONS)================================================
 
-#=============================================BUTTONS===========================================
-
-#============================================INITIAL SETUP==============================================
+#============================================(INITIAL SETUP)================================================
 homeScreen.show()
 
-
-#============================================END==============================================
+#============================================(END)================================================
 window.mainloop()
