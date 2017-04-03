@@ -91,6 +91,9 @@ class mainLabel(Label):
 	the label class to give more control
 	over customizing the label
 	"""
+	labelArray=[]
+
+	#Initialise
 	def __init__(self,parent,**keyArgs):
 		Label.__init__(self,parent,keyArgs)
 		#Setup
@@ -105,11 +108,14 @@ class mainLabel(Label):
 
 		#Configure default font
 		self.fontSize=14
-		self.fontFamily="Helvetica"
+		self.fontFamily="TkDefaultFont"
 		self.strength=""
-
 		self.getDefaultFont()
 
+		#Add label to array
+		mainLabel.labelArray.append(self)
+
+	#Class method only
 	def getDefaultFont(self):
 		words=self.fontString.split()
 		if len(words) > 0:
@@ -123,6 +129,7 @@ class mainLabel(Label):
 				elif counter == 3:
 					self.strength=f
 
+	#Class method only
 	def updateFont(self):
 		temp=""
 		temp+=self.fontFamily
@@ -154,6 +161,9 @@ class mainLabel(Label):
 			self.updateFont()
 		else:
 			report("Invalid font bold option")
+
+
+
 
 class mainFrame(Frame):
 	"""
@@ -232,7 +242,9 @@ class displayView(mainFrame):
 		"""
 		#Creates the frame to display
 		newFrame=mainFrame(self)
-		Label(newFrame,text=text,font=font.Font(size=16)).pack(expand=True)
+		newFrameLabel=mainLabel(newFrame,text=text)
+		newFrameLabel.changeFontSize(16)
+		newFrameLabel.pack(expand=True)
 		self.addSection(colour,newFrame)
 		#Add Frame to dictionary to track it using identifier string
 		displayView.labelSections[indentify]=newFrame
@@ -510,6 +522,11 @@ def showHomeMessage(enterOrLeave):
 		if screenClass.currentScreen != homeScreen:
 			statusVar.set(screenClass.currentName)
 
+def updateGlobalFont(font):
+	for label in mainLabel.labelArray:
+			label.changeFontName(font)
+	report("Updated global font to",font)
+
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
@@ -540,7 +557,7 @@ statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 homeScreen.show()
 statusController.showView(statusMainView)
 
-mainStatusLabel.changeFontSize(11)
+updateGlobalFont("Arial")
 
 #==========================================x==(END)================================================
 window.mainloop()
