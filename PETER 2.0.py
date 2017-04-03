@@ -188,11 +188,40 @@ class masterControl(mainFrame):
 
 	def addView(self,frameToDisplay):
 		masterControl.viewArray.append(frameToDisplay)
+
 	def showView(self,screenToDisplay):
+		"""
+		This method will show a screen on the master
+		"""
 		if screenToDisplay in masterControl.viewArray:
 			for item in masterControl.viewArray:
 				item.pack_forget()
 			screenToDisplay.pack(expand=True,fill=BOTH)
+
+	def showMultipleViews(self,viewsToDisplay):
+		"""
+		This method will display multiple frames
+		on top of each other
+		"""
+		validScreens=[]
+		#Filters valid screens
+		for screen in viewsToDisplay:
+			if screen in masterControl.viewArray:
+				validScreens.append(screen)
+		#Hide all other screens
+		for screen in masterControl.viewArray:
+			screen.pack_forget()
+		#Show the screens
+		for screen in validScreens:
+			screen.pack(expand=True,fill=BOTH)
+
+	def showViewUnder(self,frameToPack):
+		"""
+		Method will pack a frame ontop of current frames
+		"""
+		if frameToPack in masterControl.viewArray:
+			frameToPack.pack(expand=True,fill=BOTH)
+
 
 #====================LOG SCREEN====================
 #region logscreen
