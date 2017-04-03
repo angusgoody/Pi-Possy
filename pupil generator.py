@@ -272,6 +272,9 @@ class masterControl(mainFrame):
 					item.pack(expand=True,fill=BOTH)
 		else:
 			print("Please pass array to method")
+	def showViewUnder(self,showScreen):
+		if showScreen in masterControl.viewArray:
+			showScreen.pack(expand=True,fill=BOTH)
 #===================================================(UI SETUP)===================================================
 
 #==================STATUS==============
@@ -361,7 +364,6 @@ def insertEnryDisabled(entry,message):
 
 homeScreen.show()
 statusController.showView([statusMainView])
-
 insertEnryDisabled(homeChooseDirEntry, "Default")
 #===================================================(END)===================================================
 
