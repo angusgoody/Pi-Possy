@@ -342,9 +342,15 @@ statusMainView=mainFrame(statusController)
 Label(statusMainView,textvariable=statusVar,font="Arial 15 bold").pack(expand=True)
 statusMainView.colour("#A9F955")
 
+#Status Loading View
+statusLoadingView=mainFrame(statusController)
+statusLoading=ttk.Progressbar(statusLoadingView, orient="horizontal", length=200, mode="determinate")
+statusLoading.pack(fill=X)
+statusLoadingView.colour("#A9F955")
+
 #Adding Views to status control
 statusController.addView(statusMainView)
-
+statusController.addView(statusLoadingView)
 #endregion
 #====================HOME SCREEN====================
 #region homescreen
@@ -412,7 +418,8 @@ helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 #============================================(BINDINGS)================================================
 
 #Status Bar
-statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
+#statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
+statusController.addBinding("<Double-Button-1>",lambda event: statusController.showView(statusLoadingView))
 
 #Home screen
 homeDisplayScreen.addBinding("<Double-Button-1>",lambda event: test() )
