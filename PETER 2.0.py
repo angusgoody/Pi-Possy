@@ -95,13 +95,33 @@ class mainLabel(Label):
 		Label.__init__(self,parent,keyArgs)
 		#Setup
 		self.text=""
-		#If text parameter is passed it can be used
+		self.fontString=""
+		#If certain parameters are passed
 		if "text" in keyArgs:
 			self.text=keyArgs["text"]
+
+		if "font" in keyArgs:
+			self.fontString=keyArgs["font"]
+
 		#Configure default font
 		self.fontSize=14
-		self.fontFamily= "Helvetica"
+		self.fontFamily="Helvetica"
 		self.strength=""
+
+		self.getDefaultFont()
+
+	def getDefaultFont(self):
+		words=self.fontString.split()
+		if len(words) > 0:
+			counter=0
+			for f in words:
+				counter+=1
+				if counter == 1:
+					self.fontFamily=f
+				elif counter == 2:
+					self.fontSize=f
+				elif counter == 3:
+					self.strength=f
 
 	def updateFont(self):
 		temp=""
@@ -423,8 +443,7 @@ statusController.pack(expand=True, fill=BOTH)
 
 #Actual Status View
 statusMainView=mainFrame(statusController)
-#Label(statusMainView,textvariable=statusVar,font="Arial 15 bold").pack(expand=True)
-mainStatusLabel=mainLabel(statusMainView,textvariable=statusVar)
+mainStatusLabel=mainLabel(statusMainView,textvariable=statusVar,font="Arial 15 bold")
 mainStatusLabel.pack(expand=True)
 statusMainView.colour("#A9F955")
 
@@ -521,8 +540,7 @@ statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 homeScreen.show()
 statusController.showView(statusMainView)
 
-mainStatusLabel.changeFontName("Arial")
-mainStatusLabel.changeFontSize(19)
-mainStatusLabel.makeBoldOrNormal("Bold")
+mainStatusLabel.changeFontSize(11)
+
 #==========================================x==(END)================================================
 window.mainloop()
