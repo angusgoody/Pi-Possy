@@ -259,11 +259,19 @@ class masterControl(mainFrame):
 
 	def addView(self,frameToDisplay):
 		masterControl.viewArray.append(frameToDisplay)
-	def showView(self,screenToDisplay):
-		if screenToDisplay in masterControl.viewArray:
-			for item in masterControl.viewArray:
-				item.pack_forget()
-			screenToDisplay.pack(expand=True,fill=BOTH)
+	def showView(self,screensToDisplay):
+		if type(screensToDisplay) is list:
+			screens=[]
+			for item in screensToDisplay:
+				if item in masterControl.viewArray:
+					screens.append(item)
+			if len(screens) > 0:
+				for item in masterControl.viewArray:
+					item.pack_forget()
+				for item in screens:
+					item.pack(expand=True,fill=BOTH)
+		else:
+			print("Please pass array to method")
 #===================================================(UI SETUP)===================================================
 
 #==================STATUS==============
@@ -286,7 +294,6 @@ statusMainView.colour("#A9F955")
 
 #Loading Status View
 statusLoadingView=mainFrame(statusController)
-Label(statusLoadingView,text="Loading..",font="Arial 12").pack()
 statusProgressBar = ttk.Progressbar(statusLoadingView, orient="horizontal", length=200, mode="determinate")
 statusProgressBar.pack(fill=X)
 statusLoadingView.colour("#F9AA5E")
@@ -317,7 +324,7 @@ homeChooseDirSub.pack(expand=True)
 
 Label(homeChooseDirSub,text="Location").pack()
 
-homeChooseDirEntry=Entry(homeChooseDirSub)
+homeChooseDirEntry=Entry(homeChooseDirSub,state=DISABLED)
 homeChooseDirEntry.pack()
 
 homeChooseButton=Button(homeChooseDirSub,text="Browse")
@@ -342,11 +349,20 @@ def insertEntry(entry,message):
 	"""
 	entry.delete(0,END)
 	entry.insert(END,message)
-	
+
+def insertEnryDisabled(entry,message):
+	"""
+	Function for disabled entries
+	"""
+	entry.config(state=NORMAL)
+	insertEntry(entry, message)
+	entry.config(state=DISABLED)
 #===================================================(SETUP)===================================================
 
 homeScreen.show()
-statusController.showView(statusLoadingView)
+statusController.showView([statusMainView])
+
+insertEnryDisabled(homeChooseDirEntry, "Default")
 #===================================================(END)===================================================
 
 window.mainloop()
