@@ -8,6 +8,10 @@ import random
 from tkinter import font
 from tkinter import filedialog
 from tkinter import ttk
+from tkinter import messagebox
+import threading
+from multiprocessing.dummy import Pool as ThreadPool
+
 window=Tk()
 window.title("Pupil Generator")
 window.geometry("500x400")
@@ -19,6 +23,9 @@ names=["Billy","Sam","Jack","Ben","James","Daniel","Ethan","Charlie","Jordan"]
 #Second
 second=["Smith","Turner","Jones","Taylor","Williams","Brown","White"]
 
+#Global Vars
+mainExportDir=""
+mainNumberOfExports=0
 
 #===================================================(INIT FUNCTIONS)===================================================
 
@@ -275,6 +282,21 @@ class masterControl(mainFrame):
 	def showViewUnder(self,showScreen):
 		if showScreen in masterControl.viewArray:
 			showScreen.pack(expand=True,fill=BOTH)
+			
+class ThreadedClient(threading.Thread):
+
+	def __init__(self, queue):
+		threading.Thread.__init__(self)
+		self.queue = queue
+
+	def run(self):
+		for x in range(1, 5):
+			time.sleep(2)
+			self.queue.put(msg)
+	
+	
+def createThread(functionToRun):
+	pass	
 #===================================================(UI SETUP)===================================================
 
 #==================STATUS==============
@@ -360,11 +382,50 @@ def insertEnryDisabled(entry,message):
 	entry.config(state=NORMAL)
 	insertEntry(entry, message)
 	entry.config(state=DISABLED)
+	
+def askMessage(pre,message):
+	"""
+	This function will launch the tkinter
+	dialog and ask a question to user
+	"""
+	try:
+		messagebox.showinfo(pre,message)
+	except:
+		print(message)
+	
+	
+def generate(amount):
+	pupils=[]
+	lastPercent=-1
+	for x in range(amount):
+		firstName=random.choice(names)
+		secondName=random.choice(second)
+		pupils.append([firstName,secondName])
+		percent=int((x/amount)*100)
+		if percent != lastPercent:
+			print(percent,"%")
+			lastPercent=percent		
+	return pupils
+	
+def mainExport():
+	numberOfPupils=numberOfPupilsEntry.get()
+	try:
+		numberOfPupils=int(numberOfPupils)
+	except:
+		askMessage("Error","Only numbers please")
+	else:
+		
+		
+		generate(numberOfPupils)
+		
+	
+
 #===================================================(SETUP)===================================================
 
 homeScreen.show()
 statusController.showView([statusMainView])
 insertEnryDisabled(homeChooseDirEntry, "Default")
+exportButton.config(command=mainExport)
 #===================================================(END)===================================================
 
 window.mainloop()

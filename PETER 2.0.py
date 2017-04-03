@@ -152,7 +152,7 @@ class mainLabel(Label):
 		self.fontFamily=fontFamilyPar
 		self.updateFont()
 
-	def makeBoldOrNormal(self,boldOrNormal):
+	def strength(self, boldOrNormal):
 		if boldOrNormal == "Bold" or boldOrNormal == "Normal":
 			if boldOrNormal == "Bold":
 				self.strength="bold"
@@ -213,6 +213,7 @@ class screenClass(mainFrame):
 			screenClass.currentName=self.name
 			screenClass.currentScreen=self
 			screenClass.lastScreen=self
+			report("Loaded screen",self.name,tag="screen")
 
 	#Get children method
 	def getChildren(self):
@@ -331,6 +332,7 @@ logTree.heading("Time",text="Time")
 
 #Add Tree View tags here
 logTree.tag_configure("font",background="#E3B521")
+logTree.tag_configure("screen",background="#8EE3DF")
 
 #endregion
 
@@ -569,7 +571,6 @@ statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 homeScreen.show()
 statusController.showView(statusMainView)
 
-updateGlobalFont("Arial")
 
-#==========================================x==(END)================================================
+#============================================(END)================================================
 window.mainloop()

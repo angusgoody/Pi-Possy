@@ -61,7 +61,7 @@ userName=""
 mainEntryTextColour="black"
 mainLabelTextColour="black"
 numberOfTextItems=4 #The variable for how many items are contained for each pupil in the text file
-mainPupilName="pupils.txt"
+mainPupilName="pupilsOld.txt"
 mainUserName="userName.txt"
 currentViewPupil=[]
 currentCreatePupil=[]
@@ -1489,7 +1489,7 @@ def saveNewPupils(array):
     else:
         if valid == True:
             try:
-                file=open("pupils.txt","w")
+                file=open(mainPupilName,"w")
             except:
                 print("Error opening file")
             else:
@@ -1970,9 +1970,9 @@ def savePupilToFile(array):
         if array not in newOrderPupils:
             newOrderPupils.append(array)
             try:
-                file=open("pupils.txt","a")
+                file=open(mainPupilName,"a")
             except:
-                file=open("pupils.txt","w")
+                file=open(mainPupilName,"w")
 
             file.write("=======================\n")
             for item in pupilData:
@@ -4645,7 +4645,7 @@ showFailLabel.bind("<Double-Button-1>",sortFails)
 #=======Returns===========
 
 setOpenUser(getUserName())
-getPupilsFromFile("pupils.txt")
+getPupilsFromFile(mainPupilName)
 
 #Order array
 orderPB()
