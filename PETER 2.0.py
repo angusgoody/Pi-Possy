@@ -142,7 +142,7 @@ class mainLabel(Label):
 		except:
 			report("Error updating font",temp)
 		else:
-			report("Successfully updated font")
+			report("Successfully updated font",tag="font")
 
 	def changeFontSize(self,size):
 		self.fontSize=size
@@ -312,6 +312,7 @@ class masterControl(mainFrame):
 
 
 #====================LOG SCREEN====================
+
 #region logscreen
 logScreen=screenClass("Logs")
 
@@ -328,18 +329,29 @@ logTree.column("Time",width=5,minwidth=20)
 logTree.heading("Message",text="Message")
 logTree.heading("Time",text="Time")
 
+#Add Tree View tags here
+logTree.tag_configure("font",background="#E3B521")
+
 #endregion
 
 #============================================(PRE FUNCTIONS)================================================
 
 
 #==============LOG FUNCTIONS================
-def report(message,*extra):
+def report(message,*extra,**keywords):
+
+	tag=""
+	#Check for extra info
 	if len(extra) > 0:
 		#Concatonate variables
 		for item in extra:
 			message+=" "
 			message+=str(item)
+
+	#Check for tags
+	if len(keywords) > 0:
+		if "tag" in keywords:
+			tag=keywords["tag"]
 
 	currentTime=datetime.datetime.now().time()
 	temp=[message,currentTime]
@@ -349,7 +361,7 @@ def report(message,*extra):
 		mainLogArray.append(temp)
 	else:
 		print("Log array filled up")
-	logTree.insert("" , 0,values=(message,currentTime))
+	logTree.insert("" , 0,values=(message,currentTime),tags=(tag))
 
 #==============FILE FUNCTIONS================
 def getContent(fileName):
@@ -525,7 +537,7 @@ def showHomeMessage(enterOrLeave):
 def updateGlobalFont(font):
 	for label in mainLabel.labelArray:
 			label.changeFontName(font)
-	report("Updated global font to",font)
+	report("Updated global font to",font,tag="font")
 
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
