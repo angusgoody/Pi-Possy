@@ -106,6 +106,12 @@ class mainLabel(Label):
 		if "font" in keyArgs:
 			self.fontString=keyArgs["font"]
 
+		if "bg" in keyArgs:
+			try:
+				self.config(fg=getColourForBackground(keyArgs["bg"]))
+			except:
+				report("Error changing label fg",keyArgs["bg"],tag="error")
+
 		#Configure default font
 		self.fontSize=14
 		self.fontFamily="TkDefaultFont"
@@ -140,7 +146,7 @@ class mainLabel(Label):
 		try:
 			self.config(font=temp)
 		except:
-			report("Error updating font",temp)
+			report("Error updating font",temp,tag="error")
 		else:
 			report("Successfully updated font",tag="font")
 
@@ -161,8 +167,6 @@ class mainLabel(Label):
 			self.updateFont()
 		else:
 			report("Invalid font bold option")
-
-
 
 
 class mainFrame(Frame):
@@ -202,6 +206,7 @@ class screenClass(mainFrame):
 		mainFrame.__init__(self,window)
 		self.name=name
 		screenClass.screenArray.append(self)
+		self.runCommandDict={}
 
 	#Show screen method
 	def show(self):
@@ -213,12 +218,40 @@ class screenClass(mainFrame):
 			screenClass.currentName=self.name
 			screenClass.currentScreen=self
 			screenClass.lastScreen=self
+
+			#Run screen commands
+			self.runCommands()
 			report("Loaded screen",self.name,tag="screen")
 
-	#Get children method
-	def getChildren(self):
-		children=self.winfo_children()
-		return children
+	def addCommand(self,command):
+		self.runCommandDict[command]="function"
+
+	def addLambdaCommand(self,command):
+		self.runCommandDict[command]="command"
+
+
+	def runCommands(self):
+		"""
+		This method runs certain commands when the screen is loaded. These can
+		be setup commands etc
+		"""
+		if len(self.runCommandDict) > 0:
+			for item in self.runCommandDict:
+				print(self.runCommandDict)
+				if self.runCommandDict[item] == "function":
+					try:
+						item()
+					except:
+						report("Error executing screen function",tag="error")
+				else:
+					item()
+					try:
+						item()
+					except:
+						report("Error executing lambda screen function",tag="error")
+
+
+
 
 class displayView(mainFrame):
 	"""
@@ -311,6 +344,9 @@ class masterControl(mainFrame):
 		if frameToPack in masterControl.viewArray:
 			frameToPack.pack(expand=True,fill=BOTH)
 
+	def showViewTop(self,frameToPack):
+		if frameToPack in masterControl.viewArray:
+			frameToPack.pack(expand=True,fill=BOTH,side=TOP)
 
 #====================LOG SCREEN====================
 
@@ -331,8 +367,15 @@ logTree.heading("Message",text="Message")
 logTree.heading("Time",text="Time")
 
 #Add Tree View tags here
-logTree.tag_configure("font",background="#E3B521")
-logTree.tag_configure("screen",background="#8EE3DF")
+logTreeTagDict={"font":"#8990E3",
+                "screen":"#8EE3DF",
+                "file":"#E37DB8",
+                "error":"#E36265",
+                "warning":"#E3B521"}
+
+for tag in logTreeTagDict:
+	logTree.tag_configure(tag,background=logTreeTagDict[tag])
+
 
 #endregion
 
@@ -370,10 +413,21 @@ def getContent(fileName):
 	try:
 		file=open(fileName)
 	except:
-		report("Error opening file",fileName)
+		report("Error opening file",fileName,tag="error")
 	else:
 		content=file.readlines()
-		return content
+
+		#Filter content
+		newContent=[]
+		for line in content:
+			words=line.split()
+			#Removes empty lines
+			if len(words) > 0:
+				line=line.rstrip()
+				newContent.append(line)
+
+		report("Got content from file",fileName,tag="file")
+		return newContent
 
 
 #==============HEX FUNCTIONS================
@@ -451,6 +505,26 @@ def generateHexColour():
 	return hexValue
 #============================================(CLASSES)================================================
 
+class studentClass:
+	"""
+	Class for keeping students
+	"""
+	studentArray=[]
+	def __init__(self,name,second,age,grade):
+		self.name=name
+		self.second=second
+		self.age=age
+		self.grade=grade
+		self.dict={"Name":self.name,
+		           "Second":self.second,
+		           "Age":self.age,
+		           "Grade":self.grade}
+
+		#Add instance to array
+		studentClass.studentArray.append(self)
+
+
+
 
 #============================================(MAIN UI SETUP)================================================
 
@@ -467,6 +541,9 @@ statusBaseFrame.colour("#F951A3")
 statusController=masterControl(statusBaseFrame)
 statusController.pack(expand=True, fill=BOTH)
 
+#=================STATUS SUB VIEWS============
+
+
 #Actual Status View
 statusMainView=mainFrame(statusController)
 mainStatusLabel=mainLabel(statusMainView,textvariable=statusVar,font="Arial 15 bold")
@@ -479,9 +556,19 @@ statusLoading=ttk.Progressbar(statusLoadingView, orient="horizontal", length=200
 statusLoading.pack(fill=X)
 statusLoadingView.colour("#A9F955")
 
+#Status Log View
+statusLogTagView=mainFrame(statusController)
+statusLogTagViewSub=mainFrame(statusLogTagView)
+statusLogTagViewSub.pack(expand=True)
+
+for item in logTreeTagDict:
+	mainLabel(statusLogTagViewSub,text=item,bg=logTreeTagDict[item]).pack(side=LEFT)
+
+
 #Adding Views to status control
 statusController.addView(statusMainView)
 statusController.addView(statusLoadingView)
+statusController.addView(statusLogTagView)
 #endregion
 #====================HOME SCREEN====================
 #region homescreen
@@ -501,7 +588,7 @@ homeDisplayScreen.showSections()
 
 #endregion
 #====================View All SCREEN================
-
+viewAllScreen=screenClass("View All")
 #============================================(MAIN FUNCTIONS)================================================
 
 #=========UTILITY FUNCTIONS===========
@@ -541,6 +628,33 @@ def updateGlobalFont(font):
 			label.changeFontName(font)
 	report("Updated global font to",font,tag="font")
 
+def createStudents(fileContent):
+	validItems=["Name","Second","Age","Grade","PB","Notes"]
+	studentCounter=0
+	#Makes sure maximum of 500 students are loaded
+	for line in fileContent:
+		if len(line) > 0:
+			try:
+				studentDict=eval(line)
+			except:
+				report("Error evaluating string in setup",tag="error")
+			else:
+
+				#Must get basic info to create instance
+				try:
+					studentName=studentDict["Name"]
+					studentSecond=studentDict["Second"]
+				except:
+					report("Error getting basic student info",tag="warning")
+				else:
+					#Try and get the rest of the data
+					collectedData=[]
+					for section in studentDict:
+						print(section)
+
+
+
+
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
@@ -561,9 +675,16 @@ helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 
 #Status Bar
 statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
+#statusController.addBinding("<Double-Button-1>",lambda event: statusController.showView(statusMainView))
+# TODO add multiple lambda bindings to addBinding class
+
 statusMainView.addBinding("<Enter>",lambda event: showHomeMessage("Enter"))
 statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 
+#============================================(SCREEN COMMANDS)================================================
+
+#Log screen
+logScreen.addLambdaCommand(lambda :statusController.showView(statusLogTagView))
 
 #============================================(BUTTONS)================================================
 
@@ -571,6 +692,8 @@ statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 homeScreen.show()
 statusController.showView(statusMainView)
 
+students=getContent("pupils.txt")
+createStudents(students)
 
 #============================================(END)================================================
 window.mainloop()
