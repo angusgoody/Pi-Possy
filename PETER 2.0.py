@@ -84,6 +84,14 @@ def recursiveBind(parent,bindButton,bindFunction):
 		except:
 			pass
 
+class mainLabel(Label):
+	def __init__(self,parent,text,**keyArgs):
+		Label.__init__(self,parent,keyArgs)
+		self.displayText=text
+		self.font="Arial 15 bold"
+	def channgeFont(self):
+		pass
+
 class mainFrame(Frame):
 	"""
 	This is a modified frame class which 
@@ -93,6 +101,7 @@ class mainFrame(Frame):
 	"""
 	def __init(self,parent):
 		Frame.__init__(self,parent)
+		self.labelViews=[]
 
 	#Update colour method
 	def colour(self,chosenColour):
@@ -225,6 +234,7 @@ class masterControl(mainFrame):
 		"""
 		if frameToPack in masterControl.viewArray:
 			frameToPack.pack(expand=True,fill=BOTH)
+
 
 #====================LOG SCREEN====================
 #region logscreen
