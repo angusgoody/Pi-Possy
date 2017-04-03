@@ -11,6 +11,7 @@ from tkinter import font
 from tkinter import ttk
 import random
 import datetime
+
 #============================================(WINDOW SETUP)================================================
 window=Tk()
 window.title("PETER 2.0")
@@ -85,12 +86,54 @@ def recursiveBind(parent,bindButton,bindFunction):
 			pass
 
 class mainLabel(Label):
-	def __init__(self,parent,text,**keyArgs):
+	"""
+	This is a class that modifies
+	the label class to give more control
+	over customizing the label
+	"""
+	def __init__(self,parent,**keyArgs):
 		Label.__init__(self,parent,keyArgs)
-		self.displayText=text
-		self.font="Arial 15 bold"
-	def channgeFont(self):
-		pass
+		#Setup
+		self.text=""
+		#If text parameter is passed it can be used
+		if "text" in keyArgs:
+			self.text=keyArgs["text"]
+		#Configure default font
+		self.fontSize=14
+		self.fontFamily= "Helvetica"
+		self.strength=""
+
+	def updateFont(self):
+		temp=""
+		temp+=self.fontFamily
+		temp+=" "
+		temp+=str(self.fontSize)
+		temp+=" "
+		temp+=self.strength
+		try:
+			self.config(font=temp)
+		except:
+			report("Error updating font",temp)
+		else:
+			report("Successfully updated font")
+
+	def changeFontSize(self,size):
+		self.fontSize=size
+		self.updateFont()
+
+	def changeFontName(self,fontFamilyPar):
+		self.fontFamily=fontFamilyPar
+		self.updateFont()
+
+	def makeBoldOrNormal(self,boldOrNormal):
+		if boldOrNormal == "Bold" or boldOrNormal == "Normal":
+			if boldOrNormal == "Bold":
+				self.strength="bold"
+			else:
+				self.strength=""
+			self.updateFont()
+		else:
+			report("Invalid font bold option")
 
 class mainFrame(Frame):
 	"""
@@ -366,7 +409,6 @@ def generateHexColour():
 #============================================(MAIN UI SETUP)================================================
 
 #====================STATUS BAR====================
-
 #region statusbar
 statusVar=StringVar()
 statusVar.set("")
@@ -381,7 +423,9 @@ statusController.pack(expand=True, fill=BOTH)
 
 #Actual Status View
 statusMainView=mainFrame(statusController)
-Label(statusMainView,textvariable=statusVar,font="Arial 15 bold").pack(expand=True)
+#Label(statusMainView,textvariable=statusVar,font="Arial 15 bold").pack(expand=True)
+mainStatusLabel=mainLabel(statusMainView,textvariable=statusVar)
+mainStatusLabel.pack(expand=True)
 statusMainView.colour("#A9F955")
 
 #Status Loading View
@@ -477,6 +521,8 @@ statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 homeScreen.show()
 statusController.showView(statusMainView)
 
-
-#============================================(END)================================================
+mainStatusLabel.changeFontName("Arial")
+mainStatusLabel.changeFontSize(19)
+mainStatusLabel.makeBoldOrNormal("Bold")
+#==========================================x==(END)================================================
 window.mainloop()
