@@ -113,6 +113,8 @@ class screenClass(mainFrame):
 	"""
 	screenArray=[]
 	lastScreen=None
+	currentName=""
+	currentScreen=""
 	def __init__(self,name):
 		#Initialise the instance as a frame as well
 		mainFrame.__init__(self,window)
@@ -126,6 +128,8 @@ class screenClass(mainFrame):
 				item.pack_forget()
 			self.pack(expand=True, fill=BOTH)
 			statusVar.set(self.name)
+			screenClass.currentName=self.name
+			screenClass.currentScreen=self
 			screenClass.lastScreen=self
 
 	#Get children method
@@ -221,7 +225,6 @@ class masterControl(mainFrame):
 		"""
 		if frameToPack in masterControl.viewArray:
 			frameToPack.pack(expand=True,fill=BOTH)
-
 
 #====================LOG SCREEN====================
 #region logscreen
@@ -390,7 +393,7 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
 
-homeDisplayScreen.addLabelSection("Welcome","#52A341","Welcome")
+homeDisplayScreen.addLabelSection("Welcome","#1BF293","Welcome")
 homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
 homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
@@ -422,12 +425,18 @@ def insertEntry(entry,message):
 	entry.insert(END,message)
 
 #=========PROGRAM FUNCTIONS===========
+def showHomeMessage(enterOrLeave):
+	"""
+	This function will display a message on the 
+	status bar when the mouse enters the bar
+	"""
+	if enterOrLeave == "Enter":
+		if screenClass.currentScreen != homeScreen:
+			statusVar.set("Double click to go home")
+	else:
+		if screenClass.currentScreen != homeScreen:
+			statusVar.set(screenClass.currentName)
 
-def test():
-	askMessage("LEO","Hi")
-#============================================(MENUS/CASCADES)================================================
-
-#============CASCADES==========
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
@@ -447,16 +456,17 @@ helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 #============================================(BINDINGS)================================================
 
 #Status Bar
-#statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
-statusController.addBinding("<Double-Button-1>",lambda event: statusController.showView(statusLoadingView))
+statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
+statusMainView.addBinding("<Enter>",lambda event: showHomeMessage("Enter"))
+statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 
-#Home screen
-homeDisplayScreen.addBinding("<Double-Button-1>",lambda event: test() )
+
 #============================================(BUTTONS)================================================
 
 #============================================(INITIAL SETUP)================================================
 homeScreen.show()
 statusController.showView(statusMainView)
+
 
 #============================================(END)================================================
 window.mainloop()
