@@ -64,7 +64,8 @@ def recursiveChangeColour(parent,colour,fgColour):
 
 			#Update labels so they show up on certain colours
 			if parent.winfo_class() == "Label":
-					parent.config(fg=fgColour)
+					parent.changeColour(getColourForBackground(colour))
+
 		except:
 			pass
 
@@ -99,6 +100,7 @@ class mainLabel(Label):
 		#Setup
 		self.text=""
 		self.fontString=""
+		self.fg="#000000"
 		#If certain parameters are passed
 		if "text" in keyArgs:
 			self.text=keyArgs["text"]
@@ -108,7 +110,8 @@ class mainLabel(Label):
 
 		if "bg" in keyArgs:
 			try:
-				self.config(fg=getColourForBackground(keyArgs["bg"]))
+				self.fg=getColourForBackground(keyArgs["bg"])
+				self.config(fg=self.fg)
 			except:
 				report("Error changing label fg",keyArgs["bg"],tag="error")
 
@@ -168,6 +171,13 @@ class mainLabel(Label):
 		else:
 			report("Invalid font bold option")
 
+	def changeColour(self,colour):
+		self.config(fg=colour)
+		self.fg=getColourForBackground(colour)
+
+	def restoreColour(self):
+
+		self.config(fg=self.fg)
 
 class mainFrame(Frame):
 	"""
@@ -263,6 +273,7 @@ class displayView(mainFrame):
 	def __init__(self,parent):
 		mainFrame.__init__(self,parent)
 		self.frameArray=[]
+		self.labelDict={}
 
 	def addSection(self,colour,frameToDisplay):
 		frameToDisplay.colour(colour)
@@ -279,7 +290,10 @@ class displayView(mainFrame):
 		newFrameLabel=mainLabel(newFrame,text=text)
 		newFrameLabel.changeFontSize(16)
 		newFrameLabel.pack(expand=True)
+		self.labelDict[indentify]=newFrameLabel
+
 		self.addSection(colour,newFrame)
+
 		#Add Frame to dictionary to track it using identifier string
 		displayView.labelSections[indentify]=newFrame
 
@@ -298,6 +312,16 @@ class displayView(mainFrame):
 	def showSections(self):
 		for item in self.frameArray:
 			item.pack(expand=True, fill=BOTH)
+
+	def changeLabelColour(self,identifier,colour):
+		if identifier in self.labelDict:
+			instance=self.labelDict[identifier]
+			instance.changeColour(colour)
+
+	def restoreLabelColour(self,identifier):
+		if identifier in self.labelDict:
+			instance=self.labelDict[identifier]
+			instance.restoreColour()
 
 class masterControl(mainFrame):
 	"""
@@ -667,15 +691,19 @@ helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 #Status Bar
 statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
 
-
 statusMainView.addBinding("<Enter>",lambda event: showHomeMessage("Enter"))
 statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
+
+#Home screen
+homeDisplayScreen.addLabelCommand("Welcome","<Enter>",lambda event: homeDisplayScreen.changeLabelColour("Welcome","#F951A3"))
+homeDisplayScreen.addLabelCommand("Welcome","<Leave>",lambda event: homeDisplayScreen.restoreLabelColour("Welcome"))
 
 #============================================(SCREEN COMMANDS)================================================
 
 
 
 #============================================(BUTTONS)================================================
+
 
 #============================================(INITIAL SETUP)================================================
 homeScreen.show()
