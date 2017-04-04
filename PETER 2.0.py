@@ -181,9 +181,9 @@ class mainLabel(Label):
 		if "temp" in keyargs:
 			if keyargs["temp"]:
 				self.config(fg=colour)
-				self.fg=colour
 			else:
 				self.config(fg=colour)
+				self.fg=colour
 		else:
 			self.config(fg=colour)
 			self.fg=colour
@@ -334,7 +334,7 @@ class displayView(mainFrame):
 			instance=self.labelDict[identifier]
 			if "temp" in keyargs:
 				if keyargs["temp"] == True:
-					instance.changeColour(colour,temp=True)
+ 					instance.changeColour(colour,temp=True)
 				else:
 					instance.changeColour(colour)
 			else:
