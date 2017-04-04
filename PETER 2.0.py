@@ -202,9 +202,10 @@ class mainFrame(Frame):
 	automatically changes colours and updates text colours
 	 so they appear on dark/light background
 	"""
-	def __init(self,parent):
+	def __init__(self,parent):
 		Frame.__init__(self,parent)
 		self.labelViews=[]
+		self.colourVar=""
 
 	#Update colour method
 	def colour(self,chosenColour):
@@ -212,8 +213,12 @@ class mainFrame(Frame):
 		#Get FG colour for selected colour
 		fgColour=getColourForBackground(chosenColour)
 
+		self.colourVar=chosenColour
+
 		#Recursivley search through all children and change colour
 		recursiveChangeColour(self,chosenColour,fgColour)
+
+
 
 	#Add binding method
 	def addBinding(self,bindButton,bindFunction):
@@ -275,9 +280,6 @@ class screenClass(mainFrame):
 						item()
 					except:
 						report("Error executing lambda screen function",tag="error")
-
-
-
 
 class displayView(mainFrame):
 	"""
@@ -549,6 +551,24 @@ def generateHexColour():
 		hexValue=hexValue+"0"
 		hexLeng=len(hexValue)
 	return hexValue
+
+def getOppositeHexValue(hexValue):
+	"""
+	This function returns a hex value 
+	that is opposite the parameter value
+	in the colour spectrum
+	"""
+	hexValue = hexValue.replace("#", "")
+	binaryValue=str(bin(int(hexValue, 16))[2:])
+
+	#Twos Compliment to get opposite
+	binaryStep=binaryValue.replace("1","?")
+	binaryStep=binaryStep.replace("0","1")
+	binaryStep=binaryStep.replace("?","0")
+	numberValue=int(binaryStep,2)
+	numberValue+=1
+	finalValue=convertHex(numberValue,"Hex")
+	print(finalValue)
 #============================================(CLASSES)================================================
 
 class studentClass:
@@ -616,7 +636,7 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
 
-homeDisplayScreen.addLabelSection("Welcome","#000000","Welcome")
+homeDisplayScreen.addLabelSection("Welcome","#2F9679","Welcome")
 homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
 homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
@@ -717,7 +737,8 @@ statusMainView.addBinding("<Enter>",lambda event: showHomeMessage("Enter"))
 statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 
 #Home screen
-homeDisplayScreen.addLabelCommand("Welcome","<Enter>",lambda event: homeDisplayScreen.changeLabelColour("Welcome","#F951A3",temp=True))
+homeDisplayScreen.addLabelCommand("Welcome","<Enter>",lambda event: homeDisplayScreen.changeLabelColour("Welcome",
+                                  getOppositeHexValue(homeDisplayScreen.colourVar),temp=True))
 homeDisplayScreen.addLabelCommand("Welcome","<Leave>",lambda event: homeDisplayScreen.restoreLabelColour("Welcome"))
 
 #============================================(SCREEN COMMANDS)================================================
@@ -734,5 +755,6 @@ statusController.showView(statusMainView)
 students=getContent("pupils.txt")
 createStudents(students)
 
+getOppositeHexValue("#000000")
 #============================================(END)================================================
 window.mainloop()
