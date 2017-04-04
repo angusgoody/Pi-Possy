@@ -331,7 +331,6 @@ class displayView(mainFrame):
 		if identifier in self.labelDict:
 			instance=self.labelDict[identifier]
 			if "temp" in keyargs:
-				print(keyargs)
 				if keyargs["temp"] == True:
 					instance.changeColour(colour,temp=True)
 				else:
@@ -345,10 +344,20 @@ class displayView(mainFrame):
 			instance.restoreColour()
 
 	def bindAllHover(self,colour,**keyargs):
+		"""
+		This method binds the "Enter" command
+		to all the labels and changes their colour
+		when the mouse enters it
+		"""
 		for label in self.labelDict:
-			self.labelDict[label].bind("<Enter>",lambda event,lab=label,col=colour,args=keyargs: self.changeLabelColour(lab,col,**args))
+			self.labelDict[label].bind("<Enter>",lambda event,lab=label,col=colour,args=keyargs: self.changeLabelColour(lab,col,temp=True))
 
 	def bindAllLeave(self):
+		"""
+		This method binds the leave
+		command to reset the label to 
+		the default colour
+		"""
 		for label in self.labelDict:
 			print(label)
 			self.labelDict[label].bind("<Leave>",lambda event,lab=label: self.restoreLabelColour(lab))
@@ -406,6 +415,7 @@ class masterControl(mainFrame):
 #====================LOG SCREEN====================
 
 #region logscreen
+#todo add notebook view for notebook to view system events
 logScreen=screenClass("Logs")
 
 columnArray=["Message","Time"]
@@ -749,7 +759,7 @@ statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 
 #============================================(SCREEN COMMANDS)================================================
 
-homeDisplayScreen.bindAllHover("#42E300",temp=True)
+homeDisplayScreen.bindAllHover("#42E300")
 homeDisplayScreen.bindAllLeave()
 
 #============================================(BUTTONS)================================================
