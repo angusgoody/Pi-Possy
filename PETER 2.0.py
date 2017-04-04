@@ -171,12 +171,28 @@ class mainLabel(Label):
 		else:
 			report("Invalid font bold option")
 
-	def changeColour(self,colour):
-		self.config(fg=colour)
-		self.fg=getColourForBackground(colour)
+	def changeColour(self,colour,**keyargs):
+		"""
+		This method changes the fg of
+		 the label and if temp is passed as
+		 true it will not update the labels fg 
+		 value so it remembers the old one
+		"""
+		if "temp" in keyargs:
+			if keyargs["temp"]:
+				self.config(fg=colour)
+				self.fg=colour
+			else:
+				self.config(fg=colour)
+		else:
+			self.config(fg=colour)
+			self.fg=colour
+
+
+
+
 
 	def restoreColour(self):
-
 		self.config(fg=self.fg)
 
 class mainFrame(Frame):
@@ -313,10 +329,16 @@ class displayView(mainFrame):
 		for item in self.frameArray:
 			item.pack(expand=True, fill=BOTH)
 
-	def changeLabelColour(self,identifier,colour):
+	def changeLabelColour(self,identifier,colour,**keyargs):
 		if identifier in self.labelDict:
 			instance=self.labelDict[identifier]
-			instance.changeColour(colour)
+			if "temp" in keyargs:
+				if keyargs["temp"] == True:
+					instance.changeColour(colour,temp=True)
+				else:
+					instance.changeColour(colour)
+			else:
+				instance.changeColour(colour)
 
 	def restoreLabelColour(self,identifier):
 		if identifier in self.labelDict:
@@ -594,7 +616,7 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
 
-homeDisplayScreen.addLabelSection("Welcome","#1BF293","Welcome")
+homeDisplayScreen.addLabelSection("Welcome","#000000","Welcome")
 homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
 homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
@@ -695,7 +717,7 @@ statusMainView.addBinding("<Enter>",lambda event: showHomeMessage("Enter"))
 statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 
 #Home screen
-homeDisplayScreen.addLabelCommand("Welcome","<Enter>",lambda event: homeDisplayScreen.changeLabelColour("Welcome","#F951A3"))
+homeDisplayScreen.addLabelCommand("Welcome","<Enter>",lambda event: homeDisplayScreen.changeLabelColour("Welcome","#F951A3",temp=True))
 homeDisplayScreen.addLabelCommand("Welcome","<Leave>",lambda event: homeDisplayScreen.restoreLabelColour("Welcome"))
 
 #============================================(SCREEN COMMANDS)================================================
