@@ -553,12 +553,14 @@ def generateHexColour():
 	return hexValue
 
 def getOppositeHexValue(hexValue):
+	#todo this is not working
 	"""
 	This function returns a hex value 
 	that is opposite the parameter value
 	in the colour spectrum
 	"""
 	hexValue = hexValue.replace("#", "")
+	print(hexValue)
 	binaryValue=str(bin(int(hexValue, 16))[2:])
 
 	#Twos Compliment to get opposite
@@ -737,9 +739,6 @@ statusMainView.addBinding("<Enter>",lambda event: showHomeMessage("Enter"))
 statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 
 #Home screen
-homeDisplayScreen.addLabelCommand("Welcome","<Enter>",lambda event: homeDisplayScreen.changeLabelColour("Welcome",
-                                  getOppositeHexValue(homeDisplayScreen.colourVar),temp=True))
-homeDisplayScreen.addLabelCommand("Welcome","<Leave>",lambda event: homeDisplayScreen.restoreLabelColour("Welcome"))
 
 #============================================(SCREEN COMMANDS)================================================
 
@@ -755,6 +754,5 @@ statusController.showView(statusMainView)
 students=getContent("pupils.txt")
 createStudents(students)
 
-getOppositeHexValue("#000000")
 #============================================(END)================================================
 window.mainloop()
