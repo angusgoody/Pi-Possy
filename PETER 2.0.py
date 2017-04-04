@@ -556,19 +556,10 @@ statusLoading=ttk.Progressbar(statusLoadingView, orient="horizontal", length=200
 statusLoading.pack(fill=X)
 statusLoadingView.colour("#A9F955")
 
-#Status Log View
-statusLogTagView=mainFrame(statusController)
-statusLogTagViewSub=mainFrame(statusLogTagView)
-statusLogTagViewSub.pack(expand=True)
-
-for item in logTreeTagDict:
-	mainLabel(statusLogTagViewSub,text=item,bg=logTreeTagDict[item]).pack(side=LEFT)
-
 
 #Adding Views to status control
 statusController.addView(statusMainView)
 statusController.addView(statusLoadingView)
-statusController.addView(statusLogTagView)
 #endregion
 #====================HOME SCREEN====================
 #region homescreen
@@ -675,16 +666,14 @@ helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 
 #Status Bar
 statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
-#statusController.addBinding("<Double-Button-1>",lambda event: statusController.showView(statusMainView))
-# TODO add multiple lambda bindings to addBinding class
+
 
 statusMainView.addBinding("<Enter>",lambda event: showHomeMessage("Enter"))
 statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 
 #============================================(SCREEN COMMANDS)================================================
 
-#Log screen
-logScreen.addLambdaCommand(lambda :statusController.showView(statusLogTagView))
+
 
 #============================================(BUTTONS)================================================
 
