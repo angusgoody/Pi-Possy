@@ -188,10 +188,6 @@ class mainLabel(Label):
 			self.config(fg=colour)
 			self.fg=colour
 
-
-
-
-
 	def restoreColour(self):
 		self.config(fg=self.fg)
 
@@ -335,8 +331,9 @@ class displayView(mainFrame):
 		if identifier in self.labelDict:
 			instance=self.labelDict[identifier]
 			if "temp" in keyargs:
+				print(keyargs)
 				if keyargs["temp"] == True:
- 					instance.changeColour(colour,temp=True)
+					instance.changeColour(colour,temp=True)
 				else:
 					instance.changeColour(colour)
 			else:
@@ -346,6 +343,16 @@ class displayView(mainFrame):
 		if identifier in self.labelDict:
 			instance=self.labelDict[identifier]
 			instance.restoreColour()
+
+	def bindAllHover(self,colour,**keyargs):
+		for label in self.labelDict:
+			self.labelDict[label].bind("<Enter>",lambda event,lab=label,col=colour,args=keyargs: self.changeLabelColour(lab,col,**args))
+
+	def bindAllLeave(self):
+		for label in self.labelDict:
+			print(label)
+			self.labelDict[label].bind("<Leave>",lambda event,lab=label: self.restoreLabelColour(lab))
+
 
 class masterControl(mainFrame):
 	"""
@@ -742,7 +749,8 @@ statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 
 #============================================(SCREEN COMMANDS)================================================
 
-
+homeDisplayScreen.bindAllHover("#42E300",temp=True)
+homeDisplayScreen.bindAllLeave()
 
 #============================================(BUTTONS)================================================
 
