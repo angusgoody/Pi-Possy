@@ -70,6 +70,7 @@ def recursiveChangeColour(parent,colour,fgColour):
 			pass
 
 def recursiveBind(parent,bindButton,bindFunction):
+	report("Added recursive binding to",parent.winfo_class(),tag="system")
 	"""
 	This function is similar to the change colour function
 	but it uses recursion to add a binding to every child
@@ -248,7 +249,7 @@ class screenClass(mainFrame):
 
 			#Run screen commands
 			self.runCommands()
-			report("Loaded screen",self.name,tag="screen")
+			report("Loaded screen",self.name,tag="system")
 
 	def addCommand(self,command):
 		self.runCommandDict[command]="function"
@@ -421,8 +422,13 @@ logScreen=screenClass("Logs")
 columnArray=["Message","Time"]
 allColumnArray=["Message","Time"]
 
-#Display log widgets
-logTree=ttk.Treeview(logScreen,columns=allColumnArray,show="headings")
+#Log screen notebook View
+
+logScreenNotebook=ttk.Notebook(logScreen)
+logScreenNotebook.pack(expand=True,fill=BOTH)
+
+#Display log widgets view
+logTree=ttk.Treeview(logScreenNotebook,columns=allColumnArray,show="headings")
 logTree.pack(fill="both",expand=True)
 
 logTree.column("Message",width=10,minwidth=45)
@@ -431,15 +437,31 @@ logTree.column("Time",width=5,minwidth=20)
 logTree.heading("Message",text="Message")
 logTree.heading("Time",text="Time")
 
+#Log Tree events view
+logSystemTree=ttk.Treeview(logScreenNotebook,columns=allColumnArray,show="headings")
+logSystemTree.pack(fill="both",expand=True)
+
+logSystemTree.column("Message",width=10,minwidth=45)
+logSystemTree.column("Time",width=5,minwidth=20)
+
+logSystemTree.heading("Message",text="Message")
+logSystemTree.heading("Time",text="Time")
+
+#Add notebook pages
+logScreenNotebook.add(logTree,text="Normal")
+logScreenNotebook.add(logSystemTree,text="System")
+
 #Add Tree View tags here
 logTreeTagDict={"font":"#8990E3",
                 "screen":"#8EE3DF",
                 "file":"#E37DB8",
                 "error":"#E36265",
-                "warning":"#E3B521"}
+                "warning":"#E3B521",
+                "system":"#AED3D2"}
 
 for tag in logTreeTagDict:
 	logTree.tag_configure(tag,background=logTreeTagDict[tag])
+	logSystemTree.tag_configure(tag,background=logTreeTagDict[tag])
 
 
 #endregion
@@ -451,6 +473,7 @@ for tag in logTreeTagDict:
 def report(message,*extra,**keywords):
 
 	tag=""
+
 	#Check for extra info
 	if len(extra) > 0:
 		#Concatonate variables
@@ -465,13 +488,15 @@ def report(message,*extra,**keywords):
 
 	currentTime=datetime.datetime.now().time()
 	temp=[message,currentTime]
-
-	#Makes sure logArray isn't filled up
-	if len(mainLogArray) < maxLogSize:
-		mainLogArray.append(temp)
+	if tag == "system":
+		logSystemTree.insert("" , 0,values=(message,currentTime),tags=tag)
 	else:
-		print("Log array filled up")
-	logTree.insert("" , 0,values=(message,currentTime),tags=(tag))
+		#Makes sure logArray isn't filled up
+		if len(mainLogArray) < maxLogSize:
+			mainLogArray.append(temp)
+		else:
+			print("Log array filled up")
+		logTree.insert("" , 0,values=(message,currentTime),tags=tag)
 
 #==============FILE FUNCTIONS================
 def getContent(fileName):
