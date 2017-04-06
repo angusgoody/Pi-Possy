@@ -230,11 +230,19 @@ class screenClass(mainFrame):
 	currentName=""
 	currentScreen=""
 	def __init__(self,name):
+
 		#Initialise the instance as a frame as well
 		mainFrame.__init__(self,window)
 		self.name=name
 		screenClass.screenArray.append(self)
 		self.runCommandDict={}
+
+		#Track status bar frames
+		self.statusBarList=[]
+
+		#Add a status bar to every screen
+		self.statusBottom=mainFrame(self)
+
 
 	#Show screen method
 	def show(self):
@@ -249,15 +257,17 @@ class screenClass(mainFrame):
 
 			#Run screen commands
 			self.runCommands()
-			report("Loaded screen",self.name,tag="system",system=True)
+			report("Loaded screen",self.name,tag="screen",system=True)
 
+	#Add command method
 	def addCommand(self,command):
 		self.runCommandDict[command]="function"
 
+	#Add a command with lambda
 	def addLambdaCommand(self,command):
 		self.runCommandDict[command]="command"
 
-
+	#Run the commands
 	def runCommands(self):
 		"""
 		This method runs certain commands when the screen is loaded. These can
@@ -278,6 +288,17 @@ class screenClass(mainFrame):
 						item()
 					except:
 						report("Error executing lambda screen function",tag="error")
+
+	def addStatusScreen(self,frameToAdd):
+		report("Adding item to status bar of type",type(frameToAdd),tag="screen",system=True)
+		self.statusBarList.append(frameToAdd)
+
+	def showStatusScreen(self,screenToShow):
+		if screenToShow in self.statusBarList:
+			for screen in self.statusBarList:
+				screen.pack_forget()
+			screenToShow.pack(side=BOTTOM,fill=X)
+
 
 class displayView(mainFrame):
 	"""
@@ -466,8 +487,8 @@ logScreenNotebook.add(logTree,text="Normal")
 logScreenNotebook.add(logSystemTree,text="System")
 
 #Add Tree View tags here
-logTreeTagDict={"font":"#8990E3",
-                "screen":"#8EE3DF",
+logTreeTagDict={"font":"#B1FF5E",
+                "screen":"#9195FF",
                 "file":"#E37DB8",
                 "error":"#E36265",
                 "warning":"#E3B521",
@@ -499,7 +520,6 @@ def report(message,*extra,**keywords):
 
 	#Check for tags and system data
 	for item in keywords:
-		print(item)
 		if item == "tag":
 			tag=keywords[item]
 		elif item == "system":
@@ -715,6 +735,15 @@ homeDisplayScreen.showSections()
 #endregion
 #====================View All SCREEN================
 viewAllScreen=screenClass("View All")
+
+#====================Log Screen Extra================
+logScreenStatus=mainFrame(logScreen)
+logScreenStatusSub=mainFrame(logScreenStatus)
+logScreenStatusSub.pack(expand=True)
+
+for item in logTreeTagDict:
+	mainLabel(logScreenStatusSub,text=item,bg=logTreeTagDict[item]).pack(fill=X,side=LEFT)
+
 #============================================(MAIN FUNCTIONS)================================================
 
 #=========UTILITY FUNCTIONS===========
@@ -823,5 +852,7 @@ statusController.showView(statusMainView)
 students=getContent("pupils.txt")
 createStudents(students)
 
+logScreen.addStatusScreen(logScreenStatus)
+logScreen.showStatusScreen(logScreenStatus)
 #============================================(END)================================================
 window.mainloop()
