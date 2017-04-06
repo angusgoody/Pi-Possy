@@ -263,6 +263,7 @@ class screenClass(mainFrame):
 		This method runs certain commands when the screen is loaded. These can
 		be setup commands etc
 		"""
+
 		if len(self.runCommandDict) > 0:
 			for item in self.runCommandDict:
 				print(self.runCommandDict)
@@ -344,14 +345,26 @@ class displayView(mainFrame):
 			instance=self.labelDict[identifier]
 			instance.restoreColour()
 
-	def bindAllHover(self,colour,**keyargs):
+	def bindAllHover(self,*colour,**keyargs):
 		"""
 		This method binds the "Enter" command
 		to all the labels and changes their colour
 		when the mouse enters it
 		"""
-		for label in self.labelDict:
-			self.labelDict[label].bind("<Enter>",lambda event,lab=label,col=colour,args=keyargs: self.changeLabelColour(lab,col,temp=True))
+
+		#Opposite binds the oposite colour when hovering over label
+		if "opposite" in keyargs:
+			for label in self.labelDict:
+				if keyargs["opposite"] == True:
+					labelInstance=self.labelDict[label]
+					oppositeCol=getColourForBackground(labelInstance.fg)
+					labelInstance.bind("<Enter>",lambda event,
+				                                            lab=label,col=oppositeCol,args=keyargs: self.changeLabelColour(lab,col,temp=True))
+		elif len(colour) > 0:
+			colour=colour[0]
+			for label in self.labelDict:
+				self.labelDict[label].bind("<Enter>",lambda event,
+				                                            lab=label,col=colour,args=keyargs: self.changeLabelColour(lab,col,temp=True))
 
 	def bindAllLeave(self):
 		"""
@@ -369,6 +382,7 @@ class masterControl(mainFrame):
 	This frame is used to control different
 	views that can be changed.
 	"""
+
 	viewArray=[]
 	def __init__(self,parent):
 		mainFrame.__init__(self,parent)
@@ -781,11 +795,12 @@ statusMainView.addBinding("<Enter>",lambda event: showHomeMessage("Enter"))
 statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 
 #Home screen
+homeDisplayScreen.bindAllHover(opposite=True)
+homeDisplayScreen.bindAllLeave()
 
 #============================================(SCREEN COMMANDS)================================================
 
-homeDisplayScreen.bindAllHover("#42E300")
-homeDisplayScreen.bindAllLeave()
+
 
 #============================================(BUTTONS)================================================
 
