@@ -70,7 +70,7 @@ def recursiveChangeColour(parent,colour,fgColour):
 			pass
 
 def recursiveBind(parent,bindButton,bindFunction):
-	report("Added recursive binding to",parent.winfo_class(),tag="system")
+	report("Added recursive binding to",parent.winfo_class(),tag="binding",system=True)
 	"""
 	This function is similar to the change colour function
 	but it uses recursion to add a binding to every child
@@ -249,7 +249,7 @@ class screenClass(mainFrame):
 
 			#Run screen commands
 			self.runCommands()
-			report("Loaded screen",self.name,tag="system")
+			report("Loaded screen",self.name,tag="system",system=True)
 
 	def addCommand(self,command):
 		self.runCommandDict[command]="function"
@@ -471,7 +471,8 @@ logTreeTagDict={"font":"#8990E3",
                 "file":"#E37DB8",
                 "error":"#E36265",
                 "warning":"#E3B521",
-                "system":"#AED3D2"}
+                "binding":"#F4FF2B",
+                "system":"#FFCCD0"}
 
 for tag in logTreeTagDict:
 	logTree.tag_configure(tag,background=logTreeTagDict[tag])
@@ -487,6 +488,7 @@ for tag in logTreeTagDict:
 def report(message,*extra,**keywords):
 
 	tag=""
+	system=False
 
 	#Check for extra info
 	if len(extra) > 0:
@@ -495,14 +497,23 @@ def report(message,*extra,**keywords):
 			message+=" "
 			message+=str(item)
 
-	#Check for tags
-	if len(keywords) > 0:
-		if "tag" in keywords:
-			tag=keywords["tag"]
+	#Check for tags and system data
+	for item in keywords:
+		print(item)
+		if item == "tag":
+			tag=keywords[item]
+		elif item == "system":
+			systemValue=keywords[item]
+			if systemValue:
+				system=True
 
+
+	#Gets current time and date
 	currentTime=datetime.datetime.now().time()
 	temp=[message,currentTime]
-	if tag == "system":
+
+	#If the data is system data put it in separate tree
+	if system:
 		logSystemTree.insert("" , 0,values=(message,currentTime),tags=tag)
 	else:
 		#Makes sure logArray isn't filled up
