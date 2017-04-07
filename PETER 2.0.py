@@ -197,12 +197,17 @@ class mainFrame(Frame):
 	This is a modified frame class which 
 	can be modified for every frame on screen. It 
 	automatically changes colours and updates text colours
-	 so they appear on dark/light background
+	 so they appear on dark/light background handles bindings and pop up
+	 menus
 	"""
 	def __init__(self,parent):
 		Frame.__init__(self,parent)
 		self.labelViews=[]
 		self.colourVar=""
+
+		#Pop up menu
+		self.popUpMenu=Menu(self)
+
 
 	#Update colour method
 	def colour(self,chosenColour):
@@ -215,11 +220,16 @@ class mainFrame(Frame):
 		#Recursivley search through all children and change colour
 		recursiveChangeColour(self,chosenColour,fgColour)
 
-
-
 	#Add binding method
 	def addBinding(self,bindButton,bindFunction):
 		recursiveBind(self,bindButton,bindFunction)
+
+	#Add a popup menu when right clicking on frame
+	def addPopMenu(self,menuDict):
+		for item in menuDict:
+			self.popUpMenu.add_command(label=item,command=menuDict[item])
+		#Bind right click menu to self
+		self.addBinding("<Button-2>",lambda event: self.popUpMenu.post(event.x_root, event.y_root))
 
 class screenClass(mainFrame):
 	"""
@@ -299,7 +309,6 @@ class screenClass(mainFrame):
 				screen.pack_forget()
 			screenToShow.pack(side=BOTTOM,fill=X)
 
-
 class displayView(mainFrame):
 	"""
 	This is the class for displaying multiple frames
@@ -309,8 +318,12 @@ class displayView(mainFrame):
 	labelSections={}
 	def __init__(self,parent):
 		mainFrame.__init__(self,parent)
+		#Tracks all frames
 		self.frameArray=[]
+		#Tracks just labels
 		self.labelDict={}
+		#Tracks frames with labels in
+		self.labelFrameDict={}
 
 	def addSection(self,colour,frameToDisplay):
 		frameToDisplay.colour(colour)
@@ -328,7 +341,7 @@ class displayView(mainFrame):
 		newFrameLabel.changeFontSize(16)
 		newFrameLabel.pack(expand=True)
 		self.labelDict[indentify]=newFrameLabel
-
+		self.labelFrameDict[indentify]=newFrame
 		self.addSection(colour,newFrame)
 
 		#Add Frame to dictionary to track it using identifier string
@@ -397,11 +410,22 @@ class displayView(mainFrame):
 			print(label)
 			self.labelDict[label].bind("<Leave>",lambda event,lab=label: self.restoreLabelColour(lab))
 
+	def getLabelFrameSection(self, identifier):
+		"""
+		This method will return the object of the frame
+		so it can be used in the main program
+		"""
+		if identifier in self.labelFrameDict:
+			match=self.labelFrameDict[identifier]
+			return match
+		else:
+			print("Please use valid identifier")
 
 class masterControl(mainFrame):
 	"""
-	This frame is used to control different
-	views that can be changed.
+	This class is basically a mini TK window
+	inside a frame or section of the program. It can
+	itself display diffrent frames.
 	"""
 
 	viewArray=[]
@@ -451,7 +475,6 @@ class masterControl(mainFrame):
 #====================LOG SCREEN====================
 
 #region logscreen
-#todo add notebook view for notebook to view system events
 logScreen=screenClass("Logs")
 
 columnArray=["Message","Time"]
@@ -784,6 +807,8 @@ def updateGlobalFont(font):
 	report("Updated global font to",font,tag="font")
 
 def createStudents(fileContent):
+	#todo fix this function
+
 	validItems=["Name","Second","Age","Grade","PB","Notes"]
 	studentCounter=0
 	#Makes sure maximum of 500 students are loaded
@@ -807,10 +832,8 @@ def createStudents(fileContent):
 					for section in studentDict:
 						print(section)
 
-
-
-
-
+def test():
+	askMessage("Test","Lol")
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
 mainMenu.add_cascade(label="Students",menu=studentMenu)
@@ -838,6 +861,11 @@ statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 homeDisplayScreen.bindAllHover(opposite=True)
 homeDisplayScreen.bindAllLeave()
 
+
+#welcomeSection=homeDisplayScreen.getLabelFrameSection("Welcome")
+#welcomeSection.addPopMenu()
+
+homeDisplayScreen.addPopMenu({"Command 1":lambda: test()})
 #============================================(SCREEN COMMANDS)================================================
 
 
