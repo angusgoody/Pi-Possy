@@ -7,10 +7,10 @@
 #============================================(IMPORTS)================================================
 from tkinter import *
 from tkinter import messagebox
-from tkinter import font
 from tkinter import ttk
 import random
 import datetime
+from collections import OrderedDict
 
 #============================================(WINDOW SETUP)================================================
 window=Tk()
@@ -70,10 +70,10 @@ def recursiveChangeColour(parent,colour,fgColour):
 			pass
 
 def recursiveBind(parent,bindButton,bindFunction):
-	report("Added recursive binding to",parent.winfo_class(),tag="binding",system=True)
 	"""
-	This function is similar to the change colour function
-	but it uses recursion to add a binding to every child
+	This function is very important because python
+	only binds functions to one item. This function will
+	bind all the children of that item to the same function.
 	"""
 	parentClass=parent.winfo_class()
 	if parentClass == "Frame":
@@ -86,6 +86,8 @@ def recursiveBind(parent,bindButton,bindFunction):
 			parent.bind(bindButton,bindFunction)
 		except:
 			pass
+	report("Added recursive binding to",parent.winfo_class(),tag="binding",system=True)
+
 
 class mainLabel(Label):
 	"""
@@ -485,9 +487,15 @@ allColumnArray=["Message","Time"]
 logScreenNotebook=ttk.Notebook(logScreen)
 logScreenNotebook.pack(expand=True,fill=BOTH)
 
-#Display log widgets view
+#Display log normal view
 logTree=ttk.Treeview(logScreenNotebook,columns=allColumnArray,show="headings")
 logTree.pack(fill="both",expand=True)
+
+logTreeScroll=Scrollbar(logTree)
+logTreeScroll.pack(side=RIGHT,fill=Y)
+
+logTreeScroll.config(command=logTree.yview)
+logTree.config(yscrollcommand=logTreeScroll.set)
 
 logTree.column("Message",width=10,minwidth=45)
 logTree.column("Time",width=5,minwidth=20)
@@ -495,9 +503,15 @@ logTree.column("Time",width=5,minwidth=20)
 logTree.heading("Message",text="Message")
 logTree.heading("Time",text="Time")
 
-#Log Tree events view
+#Log Tree system events view
 logSystemTree=ttk.Treeview(logScreenNotebook,columns=allColumnArray,show="headings")
 logSystemTree.pack(fill="both",expand=True)
+
+logSystemTreeScroll=Scrollbar(logSystemTree)
+logSystemTreeScroll.pack(side=RIGHT,fill=Y)
+
+logSystemTreeScroll.config(command=logSystemTree.yview)
+logSystemTree.config(yscrollcommand=logSystemTreeScroll.set)
 
 logSystemTree.column("Message",width=10,minwidth=45)
 logSystemTree.column("Time",width=5,minwidth=20)
@@ -865,7 +879,7 @@ homeDisplayScreen.bindAllLeave()
 #welcomeSection=homeDisplayScreen.getLabelFrameSection("Welcome")
 #welcomeSection.addPopMenu()
 
-homeDisplayScreen.addPopMenu({"Command 1":lambda: test()})
+homeDisplayScreen.addPopMenu({"Command 1":lambda: test(),"Command 2":lambda: test(),"Command 3":lambda: test()})
 #============================================(SCREEN COMMANDS)================================================
 
 
