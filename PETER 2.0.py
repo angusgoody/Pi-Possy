@@ -29,13 +29,14 @@ helpMenu=Menu(mainMenu)
 
 #============================================(GLOBAL VARIABLES)================================================
 maxLogSize=100
-mainPassColour="#20C66A"
+mainPassColour="#85EB00"
 mainFailColour="#F07A90"
 mainUnknownColour="#C7BC27"
+viewAllCounterVar=StringVar()
 #============================================(GLOBAL ARRAYS)================================================
 mainLogArray=[]
 passGrades=["A*","A","B","C"]
-#============================================(EXTRA CODE SPACE)===================================== ===========
+#============================================(EXTRA CODE SPACE)================================================
 """
 This area is for code that needs to be
 at the top of the program because it needs
@@ -155,9 +156,9 @@ class mainLabel(Label):
 		try:
 			self.config(font=temp)
 		except:
-			report("Error updating font",temp,tag="error")
+			report("Error updating font",self.text,temp,tag="error")
 		else:
-			report("Successfully updated font",tag="font")
+			report("Successfully updated font",self.text,tag="font")
 
 	def changeFontSize(self,size):
 		self.fontSize=size
@@ -514,6 +515,9 @@ class studentListbox(Listbox):
 		if wholeName not in self.listDict:
 			self.listDict[wholeName]=studentInstance
 
+		#Update label
+		amount=len(self.get(0,END))
+		viewAllCounterVar.set(str(amount)+" Results")
 
 	def addArray(self,arrayData):
 		self.delete(0,END)
@@ -813,14 +817,14 @@ statusBaseFrame.colour("#F951A3")
 statusController=masterControl(statusBaseFrame)
 statusController.pack(expand=True, fill=BOTH)
 
-#=================STATUS SUB VIEWS============
+#-------------STATUS SUB VIEWS-----------
 
 
 #Actual Status View
 statusMainView=mainFrame(statusController)
 mainStatusLabel=mainLabel(statusMainView,textvariable=statusVar,font="Arial 15 bold")
 mainStatusLabel.pack(expand=True)
-statusMainView.colour("#A9F955")
+statusMainView.colour("#577EEB")
 
 #Status Loading View
 statusLoadingView=mainFrame(statusController)
@@ -844,7 +848,7 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 homeDisplayScreen.addLabelSection("Welcome","#2F9679","Welcome")
 homeWelcomeLabel=homeDisplayScreen.getLabelObject("Welcome")
-homeWelcomeLabel.changeFontSize(34)
+homeWelcomeLabel.changeFontSize(25)
 """
 homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
@@ -857,7 +861,42 @@ homeDisplayScreen.showSections()
 #region viewall
 viewAllScreen=screenClass("View All")
 
-viewAllListbox=studentListbox(viewAllScreen,font=font.Font(size=19))
+#-------Search Bar-------
+
+viewAllSearchFrame=mainFrame(viewAllScreen)
+viewAllSearchFrame.pack(side=TOP,fill=X,pady=5)
+
+viewAllSearchSubFrame=mainFrame(viewAllSearchFrame)
+viewAllSearchSubFrame.pack(expand=True)
+
+viewAllSearchSubEntryFrame=mainFrame(viewAllSearchSubFrame)
+viewAllSearchSubEntryFrame.pack(side=LEFT)
+
+#Label
+viewAllSearchLabel=mainLabel(viewAllSearchSubEntryFrame,text="Search")
+viewAllSearchLabel.pack(side=LEFT)
+
+#Entry
+viewAllSearchEntry=Entry(viewAllSearchSubEntryFrame,width=30)
+viewAllSearchEntry.pack(side=RIGHT)
+
+#Clear button
+viewAllClearButton=Button(viewAllSearchSubFrame,text="Clear")
+viewAllClearButton.pack(side=RIGHT,padx=5)
+
+#Counter Label
+
+viewAllCounterFrame=mainFrame(viewAllScreen)
+viewAllCounterFrame.pack(fill=X)
+
+viewAllCounterLabel=mainLabel(viewAllCounterFrame,textvariable=viewAllCounterVar)
+viewAllCounterLabel.pack(expand=True)
+
+#-------Listbox--------
+viewAllListboxFrame=mainFrame(viewAllScreen)
+viewAllListboxFrame.pack(expand=True,fill=BOTH)
+
+viewAllListbox=studentListbox(viewAllListboxFrame,font=font.Font(size=19))
 viewAllListbox.pack(expand=True,fill=BOTH)
 
 
@@ -884,7 +923,7 @@ def askMessage(pre,message):
 		messagebox.showinfo(pre,message)
 	except:
 		print(message)
-""
+
 def insertEntry(entry,message):
 	"""
 	This function will add text into entry
