@@ -800,8 +800,6 @@ class studentClass:
 		           "Pb":self.pb,
 		           "Notes":self.notes}
 
-
-
 #============================================(MAIN UI SETUP)================================================
 
 #====================STATUS BAR====================
@@ -846,14 +844,13 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
 
-homeDisplayScreen.addLabelSection("Welcome","#2F9679","Welcome")
+homeDisplayScreen.addLabelSection("Welcome","#E2698B","Welcome")
 homeWelcomeLabel=homeDisplayScreen.getLabelObject("Welcome")
 homeWelcomeLabel.changeFontSize(25)
-"""
-homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
-homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
-homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
-"""
+homeDisplayScreen.addLabelSection("All Pupils","#C75D7C","Total")
+homeDisplayScreen.addLabelSection("A-C Pupils","#AA4F69","Pass")
+homeDisplayScreen.addLabelSection("D-F Pupils","#8F4359","Fail")
+
 homeDisplayScreen.showSections()
 
 #endregion
@@ -931,6 +928,8 @@ def insertEntry(entry,message):
 	entry.delete(0,END)
 	entry.insert(END,message)
 
+def mainSearch(target,section,dataToSearch):
+	pass
 #=========PROGRAM FUNCTIONS===========
 def showHomeMessage(enterOrLeave):
 	"""
