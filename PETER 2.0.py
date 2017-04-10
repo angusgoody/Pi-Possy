@@ -10,8 +10,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import random
 import datetime
-from collections import OrderedDict
-
+from tkinter import font
 #============================================(WINDOW SETUP)================================================
 window=Tk()
 window.title("PETER 2.0")
@@ -30,13 +29,13 @@ helpMenu=Menu(mainMenu)
 
 #============================================(GLOBAL VARIABLES)================================================
 maxLogSize=100
-mainPassColour="#5EC744"
-mainFailColour="#C76D83"
+mainPassColour="#20C66A"
+mainFailColour="#F07A90"
 mainUnknownColour="#C7BC27"
 #============================================(GLOBAL ARRAYS)================================================
 mainLogArray=[]
 passGrades=["A*","A","B","C"]
-#============================================(EXTRA CODE SPACE)================================================
+#============================================(EXTRA CODE SPACE)===================================== ===========
 """
 This area is for code that needs to be
 at the top of the program because it needs
@@ -425,6 +424,13 @@ class displayView(mainFrame):
 		else:
 			print("Please use valid identifier")
 
+	def getLabelObject(self,identifier):
+		if identifier in self.labelDict:
+			match=self.labelDict[identifier]
+			return match
+		else:
+			print("Use valid identifier")
+
 class masterControl(mainFrame):
 	"""
 	This class is basically a mini TK window
@@ -477,35 +483,47 @@ class masterControl(mainFrame):
 			frameToPack.pack(expand=True,fill=BOTH,side=TOP)
 
 class studentListbox(Listbox):
-	def __init__(self,parent):
-		Listbox.__init__(self,parent)
+	def __init__(self,parent,**kwargs):
+		Listbox.__init__(self,parent,kwargs)
 		self.listData=[]
+		self.listDict={}
 
 	def add(self,studentInstance):
 
-		sectionColour=mainUnknownColour
-
-		#Check grade first
+		#Get colour for grade
 		grade=studentInstance.grade
 		if grade in passGrades:
 			sectionColour=mainPassColour
 		else:
 			sectionColour=mainFailColour
 
+
 		#Get Name and Second
 
 		wholeName=studentInstance.fullName
 
 		#Add to list data
-		self.listData.append(studentInstance)
+		if studentInstance not in self.listData:
+			self.listData.append(studentInstance)
 
 		#Add to listbox
 		self.insert(END,wholeName)
 		self.itemconfig(END,bg=sectionColour)
 
+		#Add to dictionary
+		if wholeName not in self.listDict:
+			self.listDict[wholeName]=studentInstance
+
 
 	def addArray(self,arrayData):
-		pass
+		self.delete(0,END)
+		for student in arrayData:
+			self.add(student)
+
+	def clear(self):
+		self.listDict={}
+		self.listData=[]
+
 #====================LOG SCREEN====================
 
 #region logscreen
@@ -825,10 +843,13 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 #Section setup
 
 homeDisplayScreen.addLabelSection("Welcome","#2F9679","Welcome")
+homeWelcomeLabel=homeDisplayScreen.getLabelObject("Welcome")
+homeWelcomeLabel.changeFontSize(34)
+"""
 homeDisplayScreen.addLabelSection("Total Pupils","#1EC5B0","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#21D6BF","Pass")
 homeDisplayScreen.addLabelSection("D-F Pupils","#24ECD3","Fail")
-
+"""
 homeDisplayScreen.showSections()
 
 #endregion
@@ -836,16 +857,20 @@ homeDisplayScreen.showSections()
 #region viewall
 viewAllScreen=screenClass("View All")
 
+viewAllListbox=studentListbox(viewAllScreen,font=font.Font(size=19))
+viewAllListbox.pack(expand=True,fill=BOTH)
+
 
 #endregion
 #====================Log Screen Extra================
+#region logextra
 logScreenStatus=mainFrame(logScreen)
 logScreenStatusSub=mainFrame(logScreenStatus)
 logScreenStatusSub.pack(expand=True)
 
 for item in logTreeTagDict:
 	mainLabel(logScreenStatusSub,text=item,bg=logTreeTagDict[item]).pack(fill=X,side=LEFT)
-
+#endregion
 #============================================(MAIN FUNCTIONS)================================================
 
 #=========UTILITY FUNCTIONS===========
@@ -859,7 +884,7 @@ def askMessage(pre,message):
 		messagebox.showinfo(pre,message)
 	except:
 		print(message)
-
+""
 def insertEntry(entry,message):
 	"""
 	This function will add text into entry
@@ -948,6 +973,8 @@ fileMenu.add_command(label="Home",command=lambda: homeScreen.show())
 
 #Edit Menu
 
+#Student menu
+studentMenu.add_command(label="View All",command=lambda: viewAllScreen.show())
 #Help Menu
 helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 
@@ -972,7 +999,10 @@ homeDisplayScreen.bindAllLeave()
 
 
 #============================================(INITIAL SETUP)================================================
-homeScreen.show()
+
+#Screen to show on startup
+viewAllScreen.show( )
+#Status view to show on startup
 statusController.showView(statusMainView)
 
 students=getContent("pupils.txt")
@@ -981,7 +1011,6 @@ createStudents(students)
 logScreen.addStatusScreen(logScreenStatus)
 logScreen.showStatusScreen(logScreenStatus)
 
-for item in studentClass.studentArray:
-	print(item.getInfo())
+viewAllListbox.addArray(studentClass.studentArray)
 #============================================(END)================================================
 window.mainloop()

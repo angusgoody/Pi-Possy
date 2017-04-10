@@ -1,5 +1,4 @@
 
 {"Name":"Angus","Second":"Goody","Age":16,"Grade":"A*","PB":{"100m":12.3,"200m":21.3},"Notes":"Angus is very nice"}
-{"Name":"Sam","Second":"Smith","Age":15}
-{"Name":"Angus","Second":"Goody","Age":15,"Grade":"A","PB":{"100m":2.3,"200m":21.3},"Notes":"Angus is very nice"}
+{"Name":"Sam","Second":"Smith","Age":15,"Grade":"D"}
 
