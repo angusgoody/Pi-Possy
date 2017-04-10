@@ -30,10 +30,12 @@ helpMenu=Menu(mainMenu)
 
 #============================================(GLOBAL VARIABLES)================================================
 maxLogSize=100
-
+mainPassColour="#5EC744"
+mainFailColour="#C76D83"
+mainUnknownColour="#C7BC27"
 #============================================(GLOBAL ARRAYS)================================================
 mainLogArray=[]
-
+passGrades=["A*","A","B","C"]
 #============================================(EXTRA CODE SPACE)================================================
 """
 This area is for code that needs to be
@@ -88,6 +90,8 @@ def recursiveBind(parent,bindButton,bindFunction):
 			pass
 	report("Added recursive binding to",parent.winfo_class(),tag="binding",system=True)
 
+def temp(data):
+	print(data)
 
 class mainLabel(Label):
 	"""
@@ -472,6 +476,36 @@ class masterControl(mainFrame):
 		if frameToPack in masterControl.viewArray:
 			frameToPack.pack(expand=True,fill=BOTH,side=TOP)
 
+class studentListbox(Listbox):
+	def __init__(self,parent):
+		Listbox.__init__(self,parent)
+		self.listData=[]
+
+	def add(self,studentInstance):
+
+		sectionColour=mainUnknownColour
+
+		#Check grade first
+		grade=studentInstance.grade
+		if grade in passGrades:
+			sectionColour=mainPassColour
+		else:
+			sectionColour=mainFailColour
+
+		#Get Name and Second
+
+		wholeName=studentInstance.fullName
+
+		#Add to list data
+		self.listData.append(studentInstance)
+
+		#Add to listbox
+		self.insert(END,wholeName)
+		self.itemconfig(END,bg=sectionColour)
+
+
+	def addArray(self,arrayData):
+		pass
 #====================LOG SCREEN====================
 
 #region logscreen
@@ -713,9 +747,11 @@ class studentClass:
 	Class for keeping students
 	"""
 	studentArray=[]
+	studentNames=[]
 	def __init__(self,name,second):
 		self.name=name
 		self.second=second
+		self.fullName=self.name+" "+self.second
 		self.age=0
 		self.grade="C"
 		self.notes="No notes"
@@ -723,6 +759,7 @@ class studentClass:
 
 		#Add instance to array
 		studentClass.studentArray.append(self)
+		studentClass.studentNames.append(self.fullName)
 
 	def addAge(self,ageToAdd):
 		self.age=ageToAdd
@@ -734,6 +771,7 @@ class studentClass:
 		self.pb=pbDict
 	def getInfo(self):
 		return {"Name":self.name,
+		        "Full":self.fullName,
 		           "Second":self.second,
 		           "Age":self.age,
 		           "Grade":self.grade,
@@ -795,8 +833,11 @@ homeDisplayScreen.showSections()
 
 #endregion
 #====================View All SCREEN================
+#region viewall
 viewAllScreen=screenClass("View All")
 
+
+#endregion
 #====================Log Screen Extra================
 logScreenStatus=mainFrame(logScreen)
 logScreenStatusSub=mainFrame(logScreenStatus)
@@ -855,7 +896,6 @@ def createStudents(fileContent):
 	studentCounter=0
 
 	#ValidData
-	#validData=["Age","Grade","Notes"]
 	validData={"Age":"addAge","Grade":"addGrade","Notes":"addNotes","PB":"addPb"}
 
 	#Loop through data
@@ -865,34 +905,37 @@ def createStudents(fileContent):
 		except:
 			report("Error evaluating file content",tag="student")
 		else:
-			if type(studentDict) == dict:
-				try:
-					studentInstance=studentClass(studentDict["Name"],studentDict["Second"])
-				except:
-					report("Could not find basic student info",tag="student")
+			try:
+				fullName=str(studentDict["Name"])+" "+studentDict["Second"]
+			except:
+				pass
+			else:
+				if fullName not in studentClass.studentNames:
+					if type(studentDict) == dict:
+						try:
+							studentInstance=studentClass(studentDict["Name"],studentDict["Second"])
+						except:
+							report("Could not find basic student info",tag="student")
+						else:
+							#Add the rest of the data here
+							for item in studentDict:
+								if item != "Name" and item != "Second":
+									if item in validData:
+										match=validData[item]
+										try:
+											getattr(studentInstance,match)(studentDict[item])
+										except:
+											report("Attribute error",tag="system")
+										else:
+											report("Added student attribute",studentDict["Name"],item,tag="student",system=True)
+
+							studentCounter+=1
+							report("Added student",studentDict["Name"],tag="student")
 				else:
+					report("Prevented full name duplicate",tag="student",system=True)
 
-					#Add the rest of the data here
-					for item in studentDict:
-						if item != "Name" and item != "Second":
-							if item in validData:
-								match=validData[item]
-								try:
-									getattr(studentInstance,match)(studentDict[item])
-								except:
-									report("Attribute error",tag="system")
-								else:
-									report("Added student attribute",studentDict["Name"],item,tag="student",system=True)
+#============================================(MENU?/CASCADES)================================================
 
-					studentCounter+=1
-					report("Added student",studentDict["Name"],tag="student")
-
-
-
-
-
-def test():
-	askMessage("Test","Lol")
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
 mainMenu.add_cascade(label="Students",menu=studentMenu)
@@ -920,10 +963,6 @@ statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
 homeDisplayScreen.bindAllHover(opposite=True)
 homeDisplayScreen.bindAllLeave()
 
-
-
-
-homeDisplayScreen.addPopMenu({"Command 1":lambda: test(),"Command 2":lambda: test(),"Command 3":lambda: test()})
 
 #============================================(SCREEN COMMANDS)================================================
 
