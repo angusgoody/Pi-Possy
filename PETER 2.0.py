@@ -288,7 +288,6 @@ class screenClass(mainFrame):
 
 		if len(self.runCommandDict) > 0:
 			for item in self.runCommandDict:
-				print(self.runCommandDict)
 				if self.runCommandDict[item] == "function":
 					try:
 						item()
@@ -409,7 +408,6 @@ class displayView(mainFrame):
 		the default colour
 		"""
 		for label in self.labelDict:
-			print(label)
 			self.labelDict[label].bind("<Leave>",lambda event,lab=label: self.restoreLabelColour(lab))
 
 	def getLabelFrameSection(self, identifier):
@@ -530,7 +528,8 @@ logTreeTagDict={"font":"#B1FF5E",
                 "error":"#E36265",
                 "warning":"#E3B521",
                 "binding":"#F4FF2B",
-                "system":"#FFCCD0"}
+                "system":"#FFCCD0",
+                "student":"#4AC7C4"}
 
 for tag in logTreeTagDict:
 	logTree.tag_configure(tag,background=logTreeTagDict[tag])
@@ -581,7 +580,16 @@ def report(message,*extra,**keywords):
 		logTree.insert("" , 0,values=(message,currentTime),tags=tag)
 
 #==============FILE FUNCTIONS================
-def getContent(fileName):
+def getContent(fileName,**kwargs):
+
+	#CHeck if duplicates should be prevented or not
+	#By default duplicates will be prevented
+	duplicates=False
+	if "duplicates" in kwargs:
+		if kwargs["duplicates"] == True:
+			duplicates=True
+
+
 	try:
 		file=open(fileName)
 	except:
@@ -596,7 +604,11 @@ def getContent(fileName):
 			#Removes empty lines
 			if len(words) > 0:
 				line=line.rstrip()
-				newContent.append(line)
+				if duplicates == False:
+					if line not in newContent:
+						newContent.append(line)
+					else:
+						report("Prevented duplicate from file",system=True,tag="file")
 
 		report("Got content from file",fileName,tag="file")
 		return newContent
@@ -702,19 +714,31 @@ class studentClass:
 	Class for keeping students
 	"""
 	studentArray=[]
-	def __init__(self,name,second,age,grade):
+	def __init__(self,name,second):
 		self.name=name
 		self.second=second
-		self.age=age
-		self.grade=grade
+		self.age=0
+		self.grade="C"
+		self.notes="No notes"
+		self.pb={"100m":0,"200m":0}
 		self.dict={"Name":self.name,
 		           "Second":self.second,
 		           "Age":self.age,
-		           "Grade":self.grade}
+		           "Grade":self.grade,
+		           "Pb":self.pb,
+		           "Notes":self.notes}
 
 		#Add instance to array
 		studentClass.studentArray.append(self)
 
+	def addAge(self,ageToAdd):
+		self.age=ageToAdd
+	def addGrade(self,gradeToAdd):
+		self.grade=gradeToAdd
+	def addNotes(self,notes):
+		self.notes=notes
+	def addPb(self,pbDict):
+		self.pb=pbDict
 
 
 
@@ -821,30 +845,51 @@ def updateGlobalFont(font):
 	report("Updated global font to",font,tag="font")
 
 def createStudents(fileContent):
+	"""
+	This function will create the student objects
+	from the content of the txt file
+	"""
 	#todo fix this function
 
-	validItems=["Name","Second","Age","Grade","PB","Notes"]
+	#Track number of students
 	studentCounter=0
-	#Makes sure maximum of 500 students are loaded
-	for line in fileContent:
-		if len(line) > 0:
-			try:
-				studentDict=eval(line)
-			except:
-				report("Error evaluating string in setup",tag="error")
-			else:
 
-				#Must get basic info to create instance
+	#ValidData
+	#validData=["Age","Grade","Notes"]
+	validData={"Age":"addAge","Grade":"addGrade","Notes":"addNotes","PB":"addPb"}
+
+	#Loop through data
+	for line in fileContent:
+		try:
+			studentDict=eval(line)
+		except:
+			report("Error evaluating file content",tag="student")
+		else:
+			if type(studentDict) == dict:
 				try:
-					studentName=studentDict["Name"]
-					studentSecond=studentDict["Second"]
+					studentInstance=studentClass(studentDict["Name"],studentDict["Second"])
 				except:
-					report("Error getting basic student info",tag="warning")
+					report("Could not find basic student info",tag="student")
 				else:
-					#Try and get the rest of the data
-					collectedData=[]
-					for section in studentDict:
-						print(section)
+
+					#Add the rest of the data here
+					for item in studentDict:
+						if item != "Name" and item != "Second":
+							if item in validData:
+								match=validData[item]
+								try:
+									getattr(studentInstance,match)(studentDict[item])
+								except:
+									report("Attribute error",tag="system")
+								else:
+									report("Added student attribute",item,tag="student",system=True)
+
+					studentCounter+=1
+					report("Added student",studentDict["Name"],tag="student")
+
+
+
+
 
 def test():
 	askMessage("Test","Lol")
@@ -876,10 +921,10 @@ homeDisplayScreen.bindAllHover(opposite=True)
 homeDisplayScreen.bindAllLeave()
 
 
-#welcomeSection=homeDisplayScreen.getLabelFrameSection("Welcome")
-#welcomeSection.addPopMenu()
+
 
 homeDisplayScreen.addPopMenu({"Command 1":lambda: test(),"Command 2":lambda: test(),"Command 3":lambda: test()})
+
 #============================================(SCREEN COMMANDS)================================================
 
 
