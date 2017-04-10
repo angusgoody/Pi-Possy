@@ -589,7 +589,6 @@ def getContent(fileName,**kwargs):
 		if kwargs["duplicates"] == True:
 			duplicates=True
 
-
 	try:
 		file=open(fileName)
 	except:
@@ -721,12 +720,6 @@ class studentClass:
 		self.grade="C"
 		self.notes="No notes"
 		self.pb={"100m":0,"200m":0}
-		self.dict={"Name":self.name,
-		           "Second":self.second,
-		           "Age":self.age,
-		           "Grade":self.grade,
-		           "Pb":self.pb,
-		           "Notes":self.notes}
 
 		#Add instance to array
 		studentClass.studentArray.append(self)
@@ -739,6 +732,13 @@ class studentClass:
 		self.notes=notes
 	def addPb(self,pbDict):
 		self.pb=pbDict
+	def getInfo(self):
+		return {"Name":self.name,
+		           "Second":self.second,
+		           "Age":self.age,
+		           "Grade":self.grade,
+		           "Pb":self.pb,
+		           "Notes":self.notes}
 
 
 
@@ -882,7 +882,7 @@ def createStudents(fileContent):
 								except:
 									report("Attribute error",tag="system")
 								else:
-									report("Added student attribute",item,tag="student",system=True)
+									report("Added student attribute",studentDict["Name"],item,tag="student",system=True)
 
 					studentCounter+=1
 					report("Added student",studentDict["Name"],tag="student")
@@ -941,5 +941,8 @@ createStudents(students)
 
 logScreen.addStatusScreen(logScreenStatus)
 logScreen.showStatusScreen(logScreenStatus)
+
+for item in studentClass.studentArray:
+	print(item.getInfo())
 #============================================(END)================================================
 window.mainloop()
