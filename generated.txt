@@ -1,4 +1,3 @@
-{"Name":"Angus","Second":"Goody","Age":16,"Grade":"A*","PB":{"100m":12.3,"200m":21.3},"Notes":"Angus is very nice"}
 {'Name': 'Jordan', 'Grade': 'E', 'Second': 'Brown', 'PB': {'100m': 14, '200m': 23}, 'Notes': 'Jordan Needs to improve their performance'}
 {'Name': 'Jack', 'Grade': 'E', 'Second': 'Williams', 'PB': {'100m': 14, '200m': 25}, 'Notes': 'Jack Needs to run faster'}
 {'Name': 'Jordan', 'Grade': 'F', 'Second': 'Jones', 'PB': {'100m': 17, '200m': 30}, 'Notes': 'Jordan Needs to run faster'}
@@ -24,5 +23,3 @@
 {'Name': 'Jack', 'Grade': 'D', 'Second': 'Turner', 'PB': {'100m': 10, '200m': 24}, 'Notes': 'Jack Is just brilliant at everything'}
 {'Name': 'Charlie', 'Grade': 'F', 'Second': 'Williams', 'PB': {'100m': 20, '200m': 15}, 'Notes': 'Charlie Needs to run faster'}
 {'Name': 'Jack', 'Grade': 'C', 'Second': 'Brown', 'PB': {'100m': 17, '200m': 18}, 'Notes': 'Jack Needs to run faster'}
-
-

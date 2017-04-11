@@ -23,6 +23,9 @@ names=["Billy","Sam","Jack","Ben","James","Daniel","Ethan","Charlie","Jordan"]
 #Second
 second=["Smith","Turner","Jones","Taylor","Williams","Brown","White"]
 
+grades=["A*","A","B","C","D","E","F"]
+noteOptions=["Needs to work harder","Is just brilliant at everything","Needs to run faster",
+"Needs to improve their performance","Is just all around bad at PE"]
 #Global Vars
 mainExportDir=""
 mainNumberOfExports=0
@@ -396,15 +399,30 @@ def askMessage(pre,message):
 	
 def generate(amount):
 	pupils=[]
+	fullNames=[]
 	lastPercent=-1
+	counter=0
 	for x in range(amount):
 		firstName=random.choice(names)
 		secondName=random.choice(second)
-		pupils.append([firstName,secondName])
-		percent=int((x/amount)*100)
-		if percent != lastPercent:
-			print(percent,"%")
-			lastPercent=percent		
+		grade=random.choice(grades)
+		pbs={"100m":random.randint(10,20),"200m":random.randint(15,30)}
+		notes=str(firstName)+" "+random.choice(noteOptions)
+		fullName=firstName+" "+secondName
+		if fullName not in fullNames:
+			fullNames.append(fullName)
+			pupilDict={"Name":firstName,"Second":secondName,"Grade":grade,"PB":pbs,"Notes":notes}
+			pupils.append(pupilDict)
+			counter+=1
+			percent=int((x/amount)*100)
+			
+			if percent != lastPercent:
+				print(percent,"%")
+				lastPercent=percent
+		else:
+			print("Prevented duplicate")
+	
+	print("Created",counter,"pupils")		
 	return pupils
 	
 def mainExport():
@@ -414,9 +432,13 @@ def mainExport():
 	except:
 		askMessage("Error","Only numbers please")
 	else:
-		
-		
-		generate(numberOfPupils)
+		results=generate(numberOfPupils)
+		file=open("generated.txt","w")
+		for line in results:
+			file.write(str(line))
+			file.write("\n")
+		file.close()
+		askMessage("Complete", "Export complete")
 		
 	
 
