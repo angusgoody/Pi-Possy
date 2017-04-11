@@ -896,6 +896,11 @@ viewAllListboxFrame.pack(expand=True,fill=BOTH)
 viewAllListbox=studentListbox(viewAllListboxFrame,font=font.Font(size=19))
 viewAllListbox.pack(expand=True,fill=BOTH)
 
+viewAllListboxScrollBar=Scrollbar(viewAllListbox)
+viewAllListboxScrollBar.pack(side=RIGHT,fill=Y)
+
+viewAllListboxScrollBar.config(command=viewAllListbox.yview)
+viewAllListbox.config(yscrollcommand=viewAllListboxScrollBar.set)
 
 #endregion
 #====================Log Screen Extra================
