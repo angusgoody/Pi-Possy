@@ -36,6 +36,7 @@ viewAllCounterVar=StringVar()
 #============================================(GLOBAL ARRAYS)================================================
 mainLogArray=[]
 passGrades=["A*","A","B","C"]
+mainStudentFields=["Name","Second","Age","Grade","PB","Notes"]
 #============================================(EXTRA CODE SPACE)================================================
 """
 This area is for code that needs to be
@@ -527,6 +528,8 @@ class studentListbox(Listbox):
 	def clear(self):
 		self.listDict={}
 		self.listData=[]
+	def getData(self):
+		return self.listData
 
 #====================LOG SCREEN====================
 
@@ -797,7 +800,7 @@ class studentClass:
 		           "Second":self.second,
 		           "Age":self.age,
 		           "Grade":self.grade,
-		           "Pb":self.pb,
+		           "PB":self.pb,
 		           "Notes":self.notes}
 
 #============================================(MAIN UI SETUP)================================================
@@ -901,6 +904,24 @@ viewAllListboxScrollBar.pack(side=RIGHT,fill=Y)
 
 viewAllListboxScrollBar.config(command=viewAllListbox.yview)
 viewAllListbox.config(yscrollcommand=viewAllListboxScrollBar.set)
+
+#-------Filter and sort options-------
+viewAllOptionFrame=mainFrame(viewAllScreen)
+viewAllOptionFrame.pack(fill=BOTH)
+
+viewAllOptionSubFrame=mainFrame(viewAllOptionFrame)
+viewAllOptionSubFrame.pack(expand=True)
+
+#Filter
+viewAllFilterFrame=mainFrame(viewAllOptionSubFrame)
+viewAllFilterFrame.pack(side=LEFT)
+
+viewAllFilterVar=StringVar()
+viewAllFilterVar.set("All")
+
+viewALlFilterOptions=["All"]+mainStudentFields
+
+mainLabel(viewAllFilterFrame,text="Filter by").pack()
 
 #endregion
 #====================Log Screen Extra================
@@ -1069,6 +1090,15 @@ def createStudents(fileContent):
 				else:
 					report("Prevented full name duplicate",tag="student",system=True)
 
+def viewAllSearch():
+	section=viewAllFilterVar.get()
+	target=viewAllSearchEntry.get()
+	dataToSearch=viewAllListbox.getData()
+	results=mainSearch(target,section,dataToSearch)
+	viewAllListbox.addArray(results)
+def clearButtonCommand(entry,searchCommand):
+	insertEntry(entry,"")
+	searchCommand()
 #============================================(MENU?/CASCADES)================================================
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -1093,20 +1123,28 @@ helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 #Status Bar
 statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
 
-statusMainView.addBinding("<Enter>",lambda event: showHomeMessage("Enter"))
-statusMainView.addBinding("<Leave>",lambda event: showHomeMessage("Leave"))
+mainStatusLabel.bind("<Enter>",lambda event: showHomeMessage("Enter"))
+mainStatusLabel.bind("<Leave>",lambda event: showHomeMessage("Leave"))
 
 #Home screen
 homeDisplayScreen.bindAllHover(opposite=True)
 homeDisplayScreen.bindAllLeave()
 
-
+#View all screen
+viewAllSearchEntry.bind("<KeyRelease>",lambda event: viewAllSearch())
 #============================================(SCREEN COMMANDS)================================================
 
+#==========================================(OPTION MENUS)=================================
 
-
+#View all screen
+viewAllFilterOptionMenu=OptionMenu(viewAllFilterFrame,viewAllFilterVar,*viewALlFilterOptions,
+                                   command=lambda event: viewAllSearch())
+viewAllFilterOptionMenu.config(width=12)
+viewAllFilterOptionMenu.pack()
 #============================================(BUTTONS)================================================
 
+#View all screen
+viewAllClearButton.config(command=lambda: clearButtonCommand(viewAllSearchEntry,viewAllSearch))
 
 #============================================(INITIAL SETUP)================================================
 
@@ -1125,6 +1163,7 @@ logScreen.showStatusScreen(logScreenStatus)
 #Add the initial students to the view all listbox
 viewAllListbox.addArray(studentClass.studentArray)
 #============================================(TESTING AREA)================================================
+
 
 #============================================(END)================================================
 window.mainloop()
