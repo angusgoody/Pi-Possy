@@ -933,6 +933,48 @@ def insertEntry(entry,message):
 	entry.delete(0,END)
 	entry.insert(END,message)
 
+def subSearch(target,dataToSearch):
+
+	"""
+	This function is the actual search
+	function and will recursivley search and return
+	True or False
+	"""
+	#Convert target to upper case
+	target=target.upper()
+	#print("Searching for",target,"in",dataToSearch)
+	#Iterate through all data
+	for item in dataToSearch:
+
+		#Get data type
+		try:
+			dataType=type(item)
+		except:
+			report("Error converting data type to search",tag="error",system=True)
+		else:
+
+			#If data is simple string
+			if dataType == str:
+				if target in item.upper():
+					return True
+			#If data is list
+			elif dataType == list:
+				for section in item:
+					if subSearch(target,[section]):
+						return True
+			#If data is dictionary
+			elif dataType == dict:
+				for section in item:
+					dataInSection=item[section]
+					if subSearch(target,[dataInSection]):
+						return True
+			#If data is a student class
+			elif dataType == studentClass:
+				data=item.getInfo()
+				if subSearch(target,data):
+					return True
+
+	return False
 def mainSearch(target,section,dataToSearch):
 	pass
 #=========PROGRAM FUNCTIONS===========
@@ -1055,5 +1097,6 @@ logScreen.addStatusScreen(logScreenStatus)
 logScreen.showStatusScreen(logScreenStatus)
 
 viewAllListbox.addArray(studentClass.studentArray)
+
 #============================================(END)================================================
 window.mainloop()
