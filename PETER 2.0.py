@@ -907,7 +907,7 @@ viewAllListbox.config(yscrollcommand=viewAllListboxScrollBar.set)
 
 #-------Filter and sort options-------
 viewAllOptionFrame=mainFrame(viewAllScreen)
-viewAllOptionFrame.pack(fill=BOTH)
+viewAllOptionFrame.pack(fill=BOTH,pady=10)
 
 viewAllOptionSubFrame=mainFrame(viewAllOptionFrame)
 viewAllOptionSubFrame.pack(expand=True)
@@ -933,6 +933,9 @@ logScreenStatusSub.pack(expand=True)
 for item in logTreeTagDict:
 	mainLabel(logScreenStatusSub,text=item,bg=logTreeTagDict[item]).pack(fill=X,side=LEFT)
 #endregion
+#====================View student screen================
+viewStudentScreen=screenClass("Showing Student")
+
 #============================================(MAIN FUNCTIONS)================================================
 
 #=========UTILITY FUNCTIONS===========
