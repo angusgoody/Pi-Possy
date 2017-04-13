@@ -19,9 +19,15 @@ window.geometry("500x400")
 
 
 #Names
-names=["Billy","Sam","Jack","Ben","James","Daniel","Ethan","Charlie","Jordan"]
+names=["Billy","Sam","Jack","Ben","James","Daniel","Ethan","Charlie","Jordan","Heide","Simon","Keith","Harry","Holly","Chris",
+"Sarah","Rachael","Beryl","Tom","Betty","Brian","Jeff","Wendy","Malcolm","Duey","Rhys","Louis","Hall","Francis","Matt","Hila","Joe","Wayne","Christiano","Lionel","Fernando","Conor","Vlad","Brad","Ciaran","Karl","Kiera"]
 #Second
-second=["Smith","Turner","Jones","Taylor","Williams","Brown","White"]
+second=["Smith","Turner","Jones","Taylor","Williams","Brown","White","Goody","Brogden","Orwell","Souza","Fletcher","Hamster",
+"Mittleman","Lyon","Paddon","Bowen","Reed","Dell","Jobs","Suffolk","Podo","Torres","Messi","Gates","Brunel","Lycet"]
+numberOfNames=len(names)
+numberOfSecond=len(second)
+
+maxAmount=numberOfNames*numberOfSecond
 
 grades=["A*","A","B","C","D","E","F"]
 noteOptions=["Needs to work harder","Is just brilliant at everything","Needs to run faster",
@@ -389,20 +395,29 @@ def generate(amount):
 	fullNames=[]
 	lastPercent=-1
 	counter=0
-	for x in range(amount):
+	
+	counter2=0
+	while len(pupils) < maxAmount and len(pupils) < amount:
+		counter2+=1
 		firstName=random.choice(names)
 		secondName=random.choice(second)
+		fullName=firstName+" "+secondName
+		while fullName in fullNames:
+			firstName=random.choice(names)
+			secondName=random.choice(second)
+			fullName=firstName+" "+secondName
+			
 		age=random.randint(15,20)
 		grade=random.choice(grades)
 		pbs={"100m":random.randint(10,20),"200m":random.randint(15,30)}
 		notes=str(firstName)+" "+random.choice(noteOptions)
-		fullName=firstName+" "+secondName
+		
 		if fullName not in fullNames:
 			fullNames.append(fullName)
 			pupilDict={"Name":firstName,"Second":secondName,"Grade":grade,"PB":pbs,"Notes":notes,"Age":age}
 			pupils.append(pupilDict)
 			counter+=1
-			percent=int((x/amount)*100)
+			percent=int((counter2/amount)*100)
 			
 			if percent != lastPercent:
 				print(percent,"%")
@@ -436,6 +451,9 @@ homeScreen.show()
 statusController.showView([statusMainView])
 insertEnryDisabled(homeChooseDirEntry, "Default")
 exportButton.config(command=mainExport)
+#===================================================(TESTING AREA)===================================================
+
+print("Maximum number of combinations is",maxAmount)
 #===================================================(END)===================================================
 
 window.mainloop()

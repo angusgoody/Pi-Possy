@@ -11,6 +11,7 @@ from tkinter import ttk
 import random
 import datetime
 from tkinter import font
+import time
 #============================================(WINDOW SETUP)================================================
 window=Tk()
 window.title("PETER 2.0")
@@ -601,7 +602,30 @@ for tag in logTreeTagDict:
 
 
 #==============LOG FUNCTIONS================
+
+def autoBackupLog(content):
+	currentDate=time.strftime("%d/%m/%Y")
+	currentTime=datetime.datetime.now().time()
+
+	try:
+		file = open("logData.txt", "a")
+	except:
+		print("Unable to report error with report function")
+	else:
+		#Add Header to file for better navigation
+		currentDate=time.strftime("%d/%m/%Y")
+		temp="==============================="+str(currentDate)+" "+str(currentTime)+"===============================\n"
+		file.write(temp)
+		for item in content:
+			item = str(str(item[1]) + " at " + str(item[0]))
+			item = str(item)
+			file.write(item)
+			file.write("\n")
+		file.close()
+		print("Log backed up")
+
 def report(message,*extra,**keywords):
+	global mainLogArray
 
 	tag=""
 	system=False
@@ -635,7 +659,9 @@ def report(message,*extra,**keywords):
 		if len(mainLogArray) < maxLogSize:
 			mainLogArray.append(temp)
 		else:
-			print("Log array filled up")
+			#When log gets filled up
+			autoBackupLog(mainLogArray)
+			del mainLogArray[:]
 		logTree.insert("" , 0,values=(message,currentTime),tags=tag)
 
 #==============FILE FUNCTIONS================
