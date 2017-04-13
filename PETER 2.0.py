@@ -934,24 +934,29 @@ def insertEntry(entry,message):
 	entry.insert(END,message)
 
 def subSearch(target,dataToSearch):
-
 	"""
 	This function is the actual search
 	function and will recursivley search and return
 	True or False
 	"""
-	#Convert target to upper case
+	#Setup
+	target=str(target)
 	target=target.upper()
-	#print("Searching for",target,"in",dataToSearch)
+
+	#print("Searching for",target,"in",dataToSearch,"of type",type(dataToSearch))
 	#Iterate through all data
 	for item in dataToSearch:
-
 		#Get data type
 		try:
 			dataType=type(item)
 		except:
 			report("Error converting data type to search",tag="error",system=True)
 		else:
+
+			#If data is number or float
+			if dataType == int or dataType == float:
+				item=str(item)
+				dataType=type(item)
 
 			#If data is simple string
 			if dataType == str:
@@ -975,8 +980,28 @@ def subSearch(target,dataToSearch):
 					return True
 
 	return False
+
 def mainSearch(target,section,dataToSearch):
-	pass
+	validSections=["All","Name","Second","Age","Grade","PB","Notes"]
+	if section in validSections:
+		resultArray=[]
+		for student in dataToSearch:
+			#The all section
+			if section == "All":
+				sectionToSearch=[student.getInfo()]
+			#This must be square brackets because otherwise strings will be sliced
+			else:
+				sectionToSearch=[student.getInfo()[section]]
+
+
+			#Actual Search part
+			if subSearch(target,sectionToSearch):
+				resultArray.append(student)
+
+		#Finished checking
+		return resultArray
+
+
 #=========PROGRAM FUNCTIONS===========
 def showHomeMessage(enterOrLeave):
 	"""
@@ -1089,14 +1114,17 @@ homeDisplayScreen.bindAllLeave()
 viewAllScreen.show( )
 #Status view to show on startup
 statusController.showView(statusMainView)
-
+#Get the students from file
 students=getContent("pupils.txt")
+#Create the student objects from the file
 createStudents(students)
 
+#Display the log screen key on log screen
 logScreen.addStatusScreen(logScreenStatus)
 logScreen.showStatusScreen(logScreenStatus)
-
+#Add the initial students to the view all listbox
 viewAllListbox.addArray(studentClass.studentArray)
+#============================================(TESTING AREA)================================================
 
 #============================================(END)================================================
 window.mainloop()

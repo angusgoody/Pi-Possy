@@ -285,21 +285,8 @@ class masterControl(mainFrame):
 	def showViewUnder(self,showScreen):
 		if showScreen in masterControl.viewArray:
 			showScreen.pack(expand=True,fill=BOTH)
-			
-class ThreadedClient(threading.Thread):
 
-	def __init__(self, queue):
-		threading.Thread.__init__(self)
-		self.queue = queue
-
-	def run(self):
-		for x in range(1, 5):
-			time.sleep(2)
-			self.queue.put(msg)
 	
-	
-def createThread(functionToRun):
-	pass	
 #===================================================(UI SETUP)===================================================
 
 #==================STATUS==============
@@ -405,13 +392,14 @@ def generate(amount):
 	for x in range(amount):
 		firstName=random.choice(names)
 		secondName=random.choice(second)
+		age=random.randint(15,20)
 		grade=random.choice(grades)
 		pbs={"100m":random.randint(10,20),"200m":random.randint(15,30)}
 		notes=str(firstName)+" "+random.choice(noteOptions)
 		fullName=firstName+" "+secondName
 		if fullName not in fullNames:
 			fullNames.append(fullName)
-			pupilDict={"Name":firstName,"Second":secondName,"Grade":grade,"PB":pbs,"Notes":notes}
+			pupilDict={"Name":firstName,"Second":secondName,"Grade":grade,"PB":pbs,"Notes":notes,"Age":age}
 			pupils.append(pupilDict)
 			counter+=1
 			percent=int((x/amount)*100)
