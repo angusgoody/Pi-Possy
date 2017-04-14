@@ -869,7 +869,7 @@ statusController.pack(expand=True, fill=BOTH)
 statusMainView=mainFrame(statusController)
 mainStatusLabel=mainLabel(statusMainView,textvariable=statusVar,font="Arial 15 bold")
 mainStatusLabel.pack(expand=True)
-statusMainView.colour("#577EEB")
+statusMainView.colour("#ED9D18")
 
 #Status Loading View
 statusLoadingView=mainFrame(statusController)
@@ -980,12 +980,17 @@ for item in logTreeTagDict:
 viewStudentScreen=screenClass("Showing Student")
 
 
-#-----Display view-----
-viewStudentDisplayView=displayView(viewStudentScreen)
-viewStudentDisplayView.pack(expand=True,fill=BOTH)
+#-----Notebook view-----
+
+viewStudentNotebook=ttk.Notebook(viewStudentScreen)
+viewStudentNotebook.pack(expand=True,fill=BOTH)
+
+#------BASIC INFO DISPLAY--------
+viewStudentBasicDisplayView=displayView(viewStudentScreen)
+viewStudentBasicDisplayView.pack(expand=True, fill=BOTH)
 
 #Name section
-viewStudentNameFrame=mainFrame(viewStudentDisplayView)
+viewStudentNameFrame=mainFrame(viewStudentBasicDisplayView)
 
 viewStudentNameSubFrame=mainFrame(viewStudentNameFrame)
 viewStudentNameSubFrame.pack(expand=True)
@@ -997,7 +1002,7 @@ viewStudentNameEntry=Entry(viewStudentNameSubFrame,justify=CENTER)
 viewStudentNameEntry.pack()
 
 #Second Name section
-viewStudentSecondFrame=mainFrame(viewStudentDisplayView)
+viewStudentSecondFrame=mainFrame(viewStudentBasicDisplayView)
 
 viewStudentSecondSubFrame=mainFrame(viewStudentSecondFrame)
 viewStudentSecondSubFrame.pack(expand=True)
@@ -1009,7 +1014,7 @@ viewStudentSecondEntry=Entry(viewStudentSecondSubFrame,justify=CENTER)
 viewStudentSecondEntry.pack()
 
 #Age Section
-viewStudentAgeFrame=mainFrame(viewStudentDisplayView)
+viewStudentAgeFrame=mainFrame(viewStudentBasicDisplayView)
 
 viewStudentAgeSubFrame=mainFrame(viewStudentAgeFrame)
 viewStudentAgeSubFrame.pack(expand=True)
@@ -1020,10 +1025,14 @@ viewStudentAgeLabel.pack()
 viewStudentAgeEntry=Entry(viewStudentAgeSubFrame,justify=CENTER)
 viewStudentAgeEntry.pack()
 
-#Grade section
-viewStudentGrade=mainFrame(viewStudentDisplayView)
+#------ADVANCED INFO DISPLAY--------
+viewStudentAdvancedDisplayView=displayView(viewStudentScreen)
+viewStudentAdvancedDisplayView.pack(expand=True,fill=BOTH)
 
-viewStudentGradeSubFrame=mainFrame(viewStudentGrade)
+#Grade section
+viewStudentGradeFrame=mainFrame(viewStudentAdvancedDisplayView)
+
+viewStudentGradeSubFrame=mainFrame(viewStudentGradeFrame)
 viewStudentGradeSubFrame.pack(expand=True)
 
 viewStudentGradeLabel=mainLabel(viewStudentGradeSubFrame,text="Grade")
@@ -1033,28 +1042,52 @@ viewStudentGradeEntry=Entry(viewStudentGradeSubFrame,justify=CENTER)
 viewStudentGradeEntry.pack()
 
 #Notes section
-viewStudentNotesFrame=mainFrame(viewStudentDisplayView)
+viewStudentNotesFrame=mainFrame(viewStudentAdvancedDisplayView)
 
 viewStudentNotesSubFrame=mainFrame(viewStudentNotesFrame)
-viewStudentNotesSubFrame.pack(expand=True,fill=BOTH)
+viewStudentNotesSubFrame.pack(expand=True)
 
 viewStudentNotesLabel=mainLabel(viewStudentNotesSubFrame,text="Notes")
 viewStudentNotesLabel.pack()
 
 
-viewStudentNotesText=Text(viewStudentNotesSubFrame,height=7,width=30,wrap=WORD,font=("Helvetica", "15"))
-viewStudentNotesText.pack(fill=BOTH,expand=True)
+viewStudentNotesText=Text(viewStudentNotesSubFrame,height=6,width=30,wrap=WORD,font=("Helvetica", "15"))
+viewStudentNotesText.pack(fill=BOTH)
 
 #----Add to display-----
-viewStudentDisplayView.addSection("#a3d315",viewStudentNameFrame)
-viewStudentDisplayView.addSection("#87AD12",viewStudentSecondFrame)
-viewStudentDisplayView.addSection("#65810D",viewStudentAgeFrame)
-viewStudentDisplayView.addSection("#4B610A",viewStudentGrade)
-viewStudentDisplayView.addSection("#445407",viewStudentNotesFrame)
+
+#Basic
+viewStudentBasicDisplayView.addSection("#a3d315", viewStudentNameFrame)
+viewStudentBasicDisplayView.addSection("#87AD12", viewStudentSecondFrame)
+viewStudentBasicDisplayView.addSection("#65810D", viewStudentAgeFrame)
+
+#Advanced
+viewStudentAdvancedDisplayView.addSection("#34CC8A",viewStudentGradeFrame)
+viewStudentAdvancedDisplayView.addSection("#2EB57A",viewStudentNotesFrame)
 
 
 #Show display view
-viewStudentDisplayView.showSections()
+viewStudentBasicDisplayView.showSections()
+viewStudentAdvancedDisplayView.showSections()
+#---------Add Pages to Notebook--------
+
+viewStudentNotebook.add(viewStudentBasicDisplayView, text="Basic Info")
+viewStudentNotebook.add(viewStudentAdvancedDisplayView, text="Advanced")
+
+#-----Buttons at bottom-----
+viewStudentBottomFrame=mainFrame(viewStudentScreen)
+
+viewStudentOverwriteButton=Button(viewStudentBottomFrame,text="Overwrite",width=15)
+viewStudentOverwriteButton.pack(pady=8)
+
+viewStudentDeleteButton=Button(viewStudentBottomFrame,text="Delete",width=15)
+viewStudentDeleteButton.pack(pady=8)
+
+viewStudentBottomFrame.colour("#B1D818")
+#Add to screen status view
+viewStudentScreen.addStatusScreen(viewStudentBottomFrame)
+viewStudentScreen.showStatusScreen(viewStudentBottomFrame)
+
 #endregion
 #============================================(MAIN FUNCTIONS)================================================
 
