@@ -874,8 +874,6 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 #Section setup
 
 homeDisplayScreen.addLabelSection("Welcome","#E2698B","Welcome")
-homeWelcomeLabel=homeDisplayScreen.getLabelObject("Welcome")
-homeWelcomeLabel.changeFontSize(25)
 homeDisplayScreen.addLabelSection("All Pupils","#C75D7C","Total")
 homeDisplayScreen.addLabelSection("A-C Pupils","#AA4F69","Pass")
 homeDisplayScreen.addLabelSection("D-F Pupils","#8F4359","Fail")
@@ -1125,6 +1123,7 @@ def viewAllSearch():
 	dataToSearch=viewAllListbox.getData()
 	results=mainSearch(target,section,dataToSearch)
 	viewAllListbox.addArray(results)
+
 def clearButtonCommand(entry,searchCommand):
 	insertEntry(entry,"")
 	searchCommand()
@@ -1161,7 +1160,6 @@ homeDisplayScreen.bindAllLeave()
 
 #View all screen
 viewAllSearchEntry.bind("<KeyRelease>",lambda event: viewAllSearch())
-#============================================(SCREEN COMMANDS)================================================
 
 #==========================================(OPTION MENUS)=================================
 
