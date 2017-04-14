@@ -1032,11 +1032,25 @@ viewStudentGradeLabel.pack()
 viewStudentGradeEntry=Entry(viewStudentGradeSubFrame,justify=CENTER)
 viewStudentGradeEntry.pack()
 
+#Notes section
+viewStudentNotesFrame=mainFrame(viewStudentDisplayView)
+
+viewStudentNotesSubFrame=mainFrame(viewStudentNotesFrame)
+viewStudentNotesSubFrame.pack(expand=True,fill=BOTH)
+
+viewStudentNotesLabel=mainLabel(viewStudentNotesSubFrame,text="Notes")
+viewStudentNotesLabel.pack()
+
+
+viewStudentNotesText=Text(viewStudentNotesSubFrame,height=7,width=30,wrap=WORD,font=("Helvetica", "15"))
+viewStudentNotesText.pack(fill=BOTH,expand=True)
+
 #----Add to display-----
 viewStudentDisplayView.addSection("#a3d315",viewStudentNameFrame)
 viewStudentDisplayView.addSection("#87AD12",viewStudentSecondFrame)
 viewStudentDisplayView.addSection("#65810D",viewStudentAgeFrame)
 viewStudentDisplayView.addSection("#4B610A",viewStudentGrade)
+viewStudentDisplayView.addSection("#445407",viewStudentNotesFrame)
 
 
 #Show display view
@@ -1234,7 +1248,8 @@ def showStudent(studentInstance):
 
 	#Dictionary to identify which entry to put certain data in
 	entryDict={"Name":viewStudentNameEntry,"Second":viewStudentSecondEntry,
-	           "Age":viewStudentAgeEntry,"Grade":viewStudentGradeEntry}
+	           "Age":viewStudentAgeEntry,"Grade":viewStudentGradeEntry,
+	           "Notes":viewStudentNotesText}
 	#Puts the students data in the correct entry on screen
 	for item in info:
 		if item in entryDict:

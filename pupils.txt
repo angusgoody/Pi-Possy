@@ -6,7 +6,7 @@
 {'Name': 'Charlie', 'Second': 'Souza', 'Notes': 'Charlie Needs to improve their performance', 'PB': {'100m': 10, '200m': 27}, 'Grade': 'B', 'Age': 16}
 {'Name': 'Wayne', 'Second': 'Brogden', 'Notes': 'Wayne Needs to run faster', 'PB': {'100m': 18, '200m': 20}, 'Grade': 'A', 'Age': 17}
 {'Name': 'Brian', 'Second': 'Messi', 'Notes': 'Brian Is just brilliant at everything', 'PB': {'100m': 13, '200m': 25}, 'Grade': 'A*', 'Age': 15}
-{'Name': 'Holly', 'Second': 'Lycet', 'Notes': 'Holly Is just all around bad at PE', 'PB': {'100m': 15, '200m': 22}, 'Grade': 'E', 'Age': 18}
+{'Name': 'Holly', 'Second': 'Lycet', 'Notes': 'Holly Is just all around bad at PE\n Also yea', 'PB': {'100m': 15, '200m': 22}, 'Grade': 'E', 'Age': 18}
 {'Name': 'James', 'Second': 'Brown', 'Notes': 'James Needs to work harder', 'PB': {'100m': 20, '200m': 19}, 'Grade': 'C', 'Age': 18}
 {'Name': 'Sarah', 'Second': 'White', 'Notes': 'Sarah Needs to run faster', 'PB': {'100m': 11, '200m': 24}, 'Grade': 'B', 'Age': 19}
 {'Name': 'Brad', 'Second': 'Jobs', 'Notes': 'Brad Needs to run faster', 'PB': {'100m': 19, '200m': 15}, 'Grade': 'D', 'Age': 18}
