@@ -532,6 +532,24 @@ class studentListbox(Listbox):
 	def getData(self):
 		return self.listData
 
+	def getSelectedInstance(self):
+		index=0
+		try:
+			index =self.curselection()
+		except:
+			report("Method called on static listbox",system=True,tag="error")
+		else:
+			try:
+				value=self.get(index)
+			except:
+				report("Index error with listbox",tag="error",system=True)
+			else:
+				for item in self.listDict:
+					if item == value:
+						return self.listDict[item]
+
+
+
 #====================LOG SCREEN====================
 
 #region logscreen
@@ -958,8 +976,72 @@ for item in logTreeTagDict:
 	mainLabel(logScreenStatusSub,text=item,bg=logTreeTagDict[item]).pack(fill=X,side=LEFT)
 #endregion
 #====================View student screen================
+#region viewStudent
 viewStudentScreen=screenClass("Showing Student")
 
+
+#-----Display view-----
+viewStudentDisplayView=displayView(viewStudentScreen)
+viewStudentDisplayView.pack(expand=True,fill=BOTH)
+
+#Name section
+viewStudentNameFrame=mainFrame(viewStudentDisplayView)
+
+viewStudentNameSubFrame=mainFrame(viewStudentNameFrame)
+viewStudentNameSubFrame.pack(expand=True)
+
+viewStudentNameLabel=mainLabel(viewStudentNameSubFrame,text="First Name")
+viewStudentNameLabel.pack()
+
+viewStudentNameEntry=Entry(viewStudentNameSubFrame,justify=CENTER)
+viewStudentNameEntry.pack()
+
+#Second Name section
+viewStudentSecondFrame=mainFrame(viewStudentDisplayView)
+
+viewStudentSecondSubFrame=mainFrame(viewStudentSecondFrame)
+viewStudentSecondSubFrame.pack(expand=True)
+
+viewStudentSecondLabel=mainLabel(viewStudentSecondSubFrame,text="Second Name")
+viewStudentSecondLabel.pack()
+
+viewStudentSecondEntry=Entry(viewStudentSecondSubFrame,justify=CENTER)
+viewStudentSecondEntry.pack()
+
+#Age Section
+viewStudentAgeFrame=mainFrame(viewStudentDisplayView)
+
+viewStudentAgeSubFrame=mainFrame(viewStudentAgeFrame)
+viewStudentAgeSubFrame.pack(expand=True)
+
+viewStudentAgeLabel=mainLabel(viewStudentAgeSubFrame,text="Age")
+viewStudentAgeLabel.pack()
+
+viewStudentAgeEntry=Entry(viewStudentAgeSubFrame,justify=CENTER)
+viewStudentAgeEntry.pack()
+
+#Grade section
+viewStudentGrade=mainFrame(viewStudentDisplayView)
+
+viewStudentGradeSubFrame=mainFrame(viewStudentGrade)
+viewStudentGradeSubFrame.pack(expand=True)
+
+viewStudentGradeLabel=mainLabel(viewStudentGradeSubFrame,text="Grade")
+viewStudentGradeLabel.pack()
+
+viewStudentGradeEntry=Entry(viewStudentGradeSubFrame,justify=CENTER)
+viewStudentGradeEntry.pack()
+
+#----Add to display-----
+viewStudentDisplayView.addSection("#a3d315",viewStudentNameFrame)
+viewStudentDisplayView.addSection("#87AD12",viewStudentSecondFrame)
+viewStudentDisplayView.addSection("#65810D",viewStudentAgeFrame)
+viewStudentDisplayView.addSection("#4B610A",viewStudentGrade)
+
+
+#Show display view
+viewStudentDisplayView.showSections()
+#endregion
 #============================================(MAIN FUNCTIONS)================================================
 
 #=========UTILITY FUNCTIONS===========
@@ -978,8 +1060,12 @@ def insertEntry(entry,message):
 	"""
 	This function will add text into entry
 	"""
-	entry.delete(0,END)
-	entry.insert(END,message)
+	if type(entry) == Entry:
+		entry.delete(0,END)
+		entry.insert(END,message)
+	elif type(entry) == Text:
+		entry.delete("1.0",END)
+		entry.insert("1.0",message)
 
 def subSearch(target,dataToSearch):
 	"""
@@ -1118,6 +1204,10 @@ def createStudents(fileContent):
 					report("Prevented full name duplicate",tag="student",system=True)
 
 def viewAllSearch():
+	"""
+	This function is executed every keystroke to 
+	search for students in the view all screen
+	"""
 	section=viewAllFilterVar.get()
 	target=viewAllSearchEntry.get()
 	dataToSearch=viewAllListbox.getData()
@@ -1125,8 +1215,31 @@ def viewAllSearch():
 	viewAllListbox.addArray(results)
 
 def clearButtonCommand(entry,searchCommand):
+	"""
+	This simple function just clears a search
+	entry and runs an empty search routine to reset
+	search results when the entry is cleared
+	"""
 	insertEntry(entry,"")
 	searchCommand()
+
+def showStudent(studentInstance):
+	"""
+	This function takes the parameter of 
+	a student class and displays that students 
+	information on screen
+	"""
+	viewStudentScreen.show()
+	info=studentInstance.getInfo()
+
+	#Dictionary to identify which entry to put certain data in
+	entryDict={"Name":viewStudentNameEntry,"Second":viewStudentSecondEntry,
+	           "Age":viewStudentAgeEntry,"Grade":viewStudentGradeEntry}
+	#Puts the students data in the correct entry on screen
+	for item in info:
+		if item in entryDict:
+			insertEntry(entryDict[item],info[item])
+
 #============================================(MENU?/CASCADES)================================================
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -1160,6 +1273,7 @@ homeDisplayScreen.bindAllLeave()
 
 #View all screen
 viewAllSearchEntry.bind("<KeyRelease>",lambda event: viewAllSearch())
+viewAllListbox.bind("<Double-Button-1>",lambda event: showStudent(viewAllListbox.getSelectedInstance()))
 
 #==========================================(OPTION MENUS)=================================
 
