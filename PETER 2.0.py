@@ -1025,12 +1025,8 @@ viewStudentAgeLabel.pack()
 viewStudentAgeEntry=Entry(viewStudentAgeSubFrame,justify=CENTER)
 viewStudentAgeEntry.pack()
 
-#------ADVANCED INFO DISPLAY--------
-viewStudentAdvancedDisplayView=displayView(viewStudentScreen)
-viewStudentAdvancedDisplayView.pack(expand=True,fill=BOTH)
-
 #Grade section
-viewStudentGradeFrame=mainFrame(viewStudentAdvancedDisplayView)
+viewStudentGradeFrame=mainFrame(viewStudentBasicDisplayView)
 
 viewStudentGradeSubFrame=mainFrame(viewStudentGradeFrame)
 viewStudentGradeSubFrame.pack(expand=True)
@@ -1041,28 +1037,32 @@ viewStudentGradeLabel.pack()
 viewStudentGradeEntry=Entry(viewStudentGradeSubFrame,justify=CENTER)
 viewStudentGradeEntry.pack()
 
+#------ADVANCED INFO DISPLAY--------
+viewStudentAdvancedDisplayView=displayView(viewStudentScreen)
+viewStudentAdvancedDisplayView.pack(expand=True,fill=BOTH)
+
 #Notes section
 viewStudentNotesFrame=mainFrame(viewStudentAdvancedDisplayView)
 
 viewStudentNotesSubFrame=mainFrame(viewStudentNotesFrame)
-viewStudentNotesSubFrame.pack(expand=True)
+viewStudentNotesSubFrame.pack(expand=True,fill=BOTH)
 
 viewStudentNotesLabel=mainLabel(viewStudentNotesSubFrame,text="Notes")
 viewStudentNotesLabel.pack()
 
 
 viewStudentNotesText=Text(viewStudentNotesSubFrame,height=6,width=30,wrap=WORD,font=("Helvetica", "15"))
-viewStudentNotesText.pack(fill=BOTH)
+viewStudentNotesText.pack(fill=BOTH,expand=True)
 
 #----Add to display-----
 
 #Basic
 viewStudentBasicDisplayView.addSection("#a3d315", viewStudentNameFrame)
 viewStudentBasicDisplayView.addSection("#87AD12", viewStudentSecondFrame)
-viewStudentBasicDisplayView.addSection("#65810D", viewStudentAgeFrame)
-
+viewStudentBasicDisplayView.addSection("#829E13", viewStudentAgeFrame)
+viewStudentBasicDisplayView.addSection("#677D0F",viewStudentGradeFrame)
 #Advanced
-viewStudentAdvancedDisplayView.addSection("#34CC8A",viewStudentGradeFrame)
+
 viewStudentAdvancedDisplayView.addSection("#2EB57A",viewStudentNotesFrame)
 
 
