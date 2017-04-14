@@ -1246,7 +1246,7 @@ def createStudents(fileContent):
 											report("Added student attribute",studentDict["Name"],item,tag="student",system=True)
 
 							studentCounter+=1
-							report("Added student",studentDict["Name"],tag="student")
+							report("Added student",studentDict["Name"],tag="student",system=True)
 				else:
 					report("Prevented full name duplicate",tag="student",system=True)
 
@@ -1287,6 +1287,9 @@ def showStudent(studentInstance):
 	for item in info:
 		if item in entryDict:
 			insertEntry(entryDict[item],info[item])
+
+	#Report
+	report("Viewing student",info["Full"],tag="student")
 
 #============================================(MENU?/CASCADES)================================================
 
