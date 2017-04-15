@@ -489,10 +489,12 @@ class masterControl(mainFrame):
 			frameToPack.pack(expand=True,fill=BOTH,side=TOP)
 
 class studentListbox(Listbox):
+	listboxList=[]
 	def __init__(self,parent,**kwargs):
 		Listbox.__init__(self,parent,kwargs)
 		self.listData=[]
 		self.listDict={}
+		studentListbox.listboxList.append(self)
 
 	def add(self,studentInstance):
 
@@ -532,6 +534,7 @@ class studentListbox(Listbox):
 	def clear(self):
 		self.listDict={}
 		self.listData=[]
+
 	def getData(self):
 		return self.listData
 
@@ -551,6 +554,9 @@ class studentListbox(Listbox):
 					if item == value:
 						return self.listDict[item]
 
+	def removeStudent(self,studentInstance):
+		self.listData.remove(studentInstance)
+		self.listDict.pop(studentInstance.getInfo()["Full"])
 
 
 #====================LOG SCREEN====================
@@ -1355,6 +1361,10 @@ def deleteStudent(studentInstance):
 		#Save the new data without the certain student
 		overwriteFile(mainPupilFileName,dataToDelete)
 
+		#Remove student from listboxes
+		for listbox in studentListbox.listboxList:
+			listbox.removeStudent(studentInstance)
+			
 		#Show home screen when finished
 		homeScreen.show()
 		report("Deleted pupil",studentInstance.getInfo()["Full"],tag="important")
