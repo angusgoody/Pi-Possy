@@ -715,6 +715,18 @@ def getContent(fileName,**kwargs):
 		report("Got content from file",fileName,tag="file")
 		return newContent
 
+def overwriteFile(fileName,newData):
+	"""
+	This function will overwrite or create
+	a new file and save an array of data into 
+	that file
+	"""
+	try:
+		file=open(fileName,"w")
+	except:
+		report("Error opening file",fileName,tag="error")
+	else:
+		pass
 
 #==============HEX FUNCTIONS================
 
@@ -846,6 +858,11 @@ class studentClass:
 		           "Grade":self.grade,
 		           "PB":self.pb,
 		           "Notes":self.notes}
+
+	def delete(self):
+		studentClass.studentArray.remove(self)
+		studentClass.studentNames.remove(self.getInfo()["Full"])
+		report("Removed student data",tag="student")
 
 #============================================(MAIN UI SETUP)================================================
 
