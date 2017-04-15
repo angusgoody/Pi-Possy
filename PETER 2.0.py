@@ -494,7 +494,13 @@ class studentListbox(Listbox):
 		Listbox.__init__(self,parent,kwargs)
 		self.listData=[]
 		self.listDict={}
+		self.dataOnScreen={}
+
 		studentListbox.listboxList.append(self)
+
+	def clearScreen(self):
+		self.delete(0,END)
+		self.dataOnScreen.clear()
 
 	def add(self,studentInstance):
 
@@ -507,8 +513,7 @@ class studentListbox(Listbox):
 
 
 		#Get Name and Second
-
-		wholeName=studentInstance.fullName
+		wholeName=studentInstance.getFullName()
 
 		#Add to list data
 		if studentInstance not in self.listData:
@@ -526,8 +531,11 @@ class studentListbox(Listbox):
 		amount=len(self.get(0,END))
 		viewAllCounterVar.set(str(amount)+" Results")
 
+		#Add to on screen dictionary
+		self.dataOnScreen[wholeName]=studentInstance
+
 	def addArray(self,arrayData):
-		self.delete(0,END)
+		self.clearScreen()
 		for student in arrayData:
 			self.add(student)
 
@@ -557,6 +565,20 @@ class studentListbox(Listbox):
 	def removeStudent(self,studentInstance):
 		self.listData.remove(studentInstance)
 		self.listDict.pop(studentInstance.getInfo()["Full"])
+
+		fullName=studentInstance.getInfo()["Full"]
+
+		#If the student is on screen it needs to be removed
+		if fullName in self.dataOnScreen:
+			dataToClear=self.get(0,END)
+			counter=-1
+			for item in dataToClear:
+				counter+=1
+				if item == fullName:
+					self.delete(counter,counter)
+					self.dataOnScreen.pop(fullName)
+
+
 
 
 #====================LOG SCREEN====================
@@ -878,6 +900,8 @@ class studentClass:
 		studentClass.studentNames.remove(self.getInfo()["Full"])
 		report("Removed student data",tag="student")
 
+	def getFullName(self):
+		return self.fullName
 #============================================(MAIN UI SETUP)================================================
 
 #====================STATUS BAR====================
@@ -1314,14 +1338,15 @@ def viewAllSearch():
 	results=mainSearch(target,section,dataToSearch)
 	viewAllListbox.addArray(results)
 
-def clearButtonCommand(entry,searchCommand):
+def clearButtonCommand(entry):
 	"""
 	This simple function just clears a search
 	entry and runs an empty search routine to reset
 	search results when the entry is cleared
 	"""
+	searchDict={viewAllSearchEntry:viewAllSearch}
 	insertEntry(entry,"")
-	searchCommand()
+	searchDict[entry]()
 
 def showStudent(studentInstance):
 	global currentViewPupil
@@ -1368,7 +1393,7 @@ def deleteStudent(studentInstance):
 		#Remove student from listboxes
 		for listbox in studentListbox.listboxList:
 			listbox.removeStudent(studentInstance)
-			
+
 		#Show home screen when finished
 		homeScreen.show()
 		report("Deleted pupil",studentInstance.getInfo()["Full"],tag="important")
@@ -1420,7 +1445,7 @@ viewAllFilterOptionMenu.pack()
 #============================================(BUTTONS)================================================
 
 #View all screen
-viewAllClearButton.config(command=lambda: clearButtonCommand(viewAllSearchEntry,viewAllSearch))
+viewAllClearButton.config(command=lambda: clearButtonCommand(viewAllSearchEntry))
 
 #Show Student
 viewStudentDeleteButton.config(command=lambda: deleteStudent(currentViewPupil))
