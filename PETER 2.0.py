@@ -34,6 +34,9 @@ mainPassColour="#85EB00"
 mainFailColour="#F07A90"
 mainUnknownColour="#C7BC27"
 viewAllCounterVar=StringVar()
+
+currentViewPupil=""
+mainPupilFileName="pupils.txt"
 #============================================(GLOBAL ARRAYS)================================================
 mainLogArray=[]
 passGrades=["A*","A","B","C"]
@@ -607,7 +610,8 @@ logTreeTagDict={"font":"#B1FF5E",
                 "warning":"#E3B521",
                 "binding":"#F4FF2B",
                 "system":"#FFCCD0",
-                "student":"#4AC7C4"}
+                "student":"#4AC7C4",
+                "important":"#FF276C"}
 
 for tag in logTreeTagDict:
 	logTree.tag_configure(tag,background=logTreeTagDict[tag])
@@ -726,7 +730,11 @@ def overwriteFile(fileName,newData):
 	except:
 		report("Error opening file",fileName,tag="error")
 	else:
-		pass
+		for line in newData:
+			file.write(str(line))
+			file.write("\n")
+		file.close()
+		report("Overwrite complete",tag="file")
 
 #==============HEX FUNCTIONS================
 
@@ -1110,6 +1118,20 @@ viewStudentScreen.showStatusScreen(viewStudentBottomFrame)
 
 #=========UTILITY FUNCTIONS===========
 
+def askQuestion(pre,message):
+	"""
+	This function will ask a question to the user
+	"""
+	try:
+		option=messagebox.askyesno(pre,message)
+	except:
+		print(message)
+	else:
+		if option:
+			return True
+		else:
+			return False
+
 def askMessage(pre,message):
 	"""
 	This function will launch the tkinter
@@ -1199,6 +1221,14 @@ def mainSearch(target,section,dataToSearch):
 		#Finished checking
 		return resultArray
 
+def onExit():
+	"""
+	This function runs when the the program
+	exits
+	"""
+	if messagebox.askokcancel("Quit", "Do you want to quit?"):
+		autoBackupLog(mainLogArray)
+		window.destroy()
 
 #=========PROGRAM FUNCTIONS===========
 def showHomeMessage(enterOrLeave):
@@ -1288,6 +1318,8 @@ def clearButtonCommand(entry,searchCommand):
 	searchCommand()
 
 def showStudent(studentInstance):
+	global currentViewPupil
+
 	"""
 	This function takes the parameter of 
 	a student class and displays that students 
@@ -1308,6 +1340,24 @@ def showStudent(studentInstance):
 	#Report
 	report("Viewing student",info["Full"],tag="student")
 
+	#Set variable
+	currentViewPupil=studentInstance
+
+def deleteStudent(studentInstance):
+	if askQuestion("Confirm","Are you sure you want to delete this pupil?"):
+		studentInstance.delete()
+
+		#Get the data to save to file
+		dataToDelete=[]
+		for student in studentClass.studentArray:
+			dataToDelete.append(student.getInfo())
+
+		#Save the new data without the certain student
+		overwriteFile(mainPupilFileName,dataToDelete)
+
+		#Show home screen when finished
+		homeScreen.show()
+		report("Deleted pupil",studentInstance.getInfo()["Full"],tag="important")
 #============================================(MENU?/CASCADES)================================================
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -1328,6 +1378,9 @@ studentMenu.add_command(label="View All",command=lambda: viewAllScreen.show())
 helpMenu.add_command(label="Show Log",command=lambda :logScreen.show())
 
 #============================================(BINDINGS)================================================
+
+#Window
+window.protocol("WM_DELETE_WINDOW", onExit)
 
 #Status Bar
 statusController.addBinding("<Double-Button-1>",lambda event: homeScreen.show())
@@ -1355,6 +1408,9 @@ viewAllFilterOptionMenu.pack()
 #View all screen
 viewAllClearButton.config(command=lambda: clearButtonCommand(viewAllSearchEntry,viewAllSearch))
 
+#Show Student
+viewStudentDeleteButton.config(command=lambda: deleteStudent(currentViewPupil))
+
 #============================================(INITIAL SETUP)================================================
 
 #Screen to show on startup
@@ -1362,7 +1418,7 @@ viewAllScreen.show( )
 #Status view to show on startup
 statusController.showView(statusMainView)
 #Get the students from file
-students=getContent("pupils.txt")
+students=getContent(mainPupilFileName)
 #Create the student objects from the file
 createStudents(students)
 
