@@ -1331,28 +1331,32 @@ def showStudent(studentInstance):
 	a student class and displays that students 
 	information on screen
 	"""
-	viewStudentScreen.show()
-	info=studentInstance.getInfo()
 
-	#Dictionary to identify which entry to put certain data in
-	entryDict={"Name":viewStudentNameEntry,"Second":viewStudentSecondEntry,
-	           "Age":viewStudentAgeEntry,"Grade":viewStudentGradeEntry,
-	           "Notes":viewStudentNotesText}
-	#Puts the students data in the correct entry on screen
-	for item in info:
-		if item in entryDict:
-			insertEntry(entryDict[item],info[item])
+	if studentInstance in studentClass.studentArray:
+		viewStudentScreen.show()
+		info=studentInstance.getInfo()
 
-	#Report
-	report("Viewing student",info["Full"],tag="student")
+		#Dictionary to identify which entry to put certain data in
+		entryDict={"Name":viewStudentNameEntry,"Second":viewStudentSecondEntry,
+		           "Age":viewStudentAgeEntry,"Grade":viewStudentGradeEntry,
+		           "Notes":viewStudentNotesText}
+		#Puts the students data in the correct entry on screen
+		for item in info:
+			if item in entryDict:
+				insertEntry(entryDict[item],info[item])
 
-	#Set variable
-	currentViewPupil=studentInstance
+		#Report
+		report("Viewing student",info["Full"],tag="student")
+
+		#Set variable
+		currentViewPupil=studentInstance
+	else:
+		askMessage("Error","Could not show pupil")
+		report("Error showing pupil not in database",tag="error")
 
 def deleteStudent(studentInstance):
 	if askQuestion("Confirm","Are you sure you want to delete this pupil?"):
 		studentInstance.delete()
-
 		#Get the data to save to file
 		dataToDelete=[]
 		for student in studentClass.studentArray:
