@@ -1101,10 +1101,16 @@ viewStudentAdvancedDisplayView.pack(expand=True,fill=BOTH)
 viewStudentPBFrame=mainFrame(viewStudentAdvancedDisplayView)
 
 viewStudentPBSubFrame=mainFrame(viewStudentPBFrame)
-viewStudentPBSubFrame.pack(expand=True)
+viewStudentPBSubFrame.pack(expand=True,fill=BOTH)
 
-viewStudentPBEntry=Entry(viewStudentPBSubFrame,justify=CENTER)
-viewStudentPBEntry.pack()
+viewStudentPBTree=ttk.Treeview(viewStudentPBSubFrame,columns=["Sport","Value"],show="headings")
+viewStudentPBTree.pack(expand=True,fill=BOTH)
+
+viewStudentPBTree.column("Sport",width=10,minwidth=45)
+viewStudentPBTree.column("Value",width=5,minwidth=20)
+
+viewStudentPBTree.heading("Sport",text="Sport")
+viewStudentPBTree.heading("Value",text="Value")
 
 #Notes section
 viewStudentNotesFrame=mainFrame(viewStudentAdvancedDisplayView)
@@ -1192,6 +1198,13 @@ def insertEntry(entry,message):
 	elif type(entry) == Text:
 		entry.delete("1.0",END)
 		entry.insert("1.0",message)
+	elif type(entry) == ttk.Treeview and type(message) == dict:
+		for i in entry.get_children():
+			entry.delete(i)
+		for item in message:
+			entry.insert("" , 0,values=(item,message[item]))
+
+
 
 def subSearch(target,dataToSearch):
 	"""
@@ -1373,7 +1386,7 @@ def showStudent(studentInstance):
 		#Dictionary to identify which entry to put certain data in
 		entryDict={"Name":viewStudentNameEntry,"Second":viewStudentSecondEntry,
 		           "Age":viewStudentAgeEntry,"Grade":viewStudentGradeEntry,
-		           "Notes":viewStudentNotesText}
+		           "Notes":viewStudentNotesText,"PB":viewStudentPBTree}
 		#Puts the students data in the correct entry on screen
 		for item in info:
 			if item in entryDict:
