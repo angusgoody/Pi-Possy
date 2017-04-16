@@ -41,6 +41,21 @@ mainPupilFileName="pupils.txt"
 mainLogArray=[]
 passGrades=["A*","A","B","C"]
 mainStudentFields=["Name","Second","Age","Grade","PB","Notes"]
+#============================================(GLOBAL DICTIONARIES)================================================
+
+"""
+This takes care of what events have what colour etc
+"""
+
+mainAthleticEvents=("100m","200m","400m","800m","Hurdles")
+mainJumpEvents=("Long Jump","Triple Jump","High Jump")
+mainThrowEvent=("Javelin","Hammer Throw")
+
+mainEventToTextDict={mainAthleticEvents:"Athletics",mainJumpEvents:"Jumps",
+                     mainThrowEvent:"Throws"}
+
+mainPBColourDict={"Athletics":"#DD86C2","Jumps":"#DD9A50",
+                  "Throws":"#7F70DD","Default":"#A7DBDD"}
 #============================================(EXTRA CODE SPACE)================================================
 """
 This area is for code that needs to be
@@ -48,6 +63,20 @@ at the top of the program because it needs
 to be declared before certain items
 """
 #====================UI CLASSES====================
+
+def getPBName(rawPB):
+	"""
+	This function takes a pb for example
+	100m and returns the category it is in
+	which is Athletics in this case
+	"""
+	allSections=[mainAthleticEvents,mainJumpEvents,
+	             mainThrowEvent]
+
+	for section in allSections:
+		if rawPB in section:
+			return mainEventToTextDict[section]
+	return "Default"
 
 def recursiveChangeColour(parent,colour,fgColour):
 	"""
@@ -902,6 +931,25 @@ class studentClass:
 
 	def getFullName(self):
 		return self.fullName
+
+class studentPBTree(ttk.Treeview):
+	def __init__(self,parent):
+		ttk.Treeview.__init__(self,parent)
+
+		#Config tag
+		for item in mainPBColourDict:
+			self.tag_configure(item,background=mainPBColourDict[item])
+
+	def addList(self,dictData):
+		for i in self.get_children():
+			self.delete(i)
+		for item in dictData:
+			#Get the tag for PB
+			tag=getPBName(item)
+			self.insert("" , 0,values=(item,dictData[item]),tags=tag)
+
+
+
 #============================================(MAIN UI SETUP)================================================
 
 #====================STATUS BAR====================
@@ -1103,7 +1151,8 @@ viewStudentPBFrame=mainFrame(viewStudentAdvancedDisplayView)
 viewStudentPBSubFrame=mainFrame(viewStudentPBFrame)
 viewStudentPBSubFrame.pack(expand=True,fill=BOTH)
 
-viewStudentPBTree=ttk.Treeview(viewStudentPBSubFrame,columns=["Sport","Value"],show="headings")
+viewStudentPBTree=studentPBTree(viewStudentPBSubFrame)
+viewStudentPBTree.config(columns=["Sport","Value"],show="headings")
 viewStudentPBTree.pack(expand=True,fill=BOTH)
 
 viewStudentPBTree.column("Sport",width=10,minwidth=45)
@@ -1203,7 +1252,8 @@ def insertEntry(entry,message):
 			entry.delete(i)
 		for item in message:
 			entry.insert("" , 0,values=(item,message[item]))
-
+	elif type(entry) == studentPBTree and type(message) == dict:
+		entry.addList(message)
 
 
 def subSearch(target,dataToSearch):
