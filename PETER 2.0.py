@@ -940,6 +940,8 @@ class studentPBTree(ttk.Treeview):
 		for item in mainPBColourDict:
 			self.tag_configure(item,background=mainPBColourDict[item])
 
+
+
 	def addList(self,dictData):
 		for i in self.get_children():
 			self.delete(i)
@@ -970,7 +972,7 @@ statusController.pack(expand=True, fill=BOTH)
 
 #Actual Status View
 statusMainView=mainFrame(statusController)
-mainStatusLabel=mainLabel(statusMainView,textvariable=statusVar,font="Arial 15 bold")
+mainStatusLabel=mainLabel(statusMainView,textvariable=statusVar,font="Arial 15")
 mainStatusLabel.pack(expand=True)
 statusMainView.colour("#ED9D18")
 
@@ -1082,6 +1084,16 @@ for item in logTreeTagDict:
 #region viewStudent
 viewStudentScreen=screenClass("Showing Student")
 
+#-----TOP BAR----
+viewStudentTopBar=mainFrame(viewStudentScreen)
+viewStudentTopBar.pack(fill=X)
+
+viewStudentTopVar=StringVar()
+
+viewStudentTopLabel=mainLabel(viewStudentTopBar,textvariable=viewStudentTopVar)
+viewStudentTopLabel.pack(expand=True)
+viewStudentTopLabel.changeFontSize(16)
+
 
 #-----Notebook view-----
 
@@ -1150,6 +1162,9 @@ viewStudentPBFrame=mainFrame(viewStudentAdvancedDisplayView)
 
 viewStudentPBSubFrame=mainFrame(viewStudentPBFrame)
 viewStudentPBSubFrame.pack(expand=True,fill=BOTH)
+
+viewStudentPBLabel=mainLabel(viewStudentPBSubFrame,text="Personal Bests")
+viewStudentPBLabel.pack()
 
 viewStudentPBTree=studentPBTree(viewStudentPBSubFrame)
 viewStudentPBTree.config(columns=["Sport","Value"],show="headings")
@@ -1447,6 +1462,12 @@ def showStudent(studentInstance):
 
 		#Set variable
 		currentViewPupil=studentInstance
+		viewStudentTopVar.set(info["Full"])
+
+		#Update Colours
+		randomCol=generateHexColour()
+		viewStudentTopBar.colour(randomCol)
+		viewStudentBottomFrame.colour(randomCol)
 	else:
 		askMessage("Error","Could not show pupil")
 		report("Error showing pupil not in database",tag="error")
@@ -1538,6 +1559,11 @@ logScreen.addStatusScreen(logScreenStatus)
 logScreen.showStatusScreen(logScreenStatus)
 #Add the initial students to the view all listbox
 viewAllListbox.addArray(studentClass.studentArray)
+
+#Change ttk headings
+#Heading
+style=ttk.Style()
+style.configure("Treeview.Heading", font=('Arial', 15))
 #============================================(TESTING AREA)================================================
 
 
