@@ -1493,6 +1493,8 @@ def showStudent(studentInstance):
 		randomCol=generateHexColour()
 		viewStudentTopBar.colour(randomCol)
 		viewStudentBottomFrame.colour(randomCol)
+
+
 	else:
 		askMessage("Error","Could not show pupil")
 		report("Error showing pupil not in database",tag="error")
@@ -1515,6 +1517,54 @@ def deleteStudent(studentInstance):
 		#Show home screen when finished
 		homeScreen.show()
 		report("Deleted pupil",studentInstance.getInfo()["Full"],tag="important")
+
+def getAllDictChildren(dataDict):
+	"""
+	This function recursivley goes through
+	a dictionary and makes it one dictionary
+	"""
+	mainDict={}
+	for item in dataDict:
+		if type(dataDict[item]) == dict:
+			allInfo=getAllDictChildren(dataDict[item])
+			for sub in allInfo:
+				mainDict[sub]=allInfo[sub]
+		else:
+			mainDict[item]=dataDict[item]
+	return mainDict
+
+def generateDisplayView(parent,dataDict):
+	newDataView=displayView(parent)
+	newDataView.pack(expand=True,fill=BOTH)
+
+	#Recursivley get all data
+	allData=getAllDictChildren(dataDict)
+
+	#Create the sections
+	for dictItem in allData:
+		print(dictItem)
+		newSection=mainFrame(newDataView)
+		newSectionSub=mainFrame(newSection)
+		newSectionSub.pack(expand=True)
+		#Label
+		newSectionLabel=mainLabel(newSectionSub,text=dictItem)
+		newSectionLabel.pack()
+		#Entry
+		newSectionEntry=Entry(newSectionSub,justify=CENTER)
+		newSectionEntry.pack()
+		insertEntry(newSectionEntry,allData[dictItem])
+		#Add to data view
+		newDataView.addSection(generateHexColour(),newSection)
+
+	#Show the sections
+	newDataView.showSections()
+
+def openStudentInTab(studentInstance):
+	#Launch new window
+	newWindow=Tk()
+	newWindow.title(studentInstance.getInfo()["Full"])
+	newWindow.geometry("400x300")
+	generateDisplayView(newWindow,studentInstance.getInfo())
 #============================================(MENU?/CASCADES)================================================
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -1591,7 +1641,6 @@ style.configure("Treeview.Heading", font=('Arial', 15))
 for b in getWidgets(window,["Button"]):
 	b.config(relief=GROOVE)
 #============================================(TESTING AREA)================================================
-
 
 
 #============================================(END)================================================
