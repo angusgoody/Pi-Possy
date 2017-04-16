@@ -32,9 +32,10 @@ helpMenu=Menu(mainMenu)
 maxLogSize=100
 mainPassColour="#85EB00"
 mainFailColour="#F07A90"
+mainGreenColour="#ABF704"
+mainBlueColour="#12B0FB"
 mainUnknownColour="#C7BC27"
 viewAllCounterVar=StringVar()
-
 currentViewPupil=""
 mainPupilFileName="pupils.txt"
 #============================================(GLOBAL ARRAYS)================================================
@@ -1006,7 +1007,7 @@ statusController.pack(expand=True, fill=BOTH)
 statusMainView=mainFrame(statusController)
 mainStatusLabel=mainLabel(statusMainView,textvariable=statusVar,font="Arial 15")
 mainStatusLabel.pack(expand=True)
-statusMainView.colour("#ED9D18")
+statusMainView.colour("#ABF704")
 
 #Status Loading View
 statusLoadingView=mainFrame(statusController)
@@ -1028,10 +1029,10 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
 
-homeDisplayScreen.addLabelSection("Welcome","#E2698B","Welcome")
-homeDisplayScreen.addLabelSection("All Pupils","#C75D7C","Total")
-homeDisplayScreen.addLabelSection("A-C Pupils","#AA4F69","Pass")
-homeDisplayScreen.addLabelSection("D-F Pupils","#8F4359","Fail")
+homeDisplayScreen.addLabelSection("Welcome","#06DBEC","Welcome")
+homeDisplayScreen.addLabelSection("All Pupils","#05D0DF","Total")
+homeDisplayScreen.addLabelSection("A-C Pupils","#05C1CF","Pass")
+homeDisplayScreen.addLabelSection("D-F Pupils","#04A9B6","Fail")
 
 homeDisplayScreen.showSections()
 
@@ -1527,7 +1528,7 @@ def showStudent(studentInstance):
 		viewStudentTopVar.set(info["Full"])
 
 		#Update Colours
-		randomCol=generateHexColour()
+		randomCol=mainBlueColour
 		viewStudentTopBar.colour(randomCol)
 		viewStudentBottomFrame.colour(randomCol)
 
