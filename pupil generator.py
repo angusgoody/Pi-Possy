@@ -409,7 +409,8 @@ def generate(amount):
 			
 		age=random.randint(15,20)
 		grade=random.choice(grades)
-		pbs={"100m":random.randint(10,20),"200m":random.randint(15,30)}
+		pbs={"100m":random.randint(10,20),"200m":random.randint(15,30),"Long Jump":str(random.randint(1,7))+"m",
+		"High Jump":str(random.randint(1,5))+"m","Javelin":str(random.randint(10,50))+"m"}
 		notes=str(firstName)+" "+random.choice(noteOptions)
 		
 		if fullName not in fullNames:
