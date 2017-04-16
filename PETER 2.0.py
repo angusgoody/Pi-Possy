@@ -951,6 +951,37 @@ class studentPBTree(ttk.Treeview):
 			tag=getPBName(item)
 			self.insert("" , 0,values=(item,dictData[item]),tags=tag)
 
+class logKey(mainFrame):
+	"""
+	This class will display a key for 
+	a log
+	"""
+	def __init__(self,parent,colourDict):
+		mainFrame.__init__(self,parent)
+		self.parent=parent
+		self.colourDict=colourDict
+		self.labelList=[]
+		self.labelDict={}
+		self.displayFrame=mainFrame(self)
+		self.displayFrame.pack(expand=True)
+
+		for item in colourDict:
+			self.addKey(item,colourDict[item])
+
+	def addKey(self,display,colour):
+		newLabel=mainLabel(self.displayFrame,text=display,bg=colour)
+		if newLabel not in self.labelList:
+			self.labelList.append(newLabel)
+			self.labelDict[newLabel]=colour
+
+	def showKeys(self):
+		for label in self.labelList:
+			label.pack(side=LEFT)
+
+	def refreshKeys(self):
+		for label in self.labelDict:
+			label.config(bg=self.labelDict[label])
+			label.config(fg=getColourForBackground(self.labelDict[label]))
 
 
 #============================================(MAIN UI SETUP)================================================
@@ -1177,6 +1208,11 @@ viewStudentPBTree.column("Value",width=5,minwidth=20)
 viewStudentPBTree.heading("Sport",text="Sport")
 viewStudentPBTree.heading("Value",text="Value")
 
+#PB key
+pbTreeKey=logKey(viewStudentPBFrame,mainPBColourDict)
+pbTreeKey.pack(side=BOTTOM,fill=X)
+pbTreeKey.showKeys()
+
 #Notes section
 viewStudentNotesFrame=mainFrame(viewStudentAdvancedDisplayView)
 
@@ -1373,6 +1409,8 @@ def getWidgets(parent,widgetArray):
 		if parent.winfo_class() in widgetArray:
 			childrenArray.append(parent)
 	return childrenArray
+
+
 #=========PROGRAM FUNCTIONS===========
 def showHomeMessage(enterOrLeave):
 	"""
@@ -1653,6 +1691,8 @@ style.configure("Treeview.Heading", font=('Arial', 15))
 #Change all buttons
 for b in getWidgets(window,["Button"]):
 	b.config(relief=GROOVE)
+#============================================(REFRESHES)================================================
+pbTreeKey.refreshKeys()
 #============================================(TESTING AREA)================================================
 
 
