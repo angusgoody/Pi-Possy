@@ -4,3 +4,10 @@
 20:24:37.931700 at Successfully updated font A-C Pupils
 20:24:37.932328 at Successfully updated font D-F Pupils
 20:24:37.958847 at Got content from file pupils.txt
+===============================15/04/2017 21:35:40.708014===============================
+21:29:57.463509 at Successfully updated font Welcome
+21:29:57.464854 at Successfully updated font All Pupils
+21:29:57.466099 at Successfully updated font A-C Pupils
+21:29:57.467275 at Successfully updated font D-F Pupils
+21:29:57.527513 at Got content from file pupils.txt
+21:30:12.053702 at Viewing student Ciaran Brunel 

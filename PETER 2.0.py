@@ -1096,6 +1096,16 @@ viewStudentGradeEntry.pack()
 viewStudentAdvancedDisplayView=displayView(viewStudentScreen)
 viewStudentAdvancedDisplayView.pack(expand=True,fill=BOTH)
 
+#PB section
+
+viewStudentPBFrame=mainFrame(viewStudentAdvancedDisplayView)
+
+viewStudentPBSubFrame=mainFrame(viewStudentPBFrame)
+viewStudentPBSubFrame.pack(expand=True)
+
+viewStudentPBEntry=Entry(viewStudentPBSubFrame,justify=CENTER)
+viewStudentPBEntry.pack()
+
 #Notes section
 viewStudentNotesFrame=mainFrame(viewStudentAdvancedDisplayView)
 
@@ -1117,7 +1127,7 @@ viewStudentBasicDisplayView.addSection("#87AD12", viewStudentSecondFrame)
 viewStudentBasicDisplayView.addSection("#829E13", viewStudentAgeFrame)
 viewStudentBasicDisplayView.addSection("#677D0F",viewStudentGradeFrame)
 #Advanced
-
+viewStudentAdvancedDisplayView.addSection("#289B6A",viewStudentPBFrame)
 viewStudentAdvancedDisplayView.addSection("#2EB57A",viewStudentNotesFrame)
 
 
@@ -1283,7 +1293,6 @@ def createStudents(fileContent):
 	This function will create the student objects
 	from the content of the txt file
 	"""
-	#todo fix this function
 
 	#Track number of students
 	studentCounter=0
