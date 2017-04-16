@@ -1462,7 +1462,6 @@ def clearButtonCommand(entry):
 
 def showStudent(studentInstance):
 	global currentViewPupil
-
 	"""
 	This function takes the parameter of 
 	a student class and displays that students 
@@ -1500,6 +1499,11 @@ def showStudent(studentInstance):
 		report("Error showing pupil not in database",tag="error")
 
 def deleteStudent(studentInstance):
+	"""
+	This function will delete an instance of a student
+	by remove all traces of it from the class and listboxes
+	then saving a new file without the student
+	"""
 	if askQuestion("Confirm","Are you sure you want to delete this pupil?"):
 		studentInstance.delete()
 		#Get the data to save to file
@@ -1534,6 +1538,11 @@ def getAllDictChildren(dataDict):
 	return mainDict
 
 def generateDisplayView(parent,dataDict):
+	"""
+	This function will generate a display view
+	with the given dictionary. It will generate
+	an entry and label for each item of data
+	"""
 	newDataView=displayView(parent)
 	newDataView.pack(expand=True,fill=BOTH)
 
@@ -1560,6 +1569,10 @@ def generateDisplayView(parent,dataDict):
 	newDataView.showSections()
 
 def openStudentInTab(studentInstance):
+	"""
+	This function will create a new tab/window
+	and display all the info of the given student
+	"""
 	#Launch new window
 	newWindow=Tk()
 	newWindow.title(studentInstance.getInfo()["Full"])
