@@ -124,6 +124,7 @@ def recursiveBind(parent,bindButton,bindFunction):
 			pass
 	report("Added recursive binding to",parent.winfo_class(),tag="binding",system=True)
 
+
 def temp(data):
 	print(data)
 
@@ -1348,6 +1349,30 @@ def onExit():
 		autoBackupLog(mainLogArray)
 		window.destroy()
 
+def getChildren(parent):
+	childrenArray=[]
+	if parent.winfo_class() == "Frame" or parent.winfo_class() == "Tk":
+		children=parent.winfo_children()
+		for child in children:
+			grandChildren=getChildren(child)
+			for grandChild in grandChildren:
+				childrenArray.append(grandChild)
+	else:
+		childrenArray.append(parent)
+	return childrenArray
+
+def getWidgets(parent,widgetArray):
+	childrenArray=[]
+	if parent.winfo_class() == "Frame" or parent.winfo_class() == "Tk":
+		children=parent.winfo_children()
+		for child in children:
+			grandChildren=getWidgets(child,widgetArray)
+			for grandChild in grandChildren:
+				childrenArray.append(grandChild)
+	else:
+		if parent.winfo_class() in widgetArray:
+			childrenArray.append(parent)
+	return childrenArray
 #=========PROGRAM FUNCTIONS===========
 def showHomeMessage(enterOrLeave):
 	"""
@@ -1559,12 +1584,14 @@ logScreen.addStatusScreen(logScreenStatus)
 logScreen.showStatusScreen(logScreenStatus)
 #Add the initial students to the view all listbox
 viewAllListbox.addArray(studentClass.studentArray)
-
 #Change ttk headings
-#Heading
 style=ttk.Style()
 style.configure("Treeview.Heading", font=('Arial', 15))
+#Change all buttons
+for b in getWidgets(window,["Button"]):
+	b.config(relief=GROOVE)
 #============================================(TESTING AREA)================================================
+
 
 
 #============================================(END)================================================
