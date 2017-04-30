@@ -1217,6 +1217,22 @@ viewStudentPBTree.column("Value",width=5,minwidth=20)
 viewStudentPBTree.heading("Sport",text="Sport")
 viewStudentPBTree.heading("Value",text="Value")
 
+#Edit PB section
+
+viewStudentPBEditFrame=mainFrame(viewStudentPBFrame)
+viewStudentPBEditFrame.pack(side=BOTTOM,fill=X)
+
+viewStudentPBEditSubFrame=mainFrame(viewStudentPBEditFrame)
+viewStudentPBEditSubFrame.pack(expand=True)
+
+#Label
+mainLabel(viewStudentPBEditSubFrame,text="Enter:").grid(row=0,column=0)
+#Entry
+viewStudentPBEditEntry=Entry(viewStudentPBEditSubFrame,justify=CENTER)
+viewStudentPBEditEntry.grid(row=0,column=1)
+#Button
+viewStudentPBEditButton=Button(viewStudentPBEditSubFrame,text="Change",state=DISABLED)
+viewStudentPBEditButton.grid(row=0,column=2)
 
 #Notes section
 viewStudentNotesFrame=mainFrame(viewStudentAdvancedDisplayView)
@@ -1231,31 +1247,6 @@ viewStudentNotesLabel.pack()
 viewStudentNotesText=Text(viewStudentNotesSubFrame,height=6,width=30,wrap=WORD,font=("Helvetica", "15"))
 viewStudentNotesText.pack(fill=BOTH,expand=True)
 
-#------EDIT INFO DISPLAY--------
-viewStudentEditDisplayView=displayView(viewStudentNotebook)
-viewStudentEditDisplayView.pack(expand=True,fill=BOTH)
-
-#Edit PB info
-viewStudentEditPBFrame=mainFrame(viewStudentEditDisplayView)
-
-viewStudentEditPBSubFrame=mainFrame(viewStudentEditPBFrame)
-viewStudentEditPBSubFrame.pack(expand=True,fill=BOTH)
-
-viewStudentEditPBLabel=mainLabel(viewStudentEditPBSubFrame,text="Edit Personal Bests")
-viewStudentEditPBLabel.pack()
-
-viewStudentEditPBTree=studentPBTree(viewStudentEditPBSubFrame)
-viewStudentEditPBTree.config(columns=["Sport","Value"],show="headings")
-viewStudentEditPBTree.pack(expand=True,fill=BOTH)
-
-viewStudentEditPBTree.column("Sport",width=10,minwidth=45)
-viewStudentEditPBTree.column("Value",width=5,minwidth=20)
-
-viewStudentEditPBTree.heading("Sport",text="Sport")
-viewStudentEditPBTree.heading("Value",text="Value")
-
-
-
 #----Add to display-----
 
 #Basic
@@ -1266,18 +1257,16 @@ viewStudentBasicDisplayView.addSection("#677D0F",viewStudentGradeFrame)
 #Advanced
 viewStudentAdvancedDisplayView.addSection("#289B6A",viewStudentPBFrame)
 viewStudentAdvancedDisplayView.addSection("#2EB57A",viewStudentNotesFrame)
-#Edit
-viewStudentEditDisplayView.addSection("#2EB57A",viewStudentEditPBFrame)
+
+
 
 #Show display view
 viewStudentBasicDisplayView.showSections()
 viewStudentAdvancedDisplayView.showSections()
-viewStudentEditDisplayView.showSections()
 #---------Add Pages to Notebook--------
 
 viewStudentNotebook.add(viewStudentBasicDisplayView, text="Basic Info")
 viewStudentNotebook.add(viewStudentAdvancedDisplayView, text="Advanced")
-viewStudentNotebook.add(viewStudentEditDisplayView, text="Edit")
 
 
 #-----Buttons at bottom-----
