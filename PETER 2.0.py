@@ -281,8 +281,12 @@ class screenClass(mainFrame):
 	lastScreen=None
 	currentName=""
 	currentScreen=""
-	def __init__(self,name):
+	screenSizeDict={}
+	def __init__(self,name,**kwargs):
 
+		#Check if a screen size is passed to init
+		if "screenSize" in kwargs:
+			screenClass.screenSizeDict[self]=kwargs["screenSize"]
 		#Initialise the instance as a frame as well
 		mainFrame.__init__(self,window)
 		self.name=name
@@ -294,7 +298,6 @@ class screenClass(mainFrame):
 
 		#Add a status bar to every screen
 		self.statusBottom=mainFrame(self)
-
 
 	#Show screen method
 	def show(self):
@@ -311,6 +314,9 @@ class screenClass(mainFrame):
 			self.runCommands()
 			report("Loaded screen",self.name,tag="screen",system=True)
 
+			#Change window size if specified
+			if self in screenClass.screenSizeDict:
+				window.geometry(screenClass.screenSizeDict[self])
 	#Add command method
 	def addCommand(self,command):
 		self.runCommandDict[command]="function"
@@ -340,10 +346,12 @@ class screenClass(mainFrame):
 					except:
 						report("Error executing lambda screen function",tag="error")
 
+	#Add a bottom section
 	def addStatusScreen(self,frameToAdd):
 		report("Adding item to status bar of type",type(frameToAdd),tag="screen",system=True)
 		self.statusBarList.append(frameToAdd)
 
+	#Display the bottom section
 	def showStatusScreen(self,screenToShow):
 		if screenToShow in self.statusBarList:
 			for screen in self.statusBarList:
@@ -1115,7 +1123,7 @@ for item in logTreeTagDict:
 #endregion
 #====================View student screen================
 #region viewStudent
-viewStudentScreen=screenClass("Showing Student")
+viewStudentScreen=screenClass("Showing Student",screenSize="900x700")
 
 #-----TOP BAR----
 viewStudentTopBar=mainFrame(viewStudentScreen)
@@ -1124,7 +1132,7 @@ viewStudentTopBar.pack(fill=X)
 viewStudentTopVar=StringVar()
 
 viewStudentTopLabel=mainLabel(viewStudentTopBar,textvariable=viewStudentTopVar)
-viewStudentTopLabel.pack(expand=True)
+viewStudentTopLabel.pack(expand=True,pady=10)
 viewStudentTopLabel.changeFontSize(16)
 
 
@@ -1186,7 +1194,7 @@ viewStudentGradeEntry=Entry(viewStudentGradeSubFrame,justify=CENTER)
 viewStudentGradeEntry.pack()
 
 #------ADVANCED INFO DISPLAY--------
-viewStudentAdvancedDisplayView=displayView(viewStudentScreen)
+viewStudentAdvancedDisplayView=displayView(viewStudentNotebook)
 viewStudentAdvancedDisplayView.pack(expand=True,fill=BOTH)
 
 #PB section
@@ -1209,10 +1217,6 @@ viewStudentPBTree.column("Value",width=5,minwidth=20)
 viewStudentPBTree.heading("Sport",text="Sport")
 viewStudentPBTree.heading("Value",text="Value")
 
-#PB key
-pbTreeKey=logKey(viewStudentPBFrame,mainPBColourDict)
-pbTreeKey.pack(side=BOTTOM,fill=X)
-pbTreeKey.showKeys()
 
 #Notes section
 viewStudentNotesFrame=mainFrame(viewStudentAdvancedDisplayView)
@@ -1227,6 +1231,10 @@ viewStudentNotesLabel.pack()
 viewStudentNotesText=Text(viewStudentNotesSubFrame,height=6,width=30,wrap=WORD,font=("Helvetica", "15"))
 viewStudentNotesText.pack(fill=BOTH,expand=True)
 
+#------EDIT INFO DISPLAY--------
+viewStudentEditDisplayView=displayView(viewStudentNotebook)
+viewStudentEditDisplayView.pack(expand=True,fill=BOTH)
+
 #----Add to display-----
 
 #Basic
@@ -1237,6 +1245,7 @@ viewStudentBasicDisplayView.addSection("#677D0F",viewStudentGradeFrame)
 #Advanced
 viewStudentAdvancedDisplayView.addSection("#289B6A",viewStudentPBFrame)
 viewStudentAdvancedDisplayView.addSection("#2EB57A",viewStudentNotesFrame)
+#Edit
 
 
 #Show display view
@@ -1246,6 +1255,8 @@ viewStudentAdvancedDisplayView.showSections()
 
 viewStudentNotebook.add(viewStudentBasicDisplayView, text="Basic Info")
 viewStudentNotebook.add(viewStudentAdvancedDisplayView, text="Advanced")
+viewStudentNotebook.add(viewStudentEditDisplayView, text="Edit")
+
 
 #-----Buttons at bottom-----
 viewStudentBottomFrame=mainFrame(viewStudentScreen)
@@ -1308,6 +1319,13 @@ def insertEntry(entry,message):
 	elif type(entry) == studentPBTree and type(message) == dict:
 		entry.addList(message)
 
+def getFromEntry(entry):
+	if type(entry) == Entry:
+		data=entry.get()
+	elif type(entry) == Text:
+		data=entry.get("1.0",END)
+		data=data.rstrip()
+	return data
 
 def subSearch(target,dataToSearch):
 	"""
@@ -1617,6 +1635,38 @@ def openStudentInTab(studentInstance):
 	newWindow.title(studentInstance.getInfo()["Full"])
 	newWindow.geometry("400x300")
 	generateDisplayView(newWindow,studentInstance.getInfo())
+
+def checkOverwrite():
+	"""
+	This function is run every time something
+	is changed on the view pupil screen
+	and will detect if any information needs to be overwritten
+	"""
+	#Current info
+	currentInfo=currentViewPupil.getInfo()
+	widgetDict={viewStudentAgeEntry:"Age",
+	            viewStudentGradeEntry:"Grade",
+	            viewStudentNameEntry:"Name",
+	            viewStudentSecondEntry:"Second",
+	            viewStudentNotesText:"Notes"}
+	dataDict={}
+
+	#Get the information
+	for widget in getChildren(viewStudentScreen):
+		if widget in widgetDict:
+			dataDict[widgetDict[widget]]=getFromEntry(widget)
+	dataDict["Full"]=dataDict["Name"]+" "+dataDict["Second"]
+	#Get the PB
+	pbSection=currentInfo["PB"]
+	dataDict["PB"]=pbSection
+	if dataDict == currentInfo:
+
+		print("Data has not changed")
+	else:
+		print(dataDict,"\nVS\n"+str(currentInfo))
+		print("Data has changed")
+
+
 #============================================(MENU?/CASCADES)================================================
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -1655,6 +1705,9 @@ homeDisplayScreen.bindAllLeave()
 viewAllSearchEntry.bind("<KeyRelease>",lambda event: viewAllSearch())
 viewAllListbox.bind("<Double-Button-1>",lambda event: showStudent(viewAllListbox.getSelectedInstance()))
 
+
+#View Student Screen
+viewStudentScreen.addBinding("<KeyRelease>",lambda event:checkOverwrite())
 #==========================================(OPTION MENUS)=================================
 
 #View all screen
@@ -1692,10 +1745,10 @@ style.configure("Treeview.Heading", font=('Arial', 15))
 #Change all buttons
 for b in getWidgets(window,["Button"]):
 	b.config(relief=GROOVE)
-#============================================(REFRESHES)================================================
-pbTreeKey.refreshKeys()
-#============================================(TESTING AREA)================================================
 
+#============================================(REFRESHES)================================================
+
+#============================================(TESTING AREA)================================================
 
 #============================================(END)================================================
 window.mainloop()
