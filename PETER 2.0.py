@@ -950,7 +950,12 @@ class studentPBTree(ttk.Treeview):
 		for item in mainPBColourDict:
 			self.tag_configure(item,background=mainPBColourDict[item])
 
+		#Add scrollbar
+		self.scrollbar=Scrollbar(self)
+		self.scrollbar.pack(side=RIGHT,fill=Y)
 
+		self.scrollbar.config(command=self.yview)
+		self.config(yscrollcommand=self.scrollbar.set)
 
 	def addList(self,dictData):
 		for i in self.get_children():
