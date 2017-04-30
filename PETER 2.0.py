@@ -38,6 +38,7 @@ mainUnknownColour="#C7BC27"
 viewAllCounterVar=StringVar()
 currentViewPupil=""
 mainPupilFileName="pupils.txt"
+currentPB={"PB":[]}
 #============================================(GLOBAL ARRAYS)================================================
 mainLogArray=[]
 passGrades=["A*","A","B","C"]
@@ -1231,8 +1232,8 @@ viewStudentPBEditSubFrame=mainFrame(viewStudentPBEditFrame)
 viewStudentPBEditSubFrame.pack(expand=True)
 
 #Label
-currentSelectedPB=StringVar()
-mainLabel(viewStudentPBEditSubFrame,text="Enter:",textvariable=currentSelectedPB,width=10).grid(row=0,column=0)
+currentLabelPB=StringVar()
+mainLabel(viewStudentPBEditSubFrame,text="Enter:",textvariable=currentLabelPB,width=10).grid(row=0,column=0)
 #Entry
 viewStudentPBEditEntry=Entry(viewStudentPBEditSubFrame,justify=CENTER)
 viewStudentPBEditEntry.grid(row=0,column=1)
@@ -1688,18 +1689,48 @@ def loadPBClick():
 	This function is run when a PB is clicked
 	on the View Student screen
 	"""
+	global currentPB
 	try:
 		values=(viewStudentPBTree.item(viewStudentPBTree.focus()))
 		pbName=values["values"][0]
 		pbValue=values["values"][1]
 		insertEntry(viewStudentPBEditEntry,pbValue)
-		currentSelectedPB.set(str(pbName)+":")
+		currentLabelPB.set(str(pbName)+":")
+		#Change global variable
+		currentPB["PB"]=values["values"]
 	except:
 		report("Error loading PB to edit",tag="error")
 		viewStudentPBEditButton.config(state=DISABLED)
 	else:
-		viewStudentPBEditButton.config(state=NORMAL)
+		viewStudentPBEditButton.config(state=DISABLED)
 
+def whenPBEdited():
+
+	"""
+	This function runs every time 
+	the user enters something in the
+	PB entry
+	"""
+	text=viewStudentPBEditEntry.get()
+
+	#Checks if data can be updated
+	try:
+		if text == str(currentPB["PB"][1]):
+			viewStudentPBEditButton.config(state=DISABLED)
+		else:
+			viewStudentPBEditButton.config(state=NORMAL)
+	except:
+		pass
+
+def updatePB():
+	"""
+	This function will update the chosen PB
+	for a student
+	:return: 
+	"""
+	confirm=messagebox.askokcancel("Confirm","Are you sure you want to update this PB?")
+	if confirm:
+		print("Ready")
 #============================================(MENU?/CASCADES)================================================
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
@@ -1737,10 +1768,12 @@ homeDisplayScreen.bindAllLeave()
 #View all screen
 viewAllSearchEntry.bind("<KeyRelease>",lambda event: viewAllSearch())
 viewAllListbox.bind("<Double-Button-1>",lambda event: showStudent(viewAllListbox.getSelectedInstance()))
-viewStudentPBTree.bind("<ButtonRelease-1>",lambda event: loadPBClick())
 
 #View Student Screen
 viewStudentScreen.addBinding("<KeyRelease>",lambda event:checkOverwrite())
+viewStudentPBTree.bind("<ButtonRelease-1>",lambda event: loadPBClick())
+viewStudentPBEditEntry.bind("<KeyRelease>",lambda event:whenPBEdited() )
+
 #==========================================(OPTION MENUS)=================================
 
 #View all screen
@@ -1753,9 +1786,9 @@ viewAllFilterOptionMenu.pack()
 #View all screen
 viewAllClearButton.config(command=lambda: clearButtonCommand(viewAllSearchEntry))
 
-#Show Student
+#View Student screen
 viewStudentDeleteButton.config(command=lambda: deleteStudent(currentViewPupil))
-
+viewStudentPBEditButton.config(command=updatePB)
 #============================================(INITIAL SETUP)================================================
 
 #Screen to show on startup
