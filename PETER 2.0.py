@@ -1677,6 +1677,13 @@ def checkOverwrite():
 		print(dataDict,"\nVS\n"+str(currentInfo))
 		print("Data has changed")
 
+def loadPBClick():
+	"""
+	This function is run when a PB is clicked
+	on the View Student screen
+	"""
+	values=(viewStudentPBTree.item(viewStudentPBTree.focus()))
+	insertEntry(viewStudentPBEditEntry,values["values"][1])
 
 #============================================(MENU?/CASCADES)================================================
 
@@ -1715,7 +1722,7 @@ homeDisplayScreen.bindAllLeave()
 #View all screen
 viewAllSearchEntry.bind("<KeyRelease>",lambda event: viewAllSearch())
 viewAllListbox.bind("<Double-Button-1>",lambda event: showStudent(viewAllListbox.getSelectedInstance()))
-
+viewStudentPBTree.bind("<ButtonRelease-1>",lambda event: loadPBClick())
 
 #View Student Screen
 viewStudentScreen.addBinding("<KeyRelease>",lambda event:checkOverwrite())
