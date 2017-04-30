@@ -1226,7 +1226,8 @@ viewStudentPBEditSubFrame=mainFrame(viewStudentPBEditFrame)
 viewStudentPBEditSubFrame.pack(expand=True)
 
 #Label
-mainLabel(viewStudentPBEditSubFrame,text="Enter:").grid(row=0,column=0)
+currentSelectedPB=StringVar()
+mainLabel(viewStudentPBEditSubFrame,text="Enter:",textvariable=currentSelectedPB,width=10).grid(row=0,column=0)
 #Entry
 viewStudentPBEditEntry=Entry(viewStudentPBEditSubFrame,justify=CENTER)
 viewStudentPBEditEntry.grid(row=0,column=1)
@@ -1259,7 +1260,6 @@ viewStudentAdvancedDisplayView.addSection("#289B6A",viewStudentPBFrame)
 viewStudentAdvancedDisplayView.addSection("#2EB57A",viewStudentNotesFrame)
 
 
-
 #Show display view
 viewStudentBasicDisplayView.showSections()
 viewStudentAdvancedDisplayView.showSections()
@@ -1279,6 +1279,7 @@ viewStudentDeleteButton=Button(viewStudentBottomFrame,text="Delete",width=15)
 viewStudentDeleteButton.pack(pady=8)
 
 viewStudentBottomFrame.colour("#B1D818")
+
 #Add to screen status view
 viewStudentScreen.addStatusScreen(viewStudentBottomFrame)
 viewStudentScreen.showStatusScreen(viewStudentBottomFrame)
@@ -1682,8 +1683,17 @@ def loadPBClick():
 	This function is run when a PB is clicked
 	on the View Student screen
 	"""
-	values=(viewStudentPBTree.item(viewStudentPBTree.focus()))
-	insertEntry(viewStudentPBEditEntry,values["values"][1])
+	try:
+		values=(viewStudentPBTree.item(viewStudentPBTree.focus()))
+		pbName=values["values"][0]
+		pbValue=values["values"][1]
+		insertEntry(viewStudentPBEditEntry,pbValue)
+		currentSelectedPB.set(str(pbName)+":")
+	except:
+		report("Error loading PB to edit",tag="error")
+		viewStudentPBEditButton.config(state=DISABLED)
+	else:
+		viewStudentPBEditButton.config(state=NORMAL)
 
 #============================================(MENU?/CASCADES)================================================
 
