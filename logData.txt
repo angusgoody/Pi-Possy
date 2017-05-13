@@ -19,3 +19,29 @@
 10:14:21.358908 at Successfully updated font 
 10:14:21.382341 at Got content from file pupils.txt
 10:14:40.596598 at Viewing student Sarah White
+===============================03/05/2017 19:47:42.820888===============================
+09:27:39.248051 at Successfully updated font Welcome
+09:27:39.269253 at Successfully updated font All Pupils
+09:27:39.269942 at Successfully updated font A-C Pupils
+09:27:39.270604 at Successfully updated font D-F Pupils
+09:27:39.280163 at Successfully updated font 
+09:27:39.459256 at Got content from file pupils.txt
+09:27:47.171945 at Viewing student James Gates
+===============================07/05/2017 20:06:26.445337===============================
+12:11:35.200392 at Successfully updated font Welcome
+12:11:35.219983 at Successfully updated font All Pupils
+12:11:35.220956 at Successfully updated font A-C Pupils
+12:11:35.221875 at Successfully updated font D-F Pupils
+12:11:35.233496 at Successfully updated font 
+12:11:35.287420 at Got content from file pupils.txt
+12:12:29.291271 at Viewing student Daniel Messi
+===============================13/05/2017 17:12:30.287289===============================
+17:02:22.355066 at Successfully updated font Welcome
+17:02:22.372481 at Successfully updated font All Pupils
+17:02:22.373704 at Successfully updated font A-C Pupils
+17:02:22.374989 at Successfully updated font D-F Pupils
+17:02:22.392478 at Successfully updated font 
+17:02:22.451356 at Got content from file pupils.txt
+17:02:25.750679 at Viewing student Brad Lycet
+17:02:46.670843 at Viewing student Malcolm Messi
+17:05:52.903128 at Error loading PB to edit

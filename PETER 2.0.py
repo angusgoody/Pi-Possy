@@ -25,9 +25,12 @@ window.config(menu=mainMenu)
 #Sub Menus
 fileMenu=Menu(mainMenu)
 editMenu=Menu(mainMenu)
+viewMenu=Menu(mainMenu)
 studentMenu=Menu(mainMenu)
 helpMenu=Menu(mainMenu)
 
+#Sub sub Menus
+navigationMenu=Menu(viewMenu)
 #============================================(GLOBAL VARIABLES)================================================
 maxLogSize=100
 mainPassColour="#85EB00"
@@ -39,6 +42,7 @@ viewAllCounterVar=StringVar()
 currentViewPupil=""
 mainPupilFileName="pupils.txt"
 currentPB={"PB":[]}
+navigationHidden=BooleanVar()
 #============================================(GLOBAL ARRAYS)================================================
 mainLogArray=[]
 passGrades=["A*","A","B","C"]
@@ -243,8 +247,8 @@ class mainFrame(Frame):
 	 so they appear on dark/light background handles bindings and pop up
 	 menus
 	"""
-	def __init__(self,parent):
-		Frame.__init__(self,parent)
+	def __init__(self,parent,**kwargs):
+		Frame.__init__(self,parent,kwargs)
 		self.labelViews=[]
 		self.colourVar=""
 
@@ -358,6 +362,7 @@ class screenClass(mainFrame):
 			for screen in self.statusBarList:
 				screen.pack_forget()
 			screenToShow.pack(side=BOTTOM,fill=X)
+
 
 class displayView(mainFrame):
 	"""
@@ -618,7 +623,32 @@ class studentListbox(Listbox):
 					self.delete(counter,counter)
 					self.dataOnScreen.pop(fullName)
 
+class navigationBar(mainFrame):
+	"""
+	This class is to allow users to navigate around the program
+	from a bar that goes at the top of a frame
+	
+	"""
+	def __init__(self,parent,**kwargs):
+		mainFrame.__init__(self,parent,**kwargs)
 
+		#Get the children
+		self.screenList=[]
+		for item in parent.winfo_children():
+			if type(item) == screenClass:
+				self.screenList.append(item)
+
+		#Create the buttons
+		self.buttonFrame=mainFrame(self)
+		self.buttonFrame.pack(expand=True)
+		for screen in self.screenList:
+			name=screen.name
+			but=Button(self.buttonFrame,text=name,command=lambda s=screen: s.show())
+			but.pack(side=LEFT)
+	def show(self):
+		self.pack(fill=X,side=TOP)
+	def hide(self):
+		self.pack_forget()
 
 
 #====================LOG SCREEN====================
@@ -920,12 +950,16 @@ class studentClass:
 
 	def addAge(self,ageToAdd):
 		self.age=ageToAdd
+
 	def addGrade(self,gradeToAdd):
 		self.grade=gradeToAdd
+
 	def addNotes(self,notes):
 		self.notes=notes
+
 	def addPb(self,pbDict):
 		self.pb=pbDict
+
 	def getInfo(self):
 		return {"Name":self.name,
 		        "Full":self.fullName,
@@ -999,6 +1033,7 @@ class logKey(mainFrame):
 			label.config(fg=getColourForBackground(self.labelDict[label]))
 
 
+
 #============================================(MAIN UI SETUP)================================================
 
 #====================STATUS BAR====================
@@ -1034,6 +1069,7 @@ statusLoadingView.colour("#A9F955")
 statusController.addView(statusMainView)
 statusController.addView(statusLoadingView)
 #endregion
+
 #====================HOME SCREEN====================
 #region homescreen
 homeScreen=screenClass("Home")
@@ -1127,6 +1163,7 @@ logScreenStatusSub.pack(expand=True)
 for item in logTreeTagDict:
 	mainLabel(logScreenStatusSub,text=item,bg=logTreeTagDict[item]).pack(fill=X,side=LEFT)
 #endregion
+
 #====================View student screen================
 #region viewStudent
 viewStudentScreen=screenClass("Showing Student",screenSize="900x700")
@@ -1289,6 +1326,22 @@ viewStudentBottomFrame.colour("#B1D818")
 #Add to screen status view
 viewStudentScreen.addStatusScreen(viewStudentBottomFrame)
 viewStudentScreen.showStatusScreen(viewStudentBottomFrame)
+
+#endregion
+
+#====================NEW STUDENT SCREEN================
+#region studentScreen
+newStudentScreen=screenClass("New Student")
+
+#endregion
+
+#====================TOP NAVIGATION BAR====================
+#region NavigationBar
+navigationBar=navigationBar(window)
+navigationBar.pack(side=TOP,fill=X)
+navigationBar.hide()
+navigationBar.colour("#B8E51F")
+
 
 #endregion
 #============================================(MAIN FUNCTIONS)================================================
@@ -1579,23 +1632,26 @@ def deleteStudent(studentInstance):
 	by remove all traces of it from the class and listboxes
 	then saving a new file without the student
 	"""
-	if askQuestion("Confirm","Are you sure you want to delete this pupil?"):
-		studentInstance.delete()
-		#Get the data to save to file
-		dataToDelete=[]
-		for student in studentClass.studentArray:
-			dataToDelete.append(student.getInfo())
+	if type(studentInstance) == studentClass:
+		if askQuestion("Confirm","Are you sure you want to delete this pupil?"):
+			studentInstance.delete()
+			#Get the data to save to file
+			dataToDelete=[]
+			for student in studentClass.studentArray:
+				dataToDelete.append(student.getInfo())
 
-		#Save the new data without the certain student
-		overwriteFile(mainPupilFileName,dataToDelete)
+			#Save the new data without the certain student
+			overwriteFile(mainPupilFileName,dataToDelete)
 
-		#Remove student from listboxes
-		for listbox in studentListbox.listboxList:
-			listbox.removeStudent(studentInstance)
+			#Remove student from listboxes
+			for listbox in studentListbox.listboxList:
+				listbox.removeStudent(studentInstance)
 
-		#Show home screen when finished
-		homeScreen.show()
-		report("Deleted pupil",studentInstance.getInfo()["Full"],tag="important")
+			#Show home screen when finished
+			homeScreen.show()
+			report("Deleted pupil",studentInstance.getInfo()["Full"],tag="important")
+	else:
+		askMessage("Error","No student selected")
 
 def getAllDictChildren(dataDict):
 	"""
@@ -1731,19 +1787,30 @@ def updatePB():
 	confirm=messagebox.askokcancel("Confirm","Are you sure you want to update this PB?")
 	if confirm:
 		print("Ready")
+
+def checkNav():
+	var=navigationHidden.get()
+	if var:
+		navigationBar.show()
+	else:
+		navigationBar.hide()
 #============================================(MENU?/CASCADES)================================================
 
 mainMenu.add_cascade(label="File",menu=fileMenu)
 mainMenu.add_cascade(label="Edit",menu=editMenu)
+mainMenu.add_cascade(label="View",menu=viewMenu)
 mainMenu.add_cascade(label="Students",menu=studentMenu)
 mainMenu.add_cascade(label="Help",menu=helpMenu)
 
+viewMenu.add_cascade(label="Navigation bar",menu=navigationMenu)
 #============CASCADES==========
 
 #File Menu
 fileMenu.add_command(label="Home",command=lambda: homeScreen.show())
+fileMenu.add_command(label="New Pupil",command=lambda: newStudentScreen.show())
 
-#Edit Menu
+#View Menu
+navigationMenu.add_checkbutton(label="Show Navigation bar",variable=navigationHidden,onvalue=True,offvalue=False,command=checkNav)
 
 #Student menu
 studentMenu.add_command(label="View All",command=lambda: viewAllScreen.show())
