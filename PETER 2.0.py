@@ -34,7 +34,7 @@ navigationMenu=Menu(viewMenu)
 #============================================(GLOBAL VARIABLES)================================================
 maxLogSize=100
 mainPassColour="#85EB00"
-mainFailColour="#F07A90"
+mainFailColour="#E15E99"
 mainGreenColour="#ABF704"
 mainBlueColour="#12B0FB"
 mainUnknownColour="#C7BC27"
@@ -1079,10 +1079,10 @@ homeDisplayScreen.pack(expand=True,fill=BOTH)
 
 #Section setup
 
-homeDisplayScreen.addLabelSection("Welcome","#06DBEC","Welcome")
-homeDisplayScreen.addLabelSection("All Pupils","#05D0DF","Total")
-homeDisplayScreen.addLabelSection("A-C Pupils","#05C1CF","Pass")
-homeDisplayScreen.addLabelSection("D-F Pupils","#04A9B6","Fail")
+homeDisplayScreen.addLabelSection("Welcome","#CD60A8","Welcome")
+homeDisplayScreen.addLabelSection("All Pupils","#b3428b","Total")
+homeDisplayScreen.addLabelSection("A-C Pupils","#863168","Pass")
+homeDisplayScreen.addLabelSection("D-F Pupils","#64244e","Fail")
 
 homeDisplayScreen.showSections()
 

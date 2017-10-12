@@ -45,3 +45,20 @@
 17:02:25.750679 at Viewing student Brad Lycet
 17:02:46.670843 at Viewing student Malcolm Messi
 17:05:52.903128 at Error loading PB to edit
+===============================18/06/2017 12:21:58.962486===============================
+12:10:41.501271 at Successfully updated font Welcome
+12:10:41.502522 at Successfully updated font All Pupils
+12:10:41.503458 at Successfully updated font A-C Pupils
+12:10:41.504177 at Successfully updated font D-F Pupils
+12:10:41.514609 at Successfully updated font 
+12:10:41.549820 at Got content from file pupils.txt
+12:10:50.734975 at Error loading PB to edit
+12:10:51.031017 at Error loading PB to edit
+===============================04/07/2017 21:14:49.507119===============================
+21:14:44.799237 at Successfully updated font Welcome
+21:14:44.800116 at Successfully updated font All Pupils
+21:14:44.800811 at Successfully updated font A-C Pupils
+21:14:44.801506 at Successfully updated font D-F Pupils
+21:14:44.812445 at Successfully updated font 
+21:14:44.845017 at Got content from file pupils.txt
+21:14:46.116224 at Viewing student Daniel Bowen
